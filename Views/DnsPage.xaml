@@ -1,0 +1,223 @@
+﻿<UserControl x:Class="tool_cantam.Views.DnsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Başlık -->
+        <TextBlock Grid.Row="0" 
+                   Text="DNS LOOKUP" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <!-- Arama Alanı -->
+        <Border Grid.Row="1" 
+                CornerRadius="8" 
+                BorderBrush="{StaticResource BorderDefaultBrush}" 
+                BorderThickness="1"
+                Padding="20">
+
+            <StackPanel>
+                <TextBlock Text="Domain Name" 
+                           Style="{StaticResource LabelPrimary}" 
+                           Margin="0,0,0,10"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0" 
+                             Text="{Binding TargetDomain, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Button Grid.Column="1" 
+                            Command="{Binding QueryCommand}"
+                            Content="LOOKUP"
+                            HorizontalAlignment="Right"
+                            Height="40"
+                            Width="100"
+                            Margin="10,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"/>
+                </Grid>
+
+                <!-- Durum -->
+                <TextBlock Text="{Binding StatusText}" 
+                           Style="{StaticResource LabelSecondary}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           FontSize="11"
+                           Margin="0,10,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Sonuçlar -->
+        <Border Grid.Row="2" 
+                CornerRadius="8" 
+                BorderBrush="{StaticResource BorderDefaultBrush}" 
+                BorderThickness="1"
+                Padding="20"
+                Margin="0,10,0,10">
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Height="320">
+                <StackPanel>
+                    <!-- A Records -->
+                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,8">
+                        <StackPanel>
+                            <TextBlock Text="🖧 A Records (IPv4)" 
+                                       Style="{StaticResource LabelSecondary}"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       FontSize="12"/>
+                            <ItemsControl ItemsSource="{Binding ARecords}" Margin="0,5,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" 
+                                                   Style="{StaticResource LabelPrimary}"
+                                                   FontSize="11"
+                                                   Margin="15,2,0,2"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- AAAA Records -->
+                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,8">
+                        <StackPanel>
+                            <TextBlock Text="🌐 AAAA Records (IPv6)" 
+                                       Style="{StaticResource LabelSecondary}"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       FontSize="12"/>
+                            <ItemsControl ItemsSource="{Binding AaaaRecords}" Margin="0,5,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" 
+                                                   Style="{StaticResource LabelPrimary}"
+                                                   FontSize="11"
+                                                   Margin="15,2,0,2"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- MX Records -->
+                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,8">
+                        <StackPanel>
+                            <TextBlock Text="📧 MX Records (Mail)" 
+                                       Style="{StaticResource LabelSecondary}"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       FontSize="12"/>
+                            <ItemsControl ItemsSource="{Binding MxRecords}" Margin="0,5,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" 
+                                                   Style="{StaticResource LabelPrimary}"
+                                                   FontSize="11"
+                                                   Margin="15,2,0,2"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- NS Records -->
+                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,8">
+                        <StackPanel>
+                            <TextBlock Text="🖧 NS Records (Nameservers)" 
+                                       Style="{StaticResource LabelSecondary}"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       FontSize="12"/>
+                            <ItemsControl ItemsSource="{Binding NsRecords}" Margin="0,5,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" 
+                                                   Style="{StaticResource LabelPrimary}"
+                                                   FontSize="11"
+                                                   Margin="15,2,0,2"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- TXT Records -->
+                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,8">
+                        <StackPanel>
+                            <TextBlock Text="📝 TXT Records" 
+                                       Style="{StaticResource LabelSecondary}"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       FontSize="12"/>
+                            <ItemsControl ItemsSource="{Binding TxtRecords}" Margin="0,5,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" 
+                                                   Style="{StaticResource LabelPrimary}"
+                                                   FontSize="11"
+                                                   Margin="15,2,0,2"
+                                                   TextWrapping="Wrap"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- SOA Record -->
+                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,8"
+                            Visibility="{Binding SoaRecord, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel>
+                            <TextBlock Text="ℹ️ SOA Record" 
+                                       Style="{StaticResource LabelSecondary}"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       FontSize="12"/>
+                            <TextBlock Text="{Binding SoaRecord}" 
+                                       Style="{StaticResource LabelPrimary}"
+                                       FontSize="11"
+                                       Margin="15,5,0,0"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Butonlar -->
+        <UniformGrid Grid.Row="3" Columns="2" Width="300" HorizontalAlignment="Center" Margin="0,0,0,10">
+            <Button Command="{Binding CopyAllCommand}" 
+                    Content="COPY ALL"
+                    Height="34" 
+                    Margin="0,0,5,0"
+                    Style="{StaticResource ModernButton}"
+                    Background="{StaticResource StatusWarningBrush}"
+                    Foreground="{StaticResource TextPrimaryBrush}"/>
+            <Button Command="{Binding ClearCommand}" 
+                    Content="CLEAR"
+                    Height="34" 
+                    Margin="5,0,0,0"
+                    Style="{StaticResource ModernButton}"
+                    Background="{StaticResource RedBrush}"
+                    Foreground="White"/>
+        </UniformGrid>
+
+        <!-- Footer -->
+        <TextBlock Grid.Row="4" 
+                   Text="🔍 DNS Lookup queries A, AAAA, MX, NS, TXT, and SOA records" 
+                   Style="{StaticResource DropZoneHint}" 
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="10"
+                   HorizontalAlignment="Center"/>
+    </Grid>
+</UserControl>

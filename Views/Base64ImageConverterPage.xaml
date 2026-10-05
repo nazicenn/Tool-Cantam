@@ -1,0 +1,146 @@
+﻿<UserControl x:Class="tool_cantam.Views.Base64ImageConverterPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:helpers="clr-namespace:tool_cantam.Helpers"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <UserControl.Resources>
+        <Style x:Key="StatusTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,15,0,0"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding StatusType}" Value="Success">
+                    <Setter Property="Foreground" Value="{StaticResource GreenBrush}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding StatusType}" Value="Warning">
+                    <Setter Property="Foreground" Value="{StaticResource StatusWarningBrush}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding StatusType}" Value="Error">
+                    <Setter Property="Foreground" Value="{StaticResource RedBrush}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding StatusType}" Value="Info">
+                    <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="BASE64 IMAGE CONVERTER" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left: Image to Base64 -->
+            <Border Grid.Column="0" 
+                    Style="{StaticResource OptionsPanel}" 
+                    Padding="15" 
+                    Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Text="RESİM → BASE64" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
+
+                    <Border Style="{StaticResource DropZone}" 
+                            Padding="20" MinHeight="150"
+                            helpers:FileDragDropBehavior.IsEnabled="True"
+                            helpers:FileDragDropBehavior.FilePath="{Binding FilePath, Mode=TwoWay}">
+                        <StackPanel>
+                            <ui:SymbolIcon Symbol="Image24" FontSize="32" HorizontalAlignment="Center" Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <TextBlock Text="Drop image here" HorizontalAlignment="Center" Margin="0,10,0,5" Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <TextBlock Text="{Binding FilePath, TargetNullValue='veya seçmek için tıklayın'}" 
+                                       FontSize="10" TextAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <TextBlock Text="Supported formats: PNG, JPG, GIF, BMP, WEBP" 
+                                       FontSize="9" Foreground="{StaticResource TextSecondaryBrush}"
+                                       HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Button Command="{Binding ConvertImageToBase64Command}" 
+                            Content="🔑 CONVERT BASE64" 
+                            Height="40" Margin="0,15,0,10"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+
+                    <Border CornerRadius="6" Padding="10">
+                        <StackPanel>
+                            <TextBlock Text="PREVIEW" Style="{StaticResource LabelSecondary}" FontSize="11" Margin="0,0,0,5"/>
+                            <Image Source="{Binding PreviewImage}" 
+                                   MaxHeight="100" 
+                                   Stretch="Uniform"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- Center Buttons -->
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10">
+                <Button Command="{Binding CopyBase64Command}" 
+                        Content="COPY" Height="40" Width="70" Margin="0,5"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource StatusWarningBrush}"/>
+                <Button Command="{Binding ClearCommand}" 
+                        Content="CLEAR" Height="40" Width="70" Margin="0,5"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource RedBrush}"/>
+            </StackPanel>
+
+            <!-- Right: Base64 to Image -->
+            <Border Grid.Column="2" 
+                    Style="{StaticResource OptionsPanel}" 
+                    Padding="15" 
+                    Margin="10,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="BASE64 → RESİM" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
+
+                    <!-- SADECE DİKEY SCROLL - YATAY YOK -->
+                    <ScrollViewer MaxHeight="200" 
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <TextBox Text="{Binding Base64Text}" 
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 MinHeight="150"
+                                 FontFamily="Consolas"
+                                 FontSize="11"/>
+                    </ScrollViewer>
+
+                    <Button Command="{Binding ConvertBase64ToImageCommand}" 
+                            Content="🔑 CONVERT İMAGE" 
+                            Height="40" Margin="0,10,0,10"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+
+                    <Border CornerRadius="6" Padding="10">
+                        <StackPanel>
+                            <TextBlock Text="PREVIEW" Style="{StaticResource LabelSecondary}" FontSize="11" Margin="0,0,0,5"/>
+                            <Image Source="{Binding PreviewImage}" 
+                                   MaxHeight="100" 
+                                   Stretch="Uniform"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <TextBlock Grid.Row="2" 
+                   Text="{Binding StatusText}" 
+                   Style="{StaticResource StatusTextStyle}"/>
+    </Grid>
+</UserControl>

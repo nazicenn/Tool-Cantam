@@ -1,0 +1,103 @@
+﻿<!-- Views/QrCodeReaderPage.xaml -->
+<UserControl x:Class="tool_cantam.Views.QrCodeReaderPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:helpers="clr-namespace:tool_cantam.Helpers"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="QR CODE READER" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left: File Drop -->
+            <Border Grid.Column="0" 
+                    Style="{StaticResource OptionsPanel}" 
+                    Padding="15" 
+                    Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Text="QR CODE IMAGE" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
+
+                    <Border Style="{StaticResource DropZone}" 
+                            Padding="20" MinHeight="150"
+                            helpers:FileDragDropBehavior.IsEnabled="True"
+                            helpers:FileDragDropBehavior.FilePath="{Binding FilePath, Mode=TwoWay}">
+                        <StackPanel>
+                            <ui:SymbolIcon Symbol="QrCode24" FontSize="32" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Drop QR code image here" HorizontalAlignment="Center" Margin="0,10,0,5"/>
+                            <TextBlock Text="{Binding FilePath, TargetNullValue='or click to select'}" 
+                                       FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Button Command="{Binding ReadQrCodeCommand}" 
+                            Content="🔍 READ QR CODE" 
+                            Height="40" Margin="0,15,0,15"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+
+                    <Border CornerRadius="6" Padding="10">
+                        <StackPanel>
+                            <TextBlock Text="PREVIEW" Style="{StaticResource LabelSecondary}" FontSize="11" Margin="0,0,0,5"/>
+                            <Image Source="{Binding PreviewImage}" MaxHeight="150" Stretch="Uniform"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- Center Buttons -->
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10">
+                <Button Command="{Binding CopyResultCommand}" 
+                        Content="📋 COPY" Height="40" Width="70" Margin="0,5"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource StatusWarningBrush}"/>
+                <Button Command="{Binding ClearCommand}" 
+                        Content="🗑️ CLEAR" Height="40" Width="70" Margin="0,5"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource RedBrush}"/>
+            </StackPanel>
+
+            <!-- Right: Result -->
+            <Border Grid.Column="2" 
+                    Style="{StaticResource OptionsPanel}" 
+                    Padding="15" 
+                    Margin="10,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="RESULT" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Height="300">
+                        <TextBox Text="{Binding QrText}" 
+                                 IsReadOnly="True" 
+                                 TextWrapping="Wrap" 
+                                 FontFamily="Consolas"
+                                 FontSize="12"/>
+                    </ScrollViewer>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <TextBlock Grid.Row="2" 
+                   Text="{Binding StatusText}" 
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="11"
+                   HorizontalAlignment="Center"
+                   Margin="0,15,0,0"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,116 @@
+﻿<UserControl x:Class="tool_cantam.Views.QrCodePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Başlık Bölümü -->
+        <TextBlock Grid.Row="0" 
+                   Text="QR CODE GENERATOR" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="18" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,25"/>
+
+        <Border Grid.Row="1" 
+                Padding="30,20">
+
+            <Grid VerticalAlignment="Center">
+                <!-- İçerik dikeyde ortalandı -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- SOL: TEXT INPUT VE BUTONLAR -->
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="TEXT OR URL" 
+                               Style="{StaticResource LabelPrimary}" 
+                               Margin="0,0,0,10"
+                               HorizontalAlignment="Left"/>
+
+                    <TextBox Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto"
+                             Height="180"
+                             VerticalContentAlignment="Top"/>
+
+                    <Grid Margin="0,20,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Butonlar yan yana veya alt alta daha şık dursun diye Grid içine alınabilir -->
+                        <!-- Mevcut yapını koruyarak devam ediyorum: -->
+                    </Grid>
+
+                    <Button Command="{Binding GenerateCommand}"
+                            Content="GENERATE QR CODE"
+                            Height="44"
+                            Margin="0,20,0,10"
+                            HorizontalAlignment="Stretch"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+
+                    <Button Command="{Binding ClearCommand}"
+                            Content="CLEAR"
+                            Height="44"
+                            HorizontalAlignment="Stretch"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"/>
+                </StackPanel>
+
+                <!-- AYIRICI ÇİZGİ -->
+                <Separator Grid.Column="1" 
+                           Width="1" 
+                           Background="{StaticResource BorderDefaultBrush}" 
+                           Margin="30,10"/>
+
+                <!-- SAĞ: QR KOD VE BUTON -->
+                <StackPanel Grid.Column="2" 
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center">
+
+                    <Border Background="{StaticResource GrayBrush}" 
+                            CornerRadius="16"
+                            Padding="20"
+                            BorderBrush="{StaticResource BorderDefaultBrush}"
+                            BorderThickness="1"
+                            Margin="0,0,0,20"
+                            Width="240" 
+                            Height="240">
+                        <!-- Kare form korundu -->
+                        <Image Source="{Binding QrCodeImage}" 
+                               Stretch="Uniform"/>
+                    </Border>
+
+                    <Button Command="{Binding SaveAsImageCommand}"
+                            Content="SAVE AS PNG"
+                            Height="44"
+                            Width="240" 
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Alt Bilgi / Status -->
+        <TextBlock Grid.Row="2" 
+                   Text="{Binding StatusText}" 
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="11"
+                   HorizontalAlignment="Center"
+                   Margin="0,15,0,0"/>
+    </Grid>
+</UserControl>

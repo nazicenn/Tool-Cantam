@@ -1,0 +1,62 @@
+<UserControl x:Class="tool_cantam.Views.MetadataPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:helpers="clr-namespace:tool_cantam.Helpers"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="30,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="METADATA CLEANER" Style="{StaticResource LabelPrimary}" 
+                       FontSize="14" FontWeight="Bold" Margin="0,0,0,4"/>
+            <TextBlock Text="Protect your privacy by stripping EXIF and hidden metadata from files." 
+                       Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Style="{StaticResource DropZone}" Margin="0,0,0,20"
+                helpers:FileDragDropBehavior.IsEnabled="True"
+                helpers:FileDragDropBehavior.FilePath="{Binding ViewModel.FilePath, Mode=TwoWay}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
+                <ui:SymbolIcon Symbol="ShieldLock24" FontSize="48" 
+                               Foreground="{StaticResource TextPrimaryBrush}" 
+                               HorizontalAlignment="Center"/>
+                <TextBlock Text="Drop file here or click to browse" 
+                           Style="{StaticResource DropZoneHint}" Margin="0,15,0,0" FontSize="14" TextAlignment="Center"/>
+                <Border Background="{StaticResource DropZoneBgBrush}" CornerRadius="4" Padding="10,5" Margin="0,10,0,0">
+                    <TextBlock Text="{Binding ViewModel.FilePath, TargetNullValue='No file selected'}" 
+                               Style="{StaticResource LabelSecondary}" 
+                               TextTrimming="CharacterEllipsis" MaxWidth="350"/>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="2" Margin="0,0,0,20">
+            <TextBlock Text="{Binding ViewModel.StatusMessage}" Style="{StaticResource SuccessText}" 
+                       HorizontalAlignment="Center" Margin="0,0,0,10" FontWeight="SemiBold"/>
+            <Border Background="#15FF3333" Padding="12,8" CornerRadius="4" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <ui:SymbolIcon Symbol="Warning24" Foreground="{StaticResource RedBrush}" Margin="0,0,8,0" FontSize="16"/>
+                    <TextBlock Text="Warning: This action will permanently strip EXIF and hidden metadata." 
+                               Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" FontSize="11"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <UniformGrid Grid.Row="3" Columns="2">
+            <Button Content="SELECT FILE" Command="{Binding ViewModel.SelectFileCommand}" 
+                    Style="{StaticResource ModernButton}" Background="{StaticResource AccentPrimaryBrush}" 
+                    Height="42" Margin="0,0,10,0"/>
+
+            <Button Content="PURGE METADATA" Command="{Binding ViewModel.RemoveMetadataCommand}" 
+                    Style="{StaticResource ModernButton}" Background="{StaticResource RedBrush}" 
+                    Height="42"/>
+        </UniformGrid>
+    </Grid>
+</UserControl>

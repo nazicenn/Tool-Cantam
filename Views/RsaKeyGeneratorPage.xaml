@@ -1,0 +1,108 @@
+﻿    <UserControl x:Class="tool_cantam.Views.RsaKeyGeneratorPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" 
+                   Text="RSA KEY GENERATOR" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+            <!-- Settings -->
+            <Border Grid.Row="1" 
+                Style="{StaticResource OptionsPanel}" 
+                Padding="15" 
+                Margin="0,0,0,15">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Key Size:" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Column="1" SelectedItem="{Binding KeySize}" Width="100" Height="35" Margin="10,0">
+                            <ComboBoxItem>1024</ComboBoxItem>
+                            <ComboBoxItem IsSelected="True">2048</ComboBoxItem>
+                            <ComboBoxItem>4096</ComboBoxItem>
+                        </ComboBox>
+                        <CheckBox Grid.Column="2" Content="XML Format" IsChecked="{Binding IncludeXmlFormat}" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Button Command="{Binding GenerateCommand}" 
+                        Content="🔑 GENERATE KEY PAIR" Height="40" Margin="0,15,0,0"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource GreenBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Keys -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Public Key -->
+                <Border Grid.Column="0" 
+                    Padding="15" 
+                    Margin="0,0,10,0">
+                    <StackPanel>
+                        <TextBlock Text="PUBLIC KEY" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="300">
+                            <TextBox Text="{Binding PublicKey}" 
+                                 IsReadOnly="True" 
+                                 TextWrapping="Wrap" 
+                                 FontFamily="Consolas"
+                                 FontSize="11"/>
+                        </ScrollViewer>
+                        <Button Command="{Binding CopyPublicKeyCommand}" 
+                            Content="COPY" Height="35" Width="100" Margin="0,10,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"
+                            HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Private Key -->
+                <Border Grid.Column="1" 
+                    Padding="15" 
+                    Margin="10,0,0,0">
+                    <StackPanel>
+                        <TextBlock Text="PRIVATE KEY" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="300">
+                            <TextBox Text="{Binding PrivateKey}" 
+                                 IsReadOnly="True" 
+                                 TextWrapping="Wrap" 
+                                 FontFamily="Consolas"
+                                 FontSize="11"/>
+                        </ScrollViewer>
+                        <Button Command="{Binding CopyPrivateKeyCommand}" 
+                            Content="COPY" Height="35" Width="100" Margin="0,10,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"
+                            HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <TextBlock Grid.Row="3" 
+                   Text="{Binding StatusText}" 
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="11"
+                   HorizontalAlignment="Center"
+                   Margin="0,10,0,0"/>
+        </Grid>
+    </UserControl>

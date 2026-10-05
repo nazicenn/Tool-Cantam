@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="L.Home">Home</sys:String>
+    <sys:String x:Key="L.Settings">Settings</sys:String>
+    <sys:String x:Key="L.Search">Search tools...</sys:String>
+    <sys:String x:Key="L.Input">Input</sys:String>
+    <sys:String x:Key="L.Output">Output</sys:String>
+    <sys:String x:Key="L.Encode">ENCODE</sys:String>
+    <sys:String x:Key="L.Decode">DECODE</sys:String>
+    <sys:String x:Key="L.Copy">COPY</sys:String>
+    <sys:String x:Key="L.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.DarkMode">Dark Mode</sys:String>
+    <sys:String x:Key="L.Language">Language</sys:String>
+    <sys:String x:Key="L.About">About</sys:String>
+    <sys:String x:Key="L.EncodersDecoders">Encoders &amp; Decoders</sys:String>
+    <sys:String x:Key="L.Generator">Generator</sys:String>
+    <sys:String x:Key="L.Cleaner">Cleaner</sys:String>
+    <sys:String x:Key="L.Scanner">Scanner</sys:String>
+</ResourceDictionary>

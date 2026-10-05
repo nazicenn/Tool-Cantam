@@ -1,0 +1,108 @@
+<UserControl x:Class="tool_cantam.Views.Base64Page"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:helpers="clr-namespace:tool_cantam.Helpers"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="BASE64 ENCODER / DECODER" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.8*"/>
+                <ColumnDefinition Width="1.1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" Margin="0,0,15,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Input Text" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
+
+                <TextBox Grid.Row="1" 
+                         Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}" 
+                         AcceptsReturn="True" 
+                         TextWrapping="Wrap" 
+                         Margin="0,0,0,12"
+                         VerticalAlignment="Stretch" 
+                         MinHeight="80"
+                         VerticalScrollBarVisibility="Auto"/>
+
+                <TextBlock Grid.Row="2" Text="Output Result" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
+
+                <TextBox Grid.Row="3" 
+                         Text="{Binding ViewModel.OutputText, Mode=OneWay}" 
+                         IsReadOnly="True" 
+                         TextWrapping="Wrap" 
+                         Margin="0,0,0,12"
+                         VerticalAlignment="Stretch" 
+                         MinHeight="80"
+                         VerticalScrollBarVisibility="Auto"/>
+
+                <UniformGrid Grid.Row="4" Columns="4">
+                    <Button Content="ENCODE" Command="{Binding ViewModel.EncodeTextCommand}" 
+                            Height="34" Margin="0,0,5,0"
+                            Background="{StaticResource GreenBrush}" Style="{StaticResource ModernButton}"/>
+                    <Button Content="DECODE" Command="{Binding ViewModel.DecodeTextCommand}" 
+                            Height="34" Margin="5,0,5,0"
+                            Background="{StaticResource GreenBrush}" Style="{StaticResource ModernButton}"/>
+                    <Button Content="COPY" Command="{Binding ViewModel.CopyOutputCommand}" 
+                            Height="34" Margin="5,0,5,0"
+                            Background="{StaticResource StatusWarningBrush}" Style="{StaticResource ModernButton}"/>
+                    <Button Content="CLEAR ALL" Click="Clear_Click"
+                            Height="34" Margin="5,0,0,0"
+                            Background="{StaticResource RedBrush}" Style="{StaticResource ModernButton}" VerticalAlignment="Top"/>
+                </UniformGrid>
+            </Grid>
+
+            <!-- Drop Zone Kısmı -->
+            <Border Grid.Column="1" Style="{StaticResource DropZone}" VerticalAlignment="Stretch"
+                    helpers:FileDragDropBehavior.IsEnabled="True"
+                    helpers:FileDragDropBehavior.FilePath="{Binding ViewModel.FilePath, Mode=TwoWay}">
+                <Grid>
+                    <StackPanel VerticalAlignment="Center">
+                        <ui:SymbolIcon Symbol="Document24" FontSize="44" Margin="0,0,0,15"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                        <TextBlock Text="Drop file here" 
+                                   Style="{StaticResource DropZoneHint}" 
+                                   FontSize="14" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+
+                        <TextBlock Text="{Binding ViewModel.FilePath, TargetNullValue='or click to select'}" 
+                                   Style="{StaticResource LabelSecondary}"
+                                   FontSize="10" TextAlignment="Center" TextWrapping="Wrap"
+                                   Opacity="0.7" Margin="10,0,10,25" MaxHeight="50"/>
+
+                        <Button Content="ENCODE FILE" Command="{Binding ViewModel.EncodeFileCommand}" 
+                                Height="38" Width="160" Margin="0,0,0,10"
+                                Background="{StaticResource AccentPrimaryBrush}" Style="{StaticResource ModernButton}"/>
+                        <Button Content="DECODE FILE" Command="{Binding ViewModel.DecodeFileCommand}" 
+                                Height="38" Width="160"
+                                Background="{StaticResource GreenBrush}" Style="{StaticResource ModernButton}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <TextBlock Grid.Row="2" 
+                   Text="{Binding ViewModel.FileStatus}" 
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="11"
+                   HorizontalAlignment="Center"
+                   Margin="0,15,0,0"/>
+    </Grid>
+</UserControl>

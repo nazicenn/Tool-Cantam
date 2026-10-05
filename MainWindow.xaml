@@ -1,0 +1,65 @@
+<ui:FluentWindow x:Class="tool_cantam.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        Title="Tool Cantam v1.01" Height="700" Width="1100"
+        ExtendsContentIntoTitleBar="True"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BgDarkBrush}">
+
+    <ui:FluentWindow.Resources>
+        <SolidColorBrush x:Key="ApplicationBackgroundBrush" Color="{StaticResource BgDark}"/>
+        <SolidColorBrush x:Key="WindowBackground" Color="{StaticResource BgDark}"/>
+        <SolidColorBrush x:Key="NavigationViewContentBackground" Color="{StaticResource BgDark}"/>
+        <SolidColorBrush x:Key="LayerFillColorDefaultBrush" Color="{StaticResource BgDark}"/>
+    </ui:FluentWindow.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8.84"/>
+            <RowDefinition Height="39.16"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar x:Name="TitleBar" 
+                     Title="Tool Cantam v1.01" 
+                     Grid.Row="0" 
+                     Grid.ColumnSpan="2"
+                     Grid.RowSpan="2" 
+                     VerticalAlignment="Center"/>
+
+        <ui:NavigationView x:Name="SideNav" 
+                           Grid.Row="2"
+                           Grid.Column="0"
+                           PaneDisplayMode="Left"
+                           IsBackButtonVisible="Collapsed"
+                           IsPaneToggleVisible="True"
+                           OpenPaneLength="220"
+                           Background="{StaticResource BgDarkBrush}"
+                           BorderThickness="0"
+                           BorderBrush="Transparent"
+                           Foreground="{StaticResource TextPrimaryBrush}">
+
+            <ui:NavigationView.AutoSuggestBox>
+                <ui:AutoSuggestBox x:Name="SearchBox" 
+                                   PlaceholderText="Search tools..." 
+                                   TextChanged="SearchBox_TextChanged"
+                                   Background="{StaticResource BgInputBrush}"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   BorderThickness="1"
+                                   BorderBrush="{StaticResource BorderDefaultBrush}"/>
+            </ui:NavigationView.AutoSuggestBox>
+
+        </ui:NavigationView>
+
+        <Frame x:Name="MainFrame" Grid.Row="2" Grid.Column="1" NavigationUIVisibility="Hidden" />
+
+        <ui:SnackbarPresenter x:Name="SnackbarPresenter" Grid.Row="2" Grid.Column="1" />
+        <ui:ContentDialogHost x:Name="RootContentDialogPresenter" Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="2" />
+    </Grid>
+</ui:FluentWindow>

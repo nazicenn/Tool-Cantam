@@ -1,0 +1,166 @@
+﻿<!-- Views/PemViewerPage.xaml -->
+<UserControl x:Class="tool_cantam.Views.PemViewerPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="PEM VIEWER" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <!-- Input -->
+        <Border Grid.Row="1" 
+                Style="{StaticResource OptionsPanel}" 
+                Padding="15" 
+                Margin="0,0,0,15">
+            <StackPanel>
+                <TextBlock Text="PEM CERTIFICATE" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
+                <TextBox Text="{Binding PemInput, UpdateSourceTrigger=PropertyChanged}"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         MinHeight="150"
+                         FontFamily="Consolas"
+                         FontSize="11"
+                         Margin="0,0,0,10"/>
+
+                <UniformGrid Columns="3">
+                    <Button Command="{Binding ParseCommand}" 
+                            Content="📋 PARSE" Height="35" Margin="0,0,5,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+                    <Button Command="{Binding LoadSampleCommand}" 
+                            Content="📁 SAMPLE" Height="35" Margin="5,0,5,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"/>
+                    <Button Command="{Binding ClearCommand}" 
+                            Content="🗑️ CLEAR" Height="35" Margin="5,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"/>
+                </UniformGrid>
+            </StackPanel>
+        </Border>
+
+        <!-- Results -->
+        <Border Grid.Row="2" 
+                Style="{StaticResource OptionsPanel}" 
+                Padding="15">
+            <StackPanel>
+                <TextBlock Text="CERTIFICATE INFO" Style="{StaticResource LabelPrimary}" Margin="0,0,0,15"/>
+
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Subject:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Subject}" Style="{StaticResource LabelPrimary}" TextWrapping="Wrap"/>
+                </Grid>
+
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Issuer:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Issuer}" Style="{StaticResource LabelPrimary}" TextWrapping="Wrap"/>
+                </Grid>
+
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Serial Number:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Text="{Binding SerialNumber}" Style="{StaticResource LabelPrimary}" FontFamily="Consolas" FontSize="11"/>
+                </Grid>
+
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Valid From:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Text="{Binding ValidFrom}" Style="{StaticResource LabelPrimary}"/>
+                </Grid>
+
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Valid To:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Text="{Binding ValidTo}" Style="{StaticResource LabelPrimary}"/>
+                </Grid>
+
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Public Key:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Text="{Binding PublicKey}" Style="{StaticResource LabelPrimary}"/>
+                </Grid>
+
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Signature:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Text="{Binding SignatureAlgorithm}" Style="{StaticResource LabelPrimary}"/>
+                </Grid>
+
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Thumbprint:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Thumbprint}" Style="{StaticResource LabelPrimary}" FontFamily="Consolas" FontSize="11" TextWrapping="Wrap"/>
+                </Grid>
+
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Status:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="❌ Expired/Invalid"/>
+                                <Setter Property="Foreground" Value="{StaticResource RedBrush}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsValid}" Value="True">
+                                        <Setter Property="Text" Value="✅ Valid"/>
+                                        <Setter Property="Foreground" Value="{StaticResource GreenBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <TextBlock Grid.Row="3" 
+                   Text="{Binding StatusText}" 
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="11"
+                   HorizontalAlignment="Center"
+                   Margin="0,10,0,0"/>
+    </Grid>
+</UserControl>

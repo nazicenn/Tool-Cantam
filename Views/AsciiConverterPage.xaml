@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="tool_cantam.Views.AsciiConverterPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <UserControl.Resources>
+        <Style x:Key="StatusTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,15,0,0"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding StatusType}" Value="Success">
+                    <Setter Property="Foreground" Value="{StaticResource GreenBrush}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding StatusType}" Value="Warning">
+                    <Setter Property="Foreground" Value="{StaticResource StatusWarningBrush}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding StatusType}" Value="Error">
+                    <Setter Property="Foreground" Value="{StaticResource RedBrush}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding StatusType}" Value="Info">
+                    <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="ASCII CONVERTER" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+        <Grid Grid.Row="1">
+            <Grid Grid.Column="0" Margin="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Input Text" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
+
+                <!-- Input TextBox with Vertical Scroll only -->
+                <ScrollViewer Grid.Row="1" 
+                              VerticalScrollBarVisibility="Auto" 
+                              HorizontalScrollBarVisibility="Disabled"
+                              Margin="0,0,0,12"
+                              MinHeight="120"
+                              MaxHeight="300">
+                    <TextBox Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" 
+                             AcceptsReturn="True" 
+                             TextWrapping="Wrap"
+                             Foreground="{StaticResource TextPrimaryBrush}"
+                             BorderBrush="{StaticResource BorderDefaultBrush}"
+                             BorderThickness="0"/>
+                </ScrollViewer>
+
+                <TextBlock Grid.Row="2" Text="Output Result" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
+
+                <!-- Output TextBox with Vertical Scroll only -->
+                <ScrollViewer Grid.Row="3" 
+                              VerticalScrollBarVisibility="Auto" 
+                              HorizontalScrollBarVisibility="Disabled"
+                              Margin="0,0,0,12"
+                              MinHeight="120"
+                              MaxHeight="300">
+                    <TextBox Text="{Binding OutputText, Mode=OneWay}" 
+                             IsReadOnly="True" 
+                             TextWrapping="Wrap"
+                             Foreground="{StaticResource AccentPrimaryBrush}"
+                             BorderBrush="{StaticResource BorderDefaultBrush}"
+                             BorderThickness="0"/>
+                </ScrollViewer>
+
+                <UniformGrid Grid.Row="4" Columns="4">
+                    <Button Content="TO ASCII" Command="{Binding ToAsciiCommand}" 
+                            Height="34" Margin="0,0,5,0"
+                            Background="{StaticResource GreenBrush}" 
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            FontWeight="Bold"
+                            Style="{StaticResource ModernButton}"/>
+                    <Button Content="FROM ASCII" Command="{Binding FromAsciiCommand}" 
+                            Height="34" Margin="5,0,5,0"
+                            Background="{StaticResource GreenBrush}" 
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            FontWeight="Bold"
+                            Style="{StaticResource ModernButton}"/>
+                    <Button Content="COPY" Command="{Binding CopyOutputCommand}" 
+                            Height="34" Margin="5,0,5,0"
+                            Background="{StaticResource StatusWarningBrush}" 
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            FontWeight="Bold"
+                            Style="{StaticResource ModernButton}"/>
+                    <Button Content="CLEAR" Command="{Binding ClearCommand}" 
+                            Height="34" Margin="5,0,0,0"
+                            Background="{StaticResource RedBrush}" 
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            FontWeight="Bold"
+                            Style="{StaticResource ModernButton}"/>
+                </UniformGrid>
+            </Grid>
+        </Grid>
+
+        <TextBlock Grid.Row="2" 
+                   Text="{Binding StatusText}" 
+                   Style="{StaticResource StatusTextStyle}"/>
+    </Grid>
+</UserControl>

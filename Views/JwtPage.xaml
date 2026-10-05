@@ -1,0 +1,89 @@
+<UserControl x:Class="tool_cantam.Views.JwtPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="JWT DECODER" Style="{StaticResource LabelPrimary}" Margin="0,0,0,20" />
+
+        <TextBlock Grid.Row="1" Text="Encoded JWT String" Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+
+        <!-- INPUT ALANI (SABİT YÜKSEKLİK) -->
+        <ui:TextBox Grid.Row="2" Text="{Binding ViewModel.JwtInput}" MinHeight="80" MaxHeight="120"
+                    PlaceholderText="Paste your JWT here..."
+                    Margin="0,0,0,15" AcceptsReturn="True" TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto"/>
+
+        <!-- BUTONLAR + STATUS (YAN YANA) -->
+        <Grid Grid.Row="3" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Butonlar -->
+            <UniformGrid Grid.Column="0" Columns="4" Width="500" HorizontalAlignment="Left">
+                <Button Content="DECODE JWT" Height="34" Style="{StaticResource ModernButton}"
+                        Background="{StaticResource AccentPrimaryBrush}" Command="{Binding ViewModel.DecodeJwtCommand}" Margin="0,0,5,0"/>
+                <Button Content="COPY" Height="34" Style="{StaticResource ModernButton}"
+                        Background="{StaticResource StatusWarningBrush}" Command="{Binding ViewModel.CopyPayloadCommand}" Margin="5,0,5,0"/>
+                <Button Content="DOWNLOAD" Height="34" Style="{StaticResource ModernButton}"
+                        Background="{StaticResource AccentSecondaryBrush}" Command="{Binding ViewModel.DownloadPayloadCommand}" Margin="5,0,5,0"/>
+                <Button Content="CLEAR" Height="34" Style="{StaticResource ModernButton}"
+                        Background="{StaticResource RedBrush}" Command="{Binding ViewModel.ClearCommand}" Margin="5,0,0,0"/>
+            </UniformGrid>
+
+            <!-- Status Mesajı (Butonların sağında) -->
+            <Border Grid.Column="1"  CornerRadius="6" Padding="12,8" Margin="15,0,0,0"
+                    VerticalAlignment="Center">
+                <TextBlock Text="{Binding ViewModel.StatusText}" 
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           FontSize="11"/>
+            </Border>
+        </Grid>
+
+        <!-- ÇIKTI ALANI (SADECE BURASI SCROLL'LU) -->
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="15"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- HEADER (SCROLL'LU) -->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Header" Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                <ScrollViewer Grid.Row="1" MaxHeight="300" VerticalScrollBarVisibility="Auto">
+                    <TextBox Text="{Binding ViewModel.DecodedHeader}" IsReadOnly="True" 
+                             TextWrapping="Wrap"/>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- PAYLOAD (SCROLL'LU) -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Payload" Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                <ScrollViewer Grid.Row="1" MaxHeight="300" VerticalScrollBarVisibility="Auto">
+                    <TextBox Text="{Binding ViewModel.DecodedPayload}" IsReadOnly="True" 
+                             TextWrapping="Wrap"/>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

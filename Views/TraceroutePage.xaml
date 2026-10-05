@@ -1,0 +1,92 @@
+﻿<!-- Views/TraceroutePage.xaml -->
+<UserControl x:Class="tool_cantam.Views.TraceroutePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="TRACEROUTE" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <!-- Input -->
+        <Border Grid.Row="1" 
+                Style="{StaticResource OptionsPanel}" 
+                Padding="15" 
+                Margin="0,0,0,15">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Host:" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox Grid.Column="1" Text="{Binding Host}" FontFamily="Consolas" Height="35" Margin="0,0,10,0"/>
+                    <Button Grid.Column="2" Command="{Binding StartTraceCommand}" 
+                            Content="TRACE" Height="35" Width="80"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+                </Grid>
+
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Max Hops:" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <ui:NumberBox Grid.Column="1" Value="{Binding MaxHops}" Minimum="1" Maximum="60" Margin="0,0,10,0"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Results -->
+        <Border Grid.Row="2" 
+                Style="{StaticResource OptionsPanel}" 
+                Padding="15">
+            <StackPanel>
+                <TextBlock Text="TRACE RESULTS" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="350">
+                    <DataGrid ItemsSource="{Binding Hops}" 
+                              AutoGenerateColumns="False" 
+                              IsReadOnly="True"
+                              HeadersVisibility="Column">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" Binding="{Binding Hop}" Width="50"/>
+                            <DataGridTextColumn Header="IP Address" Binding="{Binding Ip}" Width="150"/>
+                            <DataGridTextColumn Header="Time 1" Binding="{Binding Time1}" Width="80"/>
+                            <DataGridTextColumn Header="Time 2" Binding="{Binding Time2}" Width="80"/>
+                            <DataGridTextColumn Header="Time 3" Binding="{Binding Time3}" Width="80"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ScrollViewer>
+                <Button Command="{Binding CopyResultsCommand}" 
+                        Content="📋 COPY RESULTS" Height="35" Width="130" Margin="0,10,0,0"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource StatusWarningBrush}"
+                        HorizontalAlignment="Right"/>
+            </StackPanel>
+        </Border>
+
+        <TextBlock Grid.Row="3" 
+                   Text="{Binding StatusText}" 
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="11"
+                   HorizontalAlignment="Center"
+                   Margin="0,10,0,0"/>
+    </Grid>
+</UserControl>

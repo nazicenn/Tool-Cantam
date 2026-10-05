@@ -1,0 +1,164 @@
+﻿<UserControl x:Class="tool_cantam.Views.PingPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="PING TEST" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <Border Grid.Row="1" 
+                Padding="20">
+
+            <StackPanel>
+                <!-- Target Host -->
+                <TextBlock Text="Hostname or IP" 
+                           Style="{StaticResource LabelPrimary}" 
+                           Margin="0,0,0,8"/>
+                <TextBox Text="{Binding TargetHost, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="e.g., google.com or 8.8.8.8"
+                         Margin="0,0,0,15"/>
+
+                <!-- Count and Timeout -->
+                <Grid Margin="0,0,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                        <TextBlock Text="Packets" Style="{StaticResource LabelSecondary}" FontSize="11"/>
+                        <TextBox Text="{Binding Count}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                        <TextBlock Text="Timeout (ms)" Style="{StaticResource LabelSecondary}" FontSize="11"/>
+                        <TextBox Text="{Binding TimeoutMs}" />
+                    </StackPanel>
+                </Grid>
+
+                <!-- Action Buttons -->
+                <UniformGrid Columns="2" Margin="0,0,0,15">
+                    <Button Command="{Binding StartPingCommand}" 
+                            Content="START PING"
+                            Height="36" 
+                            Margin="0,0,5,0"
+                            IsEnabled="{Binding IsPinging, Converter={StaticResource InverseBooleanConverter}}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+                    <Button Command="{Binding CancelPingCommand}" 
+                            Content="CANCEL"
+                            Height="36" 
+                            Margin="5,0,0,0"
+                            IsEnabled="{Binding IsPinging}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"/>
+                </UniformGrid>
+
+                <!-- Progress -->
+                <StackPanel Margin="0,0,0,15"
+                            Visibility="{Binding IsPinging, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ProgressBar IsIndeterminate="True" 
+                                 Height="4"
+                                 Foreground="{StaticResource GreenBrush}"
+                                 Background="{StaticResource BgInputBrush}"/>
+                    <TextBlock Text="{Binding StatusText}" 
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               FontSize="10"
+                               HorizontalAlignment="Center"
+                               Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <!-- Summary -->
+                <Border Style="{StaticResource OptionsPanel}"
+                        Padding="12"
+                        Margin="0,0,0,15"
+                        Visibility="{Binding SummaryText, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="{Binding SummaryText}" 
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               FontFamily="{StaticResource MonoFont}"
+                               FontSize="12"
+                               TextWrapping="Wrap"/>
+                </Border>
+
+                <!-- Results List -->
+                <Border Style="{StaticResource OptionsPanel}"
+                        Padding="10"
+                        MaxHeight="200">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding Results}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border 
+                                            CornerRadius="4"
+                                            Padding="8,5"
+                                            Margin="0,0,0,4">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40"/>
+                                                <ColumnDefinition Width="80"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" 
+                                                       Text="{Binding Sequence}" 
+                                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                                       FontSize="11"/>
+                                            <TextBlock Grid.Column="1" 
+                                                       Text="{Binding Status}" 
+                                                       Foreground="{Binding RoundtripTime, Converter={StaticResource PingStatusConverter}}"
+                                                       FontWeight="Bold"
+                                                       FontSize="11"/>
+                                            <TextBlock Grid.Column="2" 
+                                                       Text="{Binding RoundtripTime, StringFormat={}{0} ms}" 
+                                                       Foreground="{StaticResource AccentPrimaryBrush}"
+                                                       FontSize="11"
+                                                       Visibility="{Binding RoundtripTime, Converter={StaticResource PositiveNumberToVisibilityConverter}}"/>
+                                            <TextBlock Grid.Column="3" 
+                                                       Text="{Binding Address}" 
+                                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                                       FontSize="10"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- Bottom Buttons -->
+                <UniformGrid Columns="2" Margin="0,15,0,0">
+                    <Button Command="{Binding CopyResultsCommand}" 
+                            Content="COPY RESULTS"
+                            Height="34" 
+                            Margin="0,0,5,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"/>
+                    <Button Command="{Binding ClearCommand}" 
+                            Content="CLEAR"
+                            Height="34" 
+                            Margin="5,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"/>
+                </UniformGrid>
+            </StackPanel>
+        </Border>
+
+        <TextBlock Grid.Row="2" 
+                   Text="{Binding StatusText}" 
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="11"
+                   HorizontalAlignment="Center"
+                   Margin="0,15,0,0"/>
+    </Grid>
+</UserControl>

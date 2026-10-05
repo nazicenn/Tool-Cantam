@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="tool_cantam.Views.HmacGeneratorPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="HMAC GENERATOR" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <Border Grid.Row="1" 
+                Padding="20">
+
+            <StackPanel>
+                <!-- Message (sabit) -->
+                <TextBlock Text="Message" 
+                           Style="{StaticResource LabelPrimary}" 
+                           Margin="0,0,0,8"/>
+                <TextBox Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto"
+                         Height="100"
+                         Margin="0,0,0,15"/>
+
+                <!-- Secret Key (sabit) -->
+                <TextBlock Text="Secret Key" 
+                           Style="{StaticResource LabelPrimary}" 
+                           Margin="0,0,0,8"/>
+                <TextBox Text="{Binding SecretKey, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,0,0,15"/>
+
+                <!-- Generate Button (sabit) -->
+                <Button Command="{Binding GenerateCommand}"
+                        Content="GENERATE HMAC"
+                        Height="40"
+                        Margin="0,0,0,15"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource GreenBrush}"/>
+
+                <!-- Result (scroll'lu) -->
+                <TextBlock Text="HMAC-SHA256" 
+                           Style="{StaticResource LabelPrimary}" 
+                           Margin="0,0,0,8"/>
+
+                <ScrollViewer MaxHeight="150" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <Border Style="{StaticResource OptionsPanel}"
+                            Padding="12">
+                        <TextBlock Text="{Binding OutputHash}" 
+                                   Foreground="{StaticResource AccentPrimaryBrush}"
+                                   FontFamily="{StaticResource MonoFont}"
+                                   FontSize="11"
+                                   TextWrapping="Wrap"/>
+                    </Border>
+                </ScrollViewer>
+
+                <!-- Buttons (sabit) -->
+                <UniformGrid Columns="2" Margin="0,15,0,0">
+                    <Button Command="{Binding CopyHashCommand}" 
+                            Content="COPY"
+                            Height="34" 
+                            Margin="0,0,5,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"/>
+                    <Button Command="{Binding ClearCommand}" 
+                            Content="CLEAR"
+                            Height="34" 
+                            Margin="5,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"/>
+                </UniformGrid>
+            </StackPanel>
+        </Border>
+
+        <TextBlock Grid.Row="2" 
+                   Text="{Binding StatusText}" 
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="11"
+                   HorizontalAlignment="Center"
+                   Margin="0,15,0,0"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,140 @@
+﻿<UserControl x:Class="tool_cantam.Views.PwnedPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="PASSWORD LEAK CHECKER" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="18" 
+                   FontWeight="Bold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <Border Grid.Row="1" 
+                Padding="25">
+
+            <StackPanel>
+                <TextBlock Text="Enter Password to Check" 
+                           Style="{StaticResource LabelPrimary}" 
+                           Margin="0,0,0,10"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="TxtPassword"
+                             Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                             Height="45"/>
+
+                    <Button Grid.Column="1" 
+                            Command="{Binding CheckCommand}"
+                            Content="CHECK"
+                            Height="45"
+                            Width="100"
+                            Margin="10,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"
+                            FontWeight="Bold"/>
+                </Grid>
+
+                <StackPanel Margin="0,10,0,0"
+                            Visibility="{Binding IsChecking, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ProgressBar IsIndeterminate="True" 
+                                 Height="4"
+                                 Foreground="{StaticResource GreenBrush}"/>
+                                
+                    <TextBlock Text="Checking with HIBP API..." 
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               FontSize="10"
+                               HorizontalAlignment="Center"
+                               Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <!-- Sonuç Mesajı -->
+                <Border Style="{StaticResource OptionsPanel}"
+        Margin="0,20,0,0"
+        Padding="25"
+        CornerRadius="12">
+                    <StackPanel>
+                        <TextBlock Text="{Binding ResultText}" 
+                   Foreground="{StaticResource TextPrimaryBrush}"
+                   FontFamily="{StaticResource MonoFont}"
+                   FontSize="16"
+                   FontWeight="Bold"
+                   TextWrapping="Wrap"
+                   HorizontalAlignment="Center"
+                   TextAlignment="Center"/>
+
+                        <Button Command="{Binding UseSuggestionCommand}"
+                Content="USE SUGGESTED PASSWORD"
+                Height="40"
+                Margin="0,15,0,0"
+                Background="{StaticResource StatusWarningBrush}"
+                Foreground="{StaticResource TextPrimaryBrush}"
+                FontWeight="Bold"
+                Style="{StaticResource ModernButton}"
+                Visibility="{Binding ShowSuggestion, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Önerilen Şifre -->
+                <Border Style="{StaticResource OptionsPanel}"
+                        Margin="0,15,0,0"
+                        Padding="15"
+                        Visibility="{Binding ShowSuggestion, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel>
+                        <TextBlock Text="Suggested Strong Password:" 
+                                   Foreground="{StaticResource AccentPrimaryBrush}"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,8"/>
+                        <TextBlock Text="{Binding SuggestedPassword}" 
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   FontFamily="{StaticResource MonoFont}"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   TextWrapping="Wrap"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Butonlar -->
+                <UniformGrid Columns="2" Margin="0,20,0,0">
+                    <Button Command="{Binding CopyResultCommand}" 
+                            Content="COPY RESULT"
+                            Height="38" 
+                            Margin="0,0,8,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"
+                            FontWeight="Bold"/>
+                    <Button Command="{Binding ClearCommand}" 
+                            Content="CLEAR ALL"
+                            Height="38" 
+                            Margin="8,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"
+                            FontWeight="Bold"/>
+                </UniformGrid>
+
+                <TextBlock Text="Your password is never sent. Only a secure hash is checked via HIBP API."
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           FontSize="10"
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Center"
+                           Margin="0,15,0,0"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

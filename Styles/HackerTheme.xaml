@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ==================== COLORS ==================== -->
+    <Color x:Key="AccentPrimary">#00CC66</Color>
+    <Color x:Key="AccentDark">#003B0F</Color>
+    <Color x:Key="AccentSecondary">#00D136</Color>
+    <Color x:Key="Green">#00CC66</Color>
+    <Color x:Key="Red">#B71C1C</Color>
+
+    <Color x:Key="BgDark">#000000</Color>
+    <Color x:Key="BgCard">#000000</Color>
+    <Color x:Key="BgCardHover">#0A0A0A</Color>
+    <Color x:Key="BgInput">#000000</Color>
+
+    <Color x:Key="BorderDefault">#0A0A0A</Color>
+    <Color x:Key="BorderAccent">#00FF41</Color>
+
+    <Color x:Key="StatusWarning">#2E86C1</Color>
+    <Color x:Key="StatusDanger">#FF3131</Color>
+    <Color x:Key="StatusSuccess">#00FF41</Color>
+
+    <Color x:Key="TextPrimary">#E0E0E0</Color>
+    <Color x:Key="TextSecondary">#00FF41</Color>
+    <Color x:Key="TextMuted">#1A1A1A</Color>
+
+    <Color x:Key="DropZoneBg">#0A00FF41</Color>
+    <Color x:Key="AccentSubtle">#0A00FF41</Color>
+    <Color x:Key="OptionsBg">#0A00FF41</Color>
+    <Color x:Key="OptionsBorder">#1A00FF41</Color>
+
+    <Color x:Key="BackgroundGray">#171717</Color>
+
+    <!-- ==================== BRUSHES ==================== -->
+    <SolidColorBrush x:Key="AccentPrimaryBrush" Color="{StaticResource AccentPrimary}"/>
+    <SolidColorBrush x:Key="AccentDarkBrush" Color="{StaticResource AccentDark}"/>
+    <SolidColorBrush x:Key="AccentSecondaryBrush" Color="{StaticResource AccentSecondary}"/>
+    <SolidColorBrush x:Key="GreenBrush" Color="{StaticResource Green}"/>
+    <SolidColorBrush x:Key="RedBrush" Color="{StaticResource Red}"/>
+    <SolidColorBrush x:Key="GrayBrush" Color="{StaticResource BackgroundGray}"/>
+
+    <SolidColorBrush x:Key="BgDarkBrush" Color="{StaticResource BgDark}"/>
+    <SolidColorBrush x:Key="BgCardBrush" Color="{StaticResource BgCard}"/>
+    <SolidColorBrush x:Key="BgCardHoverBrush" Color="{StaticResource BgCardHover}"/>
+    <SolidColorBrush x:Key="BgInputBrush" Color="{StaticResource BgInput}"/>
+
+    <SolidColorBrush x:Key="BorderDefaultBrush" Color="{StaticResource BorderDefault}"/>
+    <SolidColorBrush x:Key="BorderAccentBrush" Color="{StaticResource BorderAccent}"/>
+
+    <SolidColorBrush x:Key="StatusWarningBrush" Color="{StaticResource StatusWarning}"/>
+    <SolidColorBrush x:Key="StatusDangerBrush" Color="{StaticResource StatusDanger}"/>
+    <SolidColorBrush x:Key="StatusSuccessBrush" Color="{StaticResource StatusSuccess}"/>
+
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimary}"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondary}"/>
+    <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMuted}"/>
+
+    <SolidColorBrush x:Key="DropZoneBgBrush" Color="{StaticResource DropZoneBg}"/>
+    <SolidColorBrush x:Key="AccentSubtleBrush" Color="{StaticResource AccentSubtle}"/>
+    <SolidColorBrush x:Key="OptionsBgBrush" Color="{StaticResource OptionsBg}"/>
+    <SolidColorBrush x:Key="OptionsBorderBrush" Color="{StaticResource OptionsBorder}"/>
+    
+
+    <!-- ==================== FONT ==================== -->
+    <FontFamily x:Key="MonoFont">Cascadia Code, Consolas, Courier New</FontFamily>
+
+    <!-- ==================== SHARED ==================== -->
+    <CornerRadius x:Key="CornerRadius">3</CornerRadius>
+    <CornerRadius x:Key="CardCornerRadius">4</CornerRadius>
+
+    <!-- ==================== TEXT STYLES ==================== -->
+    <Style x:Key="LabelPrimary" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <Style x:Key="LabelSecondary" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <Style x:Key="SectionTitle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+
+    <Style x:Key="SuccessText" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource GreenBrush}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style x:Key="WarningText" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource StatusWarningBrush}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+    </Style>
+
+    <Style x:Key="InfoText" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource AccentSecondaryBrush}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+
+    <Style x:Key="DropZoneHint" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <Style x:Key="ResultText" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource AccentPrimaryBrush}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontSize" Value="18"/>
+    </Style>
+
+    <!-- ==================== INPUT STYLES ==================== -->
+    <Style x:Key="InputStyle" TargetType="TextBox">
+        <Setter Property="Background" Value="{StaticResource BgInputBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderDefaultBrush}"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+
+    <Style x:Key="OutputStyle" TargetType="TextBox" BasedOn="{StaticResource InputStyle}">
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="Foreground" Value="{StaticResource GreenBrush}"/>
+    </Style>
+
+    <!-- ==================== BUTTON STYLES ==================== -->
+    <Style x:Key="BtnPrimaryStyle" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource AccentPrimaryBrush}"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Height" Value="36"/>
+    </Style>
+
+    <Style x:Key="BtnSuccessStyle" TargetType="Button" BasedOn="{StaticResource BtnPrimaryStyle}">
+        <Setter Property="Background" Value="{StaticResource GreenBrush}"/>
+    </Style>
+
+    <Style x:Key="BtnDangerStyle" TargetType="Button" BasedOn="{StaticResource BtnPrimaryStyle}">
+        <Setter Property="Background" Value="{StaticResource RedBrush}"/>
+    </Style>
+
+    <Style x:Key="BtnSecondaryStyle" TargetType="Button" BasedOn="{StaticResource BtnPrimaryStyle}">
+        <Setter Property="Background" Value="{StaticResource BorderDefaultBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource AccentPrimaryBrush}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+    </Style>
+
+    <!-- ==================== BORDER STYLES ==================== -->
+    <Style x:Key="DropZone" TargetType="Border">
+        <Setter Property="BorderBrush" Value="{StaticResource AccentPrimaryBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource CornerRadius}"/>
+        <Setter Property="Background" Value="{StaticResource DropZoneBgBrush}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+    <Style x:Key="Card" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource BgCardBrush}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource CardCornerRadius}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderDefaultBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="15,12"/>
+    </Style>
+
+    <Style x:Key="OptionsPanel" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource OptionsBgBrush}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource CardCornerRadius}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource OptionsBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="15"/>
+    </Style>
+
+    <Style x:Key="ValueBadge" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource AccentSubtleBrush}"/>
+        <Setter Property="CornerRadius" Value="3"/>
+        <Setter Property="Padding" Value="10,4"/>
+    </Style>
+
+    <Style x:Key="StatusBadge" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource AccentSubtleBrush}"/>
+        <Setter Property="CornerRadius" Value="3"/>
+        <Setter Property="Padding" Value="8,4"/>
+    </Style>
+
+    <!-- Modern Card Style -->
+    <Style x:Key="ModernCard" TargetType="Border">
+        <Setter Property="Background" Value="#000000"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="20"/>
+        <Setter Property="BorderBrush" Value="#0A0A0A"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <!-- Modern Input Style -->
+    <Style x:Key="ModernInput" TargetType="TextBox">
+        <Setter Property="Background" Value="#000000"/>
+        <Setter Property="Foreground" Value="#E0E0E0"/>
+        <Setter Property="BorderBrush" Value="#0A0A0A"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="CaretBrush" Value="{StaticResource AccentPrimaryBrush}"/>
+        <Setter Property="Padding" Value="12,10"/>
+    </Style>
+
+    <!-- Modern Output Style -->
+    <Style x:Key="ModernOutput" TargetType="TextBox" BasedOn="{StaticResource ModernInput}">
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="Foreground" Value="{StaticResource GreenBrush}"/>
+    </Style>
+
+    <Style x:Key="ModernButton" TargetType="Button">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="{StaticResource AccentPrimaryBrush}"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="Padding" Value="16,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="4" 
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Opacity" Value="0.8"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+</ResourceDictionary>

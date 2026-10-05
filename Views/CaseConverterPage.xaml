@@ -1,0 +1,136 @@
+﻿<UserControl x:Class="tool_cantam.Views.CaseConverterPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="CASE CONVERTER" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <Border Grid.Row="1" 
+                Padding="20">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- SOL: INPUT -->
+                <Grid Grid.Column="0" Margin="0,0,15,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="INPUT" 
+                               Style="{StaticResource LabelPrimary}" 
+                               Margin="0,0,0,10"/>
+                    <TextBox Grid.Row="1" 
+                             Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto"/>
+                </Grid>
+
+                <!-- ORTA: ACTION BUTTONS -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0">
+                    <Button Command="{Binding ToUpperCommand}"
+                            Content="UPPER"
+                            Height="32"
+                            Width="80"
+                            Margin="0,0,0,8"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource AccentPrimaryBrush}"/>
+                    <Button Command="{Binding ToLowerCommand}"
+                            Content="lower"
+                            Height="32"
+                            Width="80"
+                            Margin="0,0,0,8"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource AccentPrimaryBrush}"/>
+                    <Button Command="{Binding ToTitleCaseCommand}"
+                            Content="Title"
+                            Height="32"
+                            Width="80"
+                            Margin="0,0,0,8"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+                    <Button Command="{Binding ToCamelCaseCommand}"
+                            Content="camel"
+                            Height="32"
+                            Width="80"
+                            Margin="0,0,0,8"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+                    <Button Command="{Binding ToSnakeCaseCommand}"
+                            Content="snake"
+                            Height="32"
+                            Width="80"
+                            Margin="0,0,0,8"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+                    <Button Command="{Binding ClearCommand}"
+                            Content="CLEAR"
+                            Height="32"
+                            Width="80"
+                            Margin="0,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"/>
+                </StackPanel>
+
+                <!-- SAĞ: OUTPUT -->
+                <Grid Grid.Column="2" Margin="15,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="OUTPUT" 
+                                   Style="{StaticResource LabelPrimary}" 
+                                   VerticalAlignment="Center"/>
+                        <Button Grid.Column="1" 
+                                Command="{Binding CopyOutputCommand}"
+                                Content="COPY"
+                                Width="70"
+                                Height="28"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource StatusWarningBrush}"/>
+                    </Grid>
+                    <TextBox Grid.Row="2" 
+                             Text="{Binding OutputText, Mode=OneWay}"
+                             IsReadOnly="True"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <TextBlock Grid.Row="2" 
+                   Text="{Binding StatusText}" 
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="11"
+                   HorizontalAlignment="Center"
+                   Margin="0,15,0,0"/>
+
+
+    </Grid>
+</UserControl>

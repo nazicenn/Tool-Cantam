@@ -1,0 +1,188 @@
+﻿<UserControl x:Class="tool_cantam.Views.UnixTimestampPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="UNIX TIMESTAMP CONVERTER" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <Border Grid.Row="1" 
+                Padding="20">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- SOL: Timestamp → Date -->
+                <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                    <TextBlock Text="TIMESTAMP → DATE" 
+                               Style="{StaticResource LabelPrimary}" 
+                               Margin="0,0,0,15"/>
+
+                    <TextBlock Text="Unix Timestamp" 
+                               Style="{StaticResource LabelSecondary}" 
+                               Margin="0,0,0,5"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0" 
+                                 Text="{Binding TimestampInput, UpdateSourceTrigger=PropertyChanged}"
+                                 ToolTip="example: 1733673600"/>
+
+                        <Button Grid.Column="1" 
+                                Command="{Binding UseCurrentTimestampCommand}"
+                                Content="NOW"
+                                Width="60"
+                                Height="35"
+                                Margin="8,0,0,0"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource AccentPrimaryBrush}"/>
+                    </Grid>
+
+                    <Button Command="{Binding TimestampToDateCommand}"
+                            Content="CONVERT"
+                            Height="35"
+                            Margin="0,15,0,10"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+
+                    <TextBlock Text="Human Date" 
+                               Style="{StaticResource LabelSecondary}" 
+                               Margin="0,5,0,5"/>
+
+                    <TextBox Text="{Binding DateOutput, Mode=OneWay}"
+                             IsReadOnly="True"
+                             Height="40"/>
+
+                    <Button Command="{Binding CopyDateResultCommand}"
+                            Content="COPY DATE"
+                            Height="30"
+                            Margin="0,10,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"/>
+
+                </StackPanel>
+
+                <!-- SAĞ: Date → Timestamp -->
+                <StackPanel Grid.Column="1" Margin="15,0,0,0">
+                    <TextBlock Text="DATE → TIMESTAMP" 
+                               Style="{StaticResource LabelPrimary}" 
+                               Margin="0,0,0,15"/>
+
+                    <TextBlock Text="Human Date" 
+                               Style="{StaticResource LabelSecondary}" 
+                               Margin="0,0,0,5"/>
+
+                    <TextBox Text="{Binding DateInput, UpdateSourceTrigger=PropertyChanged}"
+                             ToolTip="example: 2024-12-08 20:00:00"/>
+
+                    <Button Command="{Binding DateToTimestampCommand}"
+                            Content="CONVERT"
+                            Height="35"
+                            Margin="0,15,0,10"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+
+                    <TextBlock Text="Unix Timestamp" 
+                               Style="{StaticResource LabelSecondary}" 
+                               Margin="0,5,0,5"/>
+
+                    <TextBox Text="{Binding TimestampOutput, Mode=OneWay}"
+                             IsReadOnly="True"
+                             Height="40"/>
+
+                    <Button Command="{Binding CopyTimestampResultCommand}"
+                            Content="COPY TIMESTAMP"
+                            Height="30"
+                            Margin="0,10,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Alt Bilgi: Current Timestamp + UTC/Local Seçimi -->
+        <Border Grid.Row="2" 
+                Style="{StaticResource OptionsPanel}"
+                Padding="15"
+                Margin="0,15,0,0">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Current Timestamp -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <TextBlock Text="Current Unix Timestamp:" 
+                               Style="{StaticResource LabelSecondary}"/>
+                    <TextBlock Text="{Binding CurrentTimestamp}" 
+                               Style="{StaticResource LabelPrimary}"
+                               FontFamily="{StaticResource MonoFont}"
+                               FontSize="13"
+                               FontWeight="Bold"
+                               Margin="10,0,0,0"/>
+                </StackPanel>
+
+                <!-- UTC/Local Radio Buttons -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="20,0,0,0">
+                    <RadioButton Content="Local" 
+                                 IsChecked="{Binding UseUtc, Converter={StaticResource InverseBooleanConverter}}"
+                                 Foreground="{StaticResource TextPrimaryBrush}"
+                                 FontFamily="{StaticResource MonoFont}"
+                                 GroupName="TimeMode"
+                                 Margin="0,0,15,0"/>
+                    <RadioButton Content="UTC" 
+                                 IsChecked="{Binding UseUtc}"
+                                 Foreground="{StaticResource AccentPrimaryBrush}"
+                                 FontFamily="{StaticResource MonoFont}"
+                                 GroupName="TimeMode"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Durum Mesajı + CLEAR ALL Butonu -->
+        <Grid Grid.Row="3" Margin="0,15,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" 
+                       Text="{Binding StatusText}" 
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       FontSize="11"
+                       VerticalAlignment="Center"/>
+
+            <Button Grid.Column="1" 
+                    Command="{Binding ClearCommand}"
+                    Content="CLEAR ALL"
+                    Height="30"
+                    Width="110"
+                    Style="{StaticResource ModernButton}"
+                    Background="{StaticResource RedBrush}"/>
+        </Grid>
+    </Grid>
+</UserControl>

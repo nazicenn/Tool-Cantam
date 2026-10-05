@@ -1,0 +1,101 @@
+﻿<!-- Views/YamlFormatterPage.xaml -->
+<UserControl x:Class="tool_cantam.Views.YamlFormatterPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="YAML FORMATTER" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <!-- Buttons -->
+        <Border Grid.Row="1" 
+                Style="{StaticResource OptionsPanel}" 
+                Padding="15" 
+                Margin="0,0,0,15">
+            <UniformGrid Columns="4">
+                <Button Command="{Binding FormatCommand}" 
+                        Content="FORMAT" Height="35" Margin="0,0,5,0"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource GreenBrush}"/>
+                <Button Command="{Binding MinifyCommand}" 
+                        Content="MINIFY" Height="35" Margin="5,0,5,0"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource StatusWarningBrush}"/>
+                <Button Command="{Binding LoadSampleCommand}" 
+                        Content="SAMPLE" Height="35" Margin="5,0,5,0"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource StatusWarningBrush}"/>
+                <Button Command="{Binding ClearCommand}" 
+                        Content="CLEAR" Height="35" Margin="5,0,0,0"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource RedBrush}"/>
+            </UniformGrid>
+        </Border>
+
+        <!-- Input/Output -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Input -->
+            <Border Grid.Column="0" 
+                    Style="{StaticResource OptionsPanel}" 
+                    Padding="15" 
+                    Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Text="INPUT YAML" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
+                    <TextBox Text="{Binding InputYaml, UpdateSourceTrigger=PropertyChanged}"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             MinHeight="350"
+                             VerticalScrollBarVisibility="Auto"
+                             FontFamily="Consolas"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Output -->
+            <Border Grid.Column="1" 
+                    Style="{StaticResource OptionsPanel}" 
+                    Padding="15" 
+                    Margin="10,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="OUTPUT YAML" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
+                    <TextBox Text="{Binding OutputYaml}"
+                             IsReadOnly="True"
+                             TextWrapping="Wrap"
+                             MinHeight="350"
+                             VerticalScrollBarVisibility="Auto"
+                             FontFamily="Consolas"/>
+                    <Button Command="{Binding CopyOutputCommand}" 
+                            Content="📋 COPY OUTPUT" Height="30" Width="120" Margin="0,10,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"
+                            HorizontalAlignment="Right"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <TextBlock Grid.Row="3" 
+                   Text="{Binding StatusText}" 
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="11"
+                   HorizontalAlignment="Center"
+                   Margin="0,10,0,0"/>
+    </Grid>
+</UserControl>

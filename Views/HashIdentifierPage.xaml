@@ -1,0 +1,143 @@
+﻿<UserControl x:Class="tool_cantam.Views.HashIdentifierPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="HASH IDENTIFIER" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <Border Grid.Row="1" 
+                Padding="20">
+
+            <StackPanel>
+                <TextBlock Text="Enter Hash" 
+                           Style="{StaticResource LabelPrimary}" 
+                           Margin="0,0,0,10"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0" 
+                             Text="{Binding HashInput, UpdateSourceTrigger=PropertyChanged}"
+                             FontFamily="{StaticResource MonoFont}"
+                             AcceptsReturn="False"
+                             ToolTip="e.g., 5d41402abc4b2a76b9719d911017c592 (MD5)"/>
+
+                    <Button Grid.Column="1" 
+                            Command="{Binding IdentifyCommand}"
+                            Content="IDENTIFY"
+                            Height="40"
+                            Width="100"
+                            Margin="10,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+                </Grid>
+
+                <!-- Desteklenen Hash Türleri -->
+                <Border Style="{StaticResource OptionsPanel}" 
+                        Margin="0,15,0,10" 
+                        Padding="10">
+                    <StackPanel>
+                        <TextBlock Text="🔍 Supported Hash Types:" 
+                                   Style="{StaticResource LabelSecondary}" 
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,8"/>
+                        <WrapPanel>
+                            <Border Background="{StaticResource GrayBrush}" CornerRadius="4" Padding="6,2" Margin="0,0,8,4">
+                                <TextBlock Text="MD5" Style="{StaticResource LabelPrimary}" FontSize="11"/>
+                            </Border>
+                            <Border Background="{StaticResource GrayBrush}" CornerRadius="4" Padding="6,2" Margin="0,0,8,4">
+                                <TextBlock Text="SHA-1" Style="{StaticResource LabelPrimary}" FontSize="11"/>
+                            </Border>
+                            <Border Background="{StaticResource GrayBrush}" CornerRadius="4" Padding="6,2" Margin="0,0,8,4">
+                                <TextBlock Text="SHA-256" Style="{StaticResource LabelPrimary}" FontSize="11"/>
+                            </Border>
+                            <Border Background="{StaticResource GrayBrush}" CornerRadius="4" Padding="6,2" Margin="0,0,8,4">
+                                <TextBlock Text="SHA-384" Style="{StaticResource LabelPrimary}" FontSize="11"/>
+                            </Border>
+                            <Border Background="{StaticResource GrayBrush}" CornerRadius="4" Padding="6,2" Margin="0,0,8,4">
+                                <TextBlock Text="SHA-512" Style="{StaticResource LabelPrimary}" FontSize="11"/>
+                            </Border>
+                            <Border Background="{StaticResource GrayBrush}" CornerRadius="4" Padding="6,2" Margin="0,0,8,4">
+                                <TextBlock Text="NTLM" Style="{StaticResource LabelPrimary}" FontSize="11"/>
+                            </Border>
+                            <Border Background="{StaticResource GrayBrush}" CornerRadius="4" Padding="6,2" Margin="0,0,8,4">
+                                <TextBlock Text="bcrypt" Style="{StaticResource LabelPrimary}" FontSize="11"/>
+                            </Border>
+                            <Border Background="{StaticResource GrayBrush}" CornerRadius="4" Padding="6,2" Margin="0,0,8,4">
+                                <TextBlock Text="MD5 (base64)" Style="{StaticResource LabelPrimary}" FontSize="11"/>
+                            </Border>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Sonuçlar -->
+                <Border Style="{StaticResource OptionsPanel}"
+                        Margin="0,0,0,0"
+                        Padding="15">
+
+                    <StackPanel>
+                        <TextBlock Text="DETECTED TYPE(S):" 
+                                   Style="{StaticResource LabelSecondary}" 
+                                   Margin="0,0,0,10"/>
+
+                        <ItemsControl ItemsSource="{Binding DetectedTypes}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{StaticResource GrayBrush}"
+                                            CornerRadius="4"
+                                            Padding="8,4"
+                                            Margin="0,0,0,5">
+                                        <TextBlock Text="{Binding}" 
+                                                   Style="{StaticResource LabelPrimary}"
+                                                   FontFamily="{StaticResource MonoFont}"
+                                                   FontWeight="Bold"
+                                                   Foreground="{StaticResource AccentPrimaryBrush}"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <UniformGrid Columns="2" Margin="0,15,0,0">
+                    <Button Command="{Binding CopyResultsCommand}" 
+                            Content="COPY RESULTS"
+                            Height="34" 
+                            Margin="0,0,5,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"/>
+                    <Button Command="{Binding ClearCommand}" 
+                            Content="CLEAR"
+                            Height="34" 
+                            Margin="5,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"/>
+                </UniformGrid>
+            </StackPanel>
+        </Border>
+
+        <TextBlock Grid.Row="2" 
+                   Text="{Binding StatusText}" 
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="11"
+                   HorizontalAlignment="Center"
+                   Margin="0,15,0,0"/>
+    </Grid>
+</UserControl>

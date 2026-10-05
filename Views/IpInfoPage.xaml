@@ -1,0 +1,147 @@
+﻿<UserControl x:Class="tool_cantam.Views.IpInfoPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="IP INFO" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <Border Grid.Row="1" 
+                Padding="20">
+
+            <StackPanel>
+                <TextBlock Text="IP Address" 
+                           Style="{StaticResource LabelPrimary}" 
+                           Margin="0,0,0,10"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0" 
+                             Text="{Binding TargetIp, UpdateSourceTrigger=PropertyChanged}"
+                             ToolTip="example: 8.8.8.8"/>
+
+                    <Button Grid.Column="1" 
+                            Command="{Binding LookupCommand}"
+                            Content="LOOKUP"
+                            Height="40"
+                            Width="100"
+                            Margin="10,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                    <ui:ProgressRing IsIndeterminate="True" 
+                                     Width="16" 
+                                     Height="16" 
+                                     Margin="0,0,10,0"
+                                     Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <TextBlock Text="{Binding StatusText}" 
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               FontSize="11"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- SONUÇLAR PANELİ - HER ZAMAN GÖRÜNÜR -->
+                <Border Style="{StaticResource OptionsPanel}"
+                        Margin="0,15,0,0"
+                        Padding="15">
+
+                    <StackPanel>
+                        <TextBlock Text="{Binding IpInfo.Query}" 
+                                   Style="{StaticResource LabelPrimary}"
+                                   FontFamily="{StaticResource MonoFont}"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,15"/>
+
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Country:" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding IpInfo.Country}" Style="{StaticResource LabelPrimary}"/>
+                        </Grid>
+
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="City:" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding IpInfo.City}" Style="{StaticResource LabelPrimary}"/>
+                        </Grid>
+
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Region:" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding IpInfo.RegionName}" Style="{StaticResource LabelPrimary}"/>
+                        </Grid>
+
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="ISP:" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding IpInfo.Isp}" Style="{StaticResource LabelPrimary}"/>
+                        </Grid>
+
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Timezone:" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding IpInfo.Timezone}" Style="{StaticResource LabelPrimary}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <UniformGrid Columns="2" Margin="0,15,0,0">
+                    <Button Command="{Binding CopyResultsCommand}" 
+                            Content="COPY ALL"
+                            Height="34" 
+                            Margin="0,0,5,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"/>
+                    <Button Command="{Binding ClearCommand}" 
+                            Content="CLEAR"
+                            Height="34" 
+                            Margin="5,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"/>
+                </UniformGrid>
+            </StackPanel>
+        </Border>
+
+        <TextBlock Grid.Row="2" 
+                   Text="🌍 IP Geolocation - Get country, city, ISP and more for any IP address" 
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="10"
+                   HorizontalAlignment="Center"
+                   Margin="0,15,0,0"/>
+    </Grid>
+</UserControl>
