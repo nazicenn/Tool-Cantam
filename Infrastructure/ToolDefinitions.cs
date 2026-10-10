@@ -350,16 +350,6 @@ public static class ToolDefinitions
             Execute = async (input) => "QR code generated"
         });
 
-        ToolRegistry.Register(new ToolDefinition
-        {
-            Name = "URL Encoder/Decoder",
-            Description = "Encode/Decode URL strings for web security testing",
-            Category = ToolCategory.EncodersDecoders,
-            ViewModelType = typeof(UrlViewModel),
-            ViewType = typeof(UrlPage),
-            Execute = async (input) => Uri.EscapeDataString(input?.ToString() ?? string.Empty)
-        });
-
         // ==================== NETWORK & SCANNER ====================
         ToolRegistry.Register(new ToolDefinition
         {
