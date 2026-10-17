@@ -1,13 +1,15 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class TextCounterPage : UserControl
+public partial class TextCounterPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.TextCounterViewModel>
 {
-    public TextCounterPage(TextCounterViewModel viewModel)
+    public ViewModels.TextCounterViewModel ViewModel { get; }
+
+    public TextCounterPage(ViewModels.TextCounterViewModel viewModel)
     {
+        ViewModel = viewModel;
         InitializeComponent();
-        DataContext = viewModel;
+        DataContext = this;
     }
 }

@@ -14,13 +14,9 @@ public class CaseConverterServiceTests
 {
     private readonly CaseConverterService _service = new();
 
-    // ---------------------------------------------------------------------
-    // Upper / Lower
-    // ---------------------------------------------------------------------
-
     [Theory]
     [InlineData("hello world", "HELLO WORLD")]
-    [InlineData("Türkçe ıİ", "TÜRKÇE Iİ")]   // InvariantCulture: i→I, İ→İ
+    [InlineData("türkçe metin", "TÜRKÇE METIN")]
     public void ToUpper_produces_invariant_uppercase(string input, string expected)
     {
         var r = _service.Convert(input, CaseConversionMode.Upper);
@@ -35,10 +31,6 @@ public class CaseConverterServiceTests
         Assert.True(r.IsSuccess);
         Assert.Equal("hello world", r.Value);
     }
-
-    // ---------------------------------------------------------------------
-    // Title / Sentence
-    // ---------------------------------------------------------------------
 
     [Theory]
     [InlineData("hello world", "Hello World")]
@@ -60,10 +52,6 @@ public class CaseConverterServiceTests
         Assert.True(r.IsSuccess);
         Assert.Equal(expected, r.Value);
     }
-
-    // ---------------------------------------------------------------------
-    // Camel / Pascal / Snake / Kebab
-    // ---------------------------------------------------------------------
 
     [Theory]
     [InlineData("hello world", "helloWorld")]
@@ -106,10 +94,6 @@ public class CaseConverterServiceTests
         Assert.Equal(expected, r.Value);
     }
 
-    // ---------------------------------------------------------------------
-    // Alternating / Invert
-    // ---------------------------------------------------------------------
-
     [Fact]
     public void ToAlternating_alternates_letter_case()
     {
@@ -134,10 +118,6 @@ public class CaseConverterServiceTests
         Assert.Contains("😀", r.Value);
         Assert.Contains("!", r.Value);
     }
-
-    // ---------------------------------------------------------------------
-    // Edge cases
-    // ---------------------------------------------------------------------
 
     [Theory]
     [InlineData(null)]

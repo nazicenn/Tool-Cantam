@@ -11,125 +11,236 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="TEXT COUNTER" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.TextCounter.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <Border Grid.Row="1" 
-                Padding="20">
-
+        <Border Grid.Row="1" Padding="20">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="1.2*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Sol: Input -->
-                <StackPanel Grid.Column="0" Margin="0,0,15,0">
-                    <TextBlock Text="INPUT TEXT" 
-                               Style="{StaticResource LabelPrimary}" 
+                <!-- SOL: Input -->
+                <Grid Grid.Column="0" Margin="0,0,15,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{DynamicResource L.TextCounter.InputLabel}"
+                               Style="{StaticResource LabelPrimary}"
                                Margin="0,0,0,10"/>
-
-                    <TextBox Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBox Grid.Row="1"
+                             x:Name="InputTextBox"
+                             Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}"
                              AcceptsReturn="True"
                              TextWrapping="Wrap"
                              VerticalScrollBarVisibility="Auto"
-                             Height="300"/>
-                </StackPanel>
+                             TabIndex="0"
+                             Foreground="{StaticResource TextPrimaryBrush}"
+                             BorderBrush="{StaticResource BorderDefaultBrush}"
+                             AutomationProperties.Name="{DynamicResource L.TextCounter.InputAutomationName}"/>
+                </Grid>
 
-                <!-- Sağ: Results -->
-                <StackPanel Grid.Column="1" Margin="15,0,0,0">
-                    <TextBlock Text="RESULTS" 
-                               Style="{StaticResource LabelPrimary}" 
-                               Margin="0,0,0,10"/>
+                <!-- ORTA: Boşluk -->
+                <Border Grid.Column="1" Width="10"/>
 
-                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,10">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Characters:" Style="{StaticResource LabelSecondary}" Margin="0,0,15,5"/>
-                            <TextBlock Grid.Column="1" Text="{Binding CharacterCount}" 
-                                       Style="{StaticResource LabelPrimary}" FontWeight="Bold"/>
-                        </Grid>
-                    </Border>
+                <!-- SAĞ: İstatistikler -->
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,10">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Characters (no spaces):" Style="{StaticResource LabelSecondary}" Margin="0,0,15,5"/>
-                            <TextBlock Grid.Column="1" Text="{Binding CharacterCountNoSpaces}" 
-                                       Style="{StaticResource LabelPrimary}" FontWeight="Bold"/>
-                        </Grid>
-                    </Border>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource L.TextCounter.ResultsLabel}"
+                               Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
 
-                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,10">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Words:" Style="{StaticResource LabelSecondary}" Margin="0,0,15,5"/>
-                            <TextBlock Grid.Column="1" Text="{Binding WordCount}" 
-                                       Style="{StaticResource LabelPrimary}" FontWeight="Bold"/>
-                        </Grid>
-                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <!-- Karakter -->
+                            <Border Style="{StaticResource OptionsPanel}" Padding="10" Margin="0,0,0,6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{DynamicResource L.TextCounter.Label.Characters}" Style="{StaticResource LabelSecondary}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding ViewModel.CharacterCount}" Style="{StaticResource LabelPrimary}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}"/>
+                                </Grid>
+                            </Border>
 
-                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,10">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Lines:" Style="{StaticResource LabelSecondary}" Margin="0,0,15,5"/>
-                            <TextBlock Grid.Column="1" Text="{Binding LineCount}" 
-                                       Style="{StaticResource LabelPrimary}" FontWeight="Bold"/>
-                        </Grid>
-                    </Border>
+                            <!-- Karakter (boşluksuz) -->
+                            <Border Style="{StaticResource OptionsPanel}" Padding="10" Margin="0,0,0,6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{DynamicResource L.TextCounter.Label.CharactersNoSpaces}" Style="{StaticResource LabelSecondary}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding ViewModel.CharacterCountNoSpaces}" Style="{StaticResource LabelPrimary}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}"/>
+                                </Grid>
+                            </Border>
 
-                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,10">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Paragraphs:" Style="{StaticResource LabelSecondary}" Margin="0,0,15,5"/>
-                            <TextBlock Grid.Column="1" Text="{Binding ParagraphCount}" 
-                                       Style="{StaticResource LabelPrimary}" FontWeight="Bold"/>
-                        </Grid>
-                    </Border>
+                            <!-- Kelime -->
+                            <Border Style="{StaticResource OptionsPanel}" Padding="10" Margin="0,0,0,6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{DynamicResource L.TextCounter.Label.Words}" Style="{StaticResource LabelSecondary}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding ViewModel.WordCount}" Style="{StaticResource LabelPrimary}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}"/>
+                                </Grid>
+                            </Border>
 
-                    <UniformGrid Columns="2" Margin="0,10,0,0">
-                        <Button Command="{Binding CopyResultsCommand}" 
-                                Content="COPY RESULTS"
-                                Height="34" 
-                                Margin="0,0,5,0"
+                            <!-- Cümle -->
+                            <Border Style="{StaticResource OptionsPanel}" Padding="10" Margin="0,0,0,6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{DynamicResource L.TextCounter.Label.Sentences}" Style="{StaticResource LabelSecondary}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding ViewModel.SentenceCount}" Style="{StaticResource LabelPrimary}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Satır -->
+                            <Border Style="{StaticResource OptionsPanel}" Padding="10" Margin="0,0,0,6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{DynamicResource L.TextCounter.Label.Lines}" Style="{StaticResource LabelSecondary}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding ViewModel.LineCount}" Style="{StaticResource LabelPrimary}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Paragraf -->
+                            <Border Style="{StaticResource OptionsPanel}" Padding="10" Margin="0,0,0,6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{DynamicResource L.TextCounter.Label.Paragraphs}" Style="{StaticResource LabelSecondary}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding ViewModel.ParagraphCount}" Style="{StaticResource LabelPrimary}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Okuma -->
+                            <Border Style="{StaticResource OptionsPanel}" Padding="10" Margin="0,0,0,6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{DynamicResource L.TextCounter.Label.ReadingTime}" Style="{StaticResource LabelSecondary}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding ViewModel.ReadingTime}" Style="{StaticResource LabelPrimary}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Konuşma -->
+                            <Border Style="{StaticResource OptionsPanel}" Padding="10" Margin="0,0,0,6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{DynamicResource L.TextCounter.Label.SpeakingTime}" Style="{StaticResource LabelSecondary}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding ViewModel.SpeakingTime}" Style="{StaticResource LabelPrimary}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- En Çok Kullanılan Kelimeler -->
+                            <TextBlock Text="{DynamicResource L.TextCounter.Label.TopWords}"
+                                       Style="{StaticResource LabelPrimary}"
+                                       FontSize="11"
+                                       Margin="0,10,0,4"/>
+
+                            <Border Style="{StaticResource OptionsPanel}" Padding="10">
+                                <ItemsControl ItemsSource="{Binding ViewModel.TopWords}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding Word}" Style="{StaticResource LabelSecondary}" FontFamily="{StaticResource MonoFont}" FontSize="11"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding Count}" Style="{StaticResource LabelPrimary}" FontFamily="{StaticResource MonoFont}" FontSize="11"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Alt butonlar -->
+                    <UniformGrid Grid.Row="2" Columns="2" Margin="0,10,0,0">
+                        <Button Command="{Binding ViewModel.CopyResultsCommand}"
+                                Content="{DynamicResource L.TextCounter.Copy}"
+                                Height="34" Margin="0,0,5,0"
                                 Style="{StaticResource ModernButton}"
-                                Background="{StaticResource StatusWarningBrush}"/>
-                        <Button Command="{Binding ClearCommand}" 
-                                Content="CLEAR"
-                                Height="34" 
-                                Margin="5,0,0,0"
+                                Background="{StaticResource StatusWarningBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="1"/>
+                        <Button Command="{Binding ViewModel.SaveResultsCommand}"
+                                Content="{DynamicResource L.TextCounter.Save}"
+                                Height="34" Margin="5,0,0,0"
                                 Style="{StaticResource ModernButton}"
-                                Background="{StaticResource RedBrush}"/>
+                                Background="{StaticResource AccentPrimaryBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="2"/>
                     </UniformGrid>
-                </StackPanel>
+                </Grid>
             </Grid>
         </Border>
 
-        <TextBlock Grid.Row="2" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,15,0,0"/>
+        <!-- Durum satırı -->
+        <Border Grid.Row="2" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0"
+                                 Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ViewModel.StatusText}"
+                           Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                           FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center"
+                           AutomationProperties.LiveSetting="Polite"/>
+
+                <TextBlock Grid.Column="2"
+                           Text="{Binding ViewModel.LimitsText}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           VerticalAlignment="Center"
+                           Opacity="0.6"
+                           TextWrapping="Wrap"
+                           MaxWidth="420"
+                           Margin="0,0,10,0"/>
+
+                <Button Grid.Column="3"
+                        Command="{Binding ViewModel.ClearCommand}"
+                        Content="{DynamicResource L.TextCounter.Clear}"
+                        Height="28" MinWidth="80"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource RedBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        TabIndex="3"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

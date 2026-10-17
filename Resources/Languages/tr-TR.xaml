@@ -861,4 +861,38 @@
     <sys:String x:Key="L.Case.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
     <sys:String x:Key="L.Case.Error.InvalidUnicode">Metin geçersiz bir Unicode karakteri içeriyor (eşleşmemiş surrogate).</sys:String>
     <sys:String x:Key="L.Case.Error.UnknownMode">Bilinmeyen dönüşüm modu.</sys:String>
+    <!-- ============ Text Counter ============ -->
+    <sys:String x:Key="L.TextCounter.Title">METİN SAYACI</sys:String>
+    <sys:String x:Key="L.TextCounter.InputLabel">GİRİŞ METNİ</sys:String>
+    <sys:String x:Key="L.TextCounter.ResultsLabel">SONUÇLAR</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.Characters">Karakter</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.CharactersNoSpaces">Karakter (boşluksuz)</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.Words">Kelime</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.Sentences">Cümle</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.Lines">Satır</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.Paragraphs">Paragraf</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.ReadingTime">📖 Okuma süresi</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.SpeakingTime">🎤 Konuşma süresi</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.TopWords">EN ÇOK KULLANILAN</sys:String>
+    <sys:String x:Key="L.TextCounter.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.TextCounter.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.TextCounter.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.TextCounter.InputAutomationName">Sayılacak metin</sys:String>
+    <sys:String x:Key="L.TextCounter.Limits">Maks uzunluk: {0} karakter. Okuma 200 kelime/dk · Konuşma 130 kelime/dk.</sys:String>
+
+    <sys:String x:Key="L.TextCounter.Status.Ready">İstatistikleri görmek için yazmaya başlayın.</sys:String>
+    <sys:String x:Key="L.TextCounter.Status.Updated">✓ {0} kelime · {1} karakter.</sys:String>
+    <sys:String x:Key="L.TextCounter.Status.Copied">İstatistikler panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.TextCounter.Status.Saved">İstatistikler dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.TextCounter.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.TextCounter.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.TextCounter.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.TextCounter.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
+
+    <sys:String x:Key="L.TextCounter.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
+    <sys:String x:Key="L.TextCounter.Error.InvalidUnicode">Metin geçersiz bir Unicode karakteri içeriyor (eşleşmemiş surrogate).</sys:String>
+    
+    
+    
 </ResourceDictionary>

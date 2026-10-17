@@ -860,5 +860,37 @@
     <sys:String x:Key="L.Case.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
     <sys:String x:Key="L.Case.Error.InvalidUnicode">The text contains an invalid Unicode character (unpaired surrogate).</sys:String>
     <sys:String x:Key="L.Case.Error.UnknownMode">Unknown conversion mode.</sys:String>
+    <!-- ============ Text Counter ============ -->
+    <sys:String x:Key="L.TextCounter.Title">TEXT COUNTER</sys:String>
+    <sys:String x:Key="L.TextCounter.InputLabel">INPUT TEXT</sys:String>
+    <sys:String x:Key="L.TextCounter.ResultsLabel">RESULTS</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.Characters">Characters</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.CharactersNoSpaces">Characters (no spaces)</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.Words">Words</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.Sentences">Sentences</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.Lines">Lines</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.Paragraphs">Paragraphs</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.ReadingTime">📖 Reading time</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.SpeakingTime">🎤 Speaking time</sys:String>
+    <sys:String x:Key="L.TextCounter.Label.TopWords">TOP WORDS</sys:String>
+    <sys:String x:Key="L.TextCounter.Copy">COPY</sys:String>
+    <sys:String x:Key="L.TextCounter.Save">SAVE</sys:String>
+    <sys:String x:Key="L.TextCounter.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.TextCounter.InputAutomationName">Text to count</sys:String>
+    <sys:String x:Key="L.TextCounter.Limits">Max length: {0} characters. Reading 200 wpm · Speaking 130 wpm.</sys:String>
 
+    <sys:String x:Key="L.TextCounter.Status.Ready">Start typing to see statistics.</sys:String>
+    <sys:String x:Key="L.TextCounter.Status.Updated">✓ {0} words · {1} characters.</sys:String>
+    <sys:String x:Key="L.TextCounter.Status.Copied">Statistics copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.TextCounter.Status.Saved">Statistics saved to file.</sys:String>
+    <sys:String x:Key="L.TextCounter.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.TextCounter.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.TextCounter.Validation.NothingToCopy">There is nothing to copy.</sys:String>
+    <sys:String x:Key="L.TextCounter.Validation.NothingToSave">There is nothing to save.</sys:String>
+
+    <sys:String x:Key="L.TextCounter.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
+    <sys:String x:Key="L.TextCounter.Error.InvalidUnicode">The text contains an invalid Unicode character (unpaired surrogate).</sys:String>
+    
+    
 </ResourceDictionary>
