@@ -270,4 +270,40 @@
     <sys:String x:Key="L.Rot13.Error.InvalidUnicode">Metin geçersiz bir Unicode karakteri içeriyor (eşleşmemiş surrogate).</sys:String>
     <sys:String x:Key="L.Rot13.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
 
+    <!-- ============ Karakter kodu dönüştürücü ============ -->
+    <sys:String x:Key="L.CharacterCodes.Title">KARAKTER KODU DÖNÜŞTÜRÜCÜ (ASCII / Unicode)</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Format">Kod biçimi</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Format.Decimal">Ondalık (65 8364 128512)</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Format.Hexadecimal">Onaltılık (U+0041 U+20AC U+1F600)</sys:String>
+    <sys:String x:Key="L.CharacterCodes.FormatHelp">Biçim, çıktıyı ve öneksiz değerleri etkiler. Değerler Unicode kod noktalarıdır; bu yüzden emoji tek bir sayıdır ve ASCII bu kümenin ilk 128 karakteridir.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.ToCodes">KODA ÇEVİR</sys:String>
+    <sys:String x:Key="L.CharacterCodes.ToText">METNE ÇEVİR</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Swap">TAKAS</sys:String>
+    <sys:String x:Key="L.CharacterCodes.SwapHelp">Giriş ve çıkışı takas et</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Hint">Vekil kod noktaları (U+D800...U+DFFF) bozuk metin üretmek yerine reddedilir.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.InputAutomationName">Metin veya karakter kodları</sys:String>
+    <sys:String x:Key="L.CharacterCodes.OutputAutomationName">Dönüşüm sonucu</sys:String>
+
+    <sys:String x:Key="L.CharacterCodes.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Status.ConvertedToCodes">{0} karakter, {1} kod karakterine çevrildi.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Status.ConvertedToText">{0} karakterlik metne çevrildi.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Status.Copied">Çıktı panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Status.Saved">Çıktı dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Status.Swapped">Giriş ve çıkış takas edildi.</sys:String>
+
+    <sys:String x:Key="L.CharacterCodes.Validation.EmptyInput">Lütfen dönüştürülecek metni veya karakter kodlarını girin.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Validation.NothingToCopy">Kopyalanacak çıktı yok.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Validation.NothingToSave">Kaydedilecek çıktı yok.</sys:String>
+
+    <sys:String x:Key="L.CharacterCodes.Error.InvalidToken">Geçersiz girdi: değerlerden biri seçilen biçimde bir sayı değil.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Error.InvalidCodePoint">Geçersiz girdi: değerlerden biri geçerli bir Unicode kod noktası değil (0 ile 10FFFF arası, vekil aralık hariç).</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Error.InvalidUnicode">Metin geçersiz bir Unicode karakteri içeriyor (eşleşmemiş surrogate).</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Error.OutputTooLarge">Sonuç çok büyük olurdu. Sınır 10 MB'tır.</sys:String>
+
 </ResourceDictionary>

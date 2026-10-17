@@ -270,4 +270,40 @@
     <sys:String x:Key="L.Rot13.Error.InvalidUnicode">The text contains an invalid Unicode character (unpaired surrogate).</sys:String>
     <sys:String x:Key="L.Rot13.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
 
+    <!-- ============ Character code converter ============ -->
+    <sys:String x:Key="L.CharacterCodes.Title">CHARACTER CODE CONVERTER (ASCII / Unicode)</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Format">Code format</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Format.Decimal">Decimal (65 8364 128512)</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Format.Hexadecimal">Hexadecimal (U+0041 U+20AC U+1F600)</sys:String>
+    <sys:String x:Key="L.CharacterCodes.FormatHelp">The format applies to the output and to values without a prefix. Values are Unicode code points, so an emoji is one number; ASCII is the first 128 of them.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.ToCodes">TO CODES</sys:String>
+    <sys:String x:Key="L.CharacterCodes.ToText">TO TEXT</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Copy">COPY</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Save">SAVE</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Swap">SWAP</sys:String>
+    <sys:String x:Key="L.CharacterCodes.SwapHelp">Swap input and output</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Hint">Surrogate code points (U+D800...U+DFFF) are rejected instead of producing broken text.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.InputAutomationName">Text or character codes</sys:String>
+    <sys:String x:Key="L.CharacterCodes.OutputAutomationName">Conversion result</sys:String>
+
+    <sys:String x:Key="L.CharacterCodes.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Status.ConvertedToCodes">Converted {0} character(s) to {1} code character(s).</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Status.ConvertedToText">Converted to {0} character(s) of text.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Status.Copied">Output copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Status.Saved">Output saved to file.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Status.Swapped">Input and output swapped.</sys:String>
+
+    <sys:String x:Key="L.CharacterCodes.Validation.EmptyInput">Please enter text or character codes to convert.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Validation.NothingToCopy">There is no output to copy.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Validation.NothingToSave">There is no output to save.</sys:String>
+
+    <sys:String x:Key="L.CharacterCodes.Error.InvalidToken">Invalid input: one of the values is not a number in the selected format.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Error.InvalidCodePoint">Invalid input: one of the values is not a valid Unicode code point (0 to 10FFFF, excluding surrogates).</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Error.InvalidUnicode">The text contains an invalid Unicode character (unpaired surrogate).</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
+    <sys:String x:Key="L.CharacterCodes.Error.OutputTooLarge">The result would be too large. The limit is 10 MB.</sys:String>
+
 </ResourceDictionary>

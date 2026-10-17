@@ -33,7 +33,7 @@ Ek kurallar:
 
 | Bileşen | Durum |
 |---|---|
-| Test projesi (xunit v3 + Microsoft.Testing.Platform, `tests/tool-cantam.Tests`) | ✅ 458 test geçiyor |
+| Test projesi (xunit v3 + Microsoft.Testing.Platform, `tests/tool-cantam.Tests`) | ✅ 527 test geçiyor |
 | Sonuç/hata modeli (`ToolResult<T>`, `ToolErrorKind`) | ✅ |
 | Yerelleştirme altyapısı (`ILocalizerService`, dil kodu eşlemesi, anahtar parite testi) | ✅ (dil değiştirme hatası düzeltildi) |
 | Yerelleştirme anahtarı denetimi (görünüm ve ViewModel'lerde kullanılan anahtarlar) | ✅ testle korunuyor |
@@ -54,7 +54,7 @@ Sıra, uygulamadaki araç listesiyle (kayıt sırası) aynıdır; işaretlenen a
 | 4 | HTML Encoder/Decoder | ✅ tamam |
 | 5 | Binary Encoder/Decoder | ✅ tamam |
 | 6 | ROT13 Transform | ✅ tamam |
-| 7 | ASCII Converter | ⬜ |
+| 7 | Character Code Converter | ✅ tamam |
 | 8 | Unicode Converter | ⬜ |
 | 9 | Hash Generator | ⬜ |
 | 10 | Hash Identifier | ⬜ |

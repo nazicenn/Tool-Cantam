@@ -82,19 +82,11 @@ public static class ToolDefinitions
 
         ToolRegistry.Register(new ToolDefinition
         {
-            Name = "ASCII Converter",
-            Description = "Convert text to ASCII codes and vice versa",
+            Name = "Character Code Converter",
+            Description = "Convert between text and Unicode code points (decimal or hexadecimal); ASCII is a subset",
             Category = ToolCategory.EncodersDecoders,
             ViewModelType = typeof(AsciiConverterViewModel),
-            ViewType = typeof(AsciiConverterPage),
-            Execute = async (input) =>
-            {
-                var text = input?.ToString() ?? string.Empty;
-                var asciiCodes = new StringBuilder();
-                foreach (char c in text)
-                    asciiCodes.Append((int)c).Append(" ");
-                return asciiCodes.ToString().Trim();
-            }
+            ViewType = typeof(AsciiConverterPage)
         });
 
         ToolRegistry.Register(new ToolDefinition

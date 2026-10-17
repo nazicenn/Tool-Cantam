@@ -1,13 +1,27 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
+using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class AsciiConverterPage : UserControl
+public partial class AsciiConverterPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.AsciiConverterViewModel>
 {
-    public AsciiConverterPage(AsciiConverterViewModel viewModel)
+    public ViewModels.AsciiConverterViewModel ViewModel { get; }
+
+    public AsciiConverterPage(ViewModels.AsciiConverterViewModel viewModel)
     {
+        ViewModel = viewModel;
         InitializeComponent();
-        DataContext = viewModel;
+        DataContext = this;
+
+        // Girdi eksikse görünüm odaklanmayı yönetir; ViewModel'de UI bağımlılığı yoktur.
+        ViewModel.RequestInputFocus += FocusInput;
+    }
+
+    private void FocusInput()
+    {
+        if (!IsLoaded)
+            return;
+
+        InputTextBox.Focus();
+        InputTextBox.SelectAll();
     }
 }
