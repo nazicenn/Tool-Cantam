@@ -270,17 +270,17 @@ public class Base64ServiceTests
             string source = Path.Combine(directory, "source.bin");
             string encoded = Path.Combine(directory, "encoded.b64");
             string decoded = Path.Combine(directory, "decoded.bin");
-            await File.WriteAllBytesAsync(source, original);
+            await File.WriteAllBytesAsync(source, original, TestContext.Current.CancellationToken);
 
-            ToolResult<long> encodeResult = await _service.EncodeFileAsync(source, encoded);
+            ToolResult<long> encodeResult = await _service.EncodeFileAsync(source, encoded, TestContext.Current.CancellationToken);
             Assert.True(encodeResult.IsSuccess, $"{encodeResult.ErrorKind}/{encodeResult.ErrorCode}: {encodeResult.TechnicalDetail}");
             Assert.True(File.Exists(encoded));
             Assert.True(encodeResult.Value > 0);
 
-            ToolResult<long> decodeResult = await _service.DecodeFileAsync(encoded, decoded);
+            ToolResult<long> decodeResult = await _service.DecodeFileAsync(encoded, decoded, TestContext.Current.CancellationToken);
             Assert.True(decodeResult.IsSuccess, $"{decodeResult.ErrorKind}/{decodeResult.ErrorCode}: {decodeResult.TechnicalDetail}");
 
-            Assert.Equal(original, await File.ReadAllBytesAsync(decoded));
+            Assert.Equal(original, await File.ReadAllBytesAsync(decoded, TestContext.Current.CancellationToken));
         }
         finally
         {
@@ -302,12 +302,12 @@ public class Base64ServiceTests
 
             string source = Path.Combine(directory, "wrapped.b64");
             string decoded = Path.Combine(directory, "decoded.txt");
-            await File.WriteAllTextAsync(source, wrapped.ToString());
+            await File.WriteAllTextAsync(source, wrapped.ToString(), TestContext.Current.CancellationToken);
 
-            ToolResult<long> result = await _service.DecodeFileAsync(source, decoded);
+            ToolResult<long> result = await _service.DecodeFileAsync(source, decoded, TestContext.Current.CancellationToken);
 
             Assert.True(result.IsSuccess);
-            Assert.Equal(new string('x', 300), await File.ReadAllTextAsync(decoded));
+            Assert.Equal(new string('x', 300), await File.ReadAllTextAsync(decoded, TestContext.Current.CancellationToken));
         }
         finally
         {
@@ -323,9 +323,9 @@ public class Base64ServiceTests
         {
             string source = Path.Combine(directory, "broken.b64");
             string destination = Path.Combine(directory, "should-not-exist.bin");
-            await File.WriteAllTextAsync(source, "this is definitely not base64 ###");
+            await File.WriteAllTextAsync(source, "this is definitely not base64 ###", TestContext.Current.CancellationToken);
 
-            ToolResult<long> result = await _service.DecodeFileAsync(source, destination);
+            ToolResult<long> result = await _service.DecodeFileAsync(source, destination, TestContext.Current.CancellationToken);
 
             Assert.False(result.IsSuccess);
             Assert.Equal(Base64ErrorCodes.InvalidFileContent, result.ErrorCode);
@@ -349,7 +349,7 @@ public class Base64ServiceTests
             string missing = Path.Combine(directory, "missing.bin");
             string destination = Path.Combine(directory, "out.b64");
 
-            ToolResult<long> result = await _service.EncodeFileAsync(missing, destination);
+            ToolResult<long> result = await _service.EncodeFileAsync(missing, destination, TestContext.Current.CancellationToken);
 
             Assert.False(result.IsSuccess);
             Assert.Equal(ToolErrorKind.NotFound, result.ErrorKind);
@@ -366,7 +366,7 @@ public class Base64ServiceTests
     [InlineData("source.bin", "")]
     public async Task File_operations_require_both_paths(string sourceName, string destinationName)
     {
-        ToolResult<long> result = await _service.EncodeFileAsync(sourceName, destinationName);
+        ToolResult<long> result = await _service.EncodeFileAsync(sourceName, destinationName, TestContext.Current.CancellationToken);
 
         Assert.False(result.IsSuccess);
         Assert.Equal(ToolErrorKind.Validation, result.ErrorKind);
@@ -383,9 +383,10 @@ public class Base64ServiceTests
             string destination = Path.Combine(directory, "large.b64");
 
             // İptal işlem başlamadan önce isteniyor; dosya boyutu yalnızca akışın kurulmasını sağlar.
-            await File.WriteAllBytesAsync(source, new byte[2 * 1024 * 1024]);
+            await File.WriteAllBytesAsync(source, new byte[2 * 1024 * 1024], TestContext.Current.CancellationToken);
 
-            using var cancellation = new CancellationTokenSource();
+            // Test çalıştırması iptal edilirse bu test de hızla bitsin.
+            using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
             cancellation.Cancel();
 
             ToolResult<long> result = await _service.EncodeFileAsync(source, destination, cancellation.Token);

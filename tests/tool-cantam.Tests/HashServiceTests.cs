@@ -148,9 +148,9 @@ public class HashServiceTests
         try
         {
             byte[] content = Encoding.UTF8.GetBytes("Dosya içeriği 😀");
-            await File.WriteAllBytesAsync(path, content);
+            await File.WriteAllBytesAsync(path, content, TestContext.Current.CancellationToken);
 
-            ToolResult<byte[]> fromFile = await _service.ComputeFromFileAsync(path, HashAlgorithmKind.Sha256);
+            ToolResult<byte[]> fromFile = await _service.ComputeFromFileAsync(path, HashAlgorithmKind.Sha256, TestContext.Current.CancellationToken);
 
             Assert.True(fromFile.IsSuccess);
             Assert.Equal(SHA256.HashData(content), fromFile.Value);
@@ -169,9 +169,10 @@ public class HashServiceTests
 
         try
         {
-            await File.WriteAllBytesAsync(path, new byte[1024 * 1024]);
+            await File.WriteAllBytesAsync(path, new byte[1024 * 1024], TestContext.Current.CancellationToken);
 
-            using var cancellation = new CancellationTokenSource();
+            // Test çalıştırması iptal edilirse bu test de hızla bitsin.
+            using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
             cancellation.Cancel();
 
             ToolResult<byte[]> result = await _service.ComputeFromFileAsync(path, HashAlgorithmKind.Sha256, cancellation.Token);
@@ -191,7 +192,7 @@ public class HashServiceTests
     {
         string path = Path.Combine(Path.GetTempPath(), "tool-cantam-missing-" + Guid.NewGuid().ToString("N") + ".bin");
 
-        ToolResult<byte[]> result = await _service.ComputeFromFileAsync(path, HashAlgorithmKind.Sha256);
+        ToolResult<byte[]> result = await _service.ComputeFromFileAsync(path, HashAlgorithmKind.Sha256, TestContext.Current.CancellationToken);
 
         Assert.False(result.IsSuccess);
         Assert.Equal(ToolErrorKind.NotFound, result.ErrorKind);
@@ -203,7 +204,7 @@ public class HashServiceTests
     [InlineData("   ")]
     public async Task ComputeFromFile_requires_a_path(string path)
     {
-        ToolResult<byte[]> result = await _service.ComputeFromFileAsync(path, HashAlgorithmKind.Sha256);
+        ToolResult<byte[]> result = await _service.ComputeFromFileAsync(path, HashAlgorithmKind.Sha256, TestContext.Current.CancellationToken);
 
         Assert.False(result.IsSuccess);
         Assert.Equal(ToolErrorKind.Validation, result.ErrorKind);

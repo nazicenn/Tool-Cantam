@@ -190,7 +190,7 @@ public class Base64ViewModelTests
         {
             string source = Path.Combine(directory, "source.bin");
             string destination = Path.Combine(directory, "encoded.b64");
-            await File.WriteAllTextAsync(source, "foobar");
+            await File.WriteAllTextAsync(source, "foobar", TestContext.Current.CancellationToken);
 
             var viewModel = CreateViewModel();
             viewModel.FilePath = source;
@@ -201,7 +201,7 @@ public class Base64ViewModelTests
             Assert.Equal(NotificationType.Success, viewModel.StatusType);
             Assert.StartsWith("L.Base64.Status.FileEncoded", viewModel.StatusText);
             Assert.True(File.Exists(destination));
-            Assert.Equal("Zm9vYmFy", (await File.ReadAllTextAsync(destination)).Trim());
+            Assert.Equal("Zm9vYmFy", (await File.ReadAllTextAsync(destination, TestContext.Current.CancellationToken)).Trim());
         }
         finally
         {
@@ -219,7 +219,7 @@ public class Base64ViewModelTests
         {
             string source = Path.Combine(directory, "broken.b64");
             string destination = Path.Combine(directory, "out.bin");
-            await File.WriteAllTextAsync(source, "not base64 ###");
+            await File.WriteAllTextAsync(source, "not base64 ###", TestContext.Current.CancellationToken);
 
             var viewModel = CreateViewModel();
             viewModel.FilePath = source;

@@ -186,7 +186,7 @@ public class HashViewModelTests
 
         try
         {
-            await File.WriteAllTextAsync(path, "abc");
+            await File.WriteAllTextAsync(path, "abc", TestContext.Current.CancellationToken);
 
             var viewModel = CreateViewModel();
             viewModel.FilePath = path;
