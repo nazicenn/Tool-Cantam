@@ -2,8 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
@@ -49,16 +49,27 @@ public partial class MxLookupViewModel : ObservableObject
 
         try
         {
-            // DnsService gerçek DNS sorgusu yapar ve kayıtları "<priority> <exchange>" biçiminde döner.
             var result = await _dnsService.LookupAsync(Domain);
 
-            foreach (var entry in result.MX)
+            if (!result.IsSuccess)
             {
-                var separator = entry.IndexOf(' ');
-                if (separator > 0 && int.TryParse(entry[..separator], out var priority))
-                    MxRecords.Add(new MxRecord { Priority = priority, Exchange = entry[(separator + 1)..].Trim() });
-                else
-                    MxRecords.Add(new MxRecord { Priority = 0, Exchange = entry });
+                StatusText = $"✗ {result.ErrorCode}";
+                return;
+            }
+
+            // Yeni: result.Records içinden MX tipi olanları filtrele
+            var mxEntries = result.Value!.Records
+                .Where(r => string.Equals(r.Type, "MX", StringComparison.OrdinalIgnoreCase))
+                .OrderBy(r => r.Priority ?? int.MaxValue)
+                .ToList();
+
+            foreach (var entry in mxEntries)
+            {
+                MxRecords.Add(new MxRecord
+                {
+                    Priority = entry.Priority ?? 0,
+                    Exchange = entry.Value
+                });
             }
 
             StatusText = MxRecords.Count > 0
@@ -93,7 +104,7 @@ public partial class MxLookupViewModel : ObservableObject
         {
             results += $"{record.Priority} {record.Exchange}\n";
         }
-        Clipboard.SetText(results);
+        System.Windows.Clipboard.SetText(results);
         StatusText = "Results copied!";
     }
 

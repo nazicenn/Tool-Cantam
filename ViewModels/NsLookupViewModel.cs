@@ -2,8 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
@@ -45,7 +45,20 @@ public partial class NsLookupViewModel : ObservableObject
         {
             var result = await _dnsService.LookupAsync(Domain);
 
-            foreach (var ns in result.NS)
+            if (!result.IsSuccess)
+            {
+                StatusText = $"✗ {result.ErrorCode}";
+                return;
+            }
+
+            // Yeni: result.Records içinden NS tipi olanları filtrele
+            var nsEntries = result.Value!.Records
+                .Where(r => string.Equals(r.Type, "NS", StringComparison.OrdinalIgnoreCase))
+                .Select(r => r.Value)
+                .Distinct()
+                .ToList();
+
+            foreach (var ns in nsEntries)
                 NameServers.Add(ns);
 
             StatusText = NameServers.Count > 0
@@ -75,12 +88,8 @@ public partial class NsLookupViewModel : ObservableObject
     {
         if (NameServers.Count == 0) return;
 
-        var results = $"Name Servers for {Domain}:\n";
-        foreach (var ns in NameServers)
-        {
-            results += $"{ns}\n";
-        }
-        Clipboard.SetText(results);
+        var results = $"Name Servers for {Domain}:\n" + string.Join("\n", NameServers);
+        System.Windows.Clipboard.SetText(results);
         StatusText = "Results copied!";
     }
 
