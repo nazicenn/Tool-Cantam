@@ -1,5 +1,6 @@
 using System.Text;
 using tool_cantam.Core.Enums;
+using tool_cantam.Core.Text;
 using tool_cantam.Core.Models;
 using tool_cantam.Services.Interfaces;
 
@@ -16,8 +17,6 @@ namespace tool_cantam.Services;
 public sealed class UrlService : IUrlService
 {
     public const int MaxTextLengthLimit = 10 * 1024 * 1024;
-
-    private const string HexDigits = "0123456789ABCDEF";
 
     /// <summary>Geçersiz bayt dizilerini sessizce değiştirmek yerine hata veren UTF-8 kod çözücü.</summary>
     private static readonly UTF8Encoding StrictUtf8 = new(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true);
@@ -80,7 +79,7 @@ public sealed class UrlService : IUrlService
                 }
                 else
                 {
-                    builder.Append('%').Append(HexDigits[current >> 4]).Append(HexDigits[current & 0x0F]);
+                    builder.Append('%').Append(HexDigits.Uppercase[current >> 4]).Append(HexDigits.Uppercase[current & 0x0F]);
                 }
 
                 index++;
@@ -119,8 +118,8 @@ public sealed class UrlService : IUrlService
             if (current == '%')
             {
                 if (index + 2 >= text.Length ||
-                    !TryParseHexDigit(text[index + 1], out int high) ||
-                    !TryParseHexDigit(text[index + 2], out int low))
+                    !HexDigits.TryParse(text[index + 1], out int high) ||
+                    !HexDigits.TryParse(text[index + 2], out int low))
                 {
                     return ToolResult<string>.Fail(
                         ToolErrorKind.InvalidFormat,
@@ -217,21 +216,11 @@ public sealed class UrlService : IUrlService
         };
     }
 
-    private static bool TryParseHexDigit(char character, out int value)
-    {
-        if (character >= '0' && character <= '9') { value = character - '0'; return true; }
-        if (character >= 'a' && character <= 'f') { value = character - 'a' + 10; return true; }
-        if (character >= 'A' && character <= 'F') { value = character - 'A' + 10; return true; }
-
-        value = 0;
-        return false;
-    }
-
     private static void AppendPercentEncoded(StringBuilder builder, ReadOnlySpan<byte> bytes)
     {
         foreach (byte value in bytes)
         {
-            builder.Append('%').Append(HexDigits[value >> 4]).Append(HexDigits[value & 0x0F]);
+            builder.Append('%').Append(HexDigits.Uppercase[value >> 4]).Append(HexDigits.Uppercase[value & 0x0F]);
         }
     }
 }

@@ -119,4 +119,43 @@
     <sys:String x:Key="L.Url.Error.InputTooLarge">Input is too large. The limit is 10 MB of text.</sys:String>
     <sys:String x:Key="L.Url.Error.OutputTooLarge">The decoded result would be too large. The limit is 10 MB.</sys:String>
 
+    <!-- ============ Hex Encoder / Decoder ============ -->
+    <sys:String x:Key="L.Hex.Title">HEX ENCODER / DECODER</sys:String>
+    <sys:String x:Key="L.Hex.Format">Output format</sys:String>
+    <sys:String x:Key="L.Hex.Format.Compact">Compact (48656C6C6F)</sys:String>
+    <sys:String x:Key="L.Hex.Format.Spaced">Spaced (48 65 6C 6C 6F)</sys:String>
+    <sys:String x:Key="L.Hex.Format.ColonSeparated">Colon separated (48:65:6C:6C:6F)</sys:String>
+    <sys:String x:Key="L.Hex.FormatHelp">The format only affects encoding. Decoding accepts spaces, colons, commas, dashes and 0x or \x prefixes.</sys:String>
+    <sys:String x:Key="L.Hex.Uppercase">Uppercase letters (A-F)</sys:String>
+    <sys:String x:Key="L.Hex.Encode">ENCODE</sys:String>
+    <sys:String x:Key="L.Hex.Decode">DECODE</sys:String>
+    <sys:String x:Key="L.Hex.Copy">COPY</sys:String>
+    <sys:String x:Key="L.Hex.Save">SAVE</sys:String>
+    <sys:String x:Key="L.Hex.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.Hex.Swap">SWAP</sys:String>
+    <sys:String x:Key="L.Hex.SwapHelp">Swap input and output</sys:String>
+    <sys:String x:Key="L.Hex.Hint">An odd number of digits is an error, not silently truncated data.</sys:String>
+    <sys:String x:Key="L.Hex.InputAutomationName">Text or hex payload</sys:String>
+    <sys:String x:Key="L.Hex.OutputAutomationName">Conversion result</sys:String>
+
+    <sys:String x:Key="L.Hex.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Hex.Status.Encoded">Encoded: {0} character(s) to {1} hex character(s).</sys:String>
+    <sys:String x:Key="L.Hex.Status.Decoded">Decoded: {0} character(s).</sys:String>
+    <sys:String x:Key="L.Hex.Status.Copied">Output copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Hex.Status.Saved">Output saved to file.</sys:String>
+    <sys:String x:Key="L.Hex.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.Hex.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.Hex.Status.Swapped">Input and output swapped.</sys:String>
+
+    <sys:String x:Key="L.Hex.Validation.EmptyInput">Please enter text or hex data to convert.</sys:String>
+    <sys:String x:Key="L.Hex.Validation.NothingToCopy">There is no output to copy.</sys:String>
+    <sys:String x:Key="L.Hex.Validation.NothingToSave">There is no output to save.</sys:String>
+
+    <sys:String x:Key="L.Hex.Error.InvalidDigit">Invalid hex input: the text contains a character that is not a hexadecimal digit.</sys:String>
+    <sys:String x:Key="L.Hex.Error.OddLength">Invalid hex input: the payload contains an odd number of digits, so the last byte is incomplete.</sys:String>
+    <sys:String x:Key="L.Hex.Error.NotUtf8">The hex payload does not form valid UTF-8 text.</sys:String>
+    <sys:String x:Key="L.Hex.Error.InvalidUnicode">The text contains an invalid Unicode character (unpaired surrogate).</sys:String>
+    <sys:String x:Key="L.Hex.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
+    <sys:String x:Key="L.Hex.Error.OutputTooLarge">The decoded result would be too large. The limit is 10 MB.</sys:String>
+
 </ResourceDictionary>

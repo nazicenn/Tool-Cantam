@@ -1,13 +1,27 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
+using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class HexPage : UserControl
+public partial class HexPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.HexViewModel>
 {
-    public HexPage(HexViewModel viewModel)
+    public ViewModels.HexViewModel ViewModel { get; }
+
+    public HexPage(ViewModels.HexViewModel viewModel)
     {
+        ViewModel = viewModel;
         InitializeComponent();
-        DataContext = viewModel;
+        DataContext = this;
+
+        // Girdi eksikse görünüm odaklanmayı yönetir; ViewModel'de UI bağımlılığı yoktur.
+        ViewModel.RequestInputFocus += FocusInput;
+    }
+
+    private void FocusInput()
+    {
+        if (!IsLoaded)
+            return;
+
+        InputTextBox.Focus();
+        InputTextBox.SelectAll();
     }
 }

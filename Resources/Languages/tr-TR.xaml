@@ -119,4 +119,43 @@
     <sys:String x:Key="L.Url.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB metindir.</sys:String>
     <sys:String x:Key="L.Url.Error.OutputTooLarge">Çözülecek sonuç çok büyük. Sınır 10 MB'tır.</sys:String>
 
+    <!-- ============ Hex Kodlayıcı / Çözücü ============ -->
+    <sys:String x:Key="L.Hex.Title">HEX KODLAYICI / ÇÖZÜCÜ</sys:String>
+    <sys:String x:Key="L.Hex.Format">Çıktı biçimi</sys:String>
+    <sys:String x:Key="L.Hex.Format.Compact">Bitişik (48656C6C6F)</sys:String>
+    <sys:String x:Key="L.Hex.Format.Spaced">Boşluklu (48 65 6C 6C 6F)</sys:String>
+    <sys:String x:Key="L.Hex.Format.ColonSeparated">İki noktalı (48:65:6C:6C:6F)</sys:String>
+    <sys:String x:Key="L.Hex.FormatHelp">Biçim yalnızca kodlamayı etkiler. Çözme; boşluk, iki nokta, virgül, tire ve 0x ya da \x öneklerini kabul eder.</sys:String>
+    <sys:String x:Key="L.Hex.Uppercase">Büyük harf (A-F)</sys:String>
+    <sys:String x:Key="L.Hex.Encode">KODLA</sys:String>
+    <sys:String x:Key="L.Hex.Decode">ÇÖZ</sys:String>
+    <sys:String x:Key="L.Hex.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.Hex.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.Hex.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Hex.Swap">TAKAS</sys:String>
+    <sys:String x:Key="L.Hex.SwapHelp">Giriş ve çıkışı takas et</sys:String>
+    <sys:String x:Key="L.Hex.Hint">Tek sayıda basamak hata verir; sessizce kesilmiş veri üretilmez.</sys:String>
+    <sys:String x:Key="L.Hex.InputAutomationName">Metin veya hex verisi</sys:String>
+    <sys:String x:Key="L.Hex.OutputAutomationName">Dönüşüm sonucu</sys:String>
+
+    <sys:String x:Key="L.Hex.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Hex.Status.Encoded">Kodlandı: {0} karakter, {1} hex karakteri.</sys:String>
+    <sys:String x:Key="L.Hex.Status.Decoded">Çözüldü: {0} karakter.</sys:String>
+    <sys:String x:Key="L.Hex.Status.Copied">Çıktı panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Hex.Status.Saved">Çıktı dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.Hex.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.Hex.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.Hex.Status.Swapped">Giriş ve çıkış takas edildi.</sys:String>
+
+    <sys:String x:Key="L.Hex.Validation.EmptyInput">Lütfen dönüştürülecek metni veya hex verisini girin.</sys:String>
+    <sys:String x:Key="L.Hex.Validation.NothingToCopy">Kopyalanacak çıktı yok.</sys:String>
+    <sys:String x:Key="L.Hex.Validation.NothingToSave">Kaydedilecek çıktı yok.</sys:String>
+
+    <sys:String x:Key="L.Hex.Error.InvalidDigit">Geçersiz hex girdisi: metin onaltılık olmayan bir karakter içeriyor.</sys:String>
+    <sys:String x:Key="L.Hex.Error.OddLength">Geçersiz hex girdisi: basamak sayısı tek, bu yüzden son bayt eksik.</sys:String>
+    <sys:String x:Key="L.Hex.Error.NotUtf8">Hex verisi geçerli UTF-8 metni oluşturmuyor.</sys:String>
+    <sys:String x:Key="L.Hex.Error.InvalidUnicode">Metin geçersiz bir Unicode karakteri içeriyor (eşleşmemiş surrogate).</sys:String>
+    <sys:String x:Key="L.Hex.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
+    <sys:String x:Key="L.Hex.Error.OutputTooLarge">Çözülecek sonuç çok büyük. Sınır 10 MB'tır.</sys:String>
+
 </ResourceDictionary>
