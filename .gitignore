@@ -9,6 +9,9 @@
 *.userosscache
 *.sln.docstates
 
+# WPF geçici proje dosyaları (derleme sırasında oluşturulur)
+*_wpftmp.csproj
+
 # Logs
 logs/
 *.log
