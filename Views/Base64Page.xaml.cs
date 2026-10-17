@@ -1,3 +1,4 @@
+using System.Windows;
 using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
@@ -11,17 +12,17 @@ public partial class Base64Page : System.Windows.Controls.UserControl, INavigabl
         ViewModel = viewModel;
         InitializeComponent();
         DataContext = this;
+
+        // Girdi eksikse görünüm odaklanmayı yönetir; ViewModel'de UI bağımlılığı yoktur.
+        ViewModel.RequestInputFocus += FocusInput;
     }
 
-    private void Clear_Click(object sender, System.Windows.RoutedEventArgs e)
+    private void FocusInput()
     {
-        ViewModel.InputText = string.Empty;
-        ViewModel.OutputText = string.Empty;
-        ViewModel.FileStatus = string.Empty;
-    }
+        if (!IsLoaded)
+            return;
 
-    private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
-    {
-
+        InputTextBox.Focus();
+        InputTextBox.SelectAll();
     }
 }

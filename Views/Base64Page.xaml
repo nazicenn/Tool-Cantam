@@ -12,9 +12,9 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="BASE64 ENCODER / DECODER" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" FontWeight="SemiBold" 
+        <TextBlock Grid.Row="0" Text="{DynamicResource L.Base64.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
                    HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
         <Grid Grid.Row="1">
@@ -30,47 +30,75 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Text="Input Text" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
+                <TextBlock Grid.Row="0" Text="{DynamicResource L.Input}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
 
-                <TextBox Grid.Row="1" 
-                         Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}" 
-                         AcceptsReturn="True" 
-                         TextWrapping="Wrap" 
+                <TextBox Grid.Row="1"
+                         x:Name="InputTextBox"
+                         Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
                          Margin="0,0,0,12"
-                         VerticalAlignment="Stretch" 
+                         VerticalAlignment="Stretch"
                          MinHeight="80"
-                         VerticalScrollBarVisibility="Auto"/>
+                         TabIndex="0"
+                         VerticalScrollBarVisibility="Auto"
+                         AutomationProperties.Name="{DynamicResource L.Base64.InputAutomationName}"/>
 
-                <TextBlock Grid.Row="2" Text="Output Result" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
+                <TextBlock Grid.Row="2" Text="{DynamicResource L.Output}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
 
-                <TextBox Grid.Row="3" 
-                         Text="{Binding ViewModel.OutputText, Mode=OneWay}" 
-                         IsReadOnly="True" 
-                         TextWrapping="Wrap" 
+                <TextBox Grid.Row="3"
+                         Text="{Binding ViewModel.OutputText, Mode=OneWay}"
+                         IsReadOnly="True"
+                         TextWrapping="Wrap"
                          Margin="0,0,0,12"
-                         VerticalAlignment="Stretch" 
+                         VerticalAlignment="Stretch"
                          MinHeight="80"
-                         VerticalScrollBarVisibility="Auto"/>
+                         TabIndex="1"
+                         VerticalScrollBarVisibility="Auto"
+                         AutomationProperties.Name="{DynamicResource L.Base64.OutputAutomationName}"/>
 
-                <UniformGrid Grid.Row="4" Columns="4">
-                    <Button Content="ENCODE" Command="{Binding ViewModel.EncodeTextCommand}" 
+                <!-- Alfabe seçimi: standart (RFC 4648 §4) veya URL güvenli (RFC 4648 §5) -->
+                <CheckBox Grid.Row="4"
+                          Content="{DynamicResource L.Base64.UrlSafe}"
+                          IsChecked="{Binding ViewModel.UseUrlSafeAlphabet}"
+                          Foreground="{StaticResource TextPrimaryBrush}"
+                          Margin="0,0,0,10"
+                          TabIndex="2"
+                          AutomationProperties.HelpText="{DynamicResource L.Base64.UrlSafeHelp}"/>
+
+                <UniformGrid Grid.Row="5" Columns="5">
+                    <Button Content="{DynamicResource L.Base64.Encode}"
+                            Command="{Binding ViewModel.EncodeTextCommand}"
                             Height="34" Margin="0,0,5,0"
+                            TabIndex="3"
                             Background="{StaticResource GreenBrush}" Style="{StaticResource ModernButton}"/>
-                    <Button Content="DECODE" Command="{Binding ViewModel.DecodeTextCommand}" 
+                    <Button Content="{DynamicResource L.Base64.Decode}"
+                            Command="{Binding ViewModel.DecodeTextCommand}"
                             Height="34" Margin="5,0,5,0"
+                            TabIndex="4"
                             Background="{StaticResource GreenBrush}" Style="{StaticResource ModernButton}"/>
-                    <Button Content="COPY" Command="{Binding ViewModel.CopyOutputCommand}" 
+                    <Button Content="{DynamicResource L.Base64.Copy}"
+                            Command="{Binding ViewModel.CopyOutputCommand}"
                             Height="34" Margin="5,0,5,0"
+                            TabIndex="5"
                             Background="{StaticResource StatusWarningBrush}" Style="{StaticResource ModernButton}"/>
-                    <Button Content="CLEAR ALL" Click="Clear_Click"
+                    <Button Content="{DynamicResource L.Base64.Save}"
+                            Command="{Binding ViewModel.SaveOutputCommand}"
+                            Height="34" Margin="5,0,5,0"
+                            TabIndex="6"
+                            Background="{StaticResource AccentPrimaryBrush}" Style="{StaticResource ModernButton}"/>
+                    <Button Content="{DynamicResource L.Base64.Clear}"
+                            Command="{Binding ViewModel.ClearCommand}"
                             Height="34" Margin="5,0,0,0"
-                            Background="{StaticResource RedBrush}" Style="{StaticResource ModernButton}" VerticalAlignment="Top"/>
+                            TabIndex="7"
+                            Background="{StaticResource RedBrush}" Style="{StaticResource ModernButton}"/>
                 </UniformGrid>
             </Grid>
 
-            <!-- Drop Zone Kısmı -->
+            <!-- Dosya bırakma alanı -->
             <Border Grid.Column="1" Style="{StaticResource DropZone}" VerticalAlignment="Stretch"
                     helpers:FileDragDropBehavior.IsEnabled="True"
                     helpers:FileDragDropBehavior.FilePath="{Binding ViewModel.FilePath, Mode=TwoWay}">
@@ -78,31 +106,58 @@
                     <StackPanel VerticalAlignment="Center">
                         <ui:SymbolIcon Symbol="Document24" FontSize="44" Margin="0,0,0,15"
                                        Foreground="{StaticResource TextPrimaryBrush}"/>
-                        <TextBlock Text="Drop file here" 
-                                   Style="{StaticResource DropZoneHint}" 
+                        <TextBlock Text="{DynamicResource L.Base64.DropHint}"
+                                   Style="{StaticResource DropZoneHint}"
                                    FontSize="14" HorizontalAlignment="Center" Margin="0,0,0,8"/>
 
-                        <TextBlock Text="{Binding ViewModel.FilePath, TargetNullValue='or click to select'}" 
+                        <TextBlock Text="{Binding ViewModel.FilePath}"
                                    Style="{StaticResource LabelSecondary}"
                                    FontSize="10" TextAlignment="Center" TextWrapping="Wrap"
                                    Opacity="0.7" Margin="10,0,10,25" MaxHeight="50"/>
 
-                        <Button Content="ENCODE FILE" Command="{Binding ViewModel.EncodeFileCommand}" 
-                                Height="38" Width="160" Margin="0,0,0,10"
+                        <Button Content="{DynamicResource L.Base64.EncodeFile}"
+                                Command="{Binding ViewModel.EncodeFileCommand}"
+                                Height="38" Width="170" Margin="0,0,0,10"
+                                TabIndex="8"
                                 Background="{StaticResource AccentPrimaryBrush}" Style="{StaticResource ModernButton}"/>
-                        <Button Content="DECODE FILE" Command="{Binding ViewModel.DecodeFileCommand}" 
-                                Height="38" Width="160"
+                        <Button Content="{DynamicResource L.Base64.DecodeFile}"
+                                Command="{Binding ViewModel.DecodeFileCommand}"
+                                Height="38" Width="170"
+                                TabIndex="9"
                                 Background="{StaticResource GreenBrush}" Style="{StaticResource ModernButton}"/>
+
+                        <!-- İşlem sürerken iptal imkânı -->
+                        <Button Content="{DynamicResource L.Common.Cancel}"
+                                Command="{Binding ViewModel.EncodeFileCancelCommand}"
+                                Height="30" Width="170" Margin="0,10,0,0"
+                                TabIndex="10"
+                                Background="{StaticResource StatusDangerBrush}" Style="{StaticResource ModernButton}"
+                                Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     </StackPanel>
                 </Grid>
             </Border>
         </Grid>
 
-        <TextBlock Grid.Row="2" 
-                   Text="{Binding ViewModel.FileStatus}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,15,0,0"/>
+        <!-- Durum çubuğu: renk, durum türüne göre temadan gelir -->
+        <Grid Grid.Row="2" Margin="0,15,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ui:ProgressRing Grid.Column="0"
+                             IsIndeterminate="True"
+                             Width="16" Height="16"
+                             Margin="0,0,8,0"
+                             Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+            <TextBlock Grid.Column="1"
+                       Text="{Binding ViewModel.StatusText}"
+                       Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                       FontSize="11"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Center"
+                       AutomationProperties.LiveSetting="Polite"/>
+        </Grid>
     </Grid>
 </UserControl>
