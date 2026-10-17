@@ -7,108 +7,180 @@
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="MAC ADDRESS LOOKUP" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.MacLookup.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <Border Grid.Row="1" 
-                Padding="20">
-
+        <!-- Hedef -->
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,0,0,10">
             <StackPanel>
-                <TextBlock Text="MAC Address" 
-                           Style="{StaticResource LabelPrimary}" 
-                           Margin="0,0,0,10"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{DynamicResource L.MacLookup.Target}"
+                               Style="{StaticResource LabelPrimary}"
+                               VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox x:Name="TargetTextBox"
+                             Text="{Binding ViewModel.MacAddress, UpdateSourceTrigger=PropertyChanged}"
+                             Width="280" Height="32" VerticalContentAlignment="Center"
+                             FontFamily="{StaticResource MonoFont}"
+                             Margin="0,0,10,0" TabIndex="0"
+                             AutomationProperties.Name="{DynamicResource L.MacLookup.TargetAutomationName}"/>
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBox Grid.Column="0" 
-                             Text="{Binding MacAddress, UpdateSourceTrigger=PropertyChanged}"
-                             ToolTip="example: 00:1A:2B:3C:4D:5E or 001A2B3C4D5E"/>
-
-                    <Button Grid.Column="1" 
-                            Command="{Binding LookupCommand}"
-                            Content="LOOKUP"
-                            Height="40"
-                            Width="100"
-                            Margin="10,0,0,0"
+                    <Button Content="{DynamicResource L.MacLookup.Lookup}"
+                            Command="{Binding ViewModel.LookupCommand}"
                             Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
-                </Grid>
-
-                <!-- Formatlı MAC gösterimi -->
-                <TextBlock Text="{Binding FormattedMac}" 
-                           Style="{StaticResource LabelSecondary}"
-                           FontFamily="{StaticResource MonoFont}"
-                           FontSize="12"
-                           Margin="0,10,0,0"
-                           Visibility="{Binding FormattedMac, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-                <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                    <ui:ProgressRing IsIndeterminate="True" 
-                                     Width="16" 
-                                     Height="16" 
-                                     Margin="0,0,10,0"
-                                     Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                     Foreground="{StaticResource AccentPrimaryBrush}"/>
-                    <TextBlock Text="{Binding StatusText}" 
-                               Foreground="{StaticResource TextSecondaryBrush}"
-                               FontSize="11"
-                               VerticalAlignment="Center"/>
+                            Background="{StaticResource GreenBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="32" MinWidth="100" TabIndex="1"/>
                 </StackPanel>
 
-                <!-- Sonuç -->
-                <!-- Sonuç - Visibility tamamen kaldırıldı -->
-                <Border Style="{StaticResource OptionsPanel}"
-        Margin="0,15,0,0"
-        Padding="15">
+                <!-- Live format preview -->
+                <TextBlock Text="{Binding ViewModel.FormattedMac}"
+                           Foreground="{StaticResource AccentPrimaryBrush}"
+                           FontFamily="{StaticResource MonoFont}"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Margin="0,10,0,0"
+                           MinHeight="20"/>
 
-                    <StackPanel>
-                        <TextBlock Text="VENDOR / MANUFACTURER:" 
-                   Style="{StaticResource LabelSecondary}" 
-                   Margin="0,0,0,10"/>
-
-                        <TextBlock Text="{Binding Vendor}" 
-                   Style="{StaticResource LabelPrimary}"
-                   FontFamily="{StaticResource MonoFont}"
-                   FontSize="13"
-                   TextWrapping="Wrap"/>
-                    </StackPanel>
-                </Border>
-
-                <UniformGrid Columns="2" Margin="0,15,0,0">
-                    <Button Command="{Binding CopyResultCommand}" 
-                            Content="COPY RESULT"
-                            Height="34" 
-                            Margin="0,0,5,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
-                    <Button Command="{Binding ClearCommand}" 
-                            Content="CLEAR"
-                            Height="34" 
-                            Margin="5,0,0,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource RedBrush}"/>
-                </UniformGrid>
+                <TextBlock Text="{Binding ViewModel.LimitsText}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Opacity="0.6" FontSize="10" Margin="0,4,0,0" TextWrapping="Wrap"/>
             </StackPanel>
         </Border>
 
-        <TextBlock Grid.Row="2" 
-                   Text="🔍 MAC Address Lookup - Find vendor/manufacturer from MAC address (OUI lookup)"
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="10"
-                   HorizontalAlignment="Center"
-                   Margin="0,15,0,0"/>
+        <!-- Sonuçlar -->
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,5">
+                <TextBlock Text="{DynamicResource L.MacLookup.Results}" Style="{StaticResource LabelPrimary}" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding ViewModel.SummaryText}"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Center"
+                           TextWrapping="Wrap" MaxWidth="620"/>
+            </Grid>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <Border Background="{StaticResource OptionsBgBrush}"
+                        BorderBrush="{StaticResource OptionsBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Padding="15">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource L.MacLookup.Column.Mac}"
+                                   Style="{StaticResource LabelSecondary}" Margin="0,0,0,8"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ViewModel.FormattedMac}"
+                                   Foreground="{StaticResource AccentPrimaryBrush}"
+                                   FontFamily="{StaticResource MonoFont}"
+                                   FontWeight="Bold" FontSize="14" Margin="0,0,0,8"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource L.MacLookup.Column.Oui}"
+                                   Style="{StaticResource LabelSecondary}" Margin="0,0,0,8"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ViewModel.Oui}"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   FontFamily="{StaticResource MonoFont}" Margin="0,0,0,8"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource L.MacLookup.Column.Vendor}"
+                                   Style="{StaticResource LabelSecondary}" Margin="0,0,0,8"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding ViewModel.Vendor}"
+                                   Foreground="{StaticResource AccentPrimaryBrush}"
+                                   FontWeight="Bold" FontSize="14" Margin="0,0,0,8"/>
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="{DynamicResource L.MacLookup.Column.Address}"
+                                   Style="{StaticResource LabelSecondary}" Margin="0,0,0,8"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding ViewModel.Address}"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,8"/>
+
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="{DynamicResource L.MacLookup.Column.Country}"
+                                   Style="{StaticResource LabelSecondary}" Margin="0,0,0,8"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding ViewModel.Country}"
+                                   Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,8"/>
+
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="{DynamicResource L.MacLookup.Column.Type}"
+                                   Style="{StaticResource LabelSecondary}" Margin="0,0,0,8"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding ViewModel.MacType}"
+                                   Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,8"/>
+                    </Grid>
+                </Border>
+            </ScrollViewer>
+        </Grid>
+
+        <!-- Alt bar -->
+        <Border Grid.Row="3" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <UniformGrid Grid.Row="0" Columns="4">
+                    <Button Content="{DynamicResource L.MacLookup.Copy}"
+                            Command="{Binding ViewModel.CopyResultCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="0,0,5,0" TabIndex="2"/>
+                    <Button Content="{DynamicResource L.MacLookup.Save}"
+                            Command="{Binding ViewModel.SaveResultCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource AccentPrimaryBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="5,0,5,0" TabIndex="3"/>
+                    <Button Content="{DynamicResource L.MacLookup.Clear}"
+                            Command="{Binding ViewModel.ClearCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="5,0,5,0" TabIndex="4"/>
+                    <Button Content="{DynamicResource L.Common.Cancel}"
+                            Command="{Binding ViewModel.LookupCancelCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusDangerBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="5,0,0,0" TabIndex="5"
+                            Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </UniformGrid>
+
+                <Grid Grid.Row="1" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0"
+                                     Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding ViewModel.StatusText}"
+                               Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                               FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center"
+                               AutomationProperties.LiveSetting="Polite"/>
+                </Grid>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

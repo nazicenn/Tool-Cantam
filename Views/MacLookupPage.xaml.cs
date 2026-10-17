@@ -1,13 +1,27 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class MacLookupPage : UserControl
+/// <summary>
+/// MAC Lookup sayfası. MAC doğrulama, HTTP timeout ve iptal servis tarafından yönetilir.
+/// </summary>
+public partial class MacLookupPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.MacLookupViewModel>
 {
-    public MacLookupPage(MacLookupViewModel viewModel)
+    public ViewModels.MacLookupViewModel ViewModel { get; }
+
+    public MacLookupPage(ViewModels.MacLookupViewModel viewModel)
     {
+        ViewModel = viewModel;
         InitializeComponent();
-        DataContext = viewModel;
+        DataContext = this;
+
+        ViewModel.RequestTargetFocus += FocusTarget;
+    }
+
+    private void FocusTarget()
+    {
+        if (!IsLoaded) return;
+        TargetTextBox.Focus();
+        TargetTextBox.SelectAll();
     }
 }
