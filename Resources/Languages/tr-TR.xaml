@@ -998,6 +998,35 @@
     <sys:String x:Key="L.Jwt.Error.InvalidFormat">Geçersiz JWT formatı. Bir JWT 2 veya 3 noktayla ayrılmış parça içermelidir.</sys:String>
     <sys:String x:Key="L.Jwt.Error.InvalidBase64">JWT parçalarından biri geçerli Base64Url değil.</sys:String>
     <sys:String x:Key="L.Jwt.Error.InvalidJson">JWT parçalarından biri geçerli JSON değil.</sys:String>
+    <!-- ============ Password Generator ============ -->
+    <sys:String x:Key="L.Password.Title">PAROLA ÜRETİCİ</sys:String>
+    <sys:String x:Key="L.Password.Settings">Parola Ayarları</sys:String>
+    <sys:String x:Key="L.Password.StrengthTester">Parola Güç Testi</sys:String>
+    <sys:String x:Key="L.Password.Length">Uzunluk:</sys:String>
+    <sys:String x:Key="L.Password.UseUpper">Büyük harf (A-Z)</sys:String>
+    <sys:String x:Key="L.Password.UseLower">Küçük harf (a-z)</sys:String>
+    <sys:String x:Key="L.Password.UseDigits">Rakam (0-9)</sys:String>
+    <sys:String x:Key="L.Password.UseSymbols">Sembol (!@#$%^&amp;*)</sys:String>
+    <sys:String x:Key="L.Password.ExcludeSimilar">Benzerleri çıkar (0/O, 1/l/I)</sys:String>
+    <sys:String x:Key="L.Password.Generate">ÜRET</sys:String>
+    <sys:String x:Key="L.Password.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.Password.TestPassword">Test Parolası:</sys:String>
+    <sys:String x:Key="L.Password.ClearTest">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Password.CrackTime">Kırılma Süresi</sys:String>
+    <sys:String x:Key="L.Password.Entropy">Entropi</sys:String>
+    <sys:String x:Key="L.Password.Strength.StartTyping">Yazmaya başlayın...</sys:String>
+    <sys:String x:Key="L.Password.Hint">Güç; uzunluk, karakter çeşitliliği ve entropiye dayanır. Parolaları siteler arasında asla tekrar kullanmayın.</sys:String>
+    <sys:String x:Key="L.Password.Limits">Uzunluk: {0}–{1}.</sys:String>
 
+    <sys:String x:Key="L.Password.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Password.Status.Generated">✓ {0} karakterli parola üretildi · {1}</sys:String>
+    <sys:String x:Key="L.Password.Status.Copied">Parola panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Password.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.Password.Validation.NothingToCopy">Kopyalanacak parola yok.</sys:String>
+
+    <sys:String x:Key="L.Password.Error.InvalidLength">Uzunluk aralık dışında.</sys:String>
+    <sys:String x:Key="L.Password.Error.NoCharacterSet">En az bir karakter seti seçin.</sys:String>
+    <sys:String x:Key="L.Password.Error.PasswordTooLong">Parola analiz için çok uzun.</sys:String>
 
 </ResourceDictionary>

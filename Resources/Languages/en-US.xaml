@@ -997,7 +997,36 @@
     <sys:String x:Key="L.Jwt.Error.InvalidFormat">Invalid JWT format. A JWT must have 2 or 3 parts separated by dots.</sys:String>
     <sys:String x:Key="L.Jwt.Error.InvalidBase64">A JWT segment is not valid Base64Url.</sys:String>
     <sys:String x:Key="L.Jwt.Error.InvalidJson">A JWT segment is not valid JSON.</sys:String>
+    <!-- ============ Password Generator ============ -->
+    <sys:String x:Key="L.Password.Title">PASSWORD GENERATOR</sys:String>
+    <sys:String x:Key="L.Password.Settings">Password Settings</sys:String>
+    <sys:String x:Key="L.Password.StrengthTester">Password Strength Tester</sys:String>
+    <sys:String x:Key="L.Password.Length">Length:</sys:String>
+    <sys:String x:Key="L.Password.UseUpper">Uppercase (A-Z)</sys:String>
+    <sys:String x:Key="L.Password.UseLower">Lowercase (a-z)</sys:String>
+    <sys:String x:Key="L.Password.UseDigits">Digits (0-9)</sys:String>
+    <sys:String x:Key="L.Password.UseSymbols">Symbols (!@#$%^&amp;*)</sys:String>
+    <sys:String x:Key="L.Password.ExcludeSimilar">Exclude similar (0/O, 1/l/I)</sys:String>
+    <sys:String x:Key="L.Password.Generate">GENERATE</sys:String>
+    <sys:String x:Key="L.Password.Copy">COPY</sys:String>
+    <sys:String x:Key="L.Password.TestPassword">Test Password:</sys:String>
+    <sys:String x:Key="L.Password.ClearTest">CLEAR</sys:String>
+    <sys:String x:Key="L.Password.CrackTime">Crack Time</sys:String>
+    <sys:String x:Key="L.Password.Entropy">Entropy</sys:String>
+    <sys:String x:Key="L.Password.Strength.StartTyping">Start typing...</sys:String>
+    <sys:String x:Key="L.Password.Hint">Strength is based on length, character variety and entropy. Never reuse passwords across sites.</sys:String>
+    <sys:String x:Key="L.Password.Limits">Length: {0}–{1}.</sys:String>
 
+    <sys:String x:Key="L.Password.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Password.Status.Generated">✓ Generated {0}-char password · {1}</sys:String>
+    <sys:String x:Key="L.Password.Status.Copied">Password copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Password.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.Password.Validation.NothingToCopy">There is no password to copy.</sys:String>
+
+    <sys:String x:Key="L.Password.Error.InvalidLength">Length is out of range.</sys:String>
+    <sys:String x:Key="L.Password.Error.NoCharacterSet">Select at least one character set.</sys:String>
+    <sys:String x:Key="L.Password.Error.PasswordTooLong">Password is too long to analyze.</sys:String>
 
 
 </ResourceDictionary>

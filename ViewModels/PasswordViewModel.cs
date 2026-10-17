@@ -1,138 +1,214 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
+using System.Windows.Media;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
 using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
+/// <summary>
+/// Password Generator aracının sunum katmanı. İş mantığı <see cref="IPasswordGeneratorService"/> içindedir.
+/// Üretim ve güç testi async, iptal edilebilir; PasswordBox yönetimi code-behind'dadır.
+/// </summary>
 public partial class PasswordViewModel : ObservableObject
 {
-    private readonly IPasswordService _passwordService;
+    private readonly IPasswordGeneratorService _passwordService;
     private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<PasswordViewModel> _logger;
 
-    // Clear işlemi sonrası çağrılacak callback
-    public Action? OnClearRequested { get; set; }
-
+    // Üretim parametreleri
     [ObservableProperty] private int _passwordLength = 16;
     [ObservableProperty] private bool _useUpper = true;
     [ObservableProperty] private bool _useLower = true;
     [ObservableProperty] private bool _useDigits = true;
     [ObservableProperty] private bool _useSpecial = true;
+    [ObservableProperty] private bool _excludeSimilar;
+
+    // Üretilen parola
     [ObservableProperty] private string _generatedPassword = string.Empty;
+    [ObservableProperty] private string _generatedStrength = string.Empty;
+    [ObservableProperty] private int _generatedScore;
+    [ObservableProperty] private SolidColorBrush _generatedColor = new(Colors.Gray);
 
+    // Test parolası
     [ObservableProperty] private string _testPassword = string.Empty;
-    [ObservableProperty] private string _strengthText = "Enter a password to test";
-    [ObservableProperty] private int _strengthPercent = 0;
-    [ObservableProperty] private string _strengthColor = "#444444";
-    [ObservableProperty] private string _statusText = "Ready.";
+    [ObservableProperty] private int _strengthPercent;
+    [ObservableProperty] private string _strengthText = "Start typing...";
+    [ObservableProperty] private SolidColorBrush _strengthColor = new(Colors.Gray);
+    [ObservableProperty] private string _crackTime = "-";
+    [ObservableProperty] private int _entropyBits;
 
-    public PasswordViewModel(IPasswordService passwordService, IFileExportService fileExportService)
+    // Durum
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
+
+    public event Action? OnClearRequested;
+
+    public PasswordViewModel(
+        IPasswordGeneratorService passwordService,
+        IFileExportService fileExportService,
+        ILocalizerService localizer,
+        ILogger<PasswordViewModel> logger)
     {
         _passwordService = passwordService;
         _fileExportService = fileExportService;
-        Generate();
+        _localizer = localizer;
+        _logger = logger;
+
+        StatusText = _localizer.Get("L.Password.Status.Ready");
     }
 
-    [RelayCommand]
-    private void Generate()
+    public string LimitsText => _localizer.Format(
+        "L.Password.Limits", _passwordService.MinLength, _passwordService.MaxLength);
+
+    partial void OnTestPasswordChanged(string value) => AnalyzePassword(value);
+
+    [RelayCommand(IncludeCancelCommand = true)]
+    private async Task GenerateAsync(CancellationToken cancellationToken)
     {
+        var options = new PasswordOptions(
+            PasswordLength,
+            UseUpper,
+            UseLower,
+            UseDigits,
+            UseSpecial,
+            ExcludeSimilar);
+
+        IsBusy = true;
         try
         {
-            GeneratedPassword = _passwordService.Generate(PasswordLength, UseUpper, UseLower, UseDigits, UseSpecial);
-            CheckStrength(GeneratedPassword);
-            StatusText = "Password generated successfully.";
+            ToolResult<PasswordReport> result = await Task.Run(
+                () => _passwordService.Generate(options), cancellationToken);
+
+            if (!result.IsSuccess)
+            {
+                ReportFailure(result, "generate");
+                return;
+            }
+
+            var report = result.Value!;
+            GeneratedPassword = report.Password;
+            GeneratedStrength = report.Strength.Strength;
+            GeneratedScore = report.Strength.Score;
+            GeneratedColor = ParseBrushSafe(report.Strength.ColorHex);
+
+            _logger.LogInformation(
+                "Password generated: length={Length} strength={Strength} score={Score}",
+                PasswordLength, report.Strength.Strength, report.Strength.Score);
+
+            SetStatus(NotificationType.Success, "L.Password.Status.Generated",
+                PasswordLength, report.Strength.Strength);
+        }
+        catch (OperationCanceledException)
+        {
+            _logger.LogInformation("Password generation cancelled.");
+            SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled");
         }
         catch (Exception ex)
         {
-            GeneratedPassword = $"Error: {ex.Message}";
-            StatusText = $"Error: {ex.Message}";
+            _logger.LogError(ex, "Password generation failed unexpectedly.");
+            SetStatus(NotificationType.Error, "L.Common.Error.Unexpected");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    private void AnalyzePassword(string? password)
+    {
+        if (string.IsNullOrEmpty(password))
+        {
+            StrengthPercent = 0;
+            StrengthText = _localizer.Get("L.Password.Strength.StartTyping");
+            StrengthColor = new SolidColorBrush(Colors.Gray);
+            CrackTime = "-";
+            EntropyBits = 0;
+            return;
+        }
+
+        var result = _passwordService.Analyze(password);
+        if (!result.IsSuccess)
+        {
+            StrengthText = result.ErrorCode ?? "Error";
+            StrengthColor = new SolidColorBrush(Colors.Red);
+            return;
+        }
+
+        var report = result.Value!;
+        StrengthPercent = report.Score;
+        StrengthText = report.Strength;
+        StrengthColor = ParseBrushSafe(report.ColorHex);
+        CrackTime = report.CrackTime;
+        EntropyBits = report.EntropyBits;
+    }
+
+    /// <summary>Boş veya geçersiz renk kodunda gri döner; FormatException fırlatmaz.</summary>
+    private static SolidColorBrush ParseBrushSafe(string? colorHex)
+    {
+        if (string.IsNullOrWhiteSpace(colorHex))
+            return new SolidColorBrush(Colors.Gray);
+
+        try
+        {
+            if (new BrushConverter().ConvertFromString(colorHex) is SolidColorBrush brush)
+                return brush;
+        }
+        catch
+        {
+            // Geçersiz renk: gri dön
+        }
+
+        return new SolidColorBrush(Colors.Gray);
+    }
+
+    [RelayCommand]
+    private void CopyPassword()
+    {
+        if (string.IsNullOrWhiteSpace(GeneratedPassword))
+        {
+            SetStatus(NotificationType.Warning, "L.Password.Validation.NothingToCopy");
+            return;
+        }
+
+        try
+        {
+            _fileExportService.CopyToClipboard(GeneratedPassword);
+            SetStatus(NotificationType.Success, "L.Password.Status.Copied");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Password could not be copied.");
+            SetStatus(NotificationType.Error, "L.Common.Error.Clipboard");
         }
     }
 
     [RelayCommand]
     private void Clear()
     {
-        PasswordLength = 16;
-        UseUpper = true;
-        UseLower = true;
-        UseDigits = true;
-        UseSpecial = true;
-        GeneratedPassword = string.Empty;
         TestPassword = string.Empty;
-        StrengthText = "Enter a password to test";
-        StrengthPercent = 0;
-        StrengthColor = "#444444";
-        StatusText = "Cleared. Ready.";
-
-        // PasswordBox'u temizlemek için callback'i tetikle
+        GeneratedPassword = string.Empty;
+        GeneratedStrength = string.Empty;
+        GeneratedScore = 0;
         OnClearRequested?.Invoke();
+        SetStatus(NotificationType.Info, "L.Password.Status.Cleared");
     }
 
-    [RelayCommand]
-    private void CopyPassword()
+    private void SetStatus(NotificationType type, string messageKey, params object?[] args)
     {
-        if (!string.IsNullOrWhiteSpace(GeneratedPassword))
-        {
-            _fileExportService.CopyToClipboard(GeneratedPassword);
-            StatusText = "Password copied to clipboard.";
-        }
+        StatusType = type;
+        StatusText = _localizer.Format(messageKey, args);
     }
 
-    partial void OnTestPasswordChanged(string value)
+    private void ReportFailure(IToolResult result, string operation)
     {
-        if (!string.IsNullOrWhiteSpace(value))
-            CheckStrength(value);
-        else
-        {
-            StrengthText = "Enter a password to test";
-            StrengthPercent = 0;
-            StrengthColor = "#444444";
-            StatusText = "Ready.";
-        }
-    }
+        _logger.LogWarning("Password {Operation} failed: kind={ErrorKind} code={ErrorCode}",
+            operation, result.ErrorKind, result.ErrorCode);
 
-    private void CheckStrength(string password)
-    {
-        int score = 0;
-        int maxScore = 7;
-
-        if (password.Length >= 8) score++;
-        if (password.Length >= 12) score++;
-        if (password.Length >= 16) score++;
-
-        if (Regex.IsMatch(password, "[a-z]")) score++;
-        if (Regex.IsMatch(password, "[A-Z]")) score++;
-        if (Regex.IsMatch(password, "[0-9]")) score++;
-        if (Regex.IsMatch(password, "[^a-zA-Z0-9]")) score++;
-
-        int percent = (int)((double)score / maxScore * 100);
-        StrengthPercent = percent;
-
-        if (percent >= 80)
-        {
-            StrengthText = "Very Strong";
-            StrengthColor = "#00FF41";
-        }
-        else if (percent >= 60)
-        {
-            StrengthText = "Strong";
-            StrengthColor = "#88FF00";
-        }
-        else if (percent >= 40)
-        {
-            StrengthText = "Medium";
-            StrengthColor = "#FFA500";
-        }
-        else if (percent >= 20)
-        {
-            StrengthText = "Weak";
-            StrengthColor = "#FF4444";
-        }
-        else
-        {
-            StrengthText = "Very Weak";
-            StrengthColor = "#AA0000";
-        }
+        SetStatus(NotificationType.Error, result.ErrorCode ?? "L.Common.Error.Unexpected");
     }
 }

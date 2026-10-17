@@ -1,27 +1,27 @@
+using System.Windows;
 using System.Windows.Controls;
-using tool_cantam.ViewModels;
+using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class PasswordPage : UserControl
+public partial class PasswordPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.PasswordViewModel>
 {
-    public PasswordPage(PasswordViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
+    public ViewModels.PasswordViewModel ViewModel { get; }
 
-        // Callback'i bağla - Clear butonuna basılınca PasswordBox temizlenecek
-        viewModel.OnClearRequested = () =>
+    public PasswordPage(ViewModels.PasswordViewModel viewModel)
+    {
+        ViewModel = viewModel;
+        InitializeComponent();
+        DataContext = this;
+
+        ViewModel.OnClearRequested += () =>
         {
             TxtTestPassword.Password = string.Empty;
         };
     }
 
-    private void TxtTestPassword_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)
+    private void TxtTestPassword_PasswordChanged(object sender, RoutedEventArgs e)
     {
-        if (DataContext is PasswordViewModel vm)
-        {
-            vm.TestPassword = TxtTestPassword.Password;
-        }
+        ViewModel.TestPassword = TxtTestPassword.Password;
     }
 }
