@@ -306,4 +306,44 @@
     <sys:String x:Key="L.CharacterCodes.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
     <sys:String x:Key="L.CharacterCodes.Error.OutputTooLarge">Sonuç çok büyük olurdu. Sınır 10 MB'tır.</sys:String>
 
+    <!-- ============ Unicode kaçış dönüştürücü ============ -->
+    <sys:String x:Key="L.Unicode.Title">UNICODE KAÇIŞ DÖNÜŞTÜRÜCÜ</sys:String>
+    <sys:String x:Key="L.Unicode.Format">Kaçış biçimi</sys:String>
+    <sys:String x:Key="L.Unicode.Format.Utf16">\uXXXX (UTF-16, JavaScript/Java/C# için)</sys:String>
+    <sys:String x:Key="L.Unicode.Format.CodePoint">\UXXXXXXXX (kod noktası, Python/C++ için)</sys:String>
+    <sys:String x:Key="L.Unicode.Format.Utf8Bytes">\xXX (UTF-8 baytları, C/C++ için)</sys:String>
+    <sys:String x:Key="L.Unicode.Format.Notation">U+XXXX (okunabilir gösterim)</sys:String>
+    <sys:String x:Key="L.Unicode.FormatHelp">Biçim yalnızca kodlamayı etkiler. Çözme tüm biçimleri, ayrıca \u{...} ve yaygın C kaçışlarını kabul eder.</sys:String>
+    <sys:String x:Key="L.Unicode.ToEscapes">KAÇIŞA ÇEVİR</sys:String>
+    <sys:String x:Key="L.Unicode.ToText">METNE ÇEVİR</sys:String>
+    <sys:String x:Key="L.Unicode.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.Unicode.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.Unicode.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Unicode.Swap">TAKAS</sys:String>
+    <sys:String x:Key="L.Unicode.SwapHelp">Giriş ve çıkışı takas et</sys:String>
+    <sys:String x:Key="L.Unicode.Hint">Eşleşmemiş vekil kaçışı hata verir; çünkü tek başına metne çevrilemez.</sys:String>
+    <sys:String x:Key="L.Unicode.InputAutomationName">Metin veya kaçış dizileri</sys:String>
+    <sys:String x:Key="L.Unicode.OutputAutomationName">Dönüşüm sonucu</sys:String>
+
+    <sys:String x:Key="L.Unicode.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Unicode.Status.Escaped">{0} karakter, {1} karakterlik kaçışa çevrildi.</sys:String>
+    <sys:String x:Key="L.Unicode.Status.Unescaped">{0} karakterlik metne çevrildi.</sys:String>
+    <sys:String x:Key="L.Unicode.Status.Copied">Çıktı panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Unicode.Status.Saved">Çıktı dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.Unicode.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.Unicode.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.Unicode.Status.Swapped">Giriş ve çıkış takas edildi.</sys:String>
+
+    <sys:String x:Key="L.Unicode.Validation.EmptyInput">Lütfen dönüştürülecek metni veya kaçış dizilerini girin.</sys:String>
+    <sys:String x:Key="L.Unicode.Validation.NothingToCopy">Kopyalanacak çıktı yok.</sys:String>
+    <sys:String x:Key="L.Unicode.Validation.NothingToSave">Kaydedilecek çıktı yok.</sys:String>
+
+    <sys:String x:Key="L.Unicode.Error.InvalidEscape">Geçersiz kaçış dizisi.</sys:String>
+    <sys:String x:Key="L.Unicode.Error.InvalidCodePoint">Kaçış, geçerli bir Unicode kod noktası olmayan bir değere çözülüyor.</sys:String>
+    <sys:String x:Key="L.Unicode.Error.LoneSurrogate">Vekil kaçışı eşleşmemiş. Vekiller tek başına metne çevrilemez.</sys:String>
+    <sys:String x:Key="L.Unicode.Error.NotUtf8">\xXX bayt dizisi geçerli UTF-8 metni oluşturmuyor.</sys:String>
+    <sys:String x:Key="L.Unicode.Error.InvalidUnicode">Metin geçersiz bir Unicode karakteri içeriyor (eşleşmemiş surrogate).</sys:String>
+    <sys:String x:Key="L.Unicode.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
+    <sys:String x:Key="L.Unicode.Error.OutputTooLarge">Sonuç çok büyük olurdu. Sınır 10 MB'tır.</sys:String>
+
 </ResourceDictionary>

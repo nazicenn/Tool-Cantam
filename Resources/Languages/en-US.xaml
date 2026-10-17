@@ -306,4 +306,44 @@
     <sys:String x:Key="L.CharacterCodes.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
     <sys:String x:Key="L.CharacterCodes.Error.OutputTooLarge">The result would be too large. The limit is 10 MB.</sys:String>
 
+    <!-- ============ Unicode escape converter ============ -->
+    <sys:String x:Key="L.Unicode.Title">UNICODE ESCAPE CONVERTER</sys:String>
+    <sys:String x:Key="L.Unicode.Format">Escape format</sys:String>
+    <sys:String x:Key="L.Unicode.Format.Utf16">\uXXXX (UTF-16, for JavaScript/Java/C#)</sys:String>
+    <sys:String x:Key="L.Unicode.Format.CodePoint">\UXXXXXXXX (code point, for Python/C++)</sys:String>
+    <sys:String x:Key="L.Unicode.Format.Utf8Bytes">\xXX (UTF-8 bytes, for C/C++)</sys:String>
+    <sys:String x:Key="L.Unicode.Format.Notation">U+XXXX (readable notation)</sys:String>
+    <sys:String x:Key="L.Unicode.FormatHelp">The format only affects encoding. Decoding accepts every format, plus \u{...} and the common C escapes.</sys:String>
+    <sys:String x:Key="L.Unicode.ToEscapes">TO ESCAPES</sys:String>
+    <sys:String x:Key="L.Unicode.ToText">TO TEXT</sys:String>
+    <sys:String x:Key="L.Unicode.Copy">COPY</sys:String>
+    <sys:String x:Key="L.Unicode.Save">SAVE</sys:String>
+    <sys:String x:Key="L.Unicode.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.Unicode.Swap">SWAP</sys:String>
+    <sys:String x:Key="L.Unicode.SwapHelp">Swap input and output</sys:String>
+    <sys:String x:Key="L.Unicode.Hint">A lone surrogate escape is an error, because it cannot be turned back into text.</sys:String>
+    <sys:String x:Key="L.Unicode.InputAutomationName">Text or escape sequences</sys:String>
+    <sys:String x:Key="L.Unicode.OutputAutomationName">Conversion result</sys:String>
+
+    <sys:String x:Key="L.Unicode.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Unicode.Status.Escaped">Escaped {0} character(s) to {1} character(s).</sys:String>
+    <sys:String x:Key="L.Unicode.Status.Unescaped">Unescaped to {0} character(s) of text.</sys:String>
+    <sys:String x:Key="L.Unicode.Status.Copied">Output copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Unicode.Status.Saved">Output saved to file.</sys:String>
+    <sys:String x:Key="L.Unicode.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.Unicode.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.Unicode.Status.Swapped">Input and output swapped.</sys:String>
+
+    <sys:String x:Key="L.Unicode.Validation.EmptyInput">Please enter text or escape sequences to convert.</sys:String>
+    <sys:String x:Key="L.Unicode.Validation.NothingToCopy">There is no output to copy.</sys:String>
+    <sys:String x:Key="L.Unicode.Validation.NothingToSave">There is no output to save.</sys:String>
+
+    <sys:String x:Key="L.Unicode.Error.InvalidEscape">Invalid escape sequence.</sys:String>
+    <sys:String x:Key="L.Unicode.Error.InvalidCodePoint">The escape resolves to a value that is not a valid Unicode code point.</sys:String>
+    <sys:String x:Key="L.Unicode.Error.LoneSurrogate">A surrogate escape is not paired. Surrogates cannot be converted to text on their own.</sys:String>
+    <sys:String x:Key="L.Unicode.Error.NotUtf8">The \xXX byte sequence does not form valid UTF-8 text.</sys:String>
+    <sys:String x:Key="L.Unicode.Error.InvalidUnicode">The text contains an invalid Unicode character (unpaired surrogate).</sys:String>
+    <sys:String x:Key="L.Unicode.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
+    <sys:String x:Key="L.Unicode.Error.OutputTooLarge">The result would be too large. The limit is 10 MB.</sys:String>
+
 </ResourceDictionary>

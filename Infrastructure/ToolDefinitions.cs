@@ -92,18 +92,10 @@ public static class ToolDefinitions
         ToolRegistry.Register(new ToolDefinition
         {
             Name = "Unicode Converter",
-            Description = "Convert text to Unicode escape sequences",
+            Description = "Convert text to and from Unicode escapes (\\uXXXX, \\UXXXXXXXX, \\xXX, U+XXXX)",
             Category = ToolCategory.EncodersDecoders,
             ViewModelType = typeof(UnicodeConverterViewModel),
-            ViewType = typeof(UnicodeConverterPage),
-            Execute = async (input) =>
-            {
-                var text = input?.ToString() ?? string.Empty;
-                var unicode = new StringBuilder();
-                foreach (char c in text)
-                    unicode.Append($"\\u{(int)c:X4}");
-                return unicode.ToString();
-            }
+            ViewType = typeof(UnicodeConverterPage)
         });
 
         ToolRegistry.Register(new ToolDefinition

@@ -1,13 +1,27 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
+using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class UnicodeConverterPage : UserControl
+public partial class UnicodeConverterPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.UnicodeConverterViewModel>
 {
-    public UnicodeConverterPage(UnicodeConverterViewModel viewModel)
+    public ViewModels.UnicodeConverterViewModel ViewModel { get; }
+
+    public UnicodeConverterPage(ViewModels.UnicodeConverterViewModel viewModel)
     {
+        ViewModel = viewModel;
         InitializeComponent();
-        DataContext = viewModel;
+        DataContext = this;
+
+        // Girdi eksikse görünüm odaklanmayı yönetir; ViewModel'de UI bağımlılığı yoktur.
+        ViewModel.RequestInputFocus += FocusInput;
+    }
+
+    private void FocusInput()
+    {
+        if (!IsLoaded)
+            return;
+
+        InputTextBox.Focus();
+        InputTextBox.SelectAll();
     }
 }
