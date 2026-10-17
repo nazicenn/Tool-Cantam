@@ -923,7 +923,41 @@
     <sys:String x:Key="L.StringReverser.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
     <sys:String x:Key="L.StringReverser.Error.InvalidUnicode">The text contains an invalid Unicode character (unpaired surrogate).</sys:String>
     <sys:String x:Key="L.StringReverser.Error.UnknownMode">Unknown reverse mode.</sys:String>
+    <!-- ============ JSON Formatter ============ -->
+    <sys:String x:Key="L.JsonFormatter.Title">JSON FORMATTER</sys:String>
+    <sys:String x:Key="L.JsonFormatter.InputLabel">Input JSON</sys:String>
+    <sys:String x:Key="L.JsonFormatter.OutputLabel">Output Result</sys:String>
+    <sys:String x:Key="L.JsonFormatter.IndentLabel">Indent:</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Format">FORMAT</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Minify">MINIFY</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Validate">VALIDATE</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Copy">COPY</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Save">SAVE</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Nodes">Nodes:</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Depth">Depth:</sys:String>
+    <sys:String x:Key="L.JsonFormatter.InputAutomationName">JSON input</sys:String>
+    <sys:String x:Key="L.JsonFormatter.OutputAutomationName">JSON output</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Limits">Max input: {0} bytes · Max depth: {1} levels.</sys:String>
 
-    
+    <sys:String x:Key="L.JsonFormatter.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Status.Formatted">✓ Formatted · {0} nodes · depth {1}.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Status.Minified">✓ Minified · {0} nodes · depth {1}.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Status.Validated">✓ Valid JSON · {0} nodes · depth {1}.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Status.Copied">Output copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Status.Saved">Output saved to file.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.JsonFormatter.Validation.EmptyInput">Please enter JSON data.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Validation.NothingToCopy">There is no output to copy.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Validation.NothingToSave">There is no output to save.</sys:String>
+
+    <sys:String x:Key="L.JsonFormatter.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Error.EmptyInput">JSON input is empty.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Error.InvalidJson">Invalid JSON. Check the syntax and try again.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Error.DepthTooLarge">JSON structure exceeds the maximum depth.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Error.InvalidIndent">Indent size is out of range (1–8).</sys:String>
+
 
 </ResourceDictionary>

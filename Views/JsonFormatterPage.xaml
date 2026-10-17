@@ -7,86 +7,186 @@
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="JSON FORMATTER" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.JsonFormatter.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <Grid Grid.Row="1">
-            <Grid Grid.Column="0" Margin="0,0,0,0">
+        <!-- Indent seçici -->
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="10" Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{DynamicResource L.JsonFormatter.IndentLabel}"
+                           Style="{StaticResource LabelPrimary}"
+                           VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <ComboBox ItemsSource="{Binding ViewModel.IndentOptions}"
+                          SelectedItem="{Binding ViewModel.IndentSize}"
+                          Width="80" Height="30" TabIndex="0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Ana alan -->
+        <Border Grid.Row="2" Padding="15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Sol: Input -->
+                <Grid Grid.Column="0" Margin="0,0,10,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource L.JsonFormatter.InputLabel}"
+                               Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                    <TextBox Grid.Row="1"
+                             x:Name="InputTextBox"
+                             Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto"
+                             FontFamily="{StaticResource MonoFont}"
+                             TabIndex="1"
+                             Foreground="{StaticResource TextPrimaryBrush}"
+                             BorderBrush="{StaticResource BorderDefaultBrush}"
+                             AutomationProperties.Name="{DynamicResource L.JsonFormatter.InputAutomationName}"/>
+                </Grid>
+
+                <!-- Sağ: Output -->
+                <Grid Grid.Column="1" Margin="10,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{DynamicResource L.JsonFormatter.OutputLabel}"
+                                   Style="{StaticResource LabelPrimary}"
+                                   VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Button Command="{Binding ViewModel.CopyOutputCommand}"
+                                    Content="{DynamicResource L.JsonFormatter.Copy}"
+                                    Width="70" Height="26" Margin="0,0,5,0"
+                                    Style="{StaticResource ModernButton}"
+                                    Background="{StaticResource StatusWarningBrush}"
+                                    Foreground="{StaticResource TextPrimaryBrush}"
+                                    TabIndex="5"/>
+                            <Button Command="{Binding ViewModel.SaveOutputCommand}"
+                                    Content="{DynamicResource L.JsonFormatter.Save}"
+                                    Width="70" Height="26"
+                                    Style="{StaticResource ModernButton}"
+                                    Background="{StaticResource AccentPrimaryBrush}"
+                                    Foreground="{StaticResource TextPrimaryBrush}"
+                                    TabIndex="6"/>
+                        </StackPanel>
+                    </Grid>
+                    <TextBox Grid.Row="1"
+                             Text="{Binding ViewModel.OutputText, Mode=OneWay}"
+                             IsReadOnly="True"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto"
+                             FontFamily="{StaticResource MonoFont}"
+                             TabIndex="2"
+                             Foreground="{StaticResource AccentPrimaryBrush}"
+                             BorderBrush="{StaticResource BorderDefaultBrush}"
+                             AutomationProperties.Name="{DynamicResource L.JsonFormatter.OutputAutomationName}"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- Alt bar -->
+        <Border Grid.Row="3" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Text="Input JSON" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <TextBox Grid.Row="1" 
-                         Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" 
-                         AcceptsReturn="True" 
-                         TextWrapping="Wrap" 
-                         Margin="0,0,0,12"
-                         VerticalAlignment="Stretch" 
-                         MinHeight="120"
-                         VerticalScrollBarVisibility="Auto"
-                         Foreground="{StaticResource TextPrimaryBrush}"
-                         BorderBrush="{StaticResource BorderDefaultBrush}"/>
+                    <UniformGrid Grid.Column="0" Columns="4">
+                        <Button Content="{DynamicResource L.JsonFormatter.Format}"
+                                Command="{Binding ViewModel.FormatCommand}"
+                                Height="34" Margin="0,0,5,0"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource GreenBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="3"/>
+                        <Button Content="{DynamicResource L.JsonFormatter.Minify}"
+                                Command="{Binding ViewModel.MinifyCommand}"
+                                Height="34" Margin="5,0,5,0"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource AccentPrimaryBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="4"/>
+                        <Button Content="{DynamicResource L.JsonFormatter.Validate}"
+                                Command="{Binding ViewModel.ValidateCommand}"
+                                Height="34" Margin="5,0,5,0"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource StatusWarningBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="7"/>
+                        <Button Content="{DynamicResource L.Common.Cancel}"
+                                Command="{Binding ViewModel.FormatCancelCommand}"
+                                Height="34" Margin="5,0,5,0"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource StatusDangerBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="8"
+                                Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    </UniformGrid>
 
-                <TextBlock Grid.Row="2" Text="Output Result" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
+                    <Button Grid.Column="1"
+                            Content="{DynamicResource L.JsonFormatter.Clear}"
+                            Command="{Binding ViewModel.ClearCommand}"
+                            Height="34" Width="90" Margin="5,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="9"/>
+                </Grid>
 
-                <TextBox Grid.Row="3" 
-                         Text="{Binding OutputText, Mode=OneWay}" 
-                         IsReadOnly="True" 
-                         TextWrapping="Wrap" 
-                         Margin="0,0,0,12"
-                         VerticalAlignment="Stretch" 
-                         MinHeight="120"
-                         VerticalScrollBarVisibility="Auto"
-                         Foreground="{StaticResource AccentPrimaryBrush}"
-                         BorderBrush="{StaticResource BorderDefaultBrush}"/>
+                <Grid Grid.Row="1" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <UniformGrid Grid.Row="4" Columns="4">
-                    <Button Content="FORMAT" Command="{Binding FormatCommand}" 
-                            Height="34" Margin="0,0,5,0"
-                            Background="{StaticResource GreenBrush}" 
-                            Foreground="{StaticResource TextPrimaryBrush}"
-                            FontWeight="Bold"
-                            Style="{StaticResource ModernButton}"/>
-                    <Button Content="MINIFY" Command="{Binding MinifyCommand}" 
-                            Height="34" Margin="5,0,5,0"
-                            Background="{StaticResource AccentPrimaryBrush}" 
-                            Foreground="{StaticResource TextPrimaryBrush}"
-                            FontWeight="Bold"
-                            Style="{StaticResource ModernButton}"/>
-                    <Button Content="COPY" Command="{Binding CopyOutputCommand}" 
-                            Height="34" Margin="5,0,5,0"
-                            Background="{StaticResource StatusWarningBrush}" 
-                            Foreground="{StaticResource TextPrimaryBrush}"
-                            FontWeight="Bold"
-                            Style="{StaticResource ModernButton}"/>
-                    <Button Content="CLEAR" Command="{Binding ClearCommand}" 
-                            Height="34" Margin="5,0,0,0"
-                            Background="{StaticResource RedBrush}" 
-                            Foreground="{StaticResource TextPrimaryBrush}"
-                            FontWeight="Bold"
-                            Style="{StaticResource ModernButton}"/>
-                </UniformGrid>
+                    <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0"
+                                     Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding ViewModel.StatusText}"
+                               Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                               FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center"
+                               AutomationProperties.LiveSetting="Polite"/>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{DynamicResource L.JsonFormatter.Nodes}" Style="{StaticResource LabelSecondary}" FontSize="10" Margin="0,0,4,0"/>
+                        <TextBlock Text="{Binding ViewModel.NodeCount}" Style="{StaticResource LabelPrimary}" FontFamily="{StaticResource MonoFont}" FontSize="11" FontWeight="Bold" Margin="0,0,12,0"/>
+                        <TextBlock Text="{DynamicResource L.JsonFormatter.Depth}" Style="{StaticResource LabelSecondary}" FontSize="10" Margin="0,0,4,0"/>
+                        <TextBlock Text="{Binding ViewModel.JsonDepth}" Style="{StaticResource LabelPrimary}" FontFamily="{StaticResource MonoFont}" FontSize="11" FontWeight="Bold" Margin="0,0,12,0"/>
+                        <TextBlock Text="{Binding ViewModel.SizeText}" Style="{StaticResource LabelSecondary}" FontFamily="{StaticResource MonoFont}" FontSize="10"/>
+                    </StackPanel>
+                </Grid>
             </Grid>
-        </Grid>
-
-        <!-- STATUS TEXT (ALTTA) -->
-        <TextBlock Grid.Row="2" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,15,0,0"/>
+        </Border>
     </Grid>
 </UserControl>

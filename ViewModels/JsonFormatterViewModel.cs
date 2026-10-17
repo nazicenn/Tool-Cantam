@@ -1,104 +1,230 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.IO;
-using System.Text.Json;
+using Microsoft.Extensions.Logging;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
 using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
+/// <summary>
+/// JSON Formatter aracının sunum katmanı. İş mantığı <see cref="IJsonFormatterService"/> içindedir.
+/// Format, minify ve validate işlemleri async, iptal edilebilir.
+/// </summary>
 public partial class JsonFormatterViewModel : ObservableObject
 {
+    private readonly IJsonFormatterService _jsonService;
     private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<JsonFormatterViewModel> _logger;
 
-    [ObservableProperty]
-    private string _inputText = string.Empty;
+    [ObservableProperty] private string _inputText = string.Empty;
+    [ObservableProperty] private string _outputText = string.Empty;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
+    [ObservableProperty] private int _indentSize = 2;
 
-    [ObservableProperty]
-    private string _outputText = string.Empty;
+    [ObservableProperty] private int _nodeCount;
+    [ObservableProperty] private int _jsonDepth;
+    [ObservableProperty] private string _sizeText = "-";
 
-    [ObservableProperty]
-    private string _statusText = "Ready.";
+    public event Action? RequestInputFocus;
 
-    public JsonFormatterViewModel(IFileExportService fileExportService)
+    public int[] IndentOptions { get; } = { 2, 4 };
+
+    public JsonFormatterViewModel(
+        IJsonFormatterService jsonService,
+        IFileExportService fileExportService,
+        ILocalizerService localizer,
+        ILogger<JsonFormatterViewModel> logger)
     {
+        _jsonService = jsonService;
         _fileExportService = fileExportService;
+        _localizer = localizer;
+        _logger = logger;
+
+        StatusText = _localizer.Get("L.JsonFormatter.Status.Ready");
     }
 
-    [RelayCommand]
-    private void Format()
+    public string LimitsText => _localizer.Format(
+        "L.JsonFormatter.Limits", _jsonService.MaxTextLength, _jsonService.MaxDepth);
+
+    [RelayCommand(IncludeCancelCommand = true)]
+    private Task FormatAsync(CancellationToken ct) => ProcessInternalAsync("format", ct);
+
+    [RelayCommand(IncludeCancelCommand = true)]
+    private Task MinifyAsync(CancellationToken ct) => ProcessInternalAsync("minify", ct);
+
+    [RelayCommand(IncludeCancelCommand = true)]
+    private Task ValidateAsync(CancellationToken ct) => ProcessInternalAsync("validate", ct);
+
+    private async Task ProcessInternalAsync(string operation, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(InputText))
         {
-            StatusText = "Please enter JSON data";
-            OutputText = string.Empty;
+            RequestInputFocus?.Invoke();
+            SetStatus(NotificationType.Warning, "L.JsonFormatter.Validation.EmptyInput");
             return;
         }
 
+        IsBusy = true;
         try
         {
-            var jsonDocument = JsonDocument.Parse(InputText);
-            using var stream = new MemoryStream();
-            using var writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = true });
-            jsonDocument.WriteTo(writer);
-            writer.Flush();
-            OutputText = System.Text.Encoding.UTF8.GetString(stream.ToArray());
-            StatusText = "JSON formatted successfully";
+            string input = InputText;
+            int indent = IndentSize;
+
+            ToolResult<JsonFormatReport> result = await Task.Run(() =>
+            {
+                return operation switch
+                {
+                    "format" => _jsonService.Format(input, indent),
+                    "minify" => _jsonService.Minify(input),
+                    "validate" => _jsonService.Validate(input),
+                    _ => ToolResult<JsonFormatReport>.Fail(
+                        ToolErrorKind.Validation, "L.Common.Error.Unexpected", "Unknown operation")
+                };
+            }, cancellationToken);
+
+            if (!result.IsSuccess)
+            {
+                ReportFailure(result, operation);
+                return;
+            }
+
+            var report = result.Value!;
+
+            NodeCount = report.NodeCount;
+            JsonDepth = report.MaxDepth;
+            SizeText = $"{report.InputBytes} → {report.OutputBytes} B";
+            OutputText = report.Output;
+
+            _logger.LogInformation(
+                "JSON {Operation} completed: nodes={Nodes} depth={Depth} inputBytes={InputBytes} outputBytes={OutputBytes}",
+                operation, report.NodeCount, report.MaxDepth, report.InputBytes, report.OutputBytes);
+
+            string statusKey = operation switch
+            {
+                "format" => "L.JsonFormatter.Status.Formatted",
+                "minify" => "L.JsonFormatter.Status.Minified",
+                _ => "L.JsonFormatter.Status.Validated"
+            };
+
+            SetStatus(NotificationType.Success, statusKey, report.NodeCount, report.MaxDepth);
         }
-        catch (JsonException ex)
+        catch (OperationCanceledException)
         {
-            OutputText = string.Empty;
-            StatusText = $"Invalid JSON: {ex.Message}";
+            _logger.LogInformation("JSON {Operation} cancelled by the user.", operation);
+            SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled");
         }
         catch (Exception ex)
         {
-            OutputText = string.Empty;
-            StatusText = $"Error: {ex.Message}";
+            _logger.LogError(ex, "JSON {Operation} failed unexpectedly.", operation);
+            SetStatus(NotificationType.Error, "L.Common.Error.Unexpected");
         }
-    }
-
-    [RelayCommand]
-    private void Minify()
-    {
-        if (string.IsNullOrWhiteSpace(InputText))
+        finally
         {
-            StatusText = "Please enter JSON data";
-            OutputText = string.Empty;
-            return;
-        }
-
-        try
-        {
-            var jsonDocument = JsonDocument.Parse(InputText);
-            OutputText = JsonSerializer.Serialize(jsonDocument.RootElement);
-            StatusText = "JSON minified successfully";
-        }
-        catch (JsonException ex)
-        {
-            OutputText = string.Empty;
-            StatusText = $"Invalid JSON: {ex.Message}";
-        }
-        catch (Exception ex)
-        {
-            OutputText = string.Empty;
-            StatusText = $"Error: {ex.Message}";
+            IsBusy = false;
         }
     }
 
     [RelayCommand]
     private void CopyOutput()
     {
-        if (!string.IsNullOrWhiteSpace(OutputText))
+        if (string.IsNullOrWhiteSpace(OutputText))
+        {
+            SetStatus(NotificationType.Warning, "L.JsonFormatter.Validation.NothingToCopy");
+            return;
+        }
+
+        try
         {
             _fileExportService.CopyToClipboard(OutputText);
-            StatusText = "Output copied to clipboard";
+            SetStatus(NotificationType.Success, "L.JsonFormatter.Status.Copied");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "JSON output could not be copied.");
+            SetStatus(NotificationType.Error, "L.Common.Error.Clipboard");
+        }
+    }
+
+    [RelayCommand]
+    private async Task SaveOutputAsync()
+    {
+        if (string.IsNullOrWhiteSpace(OutputText))
+        {
+            SetStatus(NotificationType.Warning, "L.JsonFormatter.Validation.NothingToSave");
+            return;
+        }
+
+        IsBusy = true;
+        try
+        {
+            bool saved = await _fileExportService.ExportTextAsync(
+                OutputText,
+                $"{_localizer.Get("L.Common.Filter.TextFiles")}|*.txt|JSON (*.json)|*.json",
+                ".json",
+                "formatted");
+
+            SetStatus(saved ? NotificationType.Success : NotificationType.Info,
+                saved ? "L.JsonFormatter.Status.Saved" : "L.JsonFormatter.Status.SaveCancelled");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "JSON output could not be saved.");
+            SetStatus(NotificationType.Error, "L.Common.Error.FileSave");
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
 
     [RelayCommand]
     private void Clear()
     {
+        CancelRunningOperations();
+
         InputText = string.Empty;
         OutputText = string.Empty;
-        StatusText = "Cleared. Ready.";
+        NodeCount = 0;
+        JsonDepth = 0;
+        SizeText = "-";
+        SetStatus(NotificationType.Info, "L.JsonFormatter.Status.Cleared");
+    }
+
+    private void CancelRunningOperations()
+    {
+        CancelIfRunning(FormatCancelCommand);
+        CancelIfRunning(MinifyCancelCommand);
+        CancelIfRunning(ValidateCancelCommand);
+    }
+
+    private static void CancelIfRunning(System.Windows.Input.ICommand? command)
+    {
+        if (command is not null && command.CanExecute(null))
+            command.Execute(null);
+    }
+
+    private void SetStatus(NotificationType type, string messageKey, params object?[] args)
+    {
+        StatusType = type;
+        StatusText = _localizer.Format(messageKey, args);
+    }
+
+    private void ReportFailure(IToolResult result, string operation)
+    {
+        if (result.ErrorKind == ToolErrorKind.Cancelled)
+        {
+            _logger.LogInformation("JSON {Operation} cancelled.", operation);
+            SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled");
+            return;
+        }
+
+        _logger.LogWarning("JSON {Operation} failed: kind={ErrorKind} code={ErrorCode} detail={Detail}",
+            operation, result.ErrorKind, result.ErrorCode, result.TechnicalDetail);
+
+        SetStatus(NotificationType.Error, result.ErrorCode ?? "L.Common.Error.Unexpected");
     }
 }

@@ -924,6 +924,42 @@
     <sys:String x:Key="L.StringReverser.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
     <sys:String x:Key="L.StringReverser.Error.InvalidUnicode">Metin geçersiz bir Unicode karakteri içeriyor (eşleşmemiş surrogate).</sys:String>
     <sys:String x:Key="L.StringReverser.Error.UnknownMode">Bilinmeyen ters çevirme modu.</sys:String>
+    <!-- ============ JSON Formatter ============ -->
+    <sys:String x:Key="L.JsonFormatter.Title">JSON BİÇİMLENDİRİCİ</sys:String>
+    <sys:String x:Key="L.JsonFormatter.InputLabel">Giriş JSON</sys:String>
+    <sys:String x:Key="L.JsonFormatter.OutputLabel">Çıkış Sonucu</sys:String>
+    <sys:String x:Key="L.JsonFormatter.IndentLabel">Girinti:</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Format">BİÇİMLENDİR</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Minify">KÜÇÜLT</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Validate">DOĞRULA</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Nodes">Düğüm:</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Depth">Derinlik:</sys:String>
+    <sys:String x:Key="L.JsonFormatter.InputAutomationName">JSON girişi</sys:String>
+    <sys:String x:Key="L.JsonFormatter.OutputAutomationName">JSON çıkışı</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Limits">Maks giriş: {0} bayt · Maks derinlik: {1} seviye.</sys:String>
+
+    <sys:String x:Key="L.JsonFormatter.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Status.Formatted">✓ Biçimlendirildi · {0} düğüm · derinlik {1}.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Status.Minified">✓ Küçültüldü · {0} düğüm · derinlik {1}.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Status.Validated">✓ Geçerli JSON · {0} düğüm · derinlik {1}.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Status.Copied">Çıktı panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Status.Saved">Çıktı dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.JsonFormatter.Validation.EmptyInput">Lütfen JSON verisi girin.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Validation.NothingToCopy">Kopyalanacak çıktı yok.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Validation.NothingToSave">Kaydedilecek çıktı yok.</sys:String>
+
+    <sys:String x:Key="L.JsonFormatter.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Error.EmptyInput">JSON girişi boş.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Error.InvalidJson">Geçersiz JSON. Söz dizimini kontrol edip tekrar deneyin.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Error.DepthTooLarge">JSON yapısı maksimum derinliği aşıyor.</sys:String>
+    <sys:String x:Key="L.JsonFormatter.Error.InvalidIndent">Girinti boyutu aralık dışında (1–8).</sys:String>
+
 
 
 </ResourceDictionary>
