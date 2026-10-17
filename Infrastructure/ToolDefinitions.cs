@@ -110,11 +110,10 @@ public static class ToolDefinitions
         ToolRegistry.Register(new ToolDefinition
         {
             Name = "Hash Identifier",
-            Description = "Detect hash algorithm type",
+            Description = "Suggest candidate hash algorithms from length, character set and known prefixes",
             Category = ToolCategory.HashAndCrypto,
             ViewModelType = typeof(HashIdentifierViewModel),
-            ViewType = typeof(HashIdentifierPage),
-            Execute = async (input) => "Hash type detection"
+            ViewType = typeof(HashIdentifierPage)
         });
 
         ToolRegistry.Register(new ToolDefinition

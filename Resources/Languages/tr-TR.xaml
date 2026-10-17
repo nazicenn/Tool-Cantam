@@ -396,4 +396,38 @@
     <sys:String x:Key="L.Hash.Error.FileNotFound">Seçilen dosya bulunamadı.</sys:String>
     <sys:String x:Key="L.Hash.Error.IoError">Dosya okunamadı. İzinleri ve dosyayı başka bir programın kullanıp kullanmadığını kontrol edin.</sys:String>
 
+    <!-- ============ Hash tanımlayıcı ============ -->
+    <sys:String x:Key="L.HashIdentifier.Title">HASH TANIMLAYICI</sys:String>
+    <sys:String x:Key="L.HashIdentifier.InputLabel">Hash değeri</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Identify">TANIMLA</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.HashIdentifier.AmbiguousNote">Biçim birden çok algoritmaya uyuyor; tek bir cevap mümkün değil. Değeri hangi algoritmanın ürettiği yalnızca şeklinden anlaşılamaz.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Hint">Yalnızca biçimden yapılan bir tahmin. Sonucu algoritmanın kanıtı saymayın.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Summary">{0} karakter · {1} · {2} aday</sys:String>
+    <sys:String x:Key="L.HashIdentifier.InputAutomationName">Tanımlanacak hash değeri</sys:String>
+    <sys:String x:Key="L.HashIdentifier.CandidatesAutomationName">Aday algoritmalar</sys:String>
+
+    <sys:String x:Key="L.HashIdentifier.Charset.Hex">hex</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Charset.Base64">Base64</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Charset.DesCrypt">crypt alfabesi</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Charset.Alphanumeric">alfanümerik</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Charset.Other">bilinmeyen karakterler</sys:String>
+
+    <sys:String x:Key="L.HashIdentifier.Confidence.Certain">KESİN</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Confidence.Likely">MUHTEMEL</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Confidence.Possible">OLASI</sys:String>
+
+    <sys:String x:Key="L.HashIdentifier.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Status.Identified">{0} aday algoritma bulundu.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Status.NotIdentified">Biçim bilinen bir algoritma şekline uymuyor.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Status.Copied">Sonuç(lar) panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.HashIdentifier.Validation.EmptyInput">Lütfen tanımlanacak hash değerini yapıştırın.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Validation.NothingToCopy">Kopyalanacak sonuç yok.</sys:String>
+
+    <sys:String x:Key="L.HashIdentifier.Error.EmptyInput">Girdi boş.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Error.InputTooLong">Girdi bir hash değeri olamayacak kadar uzun.</sys:String>
+
 </ResourceDictionary>

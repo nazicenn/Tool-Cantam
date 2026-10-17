@@ -1,69 +1,242 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using tool_cantam.Core.Enums;
+using tool_cantam.Core.Models;
 using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.Services;
 
-public class HashIdentifierService : IHashIdentifierService
+/// <summary>
+/// Bir özetin algoritmasını biçiminden çıkarır: uzunluk, karakter kümesi ve ayırt edici önek.
+/// <para>
+/// Kural: yalnızca biçimden tanımlama <b>asla kesin değildir</b>. Aynı uzunluktaki algoritmalar
+/// (ör. 32 hex: MD5, NTLM, MD4) ayırt edilemez ve bu yüzden birden çok aday olarak listelenir.
+/// Kesin sonuç yalnızca ayırt edici öneklerde (<c>$2b$</c>, <c>$argon2id$</c>, <c>{SSHA}</c> ...) verilir.
+/// Düzenli ifade kullanılmaz; tarama elle yapılır.
+/// </para>
+/// </summary>
+public sealed class HashIdentifierService : IHashIdentifierService
 {
-    public List<string> Identify(string hash)
+    public const int MaxInputLengthLimit = 4096;
+
+    private static readonly Dictionary<int, string[]> HexShapes = new()
     {
-        var results = new List<string>();
-        var trimmedHash = hash.Trim();
+        [8] = new[] { "CRC-32" },
+        [16] = new[] { "CRC-64", "MySQL323" },
+        [32] = new[] { "MD5", "NTLM", "MD4" },
+        [40] = new[] { "SHA-1", "RIPEMD-160", "MySQL5" },
+        [56] = new[] { "SHA-224" },
+        [64] = new[] { "SHA-256", "SHA3-256", "BLAKE2s-256" },
+        [96] = new[] { "SHA-384", "SHA3-384" },
+        [128] = new[] { "SHA-512", "SHA3-512", "BLAKE2b-512", "Whirlpool" }
+    };
 
-        if (string.IsNullOrWhiteSpace(trimmedHash))
-            return new List<string> { "Empty input" };
+    private static readonly Dictionary<int, string[]> Base64Shapes = new()
+    {
+        [24] = new[] { "MD5", "NTLM" },
+        [28] = new[] { "SHA-1", "RIPEMD-160" },
+        [44] = new[] { "SHA-256", "SHA3-256" },
+        [88] = new[] { "SHA-512", "SHA3-512" }
+    };
 
-        int length = trimmedHash.Length;
+    /// <summary>Ayırt edici önekler: bunlar görüldüğünde algoritma kesindir.</summary>
+    private static readonly (string Prefix, string Algorithm)[] DistinctivePrefixes =
+    {
+        ("$2a$", "bcrypt"),
+        ("$2b$", "bcrypt"),
+        ("$2x$", "bcrypt"),
+        ("$2y$", "bcrypt"),
+        ("$apr1$", "Apache MD5 crypt"),
+        ("$1$", "MD5 crypt"),
+        ("$5$", "SHA-256 crypt"),
+        ("$6$", "SHA-512 crypt"),
+        ("$argon2id$", "Argon2id"),
+        ("$argon2i$", "Argon2i"),
+        ("$argon2d$", "Argon2d"),
+        ("$pbkdf2", "PBKDF2"),
+        ("{SSHA}", "LDAP SSHA"),
+        ("{SMD5}", "LDAP SMD5"),
+        ("{SHA}", "LDAP SHA"),
+        ("{MD5}", "LDAP MD5"),
+        ("{CRYPT}", "LDAP crypt")
+    };
 
-        // bcrypt: $2a$, $2b$, $2y$, $2x$ ile başlar ve 60 karakter uzunluğunda
-        if (Regex.IsMatch(trimmedHash, @"^\$2[abyx]\$\d{2}\$"))
+    public int MaxInputLength => MaxInputLengthLimit;
+
+    public ToolResult<HashIdentificationResult> Identify(string? value)
+    {
+        string input = (value ?? string.Empty).Trim();
+
+        if (input.Length == 0)
         {
-            results.Add("bcrypt");
-            return results;
+            return ToolResult<HashIdentificationResult>.Fail(
+                ToolErrorKind.Validation,
+                HashIdentifierErrorCodes.EmptyInput,
+                "Input is empty.");
         }
 
-        // MD5 (32 karakter hex)
-        if (length == 32 && IsHex(trimmedHash))
-            results.Add("MD5");
+        if (input.Length > MaxInputLengthLimit)
+        {
+            return ToolResult<HashIdentificationResult>.Fail(
+                ToolErrorKind.TooLarge,
+                HashIdentifierErrorCodes.InputTooLong,
+                $"Input length {input.Length} exceeds {MaxInputLengthLimit} characters.");
+        }
 
-        // SHA-1 (40 karakter hex)
-        if (length == 40 && IsHex(trimmedHash))
-            results.Add("SHA-1");
+        // Ayırt edici önek: kesin sonuç.
+        foreach ((string prefix, string algorithm) in DistinctivePrefixes)
+        {
+            if (input.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+            {
+                return ToolResult<HashIdentificationResult>.Ok(new HashIdentificationResult(
+                    input.Length,
+                    DetectCharacterSet(input),
+                    HasDistinctivePrefix: true,
+                    new[] { new HashCandidate(algorithm, HashIdentifierConfidence.Certain) }));
+            }
+        }
 
-        // SHA-256 (64 karakter hex)
-        if (length == 64 && IsHex(trimmedHash))
-            results.Add("SHA-256");
+        // MySQL yerel parola biçimi: '*' + 40 hex.
+        if (input.Length == 41 && input[0] == '*' && IsAllHex(input.AsSpan(1)))
+        {
+            return ToolResult<HashIdentificationResult>.Ok(new HashIdentificationResult(
+                input.Length,
+                HashCharacterSet.Hex,
+                HasDistinctivePrefix: true,
+                new[] { new HashCandidate("MySQL native password", HashIdentifierConfidence.Likely) }));
+        }
 
-        // SHA-384 (96 karakter hex)
-        if (length == 96 && IsHex(trimmedHash))
-            results.Add("SHA-384");
+        // "0x" öneki yalnızca gösterim farkıdır; uzunluk hesabından çıkarılır.
+        string candidate = input;
+        if (candidate.Length > 2 && candidate[0] == '0' && (candidate[1] == 'x' || candidate[1] == 'X'))
+            candidate = candidate[2..];
 
-        // SHA-512 (128 karakter hex)
-        if (length == 128 && IsHex(trimmedHash))
-            results.Add("SHA-512");
+        HashCharacterSet characterSet = DetectCharacterSet(candidate);
+        string[] algorithms = ResolveAlgorithms(candidate, characterSet);
 
-        // NTLM (32 karakter, hex değil, genelde MD5 gibi ama farklı)
-        if (length == 32 && !IsHex(trimmedHash) && IsAlphaNumeric(trimmedHash))
-            results.Add("NTLM");
+        var candidates = new List<HashCandidate>(algorithms.Length);
+        HashIdentifierConfidence confidence = algorithms.Length == 1
+            ? HashIdentifierConfidence.Likely
+            : HashIdentifierConfidence.Possible;
 
-        // MD5 base64 formatı
-        if (length == 24 && Regex.IsMatch(trimmedHash, @"^[A-Za-z0-9+/]+={0,2}$"))
-            results.Add("MD5 (base64)");
+        foreach (string algorithm in algorithms)
+            candidates.Add(new HashCandidate(algorithm, confidence));
 
-        if (results.Count == 0)
-            results.Add("Unknown / Unsupported hash format");
-
-        return results;
+        return ToolResult<HashIdentificationResult>.Ok(new HashIdentificationResult(
+            candidate.Length,
+            characterSet,
+            HasDistinctivePrefix: false,
+            candidates));
     }
 
-    private bool IsHex(string input)
+    private static string[] ResolveAlgorithms(string value, HashCharacterSet characterSet)
     {
-        return Regex.IsMatch(input, @"^[0-9a-fA-F]+$");
+        // Unix crypt (DES): 13 karakterlik özel biçim.
+        if (characterSet == HashCharacterSet.DesCrypt && value.Length == 13)
+            return new[] { "DES crypt" };
+
+        Dictionary<int, string[]> table = characterSet switch
+        {
+            HashCharacterSet.Hex => HexShapes,
+
+            // Alfanümerik bir metin de geçerli Base64 olabilir (Base64 alfabesi alfanümerik kümesi kapsar),
+            // bu yüzden Base64 özet uzunlukları burada da denenir.
+            HashCharacterSet.Base64 or HashCharacterSet.Alphanumeric => Base64Shapes,
+
+            _ => new Dictionary<int, string[]>()
+        };
+
+        return table.TryGetValue(value.Length, out string[]? algorithms) ? algorithms : Array.Empty<string>();
     }
 
-    private bool IsAlphaNumeric(string input)
+    private static HashCharacterSet DetectCharacterSet(string value)
     {
-        return Regex.IsMatch(input, @"^[0-9a-zA-Z]+$");
+        if (value.Length == 0)
+            return HashCharacterSet.Other;
+
+        if (IsAllHex(value.AsSpan()))
+            return HashCharacterSet.Hex;
+
+        bool base64 = true;
+        bool desCrypt = true;
+        bool alphanumeric = true;
+        bool hasBase64Punctuation = false;
+        int firstPaddingIndex = -1;
+
+        for (int index = 0; index < value.Length; index++)
+        {
+            char character = value[index];
+
+            bool isLetterOrDigit =
+                (character >= 'A' && character <= 'Z') ||
+                (character >= 'a' && character <= 'z') ||
+                (character >= '0' && character <= '9');
+
+            if (!isLetterOrDigit)
+                alphanumeric = false;
+
+            if (character == '=')
+            {
+                if (firstPaddingIndex < 0)
+                    firstPaddingIndex = index;
+
+                hasBase64Punctuation = true;
+                desCrypt = false;
+                continue;
+            }
+
+            // Dolgudan sonra veri karakteri gelemez.
+            if (firstPaddingIndex >= 0)
+                base64 = false;
+
+            if (character is '+' or '/')
+                hasBase64Punctuation = true;
+
+            if (!isLetterOrDigit && character != '+' && character != '/')
+                base64 = false;
+
+            if (!isLetterOrDigit && character != '.' && character != '/')
+                desCrypt = false;
+        }
+
+        // Dolgu en fazla iki karakter olabilir.
+        if (base64 && firstPaddingIndex >= 0 && value.Length - firstPaddingIndex > 2)
+            base64 = false;
+
+        // 13 karakterlik crypt biçimi DES crypt'tir; Base64 özet uzunlukları 24/28/44/88'dir.
+        if (value.Length == 13 && desCrypt)
+            return HashCharacterSet.DesCrypt;
+
+        // Ayırt edici Base64 işareti varsa (dolgu, '+' veya '/') Base64 olarak raporlanır.
+        if (base64 && hasBase64Punctuation)
+            return HashCharacterSet.Base64;
+
+        if (alphanumeric)
+            return HashCharacterSet.Alphanumeric;
+
+        if (base64)
+            return HashCharacterSet.Base64;
+
+        if (desCrypt)
+            return HashCharacterSet.DesCrypt;
+
+        return HashCharacterSet.Other;
+    }
+
+    private static bool IsAllHex(ReadOnlySpan<char> value)
+    {
+        if (value.Length == 0)
+            return false;
+
+        foreach (char character in value)
+        {
+            bool isHexDigit =
+                (character >= '0' && character <= '9') ||
+                (character >= 'a' && character <= 'f') ||
+                (character >= 'A' && character <= 'F');
+
+            if (!isHexDigit)
+                return false;
+        }
+
+        return true;
     }
 }

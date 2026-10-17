@@ -396,4 +396,38 @@
     <sys:String x:Key="L.Hash.Error.FileNotFound">The selected file could not be found.</sys:String>
     <sys:String x:Key="L.Hash.Error.IoError">The file could not be read. Check permissions and whether another program is using it.</sys:String>
 
+    <!-- ============ Hash identifier ============ -->
+    <sys:String x:Key="L.HashIdentifier.Title">HASH IDENTIFIER</sys:String>
+    <sys:String x:Key="L.HashIdentifier.InputLabel">Hash value</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Identify">IDENTIFY</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Copy">COPY</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.HashIdentifier.AmbiguousNote">The format matches more than one algorithm, so a single answer is not possible. Which algorithm produced the value cannot be decided from its shape alone.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Hint">A guess from the format only. Never treat the result as proof of the algorithm.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Summary">{0} character(s) · {1} · {2} candidate(s)</sys:String>
+    <sys:String x:Key="L.HashIdentifier.InputAutomationName">Hash value to identify</sys:String>
+    <sys:String x:Key="L.HashIdentifier.CandidatesAutomationName">Candidate algorithms</sys:String>
+
+    <sys:String x:Key="L.HashIdentifier.Charset.Hex">hex</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Charset.Base64">Base64</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Charset.DesCrypt">crypt alphabet</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Charset.Alphanumeric">alphanumeric</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Charset.Other">unknown characters</sys:String>
+
+    <sys:String x:Key="L.HashIdentifier.Confidence.Certain">CERTAIN</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Confidence.Likely">LIKELY</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Confidence.Possible">POSSIBLE</sys:String>
+
+    <sys:String x:Key="L.HashIdentifier.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Status.Identified">{0} candidate algorithm(s) found.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Status.NotIdentified">The format does not match any known algorithm shape.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Status.Copied">Result(s) copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.HashIdentifier.Validation.EmptyInput">Please paste a hash value to identify.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Validation.NothingToCopy">There is no result to copy.</sys:String>
+
+    <sys:String x:Key="L.HashIdentifier.Error.EmptyInput">The input is empty.</sys:String>
+    <sys:String x:Key="L.HashIdentifier.Error.InputTooLong">The input is too long to be a hash value.</sys:String>
+
 </ResourceDictionary>
