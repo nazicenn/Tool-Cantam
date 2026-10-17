@@ -8,164 +8,205 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Başlık -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,16">
-            <TextBlock Text="PORT SCANNER" 
-                       Foreground="{StaticResource TextPrimaryBrush}" 
-                       FontSize="18" 
-                       FontWeight="Bold"
-                       FontFamily="{StaticResource MonoFont}"/>
-            <TextBlock Text="Check open network ports for a specific host." 
-                       Foreground="{StaticResource TextSecondaryBrush}" 
-                       FontSize="12" 
-                       Margin="0,4,0,0"
-                       FontFamily="{StaticResource MonoFont}"/>
-        </StackPanel>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.PortScan.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <!-- Ana Kart (Card stili) -->
-        <Border Grid.Row="1" 
-                Padding="15" 
-                Margin="0,0,0,12">
-
+        <!-- Hedef ve aralık -->
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,0,0,10">
             <StackPanel>
-                <!-- Hedef IP -->
-                <TextBlock Text="TARGET HOST / IP" 
-                           Style="{StaticResource LabelPrimary}" 
-                           FontSize="11" 
-                           Margin="0,0,0,8"/>
-                <ui:TextBox Text="{Binding ViewModel.TargetHost, UpdateSourceTrigger=PropertyChanged}" 
-                            PlaceholderText="127.0.0.1" 
-                            Height="38" 
-                            Margin="0,0,0,12"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{DynamicResource L.PortScan.Target}"
+                               Style="{StaticResource LabelPrimary}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox x:Name="TargetTextBox"
+                             Text="{Binding ViewModel.TargetHost, UpdateSourceTrigger=PropertyChanged}"
+                             Width="220" Height="32" VerticalContentAlignment="Center"
+                             FontFamily="{StaticResource MonoFont}"
+                             Margin="0,0,20,0" TabIndex="0"
+                             AutomationProperties.Name="{DynamicResource L.PortScan.TargetAutomationName}"/>
 
-                <!-- Port Aralığı -->
-                <Grid Margin="0,0,0,12">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Margin="0,0,8,0">
-                        <TextBlock Text="START PORT" 
-                                   Style="{StaticResource LabelPrimary}" 
-                                   FontSize="11" 
-                                   Margin="0,0,0,5"/>
-                        <ui:TextBox Text="{Binding ViewModel.StartPort}" Height="36"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Margin="8,0,0,0">
-                        <TextBlock Text="END PORT" 
-                                   Style="{StaticResource LabelPrimary}" 
-                                   FontSize="11" 
-                                   Margin="0,0,0,5"/>
-                        <ui:TextBox Text="{Binding ViewModel.EndPort}" Height="36"/>
-                    </StackPanel>
-                </Grid>
+                    <TextBlock Text="{DynamicResource L.PortScan.StartPort}"
+                               Style="{StaticResource LabelPrimary}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox Text="{Binding ViewModel.StartPort, UpdateSourceTrigger=PropertyChanged}"
+                             Width="80" Height="32" VerticalContentAlignment="Center"
+                             FontFamily="{StaticResource MonoFont}"
+                             Margin="0,0,20,0" TabIndex="1"/>
 
-                <!-- Butonlar (ModernButton stili ile) -->
-                <UniformGrid Columns="2" Margin="0,0,0,12">
-                    <Button Content="START SCAN" 
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}" 
-                            Height="38" 
-                            Margin="0,0,5,0"
-                            Command="{Binding ViewModel.ScanCommand}"/>
-                    <Button Content="CANCEL" 
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource RedBrush}" 
-                            Height="38" 
-                            Margin="5,0,0,0"
-                            Command="{Binding ViewModel.CancelScanCommand}" 
-                            Visibility="{Binding ViewModel.IsScanning, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                </UniformGrid>
+                    <TextBlock Text="{DynamicResource L.PortScan.EndPort}"
+                               Style="{StaticResource LabelPrimary}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox Text="{Binding ViewModel.EndPort, UpdateSourceTrigger=PropertyChanged}"
+                             Width="80" Height="32" VerticalContentAlignment="Center"
+                             FontFamily="{StaticResource MonoFont}"
+                             Margin="0,0,20,0" TabIndex="2"/>
 
-                <!-- Durum Çubuğu -->
-                <Border Style="{StaticResource OptionsPanel}"
-                        CornerRadius="6" 
-                        Padding="12,8">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <ui:ProgressRing IsIndeterminate="True" 
-                                         Width="16" 
-                                         Height="16" 
-                                         Margin="0,0,10,0" 
-                                         Visibility="{Binding ViewModel.IsScanning, Converter={StaticResource BooleanToVisibilityConverter}}" 
-                                         Foreground="{StaticResource AccentPrimaryBrush}"/>
-                        <TextBlock Grid.Column="1" 
-                                   Text="{Binding ViewModel.ScanStatus}" 
-                                   Foreground="{StaticResource TextSecondaryBrush}" 
-                                   FontSize="11" 
-                                   VerticalAlignment="Center"/>
-                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                            <ui:SymbolIcon Symbol="Timer24" 
-                                           Margin="0,0,4,0" 
-                                           Foreground="{StaticResource AccentPrimaryBrush}" 
-                                           FontSize="14"/>
-                            <TextBlock Text="{Binding ViewModel.ElapsedTime}" 
-                                       Foreground="{StaticResource AccentPrimaryBrush}" 
-                                       FontSize="11" 
-                                       FontWeight="Bold"/>
-                        </StackPanel>
-                    </Grid>
-                </Border>
+                    <TextBlock Text="{DynamicResource L.PortScan.Timeout}"
+                               Style="{StaticResource LabelPrimary}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <ComboBox ItemsSource="{Binding ViewModel.TimeoutOptions}"
+                              SelectedItem="{Binding ViewModel.SelectedTimeoutMs}"
+                              Width="110" TabIndex="3"
+                              AutomationProperties.HelpText="{DynamicResource L.PortScan.TimeoutHelp}"/>
+                </StackPanel>
+
+                <!-- Sınırlar: kötüye kullanımı önlemek için açıkça gösterilir -->
+                <TextBlock Text="{Binding ViewModel.LimitsText}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Opacity="0.6" FontSize="10" Margin="0,10,0,0" TextWrapping="Wrap"/>
             </StackPanel>
         </Border>
 
-        <!-- Port Listesi -->
-        <ListBox Grid.Row="2" 
-                 ItemsSource="{Binding ViewModel.OpenPorts}" 
-                 Background="Transparent" 
-                 BorderThickness="0" 
-                 ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                 Margin="0,0,0,12">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border Style="{StaticResource OptionsPanel}"
-                            CornerRadius="6" 
-                            Padding="12,8" 
-                            Margin="0,0,0,6">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <ui:SymbolIcon Symbol="NetworkCheck24" 
-                                           Foreground="{StaticResource AccentPrimaryBrush}" 
-                                           Margin="0,0,10,0"/>
-                            <TextBlock Grid.Column="1" 
-                                       Text="{Binding}" 
-                                       Foreground="{StaticResource TextPrimaryBrush}" 
-                                       FontSize="13" 
-                                       FontWeight="Bold" 
-                                       VerticalAlignment="Center"
-                                       FontFamily="{StaticResource MonoFont}"/>
-                            <TextBlock Grid.Column="2" 
-                                       Text="OPEN" 
-                                       Foreground="{StaticResource GreenBrush}" 
-                                       FontSize="10" 
-                                       FontWeight="Black" 
-                                       VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <!-- Eylemler ve ilerleme -->
+        <Grid Grid.Row="2" Margin="0,0,0,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- SAVE LOG Butonu -->
-        <Button Grid.Row="3" 
-                Content="SAVE LOG" 
-                Style="{StaticResource ModernButton}"
-                Background="{StaticResource StatusWarningBrush}" 
-                Height="40" 
-                FontSize="12" 
-                FontWeight="Bold" 
-                Command="{Binding ViewModel.ExportReportCommand}"/>
+            <UniformGrid Grid.Row="0" Columns="5">
+                <Button Content="{DynamicResource L.PortScan.Scan}"
+                        Command="{Binding ViewModel.ScanCommand}"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource GreenBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        Height="34" Margin="0,0,5,0" TabIndex="4"/>
+                <Button Content="{DynamicResource L.PortScan.Copy}"
+                        Command="{Binding ViewModel.CopyResultsCommand}"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource StatusWarningBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        Height="34" Margin="5,0,5,0" TabIndex="5"/>
+                <Button Content="{DynamicResource L.PortScan.Save}"
+                        Command="{Binding ViewModel.SaveResultsCommand}"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource AccentPrimaryBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        Height="34" Margin="5,0,5,0" TabIndex="6"/>
+                <Button Content="{DynamicResource L.PortScan.Clear}"
+                        Command="{Binding ViewModel.ClearCommand}"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource RedBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        Height="34" Margin="5,0,5,0" TabIndex="7"/>
+                <Button Content="{DynamicResource L.Common.Cancel}"
+                        Command="{Binding ViewModel.ScanCancelCommand}"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource StatusDangerBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        Height="34" Margin="5,0,0,0" TabIndex="8"
+                        Visibility="{Binding ViewModel.IsScanning, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </UniformGrid>
+
+            <Grid Grid.Row="1" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ProgressBar Grid.Column="0"
+                             Height="6"
+                             Minimum="0" Maximum="100"
+                             Value="{Binding ViewModel.ProgressPercent}"
+                             Foreground="{StaticResource GreenBrush}"
+                             Background="{StaticResource OptionsBgBrush}"
+                             VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ViewModel.ProgressText}"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           FontFamily="{StaticResource MonoFont}"
+                           FontSize="10"
+                           VerticalAlignment="Center"
+                           Margin="12,0,0,0"/>
+            </Grid>
+        </Grid>
+
+        <!-- Sonuçlar -->
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,5">
+                <TextBlock Text="{DynamicResource L.PortScan.Results}" Style="{StaticResource LabelPrimary}" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding ViewModel.SummaryText}"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           FontSize="10"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           TextWrapping="Wrap"
+                           MaxWidth="620"/>
+            </Grid>
+
+            <Border Grid.Row="1"
+                    Background="{StaticResource OptionsBgBrush}"
+                    BorderBrush="{StaticResource OptionsBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Padding="8">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding ViewModel.OpenPorts}"
+                                  AutomationProperties.Name="{DynamicResource L.PortScan.ResultsAutomationName}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="90"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0"
+                                               Text="{Binding Port}"
+                                               Foreground="{StaticResource AccentPrimaryBrush}"
+                                               FontFamily="{StaticResource MonoFont}"
+                                               FontWeight="Bold"
+                                               FontSize="12"/>
+
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding ServiceText}"
+                                               Foreground="{StaticResource TextSecondaryBrush}"
+                                               FontFamily="{StaticResource MonoFont}"
+                                               FontSize="11"
+                                               VerticalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <!-- DURUM SATIRI -->
+        <Border Grid.Row="4"
+                Style="{StaticResource OptionsPanel}"
+                Padding="12"
+                Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <ui:ProgressRing Grid.Column="0"
+                                 IsIndeterminate="True"
+                                 Width="16" Height="16"
+                                 Margin="0,0,8,0"
+                                 Visibility="{Binding ViewModel.IsScanning, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ViewModel.StatusText}"
+                           Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                           FontSize="11"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"
+                           AutomationProperties.LiveSetting="Polite"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

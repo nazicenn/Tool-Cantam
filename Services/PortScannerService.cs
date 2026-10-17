@@ -1,85 +1,237 @@
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
-using System.Threading.Tasks;
+using tool_cantam.Core.Models;
+using tool_cantam.Core.Net;
 using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.Services;
 
 /// <summary>
-/// TCP port tarama servis uygulaması.
-/// Güvenlik: IP/hostname validasyonu, paralellik sınırı ve CancellationToken desteği içerir.
+/// TCP port tarayıcısının tek uygulaması.
+/// <para>
+/// Kurallar: hedef bir kez çözümlenir ve bağlantılar doğrudan IP adresine yapılır (port sayısı kadar
+/// DNS sorgusu yapılmaz); eşzamanlı bağlantı sayısı ve tarama uzunluğu sınırlıdır; her bağlantı
+/// kendi zaman aşımına sahiptir ve kullanıcı iptali alt katmana kadar iletilir. Sonuçta açık portlar
+/// servis adlarıyla döner, kapalı/filtrelenen portlar yalnızca sayılır.
+/// </para>
 /// </summary>
-public class PortScannerService : IPortScannerService
+public sealed class PortScannerService : IPortScannerService
 {
-    /// <summary>Ağ yükünü ve firewall tetiklenmesini önlemek için eşzamanlı bağlantı sınırı.</summary>
-    private const int MaxConcurrency = 50;
+    public const int MaxPortsPerScanLimit = 4096;
+    public const int MaxConcurrencyLimit = 50;
+    public const int MinTimeoutMsLimit = 100;
+    public const int MaxTimeoutMsLimit = 5000;
 
-    public async Task<List<int>> ScanPortsAsync(string host, int startPort, int endPort, int timeoutMs = 1000, CancellationToken cancellationToken = default)
+    /// <summary>İlerleme bildirimleri her bu kadar portta bir gönderilir (arayüzü boğmamak için).</summary>
+    private const int ProgressBatchSize = 25;
+
+    public int MaxPortsPerScan => MaxPortsPerScanLimit;
+
+    public int MaxConcurrency => MaxConcurrencyLimit;
+
+    public int MaxTimeoutMs => MaxTimeoutMsLimit;
+
+    public async Task<ToolResult<PortScanReport>> ScanAsync(
+        string? target,
+        int startPort,
+        int endPort,
+        int timeoutMs,
+        IProgress<PortScanProgress>? progress = null,
+        CancellationToken cancellationToken = default)
     {
-        // 1. Host validasyonu
-        ValidateHost(host);
-
-        // 2. Port aralığı validasyonu
-        if (startPort < 1 || startPort > 65535)
-            throw new ArgumentOutOfRangeException(nameof(startPort), $"Start port must be between 1-65535. Given: {startPort}");
-        if (endPort < 1 || endPort > 65535)
-            throw new ArgumentOutOfRangeException(nameof(endPort), $"End port must be between 1-65535. Given: {endPort}");
-        if (startPort > endPort)
-            throw new ArgumentException($"Start port ({startPort}) cannot be greater than end port ({endPort}).");
-
-        var openPorts = new ConcurrentBag<int>();
-        var ports = Enumerable.Range(startPort, endPort - startPort + 1);
-
-        // 3. Sınırlı paralellik ile tarama
-        var options = new ParallelOptions
+        if (string.IsNullOrWhiteSpace(target))
         {
-            MaxDegreeOfParallelism = MaxConcurrency,
-            CancellationToken = cancellationToken
-        };
+            return ToolResult<PortScanReport>.Fail(
+                ToolErrorKind.Validation, PortScanErrorCodes.InvalidTarget, "Target is empty.");
+        }
 
-        await Parallel.ForEachAsync(ports, options, async (port, ct) =>
+        if (startPort is < 1 or > 65535 || endPort is < 1 or > 65535)
+        {
+            return ToolResult<PortScanReport>.Fail(
+                ToolErrorKind.Validation, PortScanErrorCodes.InvalidRange,
+                $"Ports must be between 1 and 65535 (start={startPort}, end={endPort}).");
+        }
+
+        if (startPort > endPort)
+        {
+            return ToolResult<PortScanReport>.Fail(
+                ToolErrorKind.Validation, PortScanErrorCodes.InvalidRange,
+                $"Start port ({startPort}) is greater than end port ({endPort}).");
+        }
+
+        int portCount = endPort - startPort + 1;
+
+        if (portCount > MaxPortsPerScanLimit)
+        {
+            return ToolResult<PortScanReport>.Fail(
+                ToolErrorKind.Validation, PortScanErrorCodes.RangeTooLarge,
+                $"The range contains {portCount} ports; the limit is {MaxPortsPerScanLimit} per scan.");
+        }
+
+        string host = target.Trim();
+        bool isAddress = IPAddress.TryParse(host, out IPAddress? address);
+
+        if (!isAddress && Uri.CheckHostName(host) == UriHostNameType.Unknown)
+        {
+            return ToolResult<PortScanReport>.Fail(
+                ToolErrorKind.Validation, PortScanErrorCodes.InvalidTarget,
+                $"'{host}' is not a valid IP address or host name.");
+        }
+
+        var stopwatch = Stopwatch.StartNew();
+
+        if (!isAddress)
         {
             try
             {
-                using var client = new TcpClient();
-                var connectTask = client.ConnectAsync(host, port, ct);
-
-                if (await Task.WhenAny(connectTask.AsTask(), Task.Delay(timeoutMs, ct)) == connectTask.AsTask())
-                {
-                    if (client.Connected) openPorts.Add(port);
-                }
+                IPAddress[] addresses = await Dns.GetHostAddressesAsync(host, cancellationToken).ConfigureAwait(false);
+                address = PreferIpv4(addresses);
             }
             catch (OperationCanceledException)
             {
-                throw; // Cancellation request must propagate upward
+                return Cancelled();
             }
-            catch
+            catch (Exception ex) when (ex is SocketException or ArgumentException)
             {
-                // Bağlantı reddedildi / zaman aşımı = port kapalı (beklenen durum)
+                return ToolResult<PortScanReport>.Fail(
+                    ToolErrorKind.NotFound, PortScanErrorCodes.TargetNotFound, ex.Message);
             }
-        }).ConfigureAwait(false);
 
-        return openPorts.OrderBy(p => p).ToList();
+            if (address is null)
+            {
+                return ToolResult<PortScanReport>.Fail(
+                    ToolErrorKind.NotFound, PortScanErrorCodes.TargetNotFound, $"No address found for '{host}'.");
+            }
+        }
+
+        TimeSpan timeout = TimeSpan.FromMilliseconds(
+            Math.Clamp(timeoutMs, MinTimeoutMsLimit, MaxTimeoutMsLimit));
+
+        var openPorts = new List<PortScanEntry>();
+        int scanned = 0;
+        int openCount = 0;
+        int closedCount = 0;
+        int filteredCount = 0;
+
+        var options = new ParallelOptions
+        {
+            MaxDegreeOfParallelism = MaxConcurrencyLimit,
+            CancellationToken = cancellationToken
+        };
+
+        try
+        {
+            await Parallel.ForEachAsync(Enumerable.Range(startPort, portCount), options, async (port, token) =>
+            {
+                ProbeOutcome outcome = await ProbeAsync(address!, port, timeout, token).ConfigureAwait(false);
+
+                switch (outcome)
+                {
+                    case ProbeOutcome.Open:
+                        lock (openPorts)
+                            openPorts.Add(new PortScanEntry(port, WellKnownPorts.GetServiceName(port)));
+                        Interlocked.Increment(ref openCount);
+                        break;
+
+                    case ProbeOutcome.Filtered:
+                        Interlocked.Increment(ref filteredCount);
+                        break;
+
+                    default:
+                        Interlocked.Increment(ref closedCount);
+                        break;
+                }
+
+                int done = Interlocked.Increment(ref scanned);
+
+                if (progress is not null && (done % ProgressBatchSize == 0 || done == portCount))
+                {
+                    progress.Report(new PortScanProgress(done, portCount, Volatile.Read(ref openCount)));
+                }
+            }).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException)
+        {
+            return Cancelled();
+        }
+        catch (Exception ex)
+        {
+            return ToolResult<PortScanReport>.Fail(
+                ToolErrorKind.Unexpected, PortScanErrorCodes.Unexpected, ex.ToString());
+        }
+
+        stopwatch.Stop();
+        openPorts.Sort((left, right) => left.Port.CompareTo(right.Port));
+
+        return ToolResult<PortScanReport>.Ok(new PortScanReport(
+            host,
+            address!,
+            startPort,
+            endPort,
+            scanned,
+            openCount,
+            closedCount,
+            filteredCount,
+            stopwatch.Elapsed,
+            openPorts));
     }
 
     /// <summary>
-    /// Host adresinin geçerli bir IP veya hostname formatında olduğunu doğrular.
-    /// Referans: https://learn.microsoft.com/en-us/dotnet/api/system.uri.checkhostname
+    /// Tek bir porta bağlanmayı dener. Kendi zaman aşımı bağlantıya bağlanır; böylece zaman aşımında
+    /// yarım kalan bir bağlantı denemesi kalmaz. Kullanıcı iptali üst katmana iletilir.
     /// </summary>
-    private static void ValidateHost(string host)
+    private static async Task<ProbeOutcome> ProbeAsync(IPAddress address, int port, TimeSpan timeout, CancellationToken cancellationToken)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(host);
+        using var client = new TcpClient(address.AddressFamily);
+        using var timeoutSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        timeoutSource.CancelAfter(timeout);
 
-        // IP adresini veya hostname formatını kontrol et
-        bool isValidIp = IPAddress.TryParse(host, out _);
-        bool isValidHostname = Uri.CheckHostName(host) != UriHostNameType.Unknown;
+        try
+        {
+            await client.ConnectAsync(address, port, timeoutSource.Token).ConfigureAwait(false);
+            return ProbeOutcome.Open;
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (OperationCanceledException)
+        {
+            // Kendi zaman aşımımız: port yanıt vermedi.
+            return ProbeOutcome.Filtered;
+        }
+        catch (SocketException ex)
+        {
+            return ex.SocketErrorCode switch
+            {
+                SocketError.ConnectionRefused => ProbeOutcome.Closed,
+                SocketError.TimedOut => ProbeOutcome.Filtered,
+                SocketError.HostUnreachable or SocketError.NetworkUnreachable => ProbeOutcome.Filtered,
+                SocketError.ConnectionReset => ProbeOutcome.Closed,
+                _ => ProbeOutcome.Closed
+            };
+        }
+    }
 
-        if (!isValidIp && !isValidHostname)
-            throw new ArgumentException($"Invalid target address: '{host}'. Please enter a valid IP address or hostname.");
+    private static IPAddress? PreferIpv4(IPAddress[] addresses)
+    {
+        foreach (IPAddress candidate in addresses)
+        {
+            if (candidate.AddressFamily == AddressFamily.InterNetwork)
+                return candidate;
+        }
+
+        return addresses.Length > 0 ? addresses[0] : null;
+    }
+
+    private static ToolResult<PortScanReport> Cancelled() =>
+        ToolResult<PortScanReport>.Fail(ToolErrorKind.Cancelled, "L.Common.Error.Cancelled", "Scan cancelled by the user.");
+
+    private enum ProbeOutcome
+    {
+        Open,
+        Closed,
+        Filtered
     }
 }
