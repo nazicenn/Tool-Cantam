@@ -1,7 +1,9 @@
-﻿namespace tool_cantam.Core.Models;
+namespace tool_cantam.Core.Models;
 
-public class AppSettings
+public sealed class AppSettings
 {
     public bool IsDarkTheme { get; set; } = true;
-    public string Language { get; set; } = "English";
+
+    /// <summary>Aktif dil kodu (ör. en-US, tr-TR). Eski "English"/"Türkçe" değerleri de okunabilir.</summary>
+    public string Language { get; set; } = "en-US";
 }

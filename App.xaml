@@ -16,6 +16,8 @@
             <converters:BoolToScanTextConverter x:Key="BoolToScanTextConverter"/>
             <converters:PingStatusConverter x:Key="PingStatusConverter"/>
             <converters:PositiveNumberToVisibilityConverter x:Key="PositiveNumberToVisibilityConverter"/>
+            <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <converters:NotificationTypeToBrushConverter x:Key="NotificationTypeToBrushConverter"/>
 
         </ResourceDictionary>
     </Application.Resources>

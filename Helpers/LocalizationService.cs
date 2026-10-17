@@ -1,52 +1,120 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Windows;
 
 namespace tool_cantam.Helpers;
 
+/// <summary>
+/// WPF kaynak sözlükleri üzerinden çalışan dil altyapısı.
+/// Uygulama kodu bu sınıfı doğrudan kullanmamalı; <c>ILocalizerService</c> enjekte edilmelidir.
+/// Burası yalnızca kaynak sözlüğünü değiştiren ve anahtar çözen alt katmandır.
+/// </summary>
 public static class LocalizationService
 {
-    private const string LangPathPart = "/Resources/Languages/";
-    private static string? _currentCulture;
+    public const string DefaultCultureCode = "en-US";
 
-    public static void SetLanguage(string cultureCode)
+    /// <summary>Desteklenen dil kodlarının resmî biçimi.</summary>
+    public static readonly IReadOnlyList<string> SupportedCultureCodes = new[] { "en-US", "tr-TR" };
+
+    /// <summary>
+    /// Kullanıcı/ayar kaynaklı dil adlarını resmî koda eşler.
+    /// Ayar dosyasındaki eski "English"/"Türkçe" değerleri de burada karşılanır.
+    /// </summary>
+    private static readonly Dictionary<string, string> CultureAliases = new(StringComparer.OrdinalIgnoreCase)
     {
-        // 1. Aynı dil zaten seçiliyse işlem yapma (Performans)
-        if (_currentCulture == cultureCode) return;
+        ["en-US"] = "en-US",
+        ["en"] = "en-US",
+        ["English"] = "en-US",
+        ["İngilizce"] = "en-US",
+        ["tr-TR"] = "tr-TR",
+        ["tr"] = "tr-TR",
+        ["Türkçe"] = "tr-TR",
+        ["Turkce"] = "tr-TR",
+        ["Turkish"] = "tr-TR"
+    };
+
+    private static string _currentCulture = DefaultCultureCode;
+
+    /// <summary>Aktif dil kodu.</summary>
+    public static string CurrentCulture => _currentCulture;
+
+    /// <summary>Son dil değiştirme denemesinin hatası; başarılıysa null.</summary>
+    public static string? LastError { get; private set; }
+
+    /// <summary>Verilen değeri desteklenen bir dil koduna çevirmeyi dener.</summary>
+    public static bool TryNormalizeCulture(string? value, out string cultureCode)
+    {
+        cultureCode = DefaultCultureCode;
+
+        if (string.IsNullOrWhiteSpace(value))
+            return false;
+
+        if (!CultureAliases.TryGetValue(value.Trim(), out string? normalized))
+            return false;
+
+        cultureCode = normalized;
+        return true;
+    }
+
+    /// <summary>
+    /// Anahtarı aktif dildeki metne çevirir; bulunamazsa anahtarın kendisini döndürür.
+    /// </summary>
+    public static string Get(string key)
+    {
+        if (string.IsNullOrEmpty(key))
+            return string.Empty;
+
+        return Application.Current?.TryFindResource(key) as string ?? key;
+    }
+
+    /// <summary>
+    /// Aktif dili değiştirir: kültürü ayarlar ve dil kaynak sözlüğünü değiştirir.
+    /// Hata durumunda mevcut dil korunur ve <see cref="LastError"/> doldurulur.
+    /// </summary>
+    public static bool SetLanguage(string? cultureCode)
+    {
+        if (!TryNormalizeCulture(cultureCode, out string normalized))
+        {
+            LastError = $"Unsupported culture code: '{cultureCode}'.";
+            return false;
+        }
+
+        var application = Application.Current;
+        if (application?.Resources is null)
+        {
+            LastError = "Application resources are not available yet.";
+            return false;
+        }
 
         try
         {
-            var culture = new CultureInfo(cultureCode);
+            var culture = new CultureInfo(normalized);
+            var dictionary = new ResourceDictionary
+            {
+                // Mutlak pack URI, göreli yollara göre ortamdan bağımsızdır.
+                Source = new Uri($"pack://application:,,,/Resources/Languages/{normalized}.xaml", UriKind.Absolute)
+            };
+
+            var merged = application.Resources.MergedDictionaries;
+            var existing = merged.FirstOrDefault(d =>
+                d.Source is not null &&
+                d.Source.OriginalString.Contains("/Resources/Languages/", StringComparison.OrdinalIgnoreCase));
+
+            if (existing is not null)
+                merged.Remove(existing);
+
+            merged.Add(dictionary);
+
             CultureInfo.CurrentCulture = culture;
             CultureInfo.CurrentUICulture = culture;
 
-            var uri = new Uri($"{LangPathPart}{cultureCode}.xaml", UriKind.Relative);
-            var newDict = new ResourceDictionary { Source = uri };
-
-            if (Application.Current?.Resources == null) return;
-
-            var appResources = Application.Current.Resources.MergedDictionaries;
-
-            // 2. Eski dil dosyasını bul ve güvenli bir şekilde kaldır
-            var oldDict = appResources.FirstOrDefault(d =>
-                d.Source != null &&
-                d.Source.OriginalString.Contains(LangPathPart));
-
-            if (oldDict != null)
-            {
-                appResources.Remove(oldDict);
-            }
-
-            // 3. Yeni dil dosyasını ekle
-            appResources.Add(newDict);
-            _currentCulture = cultureCode;
-
-            // Loglama (Opsiyonel: ILogger entegrasyonu yoksa Debug kalabilir)
-            System.Diagnostics.Debug.WriteLine($"Dil başarıyla değiştirildi: {cultureCode}");
+            _currentCulture = normalized;
+            LastError = null;
+            return true;
         }
         catch (Exception ex)
         {
-            // Burada kurumsal bir hata yönetimi veya loglama servisi kullanılmalı
-            System.Diagnostics.Debug.WriteLine($"Localization Error: {ex.Message}");
+            LastError = ex.Message;
+            return false;
         }
     }
 }

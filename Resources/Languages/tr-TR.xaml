@@ -1,6 +1,8 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- ============ Kabuk / genel ============ -->
     <sys:String x:Key="L.Home">Ana Sayfa</sys:String>
     <sys:String x:Key="L.Settings">Ayarlar</sys:String>
     <sys:String x:Key="L.Search">Araçlarda ara...</sys:String>
@@ -17,4 +19,67 @@
     <sys:String x:Key="L.Generator">Üretici</sys:String>
     <sys:String x:Key="L.Cleaner">Temizleyici</sys:String>
     <sys:String x:Key="L.Scanner">Tarayıcı</sys:String>
+
+    <!-- ============ Ortak durum ve hata metinleri ============ -->
+    <sys:String x:Key="L.Common.Cancel">İPTAL</sys:String>
+    <sys:String x:Key="L.Common.Status.Cancelled">İşlem iptal edildi.</sys:String>
+    <sys:String x:Key="L.Common.Error.Cancelled">İşlem iptal edildi.</sys:String>
+    <sys:String x:Key="L.Common.Error.Unexpected">Beklenmeyen bir hata oluştu. Ayrıntı için log dosyasına bakın.</sys:String>
+    <sys:String x:Key="L.Common.Error.Clipboard">Panoya erişilemedi. Başka bir uygulama panoyu kullanıyor olabilir; lütfen tekrar deneyin.</sys:String>
+    <sys:String x:Key="L.Common.Error.FileSave">Dosya kaydedilemedi.</sys:String>
+    <sys:String x:Key="L.Common.Error.SettingsLoad">Ayarlar okunamadı; varsayılan değerler kullanılıyor.</sys:String>
+    <sys:String x:Key="L.Common.Error.SettingsSave">Ayarlar kaydedilemedi.</sys:String>
+    <sys:String x:Key="L.Common.Error.LanguageChange">Dil değiştirilemedi.</sys:String>
+    <sys:String x:Key="L.Common.Filter.TextFiles">Metin dosyaları</sys:String>
+    <sys:String x:Key="L.Common.Filter.AllFiles">Tüm dosyalar</sys:String>
+
+    <!-- ============ Ayarlar ============ -->
+    <sys:String x:Key="L.Settings.LanguageChanged">Dil güncellendi.</sys:String>
+
+    <!-- ============ Base64 Codec ============ -->
+    <sys:String x:Key="L.Base64.Title">BASE64 KODLAYICI / ÇÖZÜCÜ</sys:String>
+    <sys:String x:Key="L.Base64.Encode">_KODLA</sys:String>
+    <sys:String x:Key="L.Base64.Decode">_ÇÖZ</sys:String>
+    <sys:String x:Key="L.Base64.Copy">_KOPYALA</sys:String>
+    <sys:String x:Key="L.Base64.Save">_KAYDET</sys:String>
+    <sys:String x:Key="L.Base64.Clear">_TEMİZLE</sys:String>
+    <sys:String x:Key="L.Base64.EncodeFile">DOSYAYI KODLA</sys:String>
+    <sys:String x:Key="L.Base64.DecodeFile">DOSYAYI ÇÖZ</sys:String>
+    <sys:String x:Key="L.Base64.UrlSafe">URL güvenli alfabe (RFC 4648 §5, dolgusuz)</sys:String>
+    <sys:String x:Key="L.Base64.UrlSafeHelp">+ ve / yerine - ve _ kullanır, dolgu eklemez. JWT ve URL parametreleri için gereklidir.</sys:String>
+    <sys:String x:Key="L.Base64.DropHint">Dosyayı buraya bırakın</sys:String>
+    <sys:String x:Key="L.Base64.SelectHint">veya seçmek için tıklayın</sys:String>
+    <sys:String x:Key="L.Base64.InputAutomationName">Kodlanacak veya çözülecek metin</sys:String>
+    <sys:String x:Key="L.Base64.OutputAutomationName">Dönüşüm sonucu</sys:String>
+    <sys:String x:Key="L.Base64.Dialog.SelectFile">Dönüştürülecek dosyayı seçin</sys:String>
+    <sys:String x:Key="L.Base64.Filter.Base64Files">Base64 dosyaları</sys:String>
+
+    <sys:String x:Key="L.Base64.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Base64.Status.Encoded">Kodlandı: {0} karakter, {1} Base64 karakteri.</sys:String>
+    <sys:String x:Key="L.Base64.Status.Decoded">Çözüldü: {0} karakter.</sys:String>
+    <sys:String x:Key="L.Base64.Status.Copied">Çıktı panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Base64.Status.Saved">Çıktı dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.Base64.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.Base64.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.Base64.Status.EncodingFile">Dosya kodlanıyor...</sys:String>
+    <sys:String x:Key="L.Base64.Status.DecodingFile">Dosya çözülüyor...</sys:String>
+    <sys:String x:Key="L.Base64.Status.FileEncoded">Dosya kodlandı: {1} konumuna {0} bayt yazıldı.</sys:String>
+    <sys:String x:Key="L.Base64.Status.FileDecoded">Dosya çözüldü: {1} konumuna {0} bayt yazıldı.</sys:String>
+
+    <sys:String x:Key="L.Base64.Validation.EmptyInput">Lütfen dönüştürülecek metni girin.</sys:String>
+    <sys:String x:Key="L.Base64.Validation.NothingToCopy">Kopyalanacak çıktı yok.</sys:String>
+    <sys:String x:Key="L.Base64.Validation.NothingToSave">Kaydedilecek çıktı yok.</sys:String>
+
+    <sys:String x:Key="L.Base64.Error.InvalidCharacter">Geçersiz Base64 girdisi: beklenmeyen karakter.</sys:String>
+    <sys:String x:Key="L.Base64.Error.InvalidLength">Geçersiz Base64 girdisi: veri uzunluğu geçerli değil.</sys:String>
+    <sys:String x:Key="L.Base64.Error.InvalidPadding">Geçersiz Base64 girdisi: dolgu karakterleri yanlış konumda.</sys:String>
+    <sys:String x:Key="L.Base64.Error.InvalidFormat">Geçersiz Base64 girdisi.</sys:String>
+    <sys:String x:Key="L.Base64.Error.NotUtf8Text">Çözülen baytlar geçerli UTF-8 metni değil. İkili veri için "DOSYAYI ÇÖZ" kullanın.</sys:String>
+    <sys:String x:Key="L.Base64.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB metindir.</sys:String>
+    <sys:String x:Key="L.Base64.Error.OutputTooLarge">Çözülecek sonuç çok büyük. Sınır 10 MB'tır.</sys:String>
+    <sys:String x:Key="L.Base64.Error.PathRequired">Dosya yolu gerekli.</sys:String>
+    <sys:String x:Key="L.Base64.Error.FileNotFound">Seçilen dosya bulunamadı.</sys:String>
+    <sys:String x:Key="L.Base64.Error.InvalidFileContent">Dosya geçerli Base64 verisi içermiyor.</sys:String>
+    <sys:String x:Key="L.Base64.Error.IoError">Dosya okunamadı veya yazılamadı. İzinleri ve boş disk alanını kontrol edin.</sys:String>
+
 </ResourceDictionary>

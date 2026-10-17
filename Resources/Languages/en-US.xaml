@@ -1,6 +1,8 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- ============ Kabuk / genel ============ -->
     <sys:String x:Key="L.Home">Home</sys:String>
     <sys:String x:Key="L.Settings">Settings</sys:String>
     <sys:String x:Key="L.Search">Search tools...</sys:String>
@@ -17,4 +19,67 @@
     <sys:String x:Key="L.Generator">Generator</sys:String>
     <sys:String x:Key="L.Cleaner">Cleaner</sys:String>
     <sys:String x:Key="L.Scanner">Scanner</sys:String>
+
+    <!-- ============ Ortak durum ve hata metinleri ============ -->
+    <sys:String x:Key="L.Common.Cancel">CANCEL</sys:String>
+    <sys:String x:Key="L.Common.Status.Cancelled">Operation cancelled.</sys:String>
+    <sys:String x:Key="L.Common.Error.Cancelled">The operation was cancelled.</sys:String>
+    <sys:String x:Key="L.Common.Error.Unexpected">An unexpected error occurred. See the log file for details.</sys:String>
+    <sys:String x:Key="L.Common.Error.Clipboard">The clipboard could not be used. Another application may be holding it; please try again.</sys:String>
+    <sys:String x:Key="L.Common.Error.FileSave">The file could not be saved.</sys:String>
+    <sys:String x:Key="L.Common.Error.SettingsLoad">Settings could not be loaded; defaults are in use.</sys:String>
+    <sys:String x:Key="L.Common.Error.SettingsSave">Settings could not be saved.</sys:String>
+    <sys:String x:Key="L.Common.Error.LanguageChange">The language could not be changed.</sys:String>
+    <sys:String x:Key="L.Common.Filter.TextFiles">Text files</sys:String>
+    <sys:String x:Key="L.Common.Filter.AllFiles">All files</sys:String>
+
+    <!-- ============ Ayarlar ============ -->
+    <sys:String x:Key="L.Settings.LanguageChanged">Language updated.</sys:String>
+
+    <!-- ============ Base64 Codec ============ -->
+    <sys:String x:Key="L.Base64.Title">BASE64 ENCODER / DECODER</sys:String>
+    <sys:String x:Key="L.Base64.Encode">_ENCODE</sys:String>
+    <sys:String x:Key="L.Base64.Decode">_DECODE</sys:String>
+    <sys:String x:Key="L.Base64.Copy">_COPY</sys:String>
+    <sys:String x:Key="L.Base64.Save">_SAVE</sys:String>
+    <sys:String x:Key="L.Base64.Clear">C_LEAR</sys:String>
+    <sys:String x:Key="L.Base64.EncodeFile">ENCODE FILE</sys:String>
+    <sys:String x:Key="L.Base64.DecodeFile">DECODE FILE</sys:String>
+    <sys:String x:Key="L.Base64.UrlSafe">URL-safe alphabet (RFC 4648 §5, no padding)</sys:String>
+    <sys:String x:Key="L.Base64.UrlSafeHelp">Uses - and _ instead of + and /, and omits padding. Required for JWT and URL parameters.</sys:String>
+    <sys:String x:Key="L.Base64.DropHint">Drop file here</sys:String>
+    <sys:String x:Key="L.Base64.SelectHint">or click to select</sys:String>
+    <sys:String x:Key="L.Base64.InputAutomationName">Text to encode or decode</sys:String>
+    <sys:String x:Key="L.Base64.OutputAutomationName">Conversion result</sys:String>
+    <sys:String x:Key="L.Base64.Dialog.SelectFile">Select the file to convert</sys:String>
+    <sys:String x:Key="L.Base64.Filter.Base64Files">Base64 files</sys:String>
+
+    <sys:String x:Key="L.Base64.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Base64.Status.Encoded">Encoded: {0} character(s) to {1} Base64 character(s).</sys:String>
+    <sys:String x:Key="L.Base64.Status.Decoded">Decoded: {0} character(s).</sys:String>
+    <sys:String x:Key="L.Base64.Status.Copied">Output copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Base64.Status.Saved">Output saved to file.</sys:String>
+    <sys:String x:Key="L.Base64.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.Base64.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.Base64.Status.EncodingFile">Encoding file...</sys:String>
+    <sys:String x:Key="L.Base64.Status.DecodingFile">Decoding file...</sys:String>
+    <sys:String x:Key="L.Base64.Status.FileEncoded">File encoded: {0} byte(s) written to {1}.</sys:String>
+    <sys:String x:Key="L.Base64.Status.FileDecoded">File decoded: {0} byte(s) written to {1}.</sys:String>
+
+    <sys:String x:Key="L.Base64.Validation.EmptyInput">Please enter text to convert.</sys:String>
+    <sys:String x:Key="L.Base64.Validation.NothingToCopy">There is no output to copy.</sys:String>
+    <sys:String x:Key="L.Base64.Validation.NothingToSave">There is no output to save.</sys:String>
+
+    <sys:String x:Key="L.Base64.Error.InvalidCharacter">Invalid Base64 input: unexpected character.</sys:String>
+    <sys:String x:Key="L.Base64.Error.InvalidLength">Invalid Base64 input: the payload length is not valid.</sys:String>
+    <sys:String x:Key="L.Base64.Error.InvalidPadding">Invalid Base64 input: padding characters are misplaced.</sys:String>
+    <sys:String x:Key="L.Base64.Error.InvalidFormat">Invalid Base64 input.</sys:String>
+    <sys:String x:Key="L.Base64.Error.NotUtf8Text">The decoded bytes are not valid UTF-8 text. Use "Decode file" for binary data.</sys:String>
+    <sys:String x:Key="L.Base64.Error.InputTooLarge">Input is too large. The limit is 10 MB of text.</sys:String>
+    <sys:String x:Key="L.Base64.Error.OutputTooLarge">The decoded result would be too large. The limit is 10 MB.</sys:String>
+    <sys:String x:Key="L.Base64.Error.PathRequired">A file path is required.</sys:String>
+    <sys:String x:Key="L.Base64.Error.FileNotFound">The selected file could not be found.</sys:String>
+    <sys:String x:Key="L.Base64.Error.InvalidFileContent">The file does not contain valid Base64 data.</sys:String>
+    <sys:String x:Key="L.Base64.Error.IoError">The file could not be read or written. Check permissions and free disk space.</sys:String>
+
 </ResourceDictionary>
