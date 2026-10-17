@@ -1,29 +1,41 @@
-﻿<UserControl x:Class="tool_cantam.Views.UrlPage"
+<UserControl x:Class="tool_cantam.Views.UrlPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              Background="{StaticResource BorderDefaultBrush}">
 
-    <Grid Margin="20">                         
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Başlık -->
-            <RowDefinition Height="*"/>
-            <!-- Ana İçerik -->
             <RowDefinition Height="Auto"/>
-            <!-- Durum Satırı -->
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Başlık -->
-        <TextBlock Grid.Row="0" 
-                   Text="URL ENCODER / DECODER" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.Url.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,15"/>
 
-        <!-- Ana İçerik Bölgesi -->
-        <Border Grid.Row="1">
+        <!-- Kodlama bağlamı: aynı metin bağlama göre farklı kodlanır -->
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,0,0,15">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{DynamicResource L.Url.Mode}"
+                           Style="{StaticResource LabelPrimary}"
+                           VerticalAlignment="Center"
+                           Margin="0,0,10,0"/>
+                <ComboBox ItemsSource="{Binding ViewModel.Modes}"
+                          SelectedItem="{Binding ViewModel.SelectedMode}"
+                          DisplayMemberPath="DisplayName"
+                          Width="240"
+                          TabIndex="0"
+                          AutomationProperties.HelpText="{DynamicResource L.Url.ModeHelp}"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="2">
             <Grid Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -31,110 +43,148 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- SOL: INPUT SECTION -->
+                <!-- SOL: GİRDİ -->
                 <Grid Grid.Column="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <!-- Label -->
                         <RowDefinition Height="*"/>
-                        <!-- TextBox -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Button -->
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Text="INPUT TEXT" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource L.Input}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
 
-                    <TextBox Grid.Row="1" 
-                             Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" 
-                             AcceptsReturn="True" 
-                             TextWrapping="Wrap" 
+                    <TextBox Grid.Row="1"
+                             x:Name="InputTextBox"
+                             Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
                              VerticalScrollBarVisibility="Auto"
-                             TextChanged="TextBox_TextChanged"/>
+                             TabIndex="1"
+                             AutomationProperties.Name="{DynamicResource L.Url.InputAutomationName}"/>
 
-                    <Button Grid.Row="2" 
-                            Content="ENCODE →" 
-                            Command="{Binding EncodeCommand}" 
+                    <Button Grid.Row="2"
+                            Content="{DynamicResource L.Url.Encode}"
+                            Command="{Binding ViewModel.EncodeCommand}"
                             Style="{StaticResource ModernButton}"
                             Background="{StaticResource AccentPrimaryBrush}"
-                            Margin="0,15,0,0" 
+                            Margin="0,15,0,0"
                             Height="40"
+                            TabIndex="2"
                             Foreground="{StaticResource TextPrimaryBrush}"
                             HorizontalAlignment="Stretch"/>
                 </Grid>
 
-                <!-- ORTA: SWAP BUTTON (Daha dengeli yerleşim) -->
+                <!-- ORTA: TAKAS -->
                 <Grid Grid.Column="1" VerticalAlignment="Center" Margin="15,30,15,0">
-                    <Button Command="{Binding SwapCommand}"
+                    <Button Command="{Binding ViewModel.SwapCommand}"
                             Width="45" Height="45"
                             Style="{StaticResource ModernButton}"
                             Background="{StaticResource BorderDefaultBrush}"
-                            ToolTip="Swap Input and Output">
+                            TabIndex="3"
+                            ToolTip="{DynamicResource L.Url.SwapHelp}"
+                            AutomationProperties.Name="{DynamicResource L.Url.Swap}">
                         <TextBlock Text="⇄" FontSize="22" Foreground="{StaticResource AccentPrimaryBrush}"/>
                     </Button>
                 </Grid>
 
-                <!-- SAĞ: OUTPUT SECTION -->
+                <!-- SAĞ: SONUÇ -->
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <!-- Header (Label + Copy) -->
                         <RowDefinition Height="*"/>
-                        <!-- TextBox -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Bottom Buttons -->
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0" Margin="0,0,0,10">
-                        <TextBlock Text="RESULT" Style="{StaticResource LabelPrimary}" VerticalAlignment="Center"/>
-                        <Button Content="COPY" 
-                                Command="{Binding CopyOutputCommand}" 
-                                Style="{StaticResource ModernButton}"
-                                Background="{StaticResource StatusWarningBrush}" 
-                                Height="26" FontSize="10" Padding="12,0"
-                                HorizontalAlignment="Right"/>
+                        <TextBlock Text="{DynamicResource L.Output}" Style="{StaticResource LabelPrimary}" VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="{DynamicResource L.Url.Copy}"
+                                    Command="{Binding ViewModel.CopyOutputCommand}"
+                                    Style="{StaticResource ModernButton}"
+                                    Background="{StaticResource StatusWarningBrush}"
+                                    Height="26" FontSize="10" Padding="12,0"
+                                    Margin="0,0,6,0"
+                                    TabIndex="4"/>
+                            <Button Content="{DynamicResource L.Url.Save}"
+                                    Command="{Binding ViewModel.SaveOutputCommand}"
+                                    Style="{StaticResource ModernButton}"
+                                    Background="{StaticResource AccentPrimaryBrush}"
+                                    Height="26" FontSize="10" Padding="12,0"
+                                    TabIndex="5"/>
+                        </StackPanel>
                     </Grid>
 
-                    <TextBox Grid.Row="1" 
-                             Text="{Binding OutputText, Mode=OneWay}" 
+                    <TextBox Grid.Row="1"
+                             Text="{Binding ViewModel.OutputText, Mode=OneWay}"
                              AcceptsReturn="True"
-                             IsReadOnly="True" 
-                             TextWrapping="Wrap" 
-                             VerticalScrollBarVisibility="Auto"/>
+                             IsReadOnly="True"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto"
+                             TabIndex="6"
+                             AutomationProperties.Name="{DynamicResource L.Url.OutputAutomationName}"/>
 
                     <UniformGrid Grid.Row="2" Columns="2" Margin="0,15,0,0">
-                        <Button Content="← DECODE" 
-                                Command="{Binding DecodeCommand}" 
+                        <Button Content="{DynamicResource L.Url.Decode}"
+                                Command="{Binding ViewModel.DecodeCommand}"
                                 Style="{StaticResource ModernButton}"
-                                Background="{StaticResource GreenBrush}" 
-                                Height="40" 
-                                Margin="0,0,5,0"/>
-                        <Button Content="CLEAR" 
-                                Command="{Binding ClearCommand}" 
+                                Background="{StaticResource GreenBrush}"
+                                Height="40"
+                                Margin="0,0,5,0"
+                                TabIndex="7"/>
+                        <Button Content="{DynamicResource L.Url.Clear}"
+                                Command="{Binding ViewModel.ClearCommand}"
                                 Style="{StaticResource ModernButton}"
-                                Background="{StaticResource RedBrush}" 
-                                Height="40" 
-                                Margin="5,0,0,0"/>
+                                Background="{StaticResource RedBrush}"
+                                Height="40"
+                                Margin="5,0,0,0"
+                                TabIndex="8"/>
                     </UniformGrid>
                 </Grid>
             </Grid>
         </Border>
 
-        <!-- DURUM SATIRI (Footer) -->
-        <Border Grid.Row="2" 
+        <!-- DURUM SATIRI -->
+        <Border Grid.Row="3"
                 Style="{StaticResource OptionsPanel}"
                 Padding="12"
                 Margin="0,15,0,0">
             <Grid>
-                <TextBlock Text="{Binding StatusText}" 
-                           Foreground="{StaticResource TextSecondaryBrush}"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ui:ProgressRing Grid.Column="0"
+                                 IsIndeterminate="True"
+                                 Width="16" Height="16"
+                                 Margin="0,0,8,0"
+                                 Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ViewModel.StatusText}"
+                           Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
                            FontFamily="{StaticResource MonoFont}"
                            FontSize="11"
-                           VerticalAlignment="Center"/>
-                <TextBlock Text="URL encoding converts special characters to %xx format" 
-                           Foreground="{StaticResource TextPrimaryBrush}"
-                           HorizontalAlignment="Right"
+                           TextWrapping="Wrap"
                            VerticalAlignment="Center"
-                           Opacity="0.6"/>
+                           AutomationProperties.LiveSetting="Polite"/>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button Content="{DynamicResource L.Common.Cancel}"
+                            Command="{Binding ViewModel.EncodeCancelCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusDangerBrush}"
+                            Height="26" FontSize="10" Padding="12,0"
+                            Margin="0,0,6,0"
+                            Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <TextBlock Text="{DynamicResource L.Url.Hint}"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               VerticalAlignment="Center"
+                               Opacity="0.6"
+                               TextWrapping="Wrap"
+                               MaxWidth="380"/>
+                </StackPanel>
             </Grid>
         </Border>
     </Grid>

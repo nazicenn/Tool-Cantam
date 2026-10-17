@@ -1,18 +1,27 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
+using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class UrlPage : UserControl
+public partial class UrlPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.UrlViewModel>
 {
-    public UrlPage(UrlViewModel viewModel)
+    public ViewModels.UrlViewModel ViewModel { get; }
+
+    public UrlPage(ViewModels.UrlViewModel viewModel)
     {
+        ViewModel = viewModel;
         InitializeComponent();
-        DataContext = viewModel;
+        DataContext = this;
+
+        // Girdi eksikse görünüm odaklanmayı yönetir; ViewModel'de UI bağımlılığı yoktur.
+        ViewModel.RequestInputFocus += FocusInput;
     }
 
-    private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+    private void FocusInput()
     {
+        if (!IsLoaded)
+            return;
 
+        InputTextBox.Focus();
+        InputTextBox.SelectAll();
     }
 }

@@ -82,4 +82,41 @@
     <sys:String x:Key="L.Base64.Error.InvalidFileContent">Dosya geçerli Base64 verisi içermiyor.</sys:String>
     <sys:String x:Key="L.Base64.Error.IoError">Dosya okunamadı veya yazılamadı. İzinleri ve boş disk alanını kontrol edin.</sys:String>
 
+    <!-- ============ URL Kodlayıcı / Çözücü ============ -->
+    <sys:String x:Key="L.Url.Title">URL KODLAYICI / ÇÖZÜCÜ</sys:String>
+    <sys:String x:Key="L.Url.Mode">Kodlama bağlamı</sys:String>
+    <sys:String x:Key="L.Url.Mode.Component">Bileşen (sorgu değeri, yol parçası)</sys:String>
+    <sys:String x:Key="L.Url.Mode.Form">Form gövdesi (application/x-www-form-urlencoded)</sys:String>
+    <sys:String x:Key="L.Url.Mode.FullUrl">Tam URL (:/?#[]@!$&amp;'()*+,;= korunur)</sys:String>
+    <sys:String x:Key="L.Url.ModeHelp">Aynı metin kullanıldığı yere göre farklı kodlanır. Hedefinize uyan bağlamı seçin.</sys:String>
+    <sys:String x:Key="L.Url.Encode">KODLA →</sys:String>
+    <sys:String x:Key="L.Url.Decode">← ÇÖZ</sys:String>
+    <sys:String x:Key="L.Url.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.Url.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.Url.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Url.Swap">Takas</sys:String>
+    <sys:String x:Key="L.Url.SwapHelp">Giriş ve çıkışı takas et</sys:String>
+    <sys:String x:Key="L.Url.Hint">Yalnızca A-Z a-z 0-9 - . _ ~ olduğu gibi kalır; diğer her şey %XX olur.</sys:String>
+    <sys:String x:Key="L.Url.InputAutomationName">Kodlanacak veya çözülecek metin</sys:String>
+    <sys:String x:Key="L.Url.OutputAutomationName">Dönüşüm sonucu</sys:String>
+
+    <sys:String x:Key="L.Url.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Url.Status.Encoded">Kodlandı: {0} karakter, {1} karakter.</sys:String>
+    <sys:String x:Key="L.Url.Status.Decoded">Çözüldü: {0} karakter.</sys:String>
+    <sys:String x:Key="L.Url.Status.Copied">Çıktı panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Url.Status.Saved">Çıktı dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.Url.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.Url.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.Url.Status.Swapped">Giriş ve çıkış takas edildi.</sys:String>
+
+    <sys:String x:Key="L.Url.Validation.EmptyInput">Lütfen dönüştürülecek metni girin.</sys:String>
+    <sys:String x:Key="L.Url.Validation.NothingToCopy">Kopyalanacak çıktı yok.</sys:String>
+    <sys:String x:Key="L.Url.Validation.NothingToSave">Kaydedilecek çıktı yok.</sys:String>
+
+    <sys:String x:Key="L.Url.Error.InvalidEscape">Geçersiz yüzde kaçışı: "%" işaretinden sonra iki onaltılık basamak gelmelidir.</sys:String>
+    <sys:String x:Key="L.Url.Error.InvalidUnicode">Metin geçersiz bir Unicode karakteri içeriyor (eşleşmemiş surrogate).</sys:String>
+    <sys:String x:Key="L.Url.Error.NotUtf8">Yüzde kaçışları geçerli UTF-8 metni oluşturmuyor.</sys:String>
+    <sys:String x:Key="L.Url.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB metindir.</sys:String>
+    <sys:String x:Key="L.Url.Error.OutputTooLarge">Çözülecek sonuç çok büyük. Sınır 10 MB'tır.</sys:String>
+
 </ResourceDictionary>

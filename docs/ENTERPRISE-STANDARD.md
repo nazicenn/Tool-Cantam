@@ -32,7 +32,7 @@ Ek kurallar:
 
 | Bileşen | Durum |
 |---|---|
-| Test projesi (xunit v3 + Microsoft.Testing.Platform, `tests/tool-cantam.Tests`) | ✅ 144 test geçiyor |
+| Test projesi (xunit v3 + Microsoft.Testing.Platform, `tests/tool-cantam.Tests`) | ✅ 212 test geçiyor |
 | Sonuç/hata modeli (`ToolResult<T>`, `ToolErrorKind`) | ✅ |
 | Yerelleştirme altyapısı (`ILocalizerService`, dil kodu eşlemesi, anahtar parite testi) | ✅ (dil değiştirme hatası düzeltildi) |
 | Bildirim servisi (DI'da çözülemeyen yapıcı düzeltildi) | ✅ |
@@ -47,7 +47,7 @@ Sıra, uygulamadaki araç listesiyle (kayıt sırası) aynıdır; işaretlenen a
 | # | Araç | Durum |
 |---|---|---|
 | 1 | Base64 Codec | ✅ tamam |
-| 2 | URL Encoder/Decoder | ⬜ |
+| 2 | URL Encoder/Decoder | ✅ tamam |
 | 3 | Hex Encoder/Decoder | ⬜ |
 | 4 | HTML Encoder/Decoder | ⬜ |
 | 5 | Binary Encoder/Decoder | ⬜ |

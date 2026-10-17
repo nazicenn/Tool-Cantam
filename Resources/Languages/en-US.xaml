@@ -82,4 +82,41 @@
     <sys:String x:Key="L.Base64.Error.InvalidFileContent">The file does not contain valid Base64 data.</sys:String>
     <sys:String x:Key="L.Base64.Error.IoError">The file could not be read or written. Check permissions and free disk space.</sys:String>
 
+    <!-- ============ URL Encoder / Decoder ============ -->
+    <sys:String x:Key="L.Url.Title">URL ENCODER / DECODER</sys:String>
+    <sys:String x:Key="L.Url.Mode">Encoding context</sys:String>
+    <sys:String x:Key="L.Url.Mode.Component">Component (query value, path segment)</sys:String>
+    <sys:String x:Key="L.Url.Mode.Form">Form body (application/x-www-form-urlencoded)</sys:String>
+    <sys:String x:Key="L.Url.Mode.FullUrl">Full URL (keeps :/?#[]@!$&amp;'()*+,;=)</sys:String>
+    <sys:String x:Key="L.Url.ModeHelp">The same text is encoded differently depending on where it is used. Pick the context that matches your target.</sys:String>
+    <sys:String x:Key="L.Url.Encode">ENCODE →</sys:String>
+    <sys:String x:Key="L.Url.Decode">← DECODE</sys:String>
+    <sys:String x:Key="L.Url.Copy">COPY</sys:String>
+    <sys:String x:Key="L.Url.Save">SAVE</sys:String>
+    <sys:String x:Key="L.Url.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.Url.Swap">Swap</sys:String>
+    <sys:String x:Key="L.Url.SwapHelp">Swap input and output</sys:String>
+    <sys:String x:Key="L.Url.Hint">Only A-Z a-z 0-9 - . _ ~ are kept as they are; everything else becomes %XX.</sys:String>
+    <sys:String x:Key="L.Url.InputAutomationName">Text to encode or decode</sys:String>
+    <sys:String x:Key="L.Url.OutputAutomationName">Conversion result</sys:String>
+
+    <sys:String x:Key="L.Url.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Url.Status.Encoded">Encoded: {0} character(s) to {1} character(s).</sys:String>
+    <sys:String x:Key="L.Url.Status.Decoded">Decoded: {0} character(s).</sys:String>
+    <sys:String x:Key="L.Url.Status.Copied">Output copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Url.Status.Saved">Output saved to file.</sys:String>
+    <sys:String x:Key="L.Url.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.Url.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.Url.Status.Swapped">Input and output swapped.</sys:String>
+
+    <sys:String x:Key="L.Url.Validation.EmptyInput">Please enter text to convert.</sys:String>
+    <sys:String x:Key="L.Url.Validation.NothingToCopy">There is no output to copy.</sys:String>
+    <sys:String x:Key="L.Url.Validation.NothingToSave">There is no output to save.</sys:String>
+
+    <sys:String x:Key="L.Url.Error.InvalidEscape">Invalid percent escape: a "%" must be followed by two hexadecimal digits.</sys:String>
+    <sys:String x:Key="L.Url.Error.InvalidUnicode">The text contains an invalid Unicode character (unpaired surrogate).</sys:String>
+    <sys:String x:Key="L.Url.Error.NotUtf8">The percent escapes do not form valid UTF-8 text.</sys:String>
+    <sys:String x:Key="L.Url.Error.InputTooLarge">Input is too large. The limit is 10 MB of text.</sys:String>
+    <sys:String x:Key="L.Url.Error.OutputTooLarge">The decoded result would be too large. The limit is 10 MB.</sys:String>
+
 </ResourceDictionary>
