@@ -31,6 +31,7 @@
     <sys:String x:Key="L.Common.Error.SettingsSave">Ayarlar kaydedilemedi.</sys:String>
     <sys:String x:Key="L.Common.Error.LanguageChange">Dil değiştirilemedi.</sys:String>
     <sys:String x:Key="L.Common.Filter.TextFiles">Metin dosyaları</sys:String>
+    <sys:String x:Key="L.Common.Filter.HtmlFiles">HTML dosyaları</sys:String>
     <sys:String x:Key="L.Common.Filter.AllFiles">Tüm dosyalar</sys:String>
 
     <!-- ============ Ayarlar ============ -->
@@ -157,5 +158,45 @@
     <sys:String x:Key="L.Hex.Error.InvalidUnicode">Metin geçersiz bir Unicode karakteri içeriyor (eşleşmemiş surrogate).</sys:String>
     <sys:String x:Key="L.Hex.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
     <sys:String x:Key="L.Hex.Error.OutputTooLarge">Çözülecek sonuç çok büyük. Sınır 10 MB'tır.</sys:String>
+
+    <!-- ============ HTML Kodlayıcı / Çözücü ============ -->
+    <sys:String x:Key="L.Html.Title">HTML KODLAYICI / ÇÖZÜCÜ</sys:String>
+    <sys:String x:Key="L.Html.UseNamedEntities">Adlandırılmış varlık kullan (&amp;#38; yerine &amp;amp;)</sys:String>
+    <sys:String x:Key="L.Html.UseNamedEntitiesHelp">Adlandırılmış varlıklar okunabilir; sayısal referanslar her bağlamda çalışır ve asla belirsiz değildir.</sys:String>
+    <sys:String x:Key="L.Html.EncodeNonAscii">ASCII dışı karakterleri de kodla</sys:String>
+    <sys:String x:Key="L.Html.EncodeNonAsciiHelp">é veya ğ gibi karakterleri sayısal referansa çevirir; çıktı saf ASCII olur. Eski sistemler ve e-posta için kullanışlıdır.</sys:String>
+    <sys:String x:Key="L.Html.StrictEntities">Çözerken tanınmayan veya bozuk varlıkları bildir</sys:String>
+    <sys:String x:Key="L.Html.StrictEntitiesHelp">Kapalıyken tanınmayan her şey bildirilmek yerine olduğu gibi bırakılır.</sys:String>
+    <sys:String x:Key="L.Html.Encode">KODLA</sys:String>
+    <sys:String x:Key="L.Html.Decode">ÇÖZ</sys:String>
+    <sys:String x:Key="L.Html.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.Html.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.Html.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Html.Swap">TAKAS</sys:String>
+    <sys:String x:Key="L.Html.SwapHelp">Giriş ve çıkışı takas et</sys:String>
+    <sys:String x:Key="L.Html.Hint">Tek tırnak her zaman &amp;#39; olarak yazılır; çünkü &amp;apos; HTML 4'te bulunmaz.</sys:String>
+    <sys:String x:Key="L.Html.InputAutomationName">Kodlanacak metin veya çözülecek HTML</sys:String>
+    <sys:String x:Key="L.Html.OutputAutomationName">Dönüşüm sonucu</sys:String>
+
+    <sys:String x:Key="L.Html.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Html.Status.Encoded">Kodlandı: {0} karakter, {1} karakter.</sys:String>
+    <sys:String x:Key="L.Html.Status.Decoded">Çözüldü: {0} karakter.</sys:String>
+    <sys:String x:Key="L.Html.Status.Copied">Çıktı panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Html.Status.Saved">Çıktı dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.Html.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.Html.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.Html.Status.Swapped">Giriş ve çıkış takas edildi.</sys:String>
+
+    <sys:String x:Key="L.Html.Validation.EmptyInput">Lütfen dönüştürülecek metni veya HTML'i girin.</sys:String>
+    <sys:String x:Key="L.Html.Validation.NothingToCopy">Kopyalanacak çıktı yok.</sys:String>
+    <sys:String x:Key="L.Html.Validation.NothingToSave">Kaydedilecek çıktı yok.</sys:String>
+
+    <sys:String x:Key="L.Html.Error.UnknownEntity">Bilinmeyen HTML varlığı. Olduğu gibi bırakmak için katı modu kapatın.</sys:String>
+    <sys:String x:Key="L.Html.Error.MissingSemicolon">Bir HTML varlığının kapanış noktalı virgülü eksik.</sys:String>
+    <sys:String x:Key="L.Html.Error.InvalidEntity">Bozuk HTML varlığı: sayısal referans &amp;#38; veya &amp;#x26; biçiminde olmalıdır.</sys:String>
+    <sys:String x:Key="L.Html.Error.InvalidCodePoint">Sayısal referans geçerli bir Unicode kod noktası değil.</sys:String>
+    <sys:String x:Key="L.Html.Error.InvalidUnicode">Metin geçersiz bir Unicode karakteri içeriyor (eşleşmemiş surrogate).</sys:String>
+    <sys:String x:Key="L.Html.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
+    <sys:String x:Key="L.Html.Error.OutputTooLarge">Çözülecek sonuç çok büyük. Sınır 10 MB'tır.</sys:String>
 
 </ResourceDictionary>

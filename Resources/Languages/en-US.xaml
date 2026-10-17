@@ -31,6 +31,7 @@
     <sys:String x:Key="L.Common.Error.SettingsSave">Settings could not be saved.</sys:String>
     <sys:String x:Key="L.Common.Error.LanguageChange">The language could not be changed.</sys:String>
     <sys:String x:Key="L.Common.Filter.TextFiles">Text files</sys:String>
+    <sys:String x:Key="L.Common.Filter.HtmlFiles">HTML files</sys:String>
     <sys:String x:Key="L.Common.Filter.AllFiles">All files</sys:String>
 
     <!-- ============ Ayarlar ============ -->
@@ -157,5 +158,45 @@
     <sys:String x:Key="L.Hex.Error.InvalidUnicode">The text contains an invalid Unicode character (unpaired surrogate).</sys:String>
     <sys:String x:Key="L.Hex.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
     <sys:String x:Key="L.Hex.Error.OutputTooLarge">The decoded result would be too large. The limit is 10 MB.</sys:String>
+
+    <!-- ============ HTML Encoder / Decoder ============ -->
+    <sys:String x:Key="L.Html.Title">HTML ENCODER / DECODER</sys:String>
+    <sys:String x:Key="L.Html.UseNamedEntities">Use named entities (&amp;amp; instead of &amp;#38;)</sys:String>
+    <sys:String x:Key="L.Html.UseNamedEntitiesHelp">Named entities are readable; numeric references work in every context and are never ambiguous.</sys:String>
+    <sys:String x:Key="L.Html.EncodeNonAscii">Also encode non-ASCII characters</sys:String>
+    <sys:String x:Key="L.Html.EncodeNonAsciiHelp">Turns characters such as é or ğ into numeric references, so the output is pure ASCII. Useful for legacy systems and e-mail.</sys:String>
+    <sys:String x:Key="L.Html.StrictEntities">Report unknown or malformed entities when decoding</sys:String>
+    <sys:String x:Key="L.Html.StrictEntitiesHelp">When off, anything that is not a recognised entity is left exactly as it was instead of being reported.</sys:String>
+    <sys:String x:Key="L.Html.Encode">ENCODE</sys:String>
+    <sys:String x:Key="L.Html.Decode">DECODE</sys:String>
+    <sys:String x:Key="L.Html.Copy">COPY</sys:String>
+    <sys:String x:Key="L.Html.Save">SAVE</sys:String>
+    <sys:String x:Key="L.Html.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.Html.Swap">SWAP</sys:String>
+    <sys:String x:Key="L.Html.SwapHelp">Swap input and output</sys:String>
+    <sys:String x:Key="L.Html.Hint">The apostrophe is always written as &amp;#39;, because &amp;apos; does not exist in HTML 4.</sys:String>
+    <sys:String x:Key="L.Html.InputAutomationName">Text to encode or HTML to decode</sys:String>
+    <sys:String x:Key="L.Html.OutputAutomationName">Conversion result</sys:String>
+
+    <sys:String x:Key="L.Html.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Html.Status.Encoded">Encoded: {0} character(s) to {1} character(s).</sys:String>
+    <sys:String x:Key="L.Html.Status.Decoded">Decoded: {0} character(s).</sys:String>
+    <sys:String x:Key="L.Html.Status.Copied">Output copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Html.Status.Saved">Output saved to file.</sys:String>
+    <sys:String x:Key="L.Html.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.Html.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.Html.Status.Swapped">Input and output swapped.</sys:String>
+
+    <sys:String x:Key="L.Html.Validation.EmptyInput">Please enter text or HTML to convert.</sys:String>
+    <sys:String x:Key="L.Html.Validation.NothingToCopy">There is no output to copy.</sys:String>
+    <sys:String x:Key="L.Html.Validation.NothingToSave">There is no output to save.</sys:String>
+
+    <sys:String x:Key="L.Html.Error.UnknownEntity">Unknown HTML entity. Turn off strict mode to keep it as it is.</sys:String>
+    <sys:String x:Key="L.Html.Error.MissingSemicolon">An HTML entity is missing its closing semicolon.</sys:String>
+    <sys:String x:Key="L.Html.Error.InvalidEntity">Malformed HTML entity: a numeric reference must look like &amp;#38; or &amp;#x26;.</sys:String>
+    <sys:String x:Key="L.Html.Error.InvalidCodePoint">The numeric reference is not a valid Unicode code point.</sys:String>
+    <sys:String x:Key="L.Html.Error.InvalidUnicode">The text contains an invalid Unicode character (unpaired surrogate).</sys:String>
+    <sys:String x:Key="L.Html.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
+    <sys:String x:Key="L.Html.Error.OutputTooLarge">The decoded result would be too large. The limit is 10 MB.</sys:String>
 
 </ResourceDictionary>
