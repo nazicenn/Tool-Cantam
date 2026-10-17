@@ -3,130 +3,301 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:helpers="clr-namespace:tool_cantam.Helpers"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             mc:Ignorable="d" 
              Background="{StaticResource BorderDefaultBrush}">
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="1.2*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Algorithm Seçici -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,15">
-            <TextBlock Text="HASH GENERATOR" Style="{StaticResource LabelPrimary}" 
-                       FontWeight="SemiBold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
-            <ListBox ItemsSource="{Binding ViewModel.Algorithms}" SelectedItem="{Binding ViewModel.SelectedAlgorithm}" 
-                     BorderThickness="0" Background="Transparent" HorizontalAlignment="Center">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListBoxItem}">
-                        <Setter Property="Padding" Value="10,5"/>
-                        <Setter Property="Margin" Value="0,0,5,0"/>
-                        <Setter Property="Foreground" Value="{StaticResource AccentPrimaryBrush}"/>
-                        <Setter Property="FontWeight" Value="SemiBold"/>
-                        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>
-        </StackPanel>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.Hash.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <!-- Input ve File Alanı -->
-        <Grid Grid.Row="1" Margin="0,0,0,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <!-- Algoritma ve çıktı biçimi -->
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,0,0,10">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{DynamicResource L.Hash.Algorithm}"
+                               Style="{StaticResource LabelPrimary}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0"/>
 
-            <!-- Sol: Text Input -->
-            <Grid Grid.Column="0" Margin="0,0,10,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="Input Text" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
-                <ui:TextBox Grid.Row="1" Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}"
-                            PlaceholderText="Enter text here..." TextWrapping="Wrap" AcceptsReturn="True"
-                            VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto"/>
-                <Button Grid.Row="2" Content="HASH TEXT" Command="{Binding ViewModel.ComputeTextCommand}" 
-                        Style="{StaticResource ModernButton}"
-                        Background="{StaticResource GreenBrush}"
-                        Margin="0,8,0,0" Height="36"/>
-            </Grid>
+                    <ComboBox ItemsSource="{Binding ViewModel.Algorithms}"
+                              SelectedItem="{Binding ViewModel.SelectedAlgorithm}"
+                              DisplayMemberPath="DisplayName"
+                              Width="180"
+                              Margin="0,0,20,0"
+                              TabIndex="0"
+                              IsEnabled="{Binding ViewModel.AllAlgorithms, Converter={StaticResource InverseBooleanConverter}}"/>
 
-            <!-- Sağ: File Drop -->
-            <Grid Grid.Column="1" Margin="10,0,0,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="File (Drag &amp; Drop)" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
-                <Border Grid.Row="1" Style="{StaticResource DropZone}" VerticalAlignment="Stretch"
-                        helpers:FileDragDropBehavior.IsEnabled="True"
-                        helpers:FileDragDropBehavior.FilePath="{Binding ViewModel.FilePath, Mode=TwoWay}">
-                    <StackPanel VerticalAlignment="Center" Margin="5">
-                        <ui:SymbolIcon Symbol="Document24" FontSize="28" Foreground="{StaticResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
-                        <TextBlock Text="Drop file" Style="{StaticResource DropZoneHint}" Margin="0,5,0,0" HorizontalAlignment="Center" FontSize="12"/>
-                    </StackPanel>
-                </Border>
-                <Button Grid.Row="2" Content="HASH FILE" Command="{Binding ViewModel.ComputeFileCommand}" 
-                        Style="{StaticResource ModernButton}"
-                        Background="{StaticResource AccentPrimaryBrush}" 
-                        Margin="0,8,0,0" Height="36"/>
-            </Grid>
-        </Grid>
+                    <CheckBox Content="{DynamicResource L.Hash.AllAlgorithms}"
+                              IsChecked="{Binding ViewModel.AllAlgorithms}"
+                              Foreground="{StaticResource TextPrimaryBrush}"
+                              VerticalAlignment="Center"
+                              Margin="0,0,20,0"
+                              TabIndex="1"/>
 
-        <!-- Output ve Validate Kısmı -->
-        <Grid Grid.Row="3" VerticalAlignment="Stretch">
+                    <TextBlock Text="{DynamicResource L.Hash.OutputFormat}"
+                               Style="{StaticResource LabelPrimary}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0"/>
+
+                    <ComboBox ItemsSource="{Binding ViewModel.Formats}"
+                              SelectedItem="{Binding ViewModel.SelectedFormat}"
+                              DisplayMemberPath="DisplayName"
+                              Width="200"
+                              TabIndex="2"/>
+                </StackPanel>
+
+                <!-- Zayıf algoritma uyarısı -->
+                <TextBlock Text="{DynamicResource L.Hash.WeakWarning}"
+                           Foreground="{StaticResource StatusDangerBrush}"
+                           FontSize="11"
+                           Margin="0,10,0,0"
+                           TextWrapping="Wrap"
+                           Visibility="{Binding ViewModel.IsSelectedAlgorithmWeak, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Beklenen özet (doğrulama) -->
+        <Border Grid.Row="2" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{DynamicResource L.Hash.ExpectedDigest}"
+                           Style="{StaticResource LabelPrimary}"
+                           VerticalAlignment="Center"
+                           Margin="0,0,10,0"/>
+                <TextBox Text="{Binding ViewModel.ExpectedDigest, UpdateSourceTrigger=PropertyChanged}"
+                         Width="460"
+                         FontFamily="{StaticResource MonoFont}"
+                         TabIndex="3"
+                         VerticalContentAlignment="Center"
+                         AutomationProperties.HelpText="{DynamicResource L.Hash.ExpectedDigestHelp}"/>
+                <TextBlock Text="{DynamicResource L.Hash.ExpectedDigestHelp}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Opacity="0.6"
+                           FontSize="10"
+                           VerticalAlignment="Center"
+                           TextWrapping="Wrap"
+                           MaxWidth="360"
+                           Margin="12,0,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Girdi -->
+        <Grid Grid.Row="3" Margin="0,0,0,10">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Separator Grid.Row="0" Height="1" Background="{StaticResource BorderDefaultBrush}" Margin="0,5,0,15"/>
+            <TextBlock Grid.Row="0" Text="{DynamicResource L.Hash.InputText}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
 
-            <!-- Output Header + COPY -->
-            <Grid Grid.Row="1" Margin="0,0,0,5">
-                <TextBlock Text="Output Hash" Style="{StaticResource LabelPrimary}" VerticalAlignment="Center"/>
-                <Button Content="COPY" 
-                        Command="{Binding ViewModel.CopyHashCommand}" 
-                        Style="{StaticResource ModernButton}"
-                        Background="{StaticResource StatusWarningBrush}" 
-                        Width="70" Height="30" 
-                        HorizontalAlignment="Right"
-                        FontSize="10"/>
+            <TextBox Grid.Row="1"
+                     x:Name="InputTextBox"
+                     Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto"
+                     MinHeight="70"
+                     TabIndex="4"
+                     FontFamily="{StaticResource MonoFont}"
+                     Foreground="{StaticResource TextPrimaryBrush}"
+                     BorderBrush="{StaticResource BorderDefaultBrush}"
+                     AutomationProperties.Name="{DynamicResource L.Hash.InputAutomationName}"/>
+
+            <Grid Grid.Row="2" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <UniformGrid Grid.Column="0" Columns="6">
+                    <Button Content="{DynamicResource L.Hash.HashText}"
+                            Command="{Binding ViewModel.ComputeTextCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="32" Margin="0,0,5,0"
+                            TabIndex="5"/>
+                    <Button Content="{DynamicResource L.Hash.HashFile}"
+                            Command="{Binding ViewModel.ComputeFileCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="32" Margin="5,0,5,0"
+                            TabIndex="6"
+                            ToolTip="{DynamicResource L.Hash.HashFileHelp}"/>
+                    <Button Content="{DynamicResource L.Hash.Copy}"
+                            Command="{Binding ViewModel.CopyResultsCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="32" Margin="5,0,5,0"
+                            TabIndex="7"/>
+                    <Button Content="{DynamicResource L.Hash.Save}"
+                            Command="{Binding ViewModel.SaveResultsCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource AccentPrimaryBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="32" Margin="5,0,5,0"
+                            TabIndex="8"/>
+                    <Button Content="{DynamicResource L.Hash.Clear}"
+                            Command="{Binding ViewModel.ClearCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="32" Margin="5,0,5,0"
+                            TabIndex="9"/>
+                    <Button Content="{DynamicResource L.Common.Cancel}"
+                            Command="{Binding ViewModel.ComputeTextCancelCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusDangerBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="32" Margin="5,0,0,0"
+                            TabIndex="10"
+                            Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </UniformGrid>
+
+                <!-- Dosya seçimi: sürükle-bırak veya tıklama -->
+                <Border Grid.Column="1"
+                        Margin="15,0,0,0"
+                        Padding="8,4"
+                        CornerRadius="4"
+                        Background="{StaticResource OptionsBgBrush}"
+                        BorderBrush="{StaticResource OptionsBorderBrush}"
+                        BorderThickness="1"
+                        helpers:FileDragDropBehavior.IsEnabled="True"
+                        helpers:FileDragDropBehavior.FilePath="{Binding ViewModel.FilePath, Mode=TwoWay}"
+                        AutomationProperties.Name="{DynamicResource L.Hash.FileDropAutomationName}">
+                    <TextBlock Text="{Binding ViewModel.FilePath}"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               FontFamily="{StaticResource MonoFont}"
+                               FontSize="10"
+                               VerticalAlignment="Center"
+                               TextTrimming="CharacterEllipsis"/>
+                </Border>
             </Grid>
-
-            <!-- Hash Output -->
-            <ui:TextBox Grid.Row="2" Text="{Binding ViewModel.HashOutput}" IsReadOnly="True" 
-                        VerticalContentAlignment="Center" FontSize="14" FontWeight="SemiBold"
-                        VerticalAlignment="Stretch" TextWrapping="Wrap" Margin="0,0,0,15"/>
-
-            <!-- Validate Label -->
-            <TextBlock Grid.Row="3" Text="Validate / Compare Hash" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
-
-            <!-- Compare Input -->
-            <ui:TextBox Grid.Row="4" Text="{Binding ViewModel.CompareHash, UpdateSourceTrigger=PropertyChanged}" 
-                        PlaceholderText="Paste hash here to compare..."
-                        VerticalAlignment="Stretch" TextWrapping="Wrap"/>
-
-            <!-- Validation Result -->
-            <TextBlock Grid.Row="5" Text="{Binding ViewModel.ValidationResult}" Style="{StaticResource SuccessText}" 
-                       FontSize="12" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,5,0,0"/>
         </Grid>
+
+        <!-- Sonuçlar -->
+        <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="{DynamicResource L.Hash.Results}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
+
+            <Border Grid.Row="1"
+                    Background="{StaticResource OptionsBgBrush}"
+                    BorderBrush="{StaticResource OptionsBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Padding="8">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding ViewModel.Results}"
+                                  AutomationProperties.Name="{DynamicResource L.Hash.ResultsAutomationName}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0"
+                                               Text="{Binding AlgorithmName}"
+                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                               FontWeight="SemiBold"
+                                               FontSize="11"
+                                               VerticalAlignment="Center"/>
+
+                                    <TextBox Grid.Column="1"
+                                             Text="{Binding Digest}"
+                                             IsReadOnly="True"
+                                             FontFamily="{StaticResource MonoFont}"
+                                             FontSize="11"
+                                             Foreground="{StaticResource AccentPrimaryBrush}"
+                                             BorderThickness="0"
+                                             Background="Transparent"
+                                             VerticalContentAlignment="Center"/>
+
+                                    <Border Grid.Column="2"
+                                            BorderBrush="{StaticResource StatusDangerBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="3"
+                                            Padding="6,1"
+                                            Margin="8,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Visibility="{Binding IsWeak, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <TextBlock Text="{DynamicResource L.Hash.WeakBadge}"
+                                                   Foreground="{StaticResource StatusDangerBrush}"
+                                                   FontSize="9"
+                                                   FontWeight="Bold"/>
+                                    </Border>
+
+                                    <TextBlock Grid.Column="3"
+                                               Text="{Binding MatchText}"
+                                               Foreground="{Binding Match, Converter={StaticResource HashMatchStateToBrushConverter}}"
+                                               FontSize="10"
+                                               FontWeight="Bold"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,4,0"
+                                               MinWidth="90"
+                                               TextAlignment="Right"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <!-- DURUM SATIRI -->
+        <Border Grid.Row="5"
+                Style="{StaticResource OptionsPanel}"
+                Padding="12"
+                Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ui:ProgressRing Grid.Column="0"
+                                 IsIndeterminate="True"
+                                 Width="16" Height="16"
+                                 Margin="0,0,8,0"
+                                 Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ViewModel.StatusText}"
+                           Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                           FontSize="11"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"
+                           AutomationProperties.LiveSetting="Polite"/>
+
+                <TextBlock Grid.Column="2"
+                           Text="{DynamicResource L.Hash.Hint}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           VerticalAlignment="Center"
+                           Opacity="0.6"
+                           TextWrapping="Wrap"
+                           MaxWidth="420"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

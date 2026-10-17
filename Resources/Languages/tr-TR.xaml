@@ -346,4 +346,54 @@
     <sys:String x:Key="L.Unicode.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
     <sys:String x:Key="L.Unicode.Error.OutputTooLarge">Sonuç çok büyük olurdu. Sınır 10 MB'tır.</sys:String>
 
+    <!-- ============ Hash üretici ============ -->
+    <sys:String x:Key="L.Hash.Title">HASH ÜRETİCİ</sys:String>
+    <sys:String x:Key="L.Hash.Algorithm">Algoritma</sys:String>
+    <sys:String x:Key="L.Hash.AllAlgorithms">Kullanılabilir tüm algoritmalar</sys:String>
+    <sys:String x:Key="L.Hash.OutputFormat">Çıktı</sys:String>
+    <sys:String x:Key="L.Hash.Format.HexUpper">Hex (büyük harf)</sys:String>
+    <sys:String x:Key="L.Hash.Format.HexLower">Hex (küçük harf)</sys:String>
+    <sys:String x:Key="L.Hash.Format.Base64">Base64</sys:String>
+    <sys:String x:Key="L.Hash.WeakWarning">MD5 ve SHA-1 kırılmıştır: çakışma üretilebilir. Yalnızca eski değerleri karşılaştırmak için kullanın, güvenlik için asla.</sys:String>
+    <sys:String x:Key="L.Hash.WeakBadge">ZAYIF</sys:String>
+    <sys:String x:Key="L.Hash.ExpectedDigest">Beklenen özet</sys:String>
+    <sys:String x:Key="L.Hash.ExpectedDigestHelp">İsteğe bağlı. Hex olarak karşılaştırılır; boşluk, iki nokta ve tire yok sayılır, böylece herhangi bir araçtan kopyalanan özet buraya yapıştırılabilir.</sys:String>
+    <sys:String x:Key="L.Hash.InputText">Özeti hesaplanacak metin</sys:String>
+    <sys:String x:Key="L.Hash.HashText">METNİ HESAPLA</sys:String>
+    <sys:String x:Key="L.Hash.HashFile">DOSYAYI HESAPLA</sys:String>
+    <sys:String x:Key="L.Hash.HashFileHelp">Bir dosya seçin (veya bu düğmelerin yanına sürükleyin); içerik belleğe alınmadan akış halinde hesaplanır.</sys:String>
+    <sys:String x:Key="L.Hash.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.Hash.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.Hash.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Hash.Results">Sonuçlar</sys:String>
+    <sys:String x:Key="L.Hash.Hint">Karşılaştırılamayan özet "n/a" olarak gösterilir; "tüm algoritmalar" modunda bu, özetin hangi algoritmaya ait olduğunu daraltır.</sys:String>
+    <sys:String x:Key="L.Hash.FileDropAutomationName">Özeti hesaplanacak dosya: buraya bırakın veya seçmek için tıklayın</sys:String>
+    <sys:String x:Key="L.Hash.InputAutomationName">Özeti hesaplanacak metin</sys:String>
+    <sys:String x:Key="L.Hash.ResultsAutomationName">Hesaplanan özetler</sys:String>
+    <sys:String x:Key="L.Hash.Dialog.SelectFile">Özeti hesaplanacak dosyayı seçin</sys:String>
+
+    <sys:String x:Key="L.Hash.Match.Matched">EŞLEŞTİ</sys:String>
+    <sys:String x:Key="L.Hash.Match.Mismatched">EŞLEŞMEDİ</sys:String>
+    <sys:String x:Key="L.Hash.Match.NotComparable">k/d</sys:String>
+
+    <sys:String x:Key="L.Hash.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Hash.Status.Computed">{0} özet hesaplandı.</sys:String>
+    <sys:String x:Key="L.Hash.Status.Copied">Sonuç(lar) panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Hash.Status.Saved">Sonuç(lar) dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.Hash.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.Hash.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.Hash.Status.FileNotSelected">Dosya seçilmedi.</sys:String>
+
+    <sys:String x:Key="L.Hash.Validation.EmptyInput">Lütfen özeti hesaplanacak metni girin.</sys:String>
+    <sys:String x:Key="L.Hash.Validation.NothingToCopy">Kopyalanacak sonuç yok.</sys:String>
+    <sys:String x:Key="L.Hash.Validation.NothingToSave">Kaydedilecek sonuç yok.</sys:String>
+    <sys:String x:Key="L.Hash.Validation.NoAlgorithm">Algoritma seçilmedi.</sys:String>
+
+    <sys:String x:Key="L.Hash.Error.UnsupportedAlgorithm">Bilinmeyen hash algoritması.</sys:String>
+    <sys:String x:Key="L.Hash.Error.AlgorithmUnavailable">Bu algoritma bu sistemde kullanılamıyor.</sys:String>
+    <sys:String x:Key="L.Hash.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB metindir.</sys:String>
+    <sys:String x:Key="L.Hash.Error.PathRequired">Dosya yolu gerekli.</sys:String>
+    <sys:String x:Key="L.Hash.Error.FileNotFound">Seçilen dosya bulunamadı.</sys:String>
+    <sys:String x:Key="L.Hash.Error.IoError">Dosya okunamadı. İzinleri ve dosyayı başka bir programın kullanıp kullanmadığını kontrol edin.</sys:String>
+
 </ResourceDictionary>

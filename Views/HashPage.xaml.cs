@@ -3,19 +3,29 @@ using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
 /// <summary>
-/// Hash araç sayfası. Drag-Drop işlevi FileDragDropBehavior ile sağlanır.
+/// Hash araç sayfası. Dosya seçimi sürükle-bırak veya tıklama ile yapılır
+/// (<see cref="Helpers.FileDragDropBehavior"/>).
 /// </summary>
 public partial class HashPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.HashViewModel>
 {
     public ViewModels.HashViewModel ViewModel { get; }
-    public HashPage(ViewModels.HashViewModel viewModel) {
+
+    public HashPage(ViewModels.HashViewModel viewModel)
+    {
         ViewModel = viewModel;
-        DataContext = this;
         InitializeComponent();
+        DataContext = this;
+
+        // Girdi eksikse görünüm odaklanmayı yönetir; ViewModel'de UI bağımlılığı yoktur.
+        ViewModel.RequestInputFocus += FocusInput;
     }
 
-    private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+    private void FocusInput()
     {
+        if (!IsLoaded)
+            return;
 
+        InputTextBox.Focus();
+        InputTextBox.SelectAll();
     }
 }

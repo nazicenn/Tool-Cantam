@@ -346,4 +346,54 @@
     <sys:String x:Key="L.Unicode.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
     <sys:String x:Key="L.Unicode.Error.OutputTooLarge">The result would be too large. The limit is 10 MB.</sys:String>
 
+    <!-- ============ Hash generator ============ -->
+    <sys:String x:Key="L.Hash.Title">HASH GENERATOR</sys:String>
+    <sys:String x:Key="L.Hash.Algorithm">Algorithm</sys:String>
+    <sys:String x:Key="L.Hash.AllAlgorithms">All available algorithms</sys:String>
+    <sys:String x:Key="L.Hash.OutputFormat">Output</sys:String>
+    <sys:String x:Key="L.Hash.Format.HexUpper">Hex (uppercase)</sys:String>
+    <sys:String x:Key="L.Hash.Format.HexLower">Hex (lowercase)</sys:String>
+    <sys:String x:Key="L.Hash.Format.Base64">Base64</sys:String>
+    <sys:String x:Key="L.Hash.WeakWarning">MD5 and SHA-1 are broken: collisions can be crafted. Use them only to check legacy values, never for security.</sys:String>
+    <sys:String x:Key="L.Hash.WeakBadge">WEAK</sys:String>
+    <sys:String x:Key="L.Hash.ExpectedDigest">Expected digest</sys:String>
+    <sys:String x:Key="L.Hash.ExpectedDigestHelp">Optional. Compared as hex; spaces, colons and dashes are ignored, so a digest copied from any tool can be pasted here.</sys:String>
+    <sys:String x:Key="L.Hash.InputText">Text to hash</sys:String>
+    <sys:String x:Key="L.Hash.HashText">HASH TEXT</sys:String>
+    <sys:String x:Key="L.Hash.HashFile">HASH FILE</sys:String>
+    <sys:String x:Key="L.Hash.HashFileHelp">Pick a file (or drop one next to these buttons) and hash its contents without loading it into memory.</sys:String>
+    <sys:String x:Key="L.Hash.Copy">COPY</sys:String>
+    <sys:String x:Key="L.Hash.Save">SAVE</sys:String>
+    <sys:String x:Key="L.Hash.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.Hash.Results">Results</sys:String>
+    <sys:String x:Key="L.Hash.Hint">A digest that cannot be compared is shown as such; in "all algorithms" mode this narrows down which algorithm produced it.</sys:String>
+    <sys:String x:Key="L.Hash.FileDropAutomationName">File to hash: drop a file here or click to choose one</sys:String>
+    <sys:String x:Key="L.Hash.InputAutomationName">Text to hash</sys:String>
+    <sys:String x:Key="L.Hash.ResultsAutomationName">Computed digests</sys:String>
+    <sys:String x:Key="L.Hash.Dialog.SelectFile">Select the file to hash</sys:String>
+
+    <sys:String x:Key="L.Hash.Match.Matched">MATCH</sys:String>
+    <sys:String x:Key="L.Hash.Match.Mismatched">NO MATCH</sys:String>
+    <sys:String x:Key="L.Hash.Match.NotComparable">n/a</sys:String>
+
+    <sys:String x:Key="L.Hash.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Hash.Status.Computed">Computed {0} digest(s).</sys:String>
+    <sys:String x:Key="L.Hash.Status.Copied">Result(s) copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Hash.Status.Saved">Result(s) saved to file.</sys:String>
+    <sys:String x:Key="L.Hash.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.Hash.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.Hash.Status.FileNotSelected">No file selected.</sys:String>
+
+    <sys:String x:Key="L.Hash.Validation.EmptyInput">Please enter the text to hash.</sys:String>
+    <sys:String x:Key="L.Hash.Validation.NothingToCopy">There is no result to copy.</sys:String>
+    <sys:String x:Key="L.Hash.Validation.NothingToSave">There is no result to save.</sys:String>
+    <sys:String x:Key="L.Hash.Validation.NoAlgorithm">No algorithm is selected.</sys:String>
+
+    <sys:String x:Key="L.Hash.Error.UnsupportedAlgorithm">Unknown hash algorithm.</sys:String>
+    <sys:String x:Key="L.Hash.Error.AlgorithmUnavailable">This algorithm is not available on this system.</sys:String>
+    <sys:String x:Key="L.Hash.Error.InputTooLarge">Input is too large. The limit is 10 MB of text.</sys:String>
+    <sys:String x:Key="L.Hash.Error.PathRequired">A file path is required.</sys:String>
+    <sys:String x:Key="L.Hash.Error.FileNotFound">The selected file could not be found.</sys:String>
+    <sys:String x:Key="L.Hash.Error.IoError">The file could not be read. Check permissions and whether another program is using it.</sys:String>
+
 </ResourceDictionary>

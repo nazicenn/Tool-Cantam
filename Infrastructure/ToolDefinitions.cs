@@ -101,17 +101,10 @@ public static class ToolDefinitions
         ToolRegistry.Register(new ToolDefinition
         {
             Name = "Hash Generator",
-            Description = "MD5, SHA1, SHA256, SHA384, SHA512 hash generator",
+            Description = "Compute MD5, SHA-1, SHA-2 and SHA-3 digests for text or files, and verify a known digest",
             Category = ToolCategory.HashAndCrypto,
             ViewModelType = typeof(HashViewModel),
-            ViewType = typeof(HashPage),
-            Execute = async (input) =>
-            {
-                var text = input?.ToString() ?? string.Empty;
-                using var md5 = System.Security.Cryptography.MD5.Create();
-                var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(text));
-                return Convert.ToHexString(hash).ToLower();
-            }
+            ViewType = typeof(HashPage)
         });
 
         ToolRegistry.Register(new ToolDefinition

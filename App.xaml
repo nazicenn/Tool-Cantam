@@ -18,6 +18,7 @@
             <converters:PositiveNumberToVisibilityConverter x:Key="PositiveNumberToVisibilityConverter"/>
             <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <converters:NotificationTypeToBrushConverter x:Key="NotificationTypeToBrushConverter"/>
+            <converters:HashMatchStateToBrushConverter x:Key="HashMatchStateToBrushConverter"/>
 
         </ResourceDictionary>
     </Application.Resources>
