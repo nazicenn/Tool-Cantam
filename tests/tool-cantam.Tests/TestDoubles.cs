@@ -1,4 +1,5 @@
 using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
 using tool_cantam.Services.Interfaces;
 
 namespace ToolCantam.Tests;
@@ -58,5 +59,69 @@ internal sealed class FakeFileExportService : IFileExportService
     {
         ExportedContent = content;
         return Task.FromResult(ExportResult);
+    }
+}
+
+/// <summary>
+/// Ağa çıkmayan port tarayıcı taklidi: doğrulama ve sunum davranışını deterministik test eder.
+/// </summary>
+internal sealed class FakePortScannerService : IPortScannerService
+{
+    public int MaxPortsPerScan { get; init; } = 4096;
+
+    public int MaxConcurrency { get; init; } = 50;
+
+    public int MaxTimeoutMs { get; init; } = 5000;
+
+    /// <summary>Bir sonraki çağrıda döndürülecek sonuç; null ise beklenmeyen hata döner.</summary>
+    public ToolResult<PortScanReport>? NextResult { get; set; }
+
+    public int ScanCount { get; private set; }
+
+    public int LastStartPort { get; private set; }
+
+    public int LastEndPort { get; private set; }
+
+    public int LastTimeoutMs { get; private set; }
+
+    public Task<ToolResult<PortScanReport>> ScanAsync(
+        string? target,
+        int startPort,
+        int endPort,
+        int timeoutMs,
+        IProgress<PortScanProgress>? progress = null,
+        CancellationToken cancellationToken = default)
+    {
+        ScanCount++;
+        LastStartPort = startPort;
+        LastEndPort = endPort;
+        LastTimeoutMs = timeoutMs;
+
+        int total = endPort - startPort + 1;
+        progress?.Report(new PortScanProgress(total, total, NextResult?.Value?.OpenCount ?? 0));
+
+        return Task.FromResult(NextResult ?? ToolResult<PortScanReport>.Fail(
+            ToolErrorKind.Unexpected, "L.Common.Error.Unexpected", "No result configured for the fake scanner."));
+    }
+
+    public static PortScanReport Report(string target, int startPort, int endPort, params int[] openPorts)
+    {
+        var entries = new List<PortScanEntry>();
+        foreach (int port in openPorts)
+            entries.Add(new PortScanEntry(port, tool_cantam.Core.Net.WellKnownPorts.GetServiceName(port)));
+
+        int total = endPort - startPort + 1;
+
+        return new PortScanReport(
+            target,
+            System.Net.IPAddress.Parse("127.0.0.1"),
+            startPort,
+            endPort,
+            total,
+            entries.Count,
+            total - entries.Count,
+            0,
+            TimeSpan.FromSeconds(1.5),
+            entries);
     }
 }
