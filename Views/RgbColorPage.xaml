@@ -1,0 +1,213 @@
+﻿<!-- Views/RgbColorPage.xaml -->
+<UserControl x:Class="tool_cantam.Views.RgbColorPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="RGB COLOR CONVERTER" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <!-- Color Inputs -->
+        <Border Grid.Row="1" 
+                Style="{StaticResource OptionsPanel}" 
+                Padding="15" 
+                Margin="0,0,0,15">
+            <StackPanel>
+                <!-- RED -->
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="60"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Red:" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center"/>
+                    <Slider Grid.Column="1" 
+                            Minimum="0" Maximum="255" 
+                            Value="{Binding Red, UpdateSourceTrigger=PropertyChanged}"
+                            TickFrequency="1"
+                            IsSnapToTickEnabled="True"
+                            VerticalAlignment="Center"
+                            Margin="0,0,10,0"/>
+                    <TextBox Grid.Column="2" 
+                             Text="{Binding Red, UpdateSourceTrigger=PropertyChanged}"
+                             TextAlignment="Center"
+                             FontFamily="Consolas"
+                             Height="30"/>
+                </Grid>
+
+                <!-- GREEN -->
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="60"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Green:" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center"/>
+                    <Slider Grid.Column="1" 
+                            Minimum="0" Maximum="255" 
+                            Value="{Binding Green, UpdateSourceTrigger=PropertyChanged}"
+                            TickFrequency="1"
+                            IsSnapToTickEnabled="True"
+                            VerticalAlignment="Center"
+                            Margin="0,0,10,0"/>
+                    <TextBox Grid.Column="2" 
+                             Text="{Binding Green, UpdateSourceTrigger=PropertyChanged}"
+                             TextAlignment="Center"
+                             FontFamily="Consolas"
+                             Height="30"/>
+                </Grid>
+
+                <!-- BLUE -->
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="60"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Blue:" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center"/>
+                    <Slider Grid.Column="1" 
+                            Minimum="0" Maximum="255" 
+                            Value="{Binding Blue, UpdateSourceTrigger=PropertyChanged}"
+                            TickFrequency="1"
+                            IsSnapToTickEnabled="True"
+                            VerticalAlignment="Center"
+                            Margin="0,0,10,0"/>
+                    <TextBox Grid.Column="2" 
+                             Text="{Binding Blue, UpdateSourceTrigger=PropertyChanged}"
+                             TextAlignment="Center"
+                             FontFamily="Consolas"
+                             Height="30"/>
+                </Grid>
+
+                <!-- HEX INPUT -->
+                <Grid Margin="0,10,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="HEX:" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" 
+                             Text="{Binding HexValue, UpdateSourceTrigger=PropertyChanged}" 
+                             FontFamily="Consolas" 
+                             Height="35"
+                             Margin="0,0,10,0"/>
+                    <Button Grid.Column="2"
+                            Command="{Binding ApplyHexCommand}"
+                            Content="APPLY"
+                            Height="35"
+                            Width="70"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+                </Grid>
+
+                <!-- Buttons -->
+                <UniformGrid Columns="3" Margin="0,10,0,0">
+                    <Button Command="{Binding RandomColorCommand}" 
+                            Content="RANDOM" Height="35" Margin="0,0,5,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"/>
+                    <Button Command="{Binding CopyHexCommand}" 
+                            Content="COPY HEX" Height="35" Margin="5,0,5,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"/>
+                    <Button Command="{Binding ClearCommand}" 
+                            Content="RESET" Height="35" Margin="5,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"/>
+                </UniformGrid>
+            </StackPanel>
+        </Border>
+
+        <!-- Preview + Outputs -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- PREVIEW -->
+            <Border Grid.Column="0" 
+                    Padding="15" 
+                    Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Text="PREVIEW" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
+                    <Border Height="81" 
+                            CornerRadius="8"
+                            BorderBrush="{StaticResource BorderDefaultBrush}"
+                            BorderThickness="2">
+                        <Border.Background>
+                            <SolidColorBrush Color="{Binding PreviewColor}"/>
+                        </Border.Background>
+                        <TextBlock Text="{Binding HexValue}" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"
+                                   FontSize="24" 
+                                   FontWeight="Bold"
+                                   FontFamily="Consolas"
+                                   Foreground="{Binding PreviewTextColor}"/>
+                    </Border>
+
+                    <TextBlock Text="RGB Values" Style="{StaticResource LabelPrimary}" Margin="0,15,0,5"/>
+                    <TextBox Text="{Binding RgbValue, Mode=OneWay}" 
+                             IsReadOnly="True"
+                             FontFamily="Consolas"
+                             Height="35"/>
+                </StackPanel>
+            </Border>
+
+            <!-- OUTPUTS -->
+            <Border Grid.Column="1" 
+                    Padding="15" 
+                    Margin="10,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="HSL VALUES" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
+                    <TextBox Text="{Binding HslValue, Mode=OneWay}" 
+                             IsReadOnly="True"
+                             FontFamily="Consolas"
+                             Height="35"/>
+
+                    <TextBlock Text="COLOR INFORMATION" Style="{StaticResource LabelPrimary}" Margin="0,20,0,10"/>
+                    <TextBlock Text="{Binding ColorInfo}" 
+                               Style="{StaticResource LabelSecondary}"
+                               TextWrapping="Wrap"
+                               FontFamily="Consolas"
+                               Margin="0,0,0,10"/>
+
+                    <UniformGrid Columns="2" Margin="0,10,0,0">
+                        <Button Command="{Binding CopyRgbCommand}" 
+                                Content="COPY RGB" Height="35" Margin="0,0,5,0"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource StatusWarningBrush}"/>
+                        <Button Command="{Binding CopyHslCommand}" 
+                                Content="COPY HSL" Height="35" Margin="5,0,0,0"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource StatusWarningBrush}"/>
+                    </UniformGrid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- STATUS -->
+        <TextBlock Grid.Row="3" 
+                   Text="{Binding StatusText}" 
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="11"
+                   HorizontalAlignment="Center"
+                   Margin="0,10,0,0"/>
+    </Grid>
+</UserControl>

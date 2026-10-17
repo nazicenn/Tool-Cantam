@@ -1,0 +1,122 @@
+﻿<!-- Views/UnitConverterPage.xaml -->
+<UserControl x:Class="tool_cantam.Views.UnitConverterPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="UNIT CONVERTER" 
+                   Style="{StaticResource LabelPrimary}" 
+                   FontSize="16" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <!-- Category Selection -->
+        <Border Grid.Row="1" 
+                Style="{StaticResource OptionsPanel}" 
+                Padding="15" 
+                Margin="0,0,0,15">
+            <StackPanel>
+                <TextBlock Text="Category" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
+                <ComboBox ItemsSource="{Binding Categories}"
+                          SelectedItem="{Binding SelectedCategory, UpdateSourceTrigger=PropertyChanged}"
+                          Height="38"
+                          FontSize="14"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Conversion Section -->
+        <Border Grid.Row="2" 
+                Style="{StaticResource OptionsPanel}" 
+                Padding="15" 
+                Margin="0,0,0,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- FROM -->
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="From" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
+
+                    <TextBox Text="{Binding InputValue, UpdateSourceTrigger=PropertyChanged}"
+                             FontFamily="Consolas"
+                             FontSize="14"
+                             Height="38"
+                             Margin="0,0,0,10"/>
+
+                    <ComboBox ItemsSource="{Binding Units}"
+                              SelectedItem="{Binding FromUnit, UpdateSourceTrigger=PropertyChanged}"
+                              Height="38"/>
+                </StackPanel>
+
+                <!-- SWAP BUTTON -->
+                <Button Grid.Column="1"
+                        Command="{Binding SwapUnitsCommand}"
+                        Content="⇄"
+                        Width="50"
+                        Height="50"
+                        FontSize="20"
+                        Margin="15,25,15,0"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource StatusWarningBrush}"/>
+
+                <!-- TO -->
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="To" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
+
+                    <TextBox Text="{Binding OutputValue, Mode=OneWay}"
+                             IsReadOnly="True"
+                             FontFamily="Consolas"
+                             FontSize="14"
+                             Height="38"
+                             Margin="0,0,0,10"
+                             Foreground="{StaticResource GreenBrush}"
+                             FontWeight="Bold"/>
+
+                    <ComboBox ItemsSource="{Binding Units}"
+                              SelectedItem="{Binding ToUnit, UpdateSourceTrigger=PropertyChanged}"
+                              Height="38"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Buttons -->
+        <UniformGrid Grid.Row="3" Columns="2" VerticalAlignment="Top" Margin="0,0,0,10">
+            <Button Command="{Binding CopyResultCommand}"
+                    Content="📋 COPY RESULT"
+                    Height="40"
+                    Margin="0,0,5,0"
+                    Style="{StaticResource ModernButton}"
+                    Background="{StaticResource StatusWarningBrush}"/>
+            <Button Command="{Binding ClearCommand}"
+                    Content="🗑 CLEAR"
+                    Height="40"
+                    Margin="5,0,0,0"
+                    Style="{StaticResource ModernButton}"
+                    Background="{StaticResource RedBrush}"/>
+        </UniformGrid>
+
+        <!-- Status -->
+        <TextBlock Grid.Row="4" 
+                   Text="{Binding StatusText}" 
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="11"
+                   HorizontalAlignment="Center"
+                   Margin="0,10,0,0"/>
+    </Grid>
+</UserControl>

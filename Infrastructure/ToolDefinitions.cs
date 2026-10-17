@@ -677,6 +677,46 @@ public static class ToolDefinitions
             Execute = async (input) => input?.ToString() ?? string.Empty
         });
 
+        ToolRegistry.Register(new ToolDefinition
+        {
+            Name = "RGB Color Converter",
+            Description = "Convert colors between RGB, HEX, and HSL formats",
+            Category = ToolCategory.DeveloperTools,
+            ViewModelType = typeof(RgbColorViewModel),
+            ViewType = typeof(RgbColorPage),
+            Execute = async (input) => input?.ToString() ?? string.Empty
+        });
+
+        ToolRegistry.Register(new ToolDefinition
+        {
+            Name = "Lorem Ipsum Generator",
+            Description = "Generate dummy placeholder text for design and testing",
+            Category = ToolCategory.TextAndString,
+            ViewModelType = typeof(LoremIpsumViewModel),
+            ViewType = typeof(LoremIpsumPage),
+            Execute = async (input) => "Lorem ipsum dolor sit amet..."
+        });
+
+        ToolRegistry.Register(new ToolDefinition
+        {
+            Name = "Word Counter Pro",
+            Description = "Count words, characters, sentences and get detailed text statistics",
+            Category = ToolCategory.TextAndString,
+            ViewModelType = typeof(WordCounterViewModel),
+            ViewType = typeof(WordCounterPage),
+            Execute = async (input) => input?.ToString() ?? string.Empty
+        });
+
+        ToolRegistry.Register(new ToolDefinition
+        {
+            Name = "Unit Converter",
+            Description = "Convert between length, weight, temperature, area, volume, speed, time, and data units",
+            Category = ToolCategory.DeveloperTools,
+            ViewModelType = typeof(UnitConverterViewModel),
+            ViewType = typeof(UnitConverterPage),
+            Execute = async (input) => input?.ToString() ?? string.Empty
+        });
+
     }
 
 }
