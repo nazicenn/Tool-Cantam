@@ -94,7 +94,7 @@
                             Command="{Binding ViewModel.ClearCommand}"
                             Height="34" Margin="5,0,0,0"
                             TabIndex="7"
-                            Background="{StaticResource RedBrush}" Style="{StaticResource ModernButton}"/>
+                            Background="{StaticResource RedBrush}" Style="{StaticResource ModernButton}" Click="Button_Click"/>
                 </UniformGrid>
             </Grid>
 

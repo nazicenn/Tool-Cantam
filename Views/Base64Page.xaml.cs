@@ -25,4 +25,9 @@ public partial class Base64Page : System.Windows.Controls.UserControl, INavigabl
         InputTextBox.Focus();
         InputTextBox.SelectAll();
     }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }

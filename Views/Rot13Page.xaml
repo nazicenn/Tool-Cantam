@@ -21,22 +21,22 @@
 
         <!-- Güvenlik uyarısı: bu araç şifreleme değildir -->
         <Border Grid.Row="1"
-                Background="{StaticResource OptionsPanel}"
-                BorderBrush="{StaticResource StatusWarningBrush}"
-                BorderThickness="1"
-                CornerRadius="4"
-                Padding="12"
-                Margin="0,0,0,12">
+        Style="{StaticResource OptionsPanel}"
+        BorderBrush="{StaticResource StatusWarningBrush}"
+        BorderThickness="1"
+        CornerRadius="4"
+        Padding="12"
+        Margin="0,0,0,12">
             <StackPanel Orientation="Horizontal">
                 <ui:SymbolIcon Symbol="Warning24"
-                               FontSize="18"
-                               Foreground="{StaticResource StatusWarningBrush}"
-                               Margin="0,0,10,0"
-                               VerticalAlignment="Center"/>
+                       FontSize="18"
+                       Foreground="{StaticResource StatusWarningBrush}"
+                       Margin="0,0,10,0"
+                       VerticalAlignment="Center"/>
                 <TextBlock Text="{DynamicResource L.Rot13.Notice}"
-                           Foreground="{StaticResource TextPrimaryBrush}"
-                           TextWrapping="Wrap"
-                           VerticalAlignment="Center"/>
+                   Foreground="{StaticResource TextPrimaryBrush}"
+                   TextWrapping="Wrap"
+                   VerticalAlignment="Center"/>
             </StackPanel>
         </Border>
 

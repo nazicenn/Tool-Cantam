@@ -223,15 +223,15 @@
                                                FontSize="11"
                                                VerticalAlignment="Center"/>
 
-                                    <TextBox Grid.Column="1"
-                                             Text="{Binding Digest}"
-                                             IsReadOnly="True"
-                                             FontFamily="{StaticResource MonoFont}"
-                                             FontSize="11"
-                                             Foreground="{StaticResource AccentPrimaryBrush}"
-                                             BorderThickness="0"
-                                             Background="Transparent"
-                                             VerticalContentAlignment="Center"/>
+                                    <!-- ★ DÜZELTME: TextBox → TextBlock (salt okunur için doğru) ★ -->
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Digest}"
+                                               FontFamily="{StaticResource MonoFont}"
+                                               FontSize="11"
+                                               Foreground="{StaticResource AccentPrimaryBrush}"
+                                               VerticalAlignment="Center"
+                                               TextTrimming="CharacterEllipsis"
+                                               ToolTip="{Binding Digest}"/>
 
                                     <Border Grid.Column="2"
                                             BorderBrush="{StaticResource StatusDangerBrush}"
