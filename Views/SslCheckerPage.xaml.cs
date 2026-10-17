@@ -1,13 +1,24 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class SslCheckerPage : UserControl
+public partial class SslCheckerPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.SslCheckerViewModel>
 {
-    public SslCheckerPage(SslCheckerViewModel viewModel)
+    public ViewModels.SslCheckerViewModel ViewModel { get; }
+
+    public SslCheckerPage(ViewModels.SslCheckerViewModel viewModel)
     {
+        ViewModel = viewModel;
         InitializeComponent();
-        DataContext = viewModel;
+        DataContext = this;
+
+        ViewModel.RequestTargetFocus += FocusTarget;
+    }
+
+    private void FocusTarget()
+    {
+        if (!IsLoaded) return;
+        TargetTextBox.Focus();
+        TargetTextBox.SelectAll();
     }
 }

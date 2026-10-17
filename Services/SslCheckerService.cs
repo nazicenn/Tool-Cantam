@@ -1,106 +1,190 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Security;
 using System.Net.Sockets;
-using System.Security.Cryptography;
+using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using System.Threading.Tasks;
 using tool_cantam.Core.Models;
+using tool_cantam.Services.ErrorCodes;
 using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.Services;
 
-public class SslCheckerService : ISslCheckerService
+/// <summary>
+/// SSL sertifika sorgusunun tek uygulaması. TcpClient + SslStream ile TLS el sıkışması yapar,
+/// sertifika zincirini doğrular ve sonucu sınıflandırılmış rapor olarak döndürür.
+/// </summary>
+public sealed class SslCheckerService : ISslCheckerService
 {
-    public bool IsValidDomain(string domain)
+    public const int QueryTimeoutMsLimit = 10000;
+
+    public int QueryTimeoutMs => QueryTimeoutMsLimit;
+
+    public ToolResult<string> ValidateDomain(string? domain)
     {
-        if (string.IsNullOrWhiteSpace(domain)) return false;
-        return Uri.CheckHostName(domain) != UriHostNameType.Unknown;
+        if (string.IsNullOrWhiteSpace(domain))
+            return ToolResult<string>.Fail(
+                ToolErrorKind.Validation,
+                SslCheckerErrorCodes.InvalidDomain,
+                "Domain is empty.");
+
+        string trimmed = domain.Trim().ToLowerInvariant();
+
+        if (trimmed.Length > 253)
+            return ToolResult<string>.Fail(
+                ToolErrorKind.Validation,
+                SslCheckerErrorCodes.InvalidDomain,
+                $"Domain is too long ({trimmed.Length} characters).");
+
+        if (trimmed.Contains(' ') || trimmed.Contains('/') || trimmed.Contains(':'))
+            return ToolResult<string>.Fail(
+                ToolErrorKind.Validation,
+                SslCheckerErrorCodes.InvalidDomain,
+                $"Domain contains invalid characters: '{trimmed}'.");
+
+        if (trimmed.Contains('_'))
+            return ToolResult<string>.Fail(
+                ToolErrorKind.Validation,
+                SslCheckerErrorCodes.InvalidDomain,
+                $"Domain contains underscore: '{trimmed}'.");
+
+        if (Uri.CheckHostName(trimmed) == UriHostNameType.Unknown)
+            return ToolResult<string>.Fail(
+                ToolErrorKind.Validation,
+                SslCheckerErrorCodes.InvalidDomain,
+                $"'{trimmed}' is not a valid domain.");
+
+        return ToolResult<string>.Ok(trimmed);
     }
 
-    public async Task<SslCertificateInfo> CheckAsync(string domain)
+    public async Task<ToolResult<SslCertificateReport>> CheckAsync(
+        string? domain,
+        CancellationToken cancellationToken = default)
     {
-        var result = new SslCertificateInfo { Domain = domain };
+        var validation = ValidateDomain(domain);
+        if (!validation.IsSuccess)
+            return ToolResult<SslCertificateReport>.Fail(
+                validation.ErrorKind, validation.ErrorCode!, validation.TechnicalDetail!);
+
+        string target = validation.Value!;
+        var stopwatch = Stopwatch.StartNew();
+        SslPolicyErrors policyErrors = SslPolicyErrors.None;
 
         try
         {
+            using var timeoutSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            timeoutSource.CancelAfter(QueryTimeoutMsLimit);
+
             using var client = new TcpClient();
-            await client.ConnectAsync(domain, 443);
+            await client.ConnectAsync(target, 443, timeoutSource.Token).ConfigureAwait(false);
 
-            // El sıkışma sırasında hata yok sayılır; ama sertifika bilgisi okunabilsin diye
-            // geri çağrı true döner. Gerçek sonuç aşağıda policyErrors + zincirden hesaplanır.
-            var policyErrors = SslPolicyErrors.None;
-            using var sslStream = new SslStream(client.GetStream(), false, (sender, certificate, chain, errors) =>
+            using var sslStream = new SslStream(
+                client.GetStream(),
+                leaveInnerStreamOpen: false,
+                userCertificateValidationCallback: (sender, certificate, chain, errors) =>
+                {
+                    policyErrors = errors;
+                    return true; // Ayrıntıları raporlamak için geçici olarak true
+                });
+
+            var authOptions = new SslClientAuthenticationOptions
             {
-                policyErrors = errors;
-                return true;
-            });
+                TargetHost = target
+            };
 
-            await sslStream.AuthenticateAsClientAsync(domain);
+            await sslStream.AuthenticateAsClientAsync(authOptions, timeoutSource.Token).ConfigureAwait(false);
+
+            stopwatch.Stop();
 
             if (sslStream.RemoteCertificate is not X509Certificate2 cert)
             {
-                result.Status = "No certificate found";
-                result.IsValid = false;
-                return result;
+                return ToolResult<SslCertificateReport>.Fail(
+                    ToolErrorKind.NotFound,
+                    SslCheckerErrorCodes.NoCertificate,
+                    "Remote server did not present a certificate.");
             }
-
-            result.Subject = cert.Subject ?? "Unknown";
-            result.Issuer = cert.Issuer ?? "Unknown";
-            result.NotBefore = cert.NotBefore;
-            result.NotAfter = cert.NotAfter;
-            result.SerialNumber = cert.SerialNumber ?? "Unknown";
-            result.SignatureAlgorithm = cert.SignatureAlgorithm?.FriendlyName ?? "Unknown";
-            result.RemainingDays = (int)(cert.NotAfter - DateTime.Now).TotalDays;
 
             var now = DateTime.Now;
-            var isExpired = now > cert.NotAfter;
-            var isNotYetValid = now < cert.NotBefore;
+            bool isExpired = now > cert.NotAfter;
+            bool isNotYetValid = now < cert.NotBefore;
 
-            var isChainValid = ValidateChain(cert, out var chainErrorText);
-            var isHostNameMismatch = (policyErrors & SslPolicyErrors.RemoteCertificateNameMismatch) != 0;
-            var isChainInvalid = (policyErrors & SslPolicyErrors.RemoteCertificateChainErrors) != 0 || !isChainValid;
+            bool isHostnameMatch = (policyErrors & SslPolicyErrors.RemoteCertificateNameMismatch) == 0;
 
-            result.IsExpired = isExpired;
-            result.IsValid = !isExpired && !isNotYetValid && !isHostNameMismatch && !isChainInvalid;
+            bool isChainTrusted = ValidateChain(cert, out var chainIssues);
 
-            if (result.IsValid)
-            {
-                result.Status = "Valid";
-                result.ErrorMessage = string.Empty;
-            }
-            else
-            {
-                if (isExpired) result.Status = "Expired";
-                else if (isNotYetValid) result.Status = "NotYetValid";
-                else if (isHostNameMismatch) result.Status = "HostnameMismatch";
-                else result.Status = "UntrustedChain";
+            bool isValid = !isExpired && !isNotYetValid && isHostnameMatch && isChainTrusted;
 
-                var details = new List<string>();
-                if (isHostNameMismatch)
-                    details.Add("Certificate does not match the requested hostname.");
-                if (isChainInvalid)
-                    details.Add(string.IsNullOrEmpty(chainErrorText) ? "Certificate chain is not trusted." : chainErrorText);
-                if (isExpired)
-                    details.Add($"Certificate expired on {cert.NotAfter:u}.");
-                if (isNotYetValid)
-                    details.Add($"Certificate is not valid before {cert.NotBefore:u}.");
+            string status = isValid ? "Valid"
+                : isExpired ? "Expired"
+                : isNotYetValid ? "NotYetValid"
+                : !isHostnameMatch ? "HostnameMismatch"
+                : "UntrustedChain";
 
-                result.ErrorMessage = string.Join(" ", details);
-            }
+            var report = new SslCertificateReport(
+                target,
+                cert.Subject ?? "",
+                cert.Issuer ?? "",
+                ExtractCommonName(cert.Subject),
+                cert.NotBefore,
+                cert.NotAfter,
+                (int)(cert.NotAfter - now).TotalDays,
+                cert.SerialNumber ?? "",
+                cert.SignatureAlgorithm?.FriendlyName ?? "",
+                sslStream.SslProtocol.ToString(),
+                isExpired,
+                isNotYetValid,
+                isHostnameMatch,
+                isChainTrusted,
+                isValid,
+                status,
+                chainIssues,
+                stopwatch.Elapsed);
+
+            return ToolResult<SslCertificateReport>.Ok(report);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            return Cancelled();
+        }
+        catch (OperationCanceledException)
+        {
+            stopwatch.Stop();
+            return ToolResult<SslCertificateReport>.Fail(
+                ToolErrorKind.Unexpected,
+                SslCheckerErrorCodes.Timeout,
+                $"Connection timed out after {QueryTimeoutMsLimit} ms.");
+        }
+        catch (AuthenticationException ex)
+        {
+            stopwatch.Stop();
+            return ToolResult<SslCertificateReport>.Fail(
+                ToolErrorKind.Unexpected,
+                SslCheckerErrorCodes.ConnectionFailed,
+                $"TLS handshake failed: {ex.Message}");
+        }
+        catch (SocketException ex)
+        {
+            stopwatch.Stop();
+            return ToolResult<SslCertificateReport>.Fail(
+                ToolErrorKind.NotFound,
+                SslCheckerErrorCodes.ConnectionFailed,
+                ex.Message);
         }
         catch (Exception ex)
         {
-            result.Status = "Error";
-            result.ErrorMessage = ex.Message ?? "Unknown error";
-            result.IsValid = false;
+            stopwatch.Stop();
+            return ToolResult<SslCertificateReport>.Fail(
+                ToolErrorKind.Unexpected,
+                SslCheckerErrorCodes.Unexpected,
+                ex.ToString());
         }
-
-        return result;
     }
 
-    private static bool ValidateChain(X509Certificate2 cert, out string errorText)
+    private static bool ValidateChain(X509Certificate2 cert, out IReadOnlyList<string> issues)
     {
         using var chain = new X509Chain();
         chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
@@ -108,15 +192,36 @@ public class SslCheckerService : ISslCheckerService
 
         if (chain.Build(cert))
         {
-            errorText = string.Empty;
+            issues = Array.Empty<string>();
             return true;
         }
 
-        errorText = string.Join(" ", chain.ChainStatus.Select(status =>
-            string.IsNullOrWhiteSpace(status.StatusInformation)
+        issues = chain.ChainStatus
+            .Select(status => string.IsNullOrWhiteSpace(status.StatusInformation)
                 ? status.Status.ToString()
-                : $"{status.Status}: {status.StatusInformation.Trim()}"));
+                : $"{status.Status}: {status.StatusInformation.Trim()}")
+            .ToList();
 
         return false;
     }
+
+    private static string ExtractCommonName(string? subject)
+    {
+        if (string.IsNullOrEmpty(subject)) return "";
+
+        foreach (string part in subject.Split(','))
+        {
+            string trimmed = part.Trim();
+            if (trimmed.StartsWith("CN=", StringComparison.OrdinalIgnoreCase))
+                return trimmed[3..];
+        }
+
+        return "";
+    }
+
+    private static ToolResult<SslCertificateReport> Cancelled() =>
+        ToolResult<SslCertificateReport>.Fail(
+            ToolErrorKind.Cancelled,
+            SslCheckerErrorCodes.Cancelled,
+            "SSL check cancelled by the user.");
 }
