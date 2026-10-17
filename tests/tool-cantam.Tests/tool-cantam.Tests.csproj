@@ -22,4 +22,13 @@
 		<ProjectReference Include="..\..\tool-cantam.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<!--
+			Kaynak görünüm ve ViewModel dosyaları, yerelleştirme anahtarı denetimi için
+			test çıktısına kopyalanır. Böylece eksik çeviri anahtarı derleme sonrası yakalanır.
+		-->
+		<None Include="..\..\Views\*.xaml" Link="ApplicationSources\Views\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\ViewModels\*.cs" Link="ApplicationSources\ViewModels\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+
 </Project>
