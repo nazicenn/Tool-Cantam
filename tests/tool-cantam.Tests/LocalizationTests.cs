@@ -1,4 +1,3 @@
-using System.Windows;
 using tool_cantam.Helpers;
 using tool_cantam.Services;
 using Xunit;
@@ -8,6 +7,10 @@ namespace ToolCantam.Tests;
 /// <summary>
 /// Dil altyapısını kilitler: ayar dosyasındaki eski "English"/"Türkçe" değerleri çalışma zamanındaki
 /// en-US/tr-TR kaynaklarına bağlanmalı ve iki dil dosyası aynı anahtar kümesini sunmalıdır.
+/// <para>
+/// Dil dosyaları WPF kaynak yüklemesi yerine doğrudan kaynak XAML'den okunur; böylece testler
+/// yeni derlenmiş bir derlemedeki BAML yüklemesine bağımlı olmaz.
+/// </para>
 /// </summary>
 public class LocalizationTests
 {
@@ -40,23 +43,31 @@ public class LocalizationTests
     }
 
     [Fact]
-    public void Every_supported_culture_loads_a_resource_dictionary()
+    public void Every_supported_culture_has_a_language_file_with_keys()
     {
+        // Testin bildiği dil listesi, uygulamanın desteklediği listeyle aynı olmalı.
+        Assert.Equal(
+            LanguageResourceFiles.Cultures.OrderBy(culture => culture, StringComparer.Ordinal),
+            LocalizationService.SupportedCultureCodes.OrderBy(culture => culture, StringComparer.Ordinal));
+
         foreach (string culture in LocalizationService.SupportedCultureCodes)
         {
-            ResourceDictionary dictionary = LoadLanguageDictionary(culture);
-            Assert.NotEmpty(dictionary.Keys);
+            Assert.True(
+                LanguageResourceFiles.Exists(culture),
+                $"{culture} için dil dosyası bulunamadı: {LanguageResourceFiles.GetPath(culture)}");
+
+            Assert.NotEmpty(LanguageResourceFiles.LoadKeys(culture));
         }
     }
 
     [Fact]
     public void Language_files_expose_the_same_keys()
     {
-        var english = ToSortedKeys(LoadLanguageDictionary("en-US"));
-        var turkish = ToSortedKeys(LoadLanguageDictionary("tr-TR"));
+        HashSet<string> english = LanguageResourceFiles.LoadKeys("en-US");
+        HashSet<string> turkish = LanguageResourceFiles.LoadKeys("tr-TR");
 
-        string[] onlyInEnglish = english.Except(turkish, StringComparer.Ordinal).ToArray();
-        string[] onlyInTurkish = turkish.Except(english, StringComparer.Ordinal).ToArray();
+        string[] onlyInEnglish = english.Except(turkish, StringComparer.Ordinal).OrderBy(key => key, StringComparer.Ordinal).ToArray();
+        string[] onlyInTurkish = turkish.Except(english, StringComparer.Ordinal).OrderBy(key => key, StringComparer.Ordinal).ToArray();
 
         Assert.True(onlyInEnglish.Length == 0, "Yalnızca en-US dosyasında olan anahtarlar: " + string.Join(", ", onlyInEnglish));
         Assert.True(onlyInTurkish.Length == 0, "Yalnızca tr-TR dosyasında olan anahtarlar: " + string.Join(", ", onlyInTurkish));
@@ -81,14 +92,4 @@ public class LocalizationTests
 
         Assert.Equal("L.Base64.Title", result);
     }
-
-    private static ResourceDictionary LoadLanguageDictionary(string culture) =>
-        // Dil dosyaları uygulama derlemesine BAML olarak gömülür; bu yüzden derleme adı açıkça verilir.
-        new() { Source = new Uri($"pack://application:,,,/tool-cantam;component/Resources/Languages/{culture}.xaml", UriKind.Absolute) };
-
-    private static string[] ToSortedKeys(ResourceDictionary dictionary) =>
-        dictionary.Keys.Cast<object>()
-            .Select(key => key.ToString() ?? string.Empty)
-            .OrderBy(key => key, StringComparer.Ordinal)
-            .ToArray();
 }

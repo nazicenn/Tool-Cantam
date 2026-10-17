@@ -1,6 +1,5 @@
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Windows;
 using tool_cantam.Helpers;
 using Xunit;
 
@@ -45,7 +44,7 @@ public class LocalizationKeyUsageTests
     {
         foreach (string culture in LocalizationService.SupportedCultureCodes)
         {
-            var defined = LoadLanguageKeys(culture);
+            HashSet<string> defined = LanguageResourceFiles.LoadKeys(culture);
             string[] missing = referenced.Except(defined, StringComparer.Ordinal).OrderBy(key => key, StringComparer.Ordinal).ToArray();
 
             Assert.True(missing.Length == 0,
@@ -58,16 +57,4 @@ public class LocalizationKeyUsageTests
             .SelectMany(file => keyPattern.Matches(File.ReadAllText(file)).Select(match => match.Groups[1].Value))
             .Distinct(StringComparer.Ordinal)
             .ToArray();
-
-    private static HashSet<string> LoadLanguageKeys(string culture)
-    {
-        var dictionary = new ResourceDictionary
-        {
-            Source = new Uri($"pack://application:,,,/tool-cantam;component/Resources/Languages/{culture}.xaml", UriKind.Absolute)
-        };
-
-        return dictionary.Keys.Cast<object>()
-            .Select(key => key.ToString() ?? string.Empty)
-            .ToHashSet(StringComparer.Ordinal);
-    }
 }

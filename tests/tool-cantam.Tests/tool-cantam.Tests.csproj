@@ -29,6 +29,7 @@
 		-->
 		<None Include="..\..\Views\*.xaml" Link="ApplicationSources\Views\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\..\ViewModels\*.cs" Link="ApplicationSources\ViewModels\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\Resources\Languages\*.xaml" Link="ApplicationSources\Languages\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 
 </Project>
