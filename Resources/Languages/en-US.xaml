@@ -238,4 +238,36 @@
     <sys:String x:Key="L.Binary.Error.InputTooLarge">Input is too large. The binary representation is limited to 10 million characters.</sys:String>
     <sys:String x:Key="L.Binary.Error.OutputTooLarge">The decoded result would be too large. The limit is 10 MB.</sys:String>
 
+    <!-- ============ ROT-N (letter rotation) ============ -->
+    <sys:String x:Key="L.Rot13.Title">ROT-N LETTER ROTATION</sys:String>
+    <sys:String x:Key="L.Rot13.Notice">ROT13 is not encryption. It only makes text unreadable at a glance and anyone can reverse it. Never use it to protect data, credentials or personal information.</sys:String>
+    <sys:String x:Key="L.Rot13.Shift">Shift</sys:String>
+    <sys:String x:Key="L.Rot13.ShiftHelp">How many letters to rotate. 13 is the classic ROT13, where encoding and decoding are the same operation.</sys:String>
+    <sys:String x:Key="L.Rot13.Encode">ENCODE</sys:String>
+    <sys:String x:Key="L.Rot13.Decode">DECODE</sys:String>
+    <sys:String x:Key="L.Rot13.Copy">COPY</sys:String>
+    <sys:String x:Key="L.Rot13.Save">SAVE</sys:String>
+    <sys:String x:Key="L.Rot13.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.Rot13.Swap">SWAP</sys:String>
+    <sys:String x:Key="L.Rot13.SwapHelp">Swap input and output</sys:String>
+    <sys:String x:Key="L.Rot13.Hint">Only A-Z and a-z are rotated. Turkish letters (ğ, ü, ş, ı, ö, ç), digits, punctuation and emoji stay as they are.</sys:String>
+    <sys:String x:Key="L.Rot13.InputAutomationName">Text to rotate</sys:String>
+    <sys:String x:Key="L.Rot13.OutputAutomationName">Rotated result</sys:String>
+
+    <sys:String x:Key="L.Rot13.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Rot13.Status.Encoded">Rotated {0} character(s) with shift {1}.</sys:String>
+    <sys:String x:Key="L.Rot13.Status.Decoded">Rotated back {0} character(s) with shift {1}.</sys:String>
+    <sys:String x:Key="L.Rot13.Status.Copied">Output copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Rot13.Status.Saved">Output saved to file.</sys:String>
+    <sys:String x:Key="L.Rot13.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.Rot13.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.Rot13.Status.Swapped">Input and output swapped.</sys:String>
+
+    <sys:String x:Key="L.Rot13.Validation.EmptyInput">Please enter text to rotate.</sys:String>
+    <sys:String x:Key="L.Rot13.Validation.NothingToCopy">There is no output to copy.</sys:String>
+    <sys:String x:Key="L.Rot13.Validation.NothingToSave">There is no output to save.</sys:String>
+
+    <sys:String x:Key="L.Rot13.Error.InvalidUnicode">The text contains an invalid Unicode character (unpaired surrogate).</sys:String>
+    <sys:String x:Key="L.Rot13.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
+
 </ResourceDictionary>

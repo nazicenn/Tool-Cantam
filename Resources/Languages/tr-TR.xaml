@@ -238,4 +238,36 @@
     <sys:String x:Key="L.Binary.Error.InputTooLarge">Girdi çok büyük. İkili gösterim 10 milyon karakterle sınırlıdır.</sys:String>
     <sys:String x:Key="L.Binary.Error.OutputTooLarge">Çözülecek sonuç çok büyük. Sınır 10 MB'tır.</sys:String>
 
+    <!-- ============ ROT-N (harf döndürme) ============ -->
+    <sys:String x:Key="L.Rot13.Title">ROT-N HARF DÖNDÜRME</sys:String>
+    <sys:String x:Key="L.Rot13.Notice">ROT13 bir şifreleme değildir. Metni yalnızca ilk bakışta okunmaz hâle getirir ve herkes geri çevirebilir. Veri, kimlik bilgisi veya kişisel bilgi korumak için kullanmayın.</sys:String>
+    <sys:String x:Key="L.Rot13.Shift">Kaydırma</sys:String>
+    <sys:String x:Key="L.Rot13.ShiftHelp">Kaç harf döndürüleceği. 13 klasik ROT13'tür; bu değerde kodlama ve çözme aynı işlemdir.</sys:String>
+    <sys:String x:Key="L.Rot13.Encode">KODLA</sys:String>
+    <sys:String x:Key="L.Rot13.Decode">ÇÖZ</sys:String>
+    <sys:String x:Key="L.Rot13.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.Rot13.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.Rot13.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Rot13.Swap">TAKAS</sys:String>
+    <sys:String x:Key="L.Rot13.SwapHelp">Giriş ve çıkışı takas et</sys:String>
+    <sys:String x:Key="L.Rot13.Hint">Yalnızca A-Z ve a-z döndürülür. Türkçe harfler (ğ, ü, ş, ı, ö, ç), rakamlar, noktalama ve emoji olduğu gibi kalır.</sys:String>
+    <sys:String x:Key="L.Rot13.InputAutomationName">Döndürülecek metin</sys:String>
+    <sys:String x:Key="L.Rot13.OutputAutomationName">Döndürülmüş sonuç</sys:String>
+
+    <sys:String x:Key="L.Rot13.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Rot13.Status.Encoded">{0} karakter {1} kaydırma ile döndürüldü.</sys:String>
+    <sys:String x:Key="L.Rot13.Status.Decoded">{0} karakter {1} kaydırma ile geri döndürüldü.</sys:String>
+    <sys:String x:Key="L.Rot13.Status.Copied">Çıktı panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Rot13.Status.Saved">Çıktı dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.Rot13.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.Rot13.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.Rot13.Status.Swapped">Giriş ve çıkış takas edildi.</sys:String>
+
+    <sys:String x:Key="L.Rot13.Validation.EmptyInput">Lütfen döndürülecek metni girin.</sys:String>
+    <sys:String x:Key="L.Rot13.Validation.NothingToCopy">Kopyalanacak çıktı yok.</sys:String>
+    <sys:String x:Key="L.Rot13.Validation.NothingToSave">Kaydedilecek çıktı yok.</sys:String>
+
+    <sys:String x:Key="L.Rot13.Error.InvalidUnicode">Metin geçersiz bir Unicode karakteri içeriyor (eşleşmemiş surrogate).</sys:String>
+    <sys:String x:Key="L.Rot13.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
+
 </ResourceDictionary>

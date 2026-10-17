@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Web;
 using tool_cantam.Core.Enums;
 using tool_cantam.Core.Models;
@@ -73,24 +73,11 @@ public static class ToolDefinitions
 
         ToolRegistry.Register(new ToolDefinition
         {
-            Name = "ROT13 Cipher",
-            Description = "Simple letter substitution cipher (rotate by 13)",
+            Name = "ROT13 Transform",
+            Description = "Letter rotation (ROT-N, default ROT13). Obfuscation only, not encryption",
             Category = ToolCategory.EncodersDecoders,
             ViewModelType = typeof(Rot13ViewModel),
-            ViewType = typeof(Rot13Page),
-            Execute = async (input) =>
-            {
-                var text = input?.ToString() ?? string.Empty;
-                var chars = text.ToCharArray();
-                for (int i = 0; i < chars.Length; i++)
-                {
-                    if (chars[i] >= 'a' && chars[i] <= 'z')
-                        chars[i] = (char)(((chars[i] - 'a' + 13) % 26) + 'a');
-                    else if (chars[i] >= 'A' && chars[i] <= 'Z')
-                        chars[i] = (char)(((chars[i] - 'A' + 13) % 26) + 'A');
-                }
-                return new string(chars);
-            }
+            ViewType = typeof(Rot13Page)
         });
 
         ToolRegistry.Register(new ToolDefinition
