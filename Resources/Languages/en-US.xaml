@@ -430,4 +430,50 @@
     <sys:String x:Key="L.HashIdentifier.Error.EmptyInput">The input is empty.</sys:String>
     <sys:String x:Key="L.HashIdentifier.Error.InputTooLong">The input is too long to be a hash value.</sys:String>
 
+    <!-- ============ HMAC generator ============ -->
+    <sys:String x:Key="L.Hmac.Title">HMAC GENERATOR</sys:String>
+    <sys:String x:Key="L.Hmac.Algorithm">Algorithm</sys:String>
+    <sys:String x:Key="L.Hmac.KeyFormat">Key format</sys:String>
+    <sys:String x:Key="L.Hmac.KeyFormat.Text">Text (UTF-8)</sys:String>
+    <sys:String x:Key="L.Hmac.KeyFormat.Hex">Hex bytes</sys:String>
+    <sys:String x:Key="L.Hmac.Message">Message</sys:String>
+    <sys:String x:Key="L.Hmac.SecretKey">Secret key</sys:String>
+    <sys:String x:Key="L.Hmac.ShowKey">Show key</sys:String>
+    <sys:String x:Key="L.Hmac.KeyHint">The key is masked by default, never logged and zeroed in memory when the computation finishes. Note that managed strings cannot be wiped, so clear the field when you are done.</sys:String>
+    <sys:String x:Key="L.Hmac.ExpectedMac">Expected MAC</sys:String>
+    <sys:String x:Key="L.Hmac.ExpectedMacHelp">Optional. Accepts hex (spaces and colons are ignored) or Base64, and is compared in constant time.</sys:String>
+    <sys:String x:Key="L.Hmac.Output">MAC</sys:String>
+    <sys:String x:Key="L.Hmac.Generate">GENERATE</sys:String>
+    <sys:String x:Key="L.Hmac.Copy">COPY</sys:String>
+    <sys:String x:Key="L.Hmac.Save">SAVE</sys:String>
+    <sys:String x:Key="L.Hmac.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.Hmac.Hint">HMAC proves that a message was produced by someone holding the key; it is not encryption.</sys:String>
+    <sys:String x:Key="L.Hmac.MessageAutomationName">Message to authenticate</sys:String>
+    <sys:String x:Key="L.Hmac.SecretKeyAutomationName">Secret key</sys:String>
+    <sys:String x:Key="L.Hmac.OutputAutomationName">Computed MAC</sys:String>
+
+    <sys:String x:Key="L.Hmac.Verify.Matched">MATCH</sys:String>
+    <sys:String x:Key="L.Hmac.Verify.Mismatched">NO MATCH</sys:String>
+    <sys:String x:Key="L.Hmac.Verify.Invalid">not a valid MAC</sys:String>
+
+    <sys:String x:Key="L.Hmac.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Hmac.Status.Computed">{0} computed.</sys:String>
+    <sys:String x:Key="L.Hmac.Status.Copied">MAC copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Hmac.Status.Saved">MAC saved to file.</sys:String>
+    <sys:String x:Key="L.Hmac.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.Hmac.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.Hmac.Validation.EmptyKey">Please enter the secret key.</sys:String>
+    <sys:String x:Key="L.Hmac.Validation.NothingToCopy">There is no MAC to copy.</sys:String>
+    <sys:String x:Key="L.Hmac.Validation.NothingToSave">There is no MAC to save.</sys:String>
+    <sys:String x:Key="L.Hmac.Validation.NoAlgorithm">No algorithm is selected.</sys:String>
+
+    <sys:String x:Key="L.Hmac.Error.EmptyKey">The key is empty.</sys:String>
+    <sys:String x:Key="L.Hmac.Error.InvalidHexKey">The key is not valid hexadecimal. Use an even number of hex digits or switch the key format to text.</sys:String>
+    <sys:String x:Key="L.Hmac.Error.KeyTooLong">The key is too long. The limit is 4096 bytes.</sys:String>
+    <sys:String x:Key="L.Hmac.Error.InputTooLarge">The message is too large. The limit is 10 MB.</sys:String>
+    <sys:String x:Key="L.Hmac.Error.UnsupportedAlgorithm">Unknown HMAC algorithm.</sys:String>
+    <sys:String x:Key="L.Hmac.Error.AlgorithmUnavailable">This HMAC algorithm is not available on this system.</sys:String>
+    <sys:String x:Key="L.Hmac.Error.InvalidExpectedMac">The expected MAC is neither hex nor Base64.</sys:String>
+
 </ResourceDictionary>

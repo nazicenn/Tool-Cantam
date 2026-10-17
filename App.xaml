@@ -20,6 +20,7 @@
             <converters:NotificationTypeToBrushConverter x:Key="NotificationTypeToBrushConverter"/>
             <converters:HashMatchStateToBrushConverter x:Key="HashMatchStateToBrushConverter"/>
             <converters:HashIdentifierConfidenceToBrushConverter x:Key="HashIdentifierConfidenceToBrushConverter"/>
+            <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
 
         </ResourceDictionary>
     </Application.Resources>

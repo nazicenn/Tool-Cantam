@@ -119,11 +119,10 @@ public static class ToolDefinitions
         ToolRegistry.Register(new ToolDefinition
         {
             Name = "HMAC Generator",
-            Description = "Generate HMAC-SHA256 hash with a secret key",
+            Description = "Compute and verify HMAC with SHA-2/SHA-3 and a text or hex key",
             Category = ToolCategory.HashAndCrypto,
             ViewModelType = typeof(HmacGeneratorViewModel),
-            ViewType = typeof(HmacGeneratorPage),
-            Execute = async (input) => "HMAC-SHA256 hash"
+            ViewType = typeof(HmacGeneratorPage)
         });
 
         ToolRegistry.Register(new ToolDefinition

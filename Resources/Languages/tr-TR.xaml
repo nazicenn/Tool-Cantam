@@ -430,4 +430,50 @@
     <sys:String x:Key="L.HashIdentifier.Error.EmptyInput">Girdi boş.</sys:String>
     <sys:String x:Key="L.HashIdentifier.Error.InputTooLong">Girdi bir hash değeri olamayacak kadar uzun.</sys:String>
 
+    <!-- ============ HMAC üretici ============ -->
+    <sys:String x:Key="L.Hmac.Title">HMAC ÜRETİCİ</sys:String>
+    <sys:String x:Key="L.Hmac.Algorithm">Algoritma</sys:String>
+    <sys:String x:Key="L.Hmac.KeyFormat">Anahtar biçimi</sys:String>
+    <sys:String x:Key="L.Hmac.KeyFormat.Text">Metin (UTF-8)</sys:String>
+    <sys:String x:Key="L.Hmac.KeyFormat.Hex">Hex baytları</sys:String>
+    <sys:String x:Key="L.Hmac.Message">Mesaj</sys:String>
+    <sys:String x:Key="L.Hmac.SecretKey">Gizli anahtar</sys:String>
+    <sys:String x:Key="L.Hmac.ShowKey">Anahtarı göster</sys:String>
+    <sys:String x:Key="L.Hmac.KeyHint">Anahtar varsayılan olarak maskelenir, hiçbir zaman loglanmaz ve hesaplama bitince bellekte sıfırlanır. Yönetilen metinler silinemediği için işiniz bitince alanı temizleyin.</sys:String>
+    <sys:String x:Key="L.Hmac.ExpectedMac">Beklenen MAC</sys:String>
+    <sys:String x:Key="L.Hmac.ExpectedMacHelp">İsteğe bağlı. Hex (boşluk ve iki nokta yok sayılır) veya Base64 kabul eder ve sabit zamanda karşılaştırılır.</sys:String>
+    <sys:String x:Key="L.Hmac.Output">MAC</sys:String>
+    <sys:String x:Key="L.Hmac.Generate">ÜRET</sys:String>
+    <sys:String x:Key="L.Hmac.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.Hmac.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.Hmac.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Hmac.Hint">HMAC, mesajın anahtarı bilen biri tarafından üretildiğini kanıtlar; şifreleme değildir.</sys:String>
+    <sys:String x:Key="L.Hmac.MessageAutomationName">Kimliği doğrulanacak mesaj</sys:String>
+    <sys:String x:Key="L.Hmac.SecretKeyAutomationName">Gizli anahtar</sys:String>
+    <sys:String x:Key="L.Hmac.OutputAutomationName">Hesaplanan MAC</sys:String>
+
+    <sys:String x:Key="L.Hmac.Verify.Matched">EŞLEŞTİ</sys:String>
+    <sys:String x:Key="L.Hmac.Verify.Mismatched">EŞLEŞMEDİ</sys:String>
+    <sys:String x:Key="L.Hmac.Verify.Invalid">geçerli MAC değil</sys:String>
+
+    <sys:String x:Key="L.Hmac.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Hmac.Status.Computed">{0} hesaplandı.</sys:String>
+    <sys:String x:Key="L.Hmac.Status.Copied">MAC panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Hmac.Status.Saved">MAC dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.Hmac.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.Hmac.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.Hmac.Validation.EmptyKey">Lütfen gizli anahtarı girin.</sys:String>
+    <sys:String x:Key="L.Hmac.Validation.NothingToCopy">Kopyalanacak MAC yok.</sys:String>
+    <sys:String x:Key="L.Hmac.Validation.NothingToSave">Kaydedilecek MAC yok.</sys:String>
+    <sys:String x:Key="L.Hmac.Validation.NoAlgorithm">Algoritma seçilmedi.</sys:String>
+
+    <sys:String x:Key="L.Hmac.Error.EmptyKey">Anahtar boş.</sys:String>
+    <sys:String x:Key="L.Hmac.Error.InvalidHexKey">Anahtar geçerli onaltılık değil. Çift sayıda hex basamağı kullanın veya anahtar biçimini metne çevirin.</sys:String>
+    <sys:String x:Key="L.Hmac.Error.KeyTooLong">Anahtar çok uzun. Sınır 4096 bayttır.</sys:String>
+    <sys:String x:Key="L.Hmac.Error.InputTooLarge">Mesaj çok büyük. Sınır 10 MB'tır.</sys:String>
+    <sys:String x:Key="L.Hmac.Error.UnsupportedAlgorithm">Bilinmeyen HMAC algoritması.</sys:String>
+    <sys:String x:Key="L.Hmac.Error.AlgorithmUnavailable">Bu HMAC algoritması bu sistemde kullanılamıyor.</sys:String>
+    <sys:String x:Key="L.Hmac.Error.InvalidExpectedMac">Beklenen MAC ne hex ne de Base64.</sys:String>
+
 </ResourceDictionary>

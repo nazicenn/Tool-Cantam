@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="tool_cantam.Views.HmacGeneratorPage"
+<UserControl x:Class="tool_cantam.Views.HmacGeneratorPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -7,87 +7,253 @@
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="HMAC GENERATOR" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.Hmac.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <Border Grid.Row="1" 
-                Padding="20">
-
+        <!-- Algoritma ve biçimler -->
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,0,0,12">
             <StackPanel>
-                <!-- Message (sabit) -->
-                <TextBlock Text="Message" 
-                           Style="{StaticResource LabelPrimary}" 
-                           Margin="0,0,0,8"/>
-                <TextBox Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
-                         AcceptsReturn="True"
-                         TextWrapping="Wrap"
-                         VerticalScrollBarVisibility="Auto"
-                         Height="100"
-                         Margin="0,0,0,15"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{DynamicResource L.Hmac.Algorithm}"
+                               Style="{StaticResource LabelPrimary}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0"/>
+                    <ComboBox ItemsSource="{Binding ViewModel.Algorithms}"
+                              SelectedItem="{Binding ViewModel.SelectedAlgorithm}"
+                              DisplayMemberPath="DisplayName"
+                              Width="190"
+                              Margin="0,0,20,0"
+                              TabIndex="0"/>
 
-                <!-- Secret Key (sabit) -->
-                <TextBlock Text="Secret Key" 
-                           Style="{StaticResource LabelPrimary}" 
-                           Margin="0,0,0,8"/>
-                <TextBox Text="{Binding SecretKey, UpdateSourceTrigger=PropertyChanged}"
-                         Margin="0,0,0,15"/>
+                    <TextBlock Text="{DynamicResource L.Hmac.KeyFormat}"
+                               Style="{StaticResource LabelPrimary}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0"/>
+                    <ComboBox ItemsSource="{Binding ViewModel.KeyFormats}"
+                              SelectedItem="{Binding ViewModel.SelectedKeyFormat}"
+                              DisplayMemberPath="DisplayName"
+                              Width="130"
+                              Margin="0,0,20,0"
+                              TabIndex="1"/>
 
-                <!-- Generate Button (sabit) -->
-                <Button Command="{Binding GenerateCommand}"
-                        Content="GENERATE HMAC"
-                        Height="40"
-                        Margin="0,0,0,15"
-                        Style="{StaticResource ModernButton}"
-                        Background="{StaticResource GreenBrush}"/>
+                    <TextBlock Text="{DynamicResource L.Hash.OutputFormat}"
+                               Style="{StaticResource LabelPrimary}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0"/>
+                    <ComboBox ItemsSource="{Binding ViewModel.OutputFormats}"
+                              SelectedItem="{Binding ViewModel.SelectedOutputFormat}"
+                              DisplayMemberPath="DisplayName"
+                              Width="180"
+                              TabIndex="2"/>
+                </StackPanel>
 
-                <!-- Result (scroll'lu) -->
-                <TextBlock Text="HMAC-SHA256" 
-                           Style="{StaticResource LabelPrimary}" 
-                           Margin="0,0,0,8"/>
-
-                <ScrollViewer MaxHeight="150" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                    <Border Style="{StaticResource OptionsPanel}"
-                            Padding="12">
-                        <TextBlock Text="{Binding OutputHash}" 
-                                   Foreground="{StaticResource AccentPrimaryBrush}"
-                                   FontFamily="{StaticResource MonoFont}"
-                                   FontSize="11"
-                                   TextWrapping="Wrap"/>
-                    </Border>
-                </ScrollViewer>
-
-                <!-- Buttons (sabit) -->
-                <UniformGrid Columns="2" Margin="0,15,0,0">
-                    <Button Command="{Binding CopyHashCommand}" 
-                            Content="COPY"
-                            Height="34" 
-                            Margin="0,0,5,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
-                    <Button Command="{Binding ClearCommand}" 
-                            Content="CLEAR"
-                            Height="34" 
-                            Margin="5,0,0,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource RedBrush}"/>
-                </UniformGrid>
+                <TextBlock Text="{DynamicResource L.Hash.WeakWarning}"
+                           Foreground="{StaticResource StatusDangerBrush}"
+                           FontSize="11"
+                           Margin="0,10,0,0"
+                           TextWrapping="Wrap"
+                           Visibility="{Binding ViewModel.IsSelectedAlgorithmWeak, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             </StackPanel>
         </Border>
 
-        <TextBlock Grid.Row="2" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,15,0,0"/>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Mesaj -->
+            <TextBlock Grid.Row="0" Text="{DynamicResource L.Hmac.Message}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
+            <TextBox Grid.Row="1"
+                     Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto"
+                     MinHeight="80"
+                     FontFamily="{StaticResource MonoFont}"
+                     TabIndex="3"
+                     AutomationProperties.Name="{DynamicResource L.Hmac.MessageAutomationName}"/>
+
+            <!-- Anahtar: varsayılan olarak maskeli, istenirse düz metin -->
+            <Grid Grid.Row="2" Margin="0,12,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="{DynamicResource L.Hmac.SecretKey}" Style="{StaticResource LabelPrimary}"
+                           VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                <Grid Grid.Column="1">
+                    <PasswordBox x:Name="KeyPasswordBox"
+                                 PasswordChanged="KeyPasswordBox_PasswordChanged"
+                                 FontFamily="{StaticResource MonoFont}"
+                                 Height="32"
+                                 VerticalContentAlignment="Center"
+                                 TabIndex="4"
+                                 AutomationProperties.Name="{DynamicResource L.Hmac.SecretKeyAutomationName}"
+                                 Visibility="{Binding ViewModel.ShowKey, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+
+                    <TextBox x:Name="KeyTextBox"
+                             Text="{Binding ViewModel.SecretKey, UpdateSourceTrigger=PropertyChanged}"
+                             FontFamily="{StaticResource MonoFont}"
+                             Height="32"
+                             VerticalContentAlignment="Center"
+                             TabIndex="5"
+                             AutomationProperties.Name="{DynamicResource L.Hmac.SecretKeyAutomationName}"
+                             Visibility="{Binding ViewModel.ShowKey, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </Grid>
+
+                <CheckBox Grid.Column="2"
+                          Content="{DynamicResource L.Hmac.ShowKey}"
+                          IsChecked="{Binding ViewModel.ShowKey}"
+                          Foreground="{StaticResource TextPrimaryBrush}"
+                          VerticalAlignment="Center"
+                          Margin="12,0,0,0"
+                          TabIndex="6"/>
+            </Grid>
+
+            <TextBlock Grid.Row="3" Text="{DynamicResource L.Hmac.KeyHint}"
+                       Foreground="{StaticResource TextPrimaryBrush}"
+                       Opacity="0.6" FontSize="10" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+            <!-- Beklenen MAC (doğrulama) -->
+            <Grid Grid.Row="4" Margin="0,12,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="{DynamicResource L.Hmac.ExpectedMac}" Style="{StaticResource LabelPrimary}"
+                           VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                <TextBox Grid.Column="1"
+                         Text="{Binding ViewModel.ExpectedMac, UpdateSourceTrigger=PropertyChanged}"
+                         FontFamily="{StaticResource MonoFont}"
+                         Height="32"
+                         VerticalContentAlignment="Center"
+                         TabIndex="7"
+                         AutomationProperties.HelpText="{DynamicResource L.Hmac.ExpectedMacHelp}"/>
+
+                <TextBlock Grid.Column="2"
+                           Text="{Binding ViewModel.VerificationText}"
+                           Foreground="{Binding ViewModel.VerificationState, Converter={StaticResource HashMatchStateToBrushConverter}}"
+                           FontSize="11" FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           Margin="12,0,0,0"
+                           MinWidth="90"/>
+            </Grid>
+
+            <!-- Sonuç -->
+            <Grid Grid.Row="5" Margin="0,12,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="{DynamicResource L.Hmac.Output}" Style="{StaticResource LabelPrimary}"
+                           VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                <TextBox Grid.Column="1"
+                         Text="{Binding ViewModel.OutputHash, Mode=OneWay}"
+                         IsReadOnly="True"
+                         FontFamily="{StaticResource MonoFont}"
+                         Height="32"
+                         VerticalContentAlignment="Center"
+                         Foreground="{StaticResource AccentPrimaryBrush}"
+                         AutomationProperties.Name="{DynamicResource L.Hmac.OutputAutomationName}"/>
+            </Grid>
+
+            <!-- Eylemler -->
+            <UniformGrid Grid.Row="6" Columns="5" Margin="0,15,0,0">
+                <Button Content="{DynamicResource L.Hmac.Generate}"
+                        Command="{Binding ViewModel.GenerateCommand}"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource GreenBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        Height="34" Margin="0,0,5,0"
+                        TabIndex="8"/>
+                <Button Content="{DynamicResource L.Hmac.Copy}"
+                        Command="{Binding ViewModel.CopyHashCommand}"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource StatusWarningBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        Height="34" Margin="5,0,5,0"
+                        TabIndex="9"/>
+                <Button Content="{DynamicResource L.Hmac.Save}"
+                        Command="{Binding ViewModel.SaveHashCommand}"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource AccentPrimaryBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        Height="34" Margin="5,0,5,0"
+                        TabIndex="10"/>
+                <Button Content="{DynamicResource L.Hmac.Clear}"
+                        Command="{Binding ViewModel.ClearCommand}"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource RedBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        Height="34" Margin="5,0,5,0"
+                        TabIndex="11"/>
+                <Button Content="{DynamicResource L.Common.Cancel}"
+                        Command="{Binding ViewModel.GenerateCancelCommand}"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource StatusDangerBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        Height="34" Margin="5,0,0,0"
+                        TabIndex="12"
+                        Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </UniformGrid>
+        </Grid>
+
+        <!-- DURUM SATIRI -->
+        <Border Grid.Row="3"
+                Style="{StaticResource OptionsPanel}"
+                Padding="12"
+                Margin="0,15,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ui:ProgressRing Grid.Column="0"
+                                 IsIndeterminate="True"
+                                 Width="16" Height="16"
+                                 Margin="0,0,8,0"
+                                 Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ViewModel.StatusText}"
+                           Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                           FontSize="11"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"
+                           AutomationProperties.LiveSetting="Polite"/>
+
+                <TextBlock Grid.Column="2"
+                           Text="{DynamicResource L.Hmac.Hint}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           VerticalAlignment="Center"
+                           Opacity="0.6"
+                           TextWrapping="Wrap"
+                           MaxWidth="420"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
