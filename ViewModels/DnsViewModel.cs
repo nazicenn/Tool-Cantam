@@ -1,94 +1,116 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
 using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
+
+public sealed record DnsRow(string Type, string Value, string PriorityDisplay);
 
 public partial class DnsViewModel : ObservableObject
 {
     private readonly IDnsService _dnsService;
     private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<DnsViewModel> _logger;
 
-    [ObservableProperty]
-    private string _targetDomain = string.Empty;
+    [ObservableProperty] private string _targetDomain = string.Empty;
+    [ObservableProperty] private bool _isQuerying;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private string _summaryText = string.Empty;
+    [ObservableProperty] private bool _hasResults;
 
-    [ObservableProperty]
-    private bool _isQuerying;
+    public event Action? RequestTargetFocus;
 
-    [ObservableProperty]
-    private string _statusText = "Ready.";
-
-    [ObservableProperty]
-    private DnsRecord? _dnsRecord;
-
-    [ObservableProperty]
-    private ObservableCollection<string> _aRecords = new();
-
-    [ObservableProperty]
-    private ObservableCollection<string> _aaaaRecords = new();
-
-    [ObservableProperty]
-    private ObservableCollection<string> _mxRecords = new();
-
-    [ObservableProperty]
-    private ObservableCollection<string> _nsRecords = new();
-
-    [ObservableProperty]
-    private ObservableCollection<string> _txtRecords = new();
-
-    [ObservableProperty]
-    private string _soaRecord = string.Empty;
-
-    public DnsViewModel(IDnsService dnsService, IFileExportService fileExportService)
+    public DnsViewModel(
+        IDnsService dnsService,
+        IFileExportService fileExportService,
+        ILocalizerService localizer,
+        ILogger<DnsViewModel> logger)
     {
         _dnsService = dnsService;
         _fileExportService = fileExportService;
+        _localizer = localizer;
+        _logger = logger;
+
+        StatusText = _localizer.Get("L.Dns.Status.Ready");
     }
 
-    [RelayCommand]
-    private async Task QueryAsync()
-    {
-        if (string.IsNullOrWhiteSpace(TargetDomain))
-        {
-            StatusText = "Please enter a domain";
-            return;
-        }
+    public ObservableCollection<DnsRow> Records { get; } = new();
 
-        if (!_dnsService.IsValidDomain(TargetDomain))
+    public string LimitsText => _localizer.Format(
+        "L.Dns.Limits",
+        _dnsService.QueryTimeoutMs,
+        string.Join(", ", _dnsService.SupportedRecordTypes));
+
+    [RelayCommand(IncludeCancelCommand = true)]
+    private async Task QueryAsync(CancellationToken cancellationToken)
+    {
+        string target = TargetDomain?.Trim() ?? string.Empty;
+
+        if (target.Length == 0)
         {
-            StatusText = "Invalid domain format";
+            RequestTargetFocus?.Invoke();
+            SetStatus(NotificationType.Warning, "L.Dns.Validation.InvalidDomain");
             return;
         }
 
         IsQuerying = true;
-        StatusText = "Querying DNS records...";
-        ClearResults();
+        Records.Clear();
+        HasResults = false;
+        SummaryText = string.Empty;
 
         try
         {
-            var result = await _dnsService.LookupAsync(TargetDomain);
-            DnsRecord = result;
+            SetStatus(NotificationType.Info, "L.Dns.Status.Querying", target);
 
-            foreach (var a in result.A) ARecords.Add(a);
-            foreach (var aaaa in result.AAAA) AaaaRecords.Add(aaaa);
-            foreach (var mx in result.MX) MxRecords.Add(mx);
-            foreach (var ns in result.NS) NsRecords.Add(ns);
-            foreach (var txt in result.TXT) TxtRecords.Add(txt);
-            SoaRecord = result.SOA;
+            ToolResult<DnsLookupReport> result = await _dnsService.LookupAsync(target, cancellationToken);
 
-            var total = result.A.Count + result.AAAA.Count + result.MX.Count +
-                        result.NS.Count + result.TXT.Count;
+            if (!result.IsSuccess)
+            {
+                ReportFailure(result, "dns-lookup");
+                return;
+            }
 
-            StatusText = total > 0
-                ? $"Found {total} DNS records"
-                : "No DNS records found";
+            DnsLookupReport report = result.Value!;
+
+            foreach (var entry in report.Records)
+            {
+                string priority = entry.Priority.HasValue ? entry.Priority.Value.ToString() : "—";
+                Records.Add(new DnsRow(entry.Type, entry.Value, priority));
+            }
+
+            HasResults = Records.Count > 0;
+            SummaryText = _localizer.Format("L.Dns.Status.Summary",
+                report.Domain,
+                report.TotalCount,
+                report.CountByType("A"),
+                report.CountByType("AAAA"),
+                report.CountByType("MX"),
+                report.CountByType("NS"),
+                report.CountByType("TXT"),
+                report.CountByType("SOA"),
+                report.Elapsed.TotalSeconds);
+
+            _logger.LogInformation(
+                "DNS lookup finished: domain={Domain} total={Total} elapsedMs={Elapsed}",
+                report.Domain, report.TotalCount, report.Elapsed.TotalMilliseconds);
+
+            SetStatus(NotificationType.Success, "L.Dns.Status.Finished", report.TotalCount, report.Domain);
+        }
+        catch (OperationCanceledException)
+        {
+            _logger.LogInformation("DNS lookup cancelled by the user.");
+            SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled");
         }
         catch (Exception ex)
         {
-            StatusText = $"Error: {ex.Message}";
+            _logger.LogError(ex, "DNS lookup failed unexpectedly.");
+            SetStatus(NotificationType.Error, "L.Common.Error.Unexpected");
         }
         finally
         {
@@ -99,48 +121,97 @@ public partial class DnsViewModel : ObservableObject
     [RelayCommand]
     private void CopyAll()
     {
-        var allResults = GetFormattedResults();
-        if (!string.IsNullOrWhiteSpace(allResults))
+        if (Records.Count == 0)
         {
-            _fileExportService.CopyToClipboard(allResults);
-            StatusText = "All results copied to clipboard";
+            SetStatus(NotificationType.Warning, "L.Dns.Validation.NothingToCopy");
+            return;
+        }
+
+        try
+        {
+            _fileExportService.CopyToClipboard(BuildReport());
+            SetStatus(NotificationType.Success, "L.Dns.Status.Copied");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "DNS result could not be copied.");
+            SetStatus(NotificationType.Error, "L.Common.Error.Clipboard");
+        }
+    }
+
+    [RelayCommand]
+    private async Task SaveResultsAsync()
+    {
+        if (Records.Count == 0)
+        {
+            SetStatus(NotificationType.Warning, "L.Dns.Validation.NothingToSave");
+            return;
+        }
+
+        IsQuerying = true;
+        try
+        {
+            bool saved = await _fileExportService.ExportTextAsync(
+                BuildReport(),
+                $"{_localizer.Get("L.Common.Filter.TextFiles")}|*.txt|{_localizer.Get("L.Dns.Filter.Csv")}|*.csv",
+                ".txt",
+                "dns-lookup");
+
+            SetStatus(saved ? NotificationType.Success : NotificationType.Info,
+                saved ? "L.Dns.Status.Saved" : "L.Dns.Status.SaveCancelled");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "DNS result could not be saved.");
+            SetStatus(NotificationType.Error, "L.Common.Error.FileSave");
+        }
+        finally
+        {
+            IsQuerying = false;
         }
     }
 
     [RelayCommand]
     private void Clear()
     {
-        TargetDomain = string.Empty;
-        ClearResults();
-        StatusText = "Ready.";
+        if (QueryCancelCommand is not null && QueryCancelCommand.CanExecute(null))
+            QueryCancelCommand.Execute(null);
+
+        Records.Clear();
+        HasResults = false;
+        SummaryText = string.Empty;
+        SetStatus(NotificationType.Info, "L.Dns.Status.Cleared");
     }
 
-    private void ClearResults()
+    private string BuildReport()
     {
-        ARecords.Clear();
-        AaaaRecords.Clear();
-        MxRecords.Clear();
-        NsRecords.Clear();
-        TxtRecords.Clear();
-        SoaRecord = string.Empty;
-        DnsRecord = null;
+        var builder = new System.Text.StringBuilder();
+        builder.AppendLine($"{_localizer.Get("L.Dns.Column.Type")}\t{_localizer.Get("L.Dns.Column.Priority")}\t{_localizer.Get("L.Dns.Column.Value")}");
+
+        foreach (var row in Records)
+            builder.AppendLine($"{row.Type}\t{row.PriorityDisplay}\t{row.Value}");
+
+        return builder.ToString().TrimEnd();
     }
 
-    private string GetFormattedResults()
+    private void SetStatus(NotificationType type, string messageKey, params object?[] args)
     {
-        if (DnsRecord == null) return string.Empty;
+        StatusType = type;
+        StatusText = _localizer.Format(messageKey, args);
+    }
 
-        var lines = new System.Text.StringBuilder();
-        lines.AppendLine($"=== DNS Lookup for {DnsRecord.Domain} ===");
-        lines.AppendLine();
+    private void ReportFailure(IToolResult result, string operation)
+    {
+        if (result.ErrorKind == ToolErrorKind.Cancelled)
+        {
+            _logger.LogInformation("DNS lookup {Operation} cancelled.", operation);
+            SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled");
+            return;
+        }
 
-        if (ARecords.Count > 0) lines.AppendLine($"A Records (IPv4):\n  {string.Join("\n  ", ARecords)}\n");
-        if (AaaaRecords.Count > 0) lines.AppendLine($"AAAA Records (IPv6):\n  {string.Join("\n  ", AaaaRecords)}\n");
-        if (MxRecords.Count > 0) lines.AppendLine($"MX Records (Mail):\n  {string.Join("\n  ", MxRecords)}\n");
-        if (NsRecords.Count > 0) lines.AppendLine($"NS Records (Nameservers):\n  {string.Join("\n  ", NsRecords)}\n");
-        if (TxtRecords.Count > 0) lines.AppendLine($"TXT Records:\n  {string.Join("\n  ", TxtRecords)}\n");
-        if (!string.IsNullOrWhiteSpace(SoaRecord)) lines.AppendLine($"SOA Record:\n  {SoaRecord}");
+        _logger.LogWarning("DNS lookup {Operation} failed: kind={ErrorKind} code={ErrorCode}",
+            operation, result.ErrorKind, result.ErrorCode);
 
-        return lines.ToString();
+        SetStatus(NotificationType.Error, result.ErrorCode ?? "L.Common.Error.Unexpected");
     }
 }

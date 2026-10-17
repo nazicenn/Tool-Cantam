@@ -10,214 +10,162 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Başlık -->
-        <TextBlock Grid.Row="0" 
-                   Text="DNS LOOKUP" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.Dns.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <!-- Arama Alanı -->
-        <Border Grid.Row="1" 
-                CornerRadius="8" 
-                BorderBrush="{StaticResource BorderDefaultBrush}" 
-                BorderThickness="1"
-                Padding="20">
-
+        <!-- Hedef ve sınırlar -->
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,0,0,10">
             <StackPanel>
-                <TextBlock Text="Domain Name" 
-                           Style="{StaticResource LabelPrimary}" 
-                           Margin="0,0,0,10"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{DynamicResource L.Dns.Target}"
+                               Style="{StaticResource LabelPrimary}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox x:Name="TargetTextBox"
+                             Text="{Binding ViewModel.TargetDomain, UpdateSourceTrigger=PropertyChanged}"
+                             Width="320" Height="32" VerticalContentAlignment="Center"
+                             FontFamily="{StaticResource MonoFont}"
+                             Margin="0,0,10,0" TabIndex="0"
+                             AutomationProperties.Name="{DynamicResource L.Dns.TargetAutomationName}"/>
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBox Grid.Column="0" 
-                             Text="{Binding TargetDomain, UpdateSourceTrigger=PropertyChanged}"/>
-
-                    <Button Grid.Column="1" 
-                            Command="{Binding QueryCommand}"
-                            Content="LOOKUP"
-                            HorizontalAlignment="Right"
-                            Height="40"
-                            Width="100"
-                            Margin="10,0,0,0"
+                    <Button Content="{DynamicResource L.Dns.Query}"
+                            Command="{Binding ViewModel.QueryCommand}"
                             Style="{StaticResource ModernButton}"
                             Background="{StaticResource GreenBrush}"
-                            Foreground="{StaticResource TextPrimaryBrush}"/>
-                </Grid>
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="32" MinWidth="100" TabIndex="1"/>
+                </StackPanel>
 
-                <!-- Durum -->
-                <TextBlock Text="{Binding StatusText}" 
-                           Style="{StaticResource LabelSecondary}"
+                <TextBlock Text="{Binding ViewModel.LimitsText}"
                            Foreground="{StaticResource TextPrimaryBrush}"
-                           FontSize="11"
-                           Margin="0,10,0,0"/>
+                           Opacity="0.6" FontSize="10" Margin="0,10,0,0" TextWrapping="Wrap"/>
             </StackPanel>
         </Border>
 
         <!-- Sonuçlar -->
-        <Border Grid.Row="2" 
-                CornerRadius="8" 
-                BorderBrush="{StaticResource BorderDefaultBrush}" 
-                BorderThickness="1"
-                Padding="20"
-                Margin="0,10,0,10">
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Height="320">
-                <StackPanel>
-                    <!-- A Records -->
-                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,8">
-                        <StackPanel>
-                            <TextBlock Text="🖧 A Records (IPv4)" 
-                                       Style="{StaticResource LabelSecondary}"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
-                                       FontSize="12"/>
-                            <ItemsControl ItemsSource="{Binding ARecords}" Margin="0,5,0,0">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding}" 
-                                                   Style="{StaticResource LabelPrimary}"
-                                                   FontSize="11"
-                                                   Margin="15,2,0,2"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </Border>
+            <Grid Grid.Row="0" Margin="0,0,0,5">
+                <TextBlock Text="{DynamicResource L.Dns.Results}" Style="{StaticResource LabelPrimary}" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding ViewModel.SummaryText}"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Center"
+                           TextWrapping="Wrap" MaxWidth="620"/>
+            </Grid>
 
-                    <!-- AAAA Records -->
-                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,8">
-                        <StackPanel>
-                            <TextBlock Text="🌐 AAAA Records (IPv6)" 
-                                       Style="{StaticResource LabelSecondary}"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
-                                       FontSize="12"/>
-                            <ItemsControl ItemsSource="{Binding AaaaRecords}" Margin="0,5,0,0">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding}" 
-                                                   Style="{StaticResource LabelPrimary}"
-                                                   FontSize="11"
-                                                   Margin="15,2,0,2"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </Border>
+            <Border Grid.Row="1"
+                    Background="{StaticResource OptionsBgBrush}"
+                    BorderBrush="{StaticResource OptionsBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Padding="8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                    <!-- MX Records -->
-                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,8">
-                        <StackPanel>
-                            <TextBlock Text="📧 MX Records (Mail)" 
-                                       Style="{StaticResource LabelSecondary}"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
-                                       FontSize="12"/>
-                            <ItemsControl ItemsSource="{Binding MxRecords}" Margin="0,5,0,0">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding}" 
-                                                   Style="{StaticResource LabelPrimary}"
-                                                   FontSize="11"
-                                                   Margin="15,2,0,2"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </Border>
+                    <!-- Başlık satırı -->
+                    <Grid Grid.Row="0" Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource L.Dns.Column.Type}" Style="{StaticResource LabelPrimary}" FontSize="11"/>
+                        <TextBlock Grid.Column="1" Text="{DynamicResource L.Dns.Column.Priority}" Style="{StaticResource LabelPrimary}" FontSize="11"/>
+                        <TextBlock Grid.Column="2" Text="{DynamicResource L.Dns.Column.Value}" Style="{StaticResource LabelPrimary}" FontSize="11"/>
+                    </Grid>
 
-                    <!-- NS Records -->
-                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,8">
-                        <StackPanel>
-                            <TextBlock Text="🖧 NS Records (Nameservers)" 
-                                       Style="{StaticResource LabelSecondary}"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
-                                       FontSize="12"/>
-                            <ItemsControl ItemsSource="{Binding NsRecords}" Margin="0,5,0,0">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding}" 
-                                                   Style="{StaticResource LabelPrimary}"
-                                                   FontSize="11"
-                                                   Margin="15,2,0,2"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- TXT Records -->
-                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,8">
-                        <StackPanel>
-                            <TextBlock Text="📝 TXT Records" 
-                                       Style="{StaticResource LabelSecondary}"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
-                                       FontSize="12"/>
-                            <ItemsControl ItemsSource="{Binding TxtRecords}" Margin="0,5,0,0">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding}" 
-                                                   Style="{StaticResource LabelPrimary}"
-                                                   FontSize="11"
-                                                   Margin="15,2,0,2"
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding ViewModel.Records}"
+                                      AutomationProperties.Name="{DynamicResource L.Dns.ResultsAutomationName}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding Type}"
+                                                   Foreground="{StaticResource AccentPrimaryBrush}"
+                                                   FontFamily="{StaticResource MonoFont}" FontWeight="Bold" FontSize="12"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding PriorityDisplay}"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                   FontFamily="{StaticResource MonoFont}" FontSize="11"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding Value}"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                   FontFamily="{StaticResource MonoFont}" FontSize="11"
                                                    TextWrapping="Wrap"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </Border>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
 
-                    <!-- SOA Record -->
-                    <Border Style="{StaticResource OptionsPanel}" Margin="0,0,0,8"
-                            Visibility="{Binding SoaRecord, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <StackPanel>
-                            <TextBlock Text="ℹ️ SOA Record" 
-                                       Style="{StaticResource LabelSecondary}"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
-                                       FontSize="12"/>
-                            <TextBlock Text="{Binding SoaRecord}" 
-                                       Style="{StaticResource LabelPrimary}"
-                                       FontSize="11"
-                                       Margin="15,5,0,0"
-                                       TextWrapping="Wrap"/>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
-            </ScrollViewer>
+        <!-- Alt bar: butonlar + durum -->
+        <Border Grid.Row="3" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <UniformGrid Grid.Row="0" Columns="4">
+                    <Button Content="{DynamicResource L.Dns.Copy}"
+                            Command="{Binding ViewModel.CopyAllCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="0,0,5,0" TabIndex="2"/>
+                    <Button Content="{DynamicResource L.Dns.Save}"
+                            Command="{Binding ViewModel.SaveResultsCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource AccentPrimaryBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="5,0,5,0" TabIndex="3"/>
+                    <Button Content="{DynamicResource L.Dns.Clear}"
+                            Command="{Binding ViewModel.ClearCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="5,0,5,0" TabIndex="4"/>
+                    <Button Content="{DynamicResource L.Common.Cancel}"
+                            Command="{Binding ViewModel.QueryCancelCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusDangerBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="5,0,0,0" TabIndex="5"
+                            Visibility="{Binding ViewModel.IsQuerying, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </UniformGrid>
+
+                <Grid Grid.Row="1" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0"
+                                     Visibility="{Binding ViewModel.IsQuerying, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding ViewModel.StatusText}"
+                               Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                               FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center"
+                               AutomationProperties.LiveSetting="Polite"/>
+                </Grid>
+            </Grid>
         </Border>
-
-        <!-- Butonlar -->
-        <UniformGrid Grid.Row="3" Columns="2" Width="300" HorizontalAlignment="Center" Margin="0,0,0,10">
-            <Button Command="{Binding CopyAllCommand}" 
-                    Content="COPY ALL"
-                    Height="34" 
-                    Margin="0,0,5,0"
-                    Style="{StaticResource ModernButton}"
-                    Background="{StaticResource StatusWarningBrush}"
-                    Foreground="{StaticResource TextPrimaryBrush}"/>
-            <Button Command="{Binding ClearCommand}" 
-                    Content="CLEAR"
-                    Height="34" 
-                    Margin="5,0,0,0"
-                    Style="{StaticResource ModernButton}"
-                    Background="{StaticResource RedBrush}"
-                    Foreground="White"/>
-        </UniformGrid>
-
-        <!-- Footer -->
-        <TextBlock Grid.Row="4" 
-                   Text="🔍 DNS Lookup queries A, AAAA, MX, NS, TXT, and SOA records" 
-                   Style="{StaticResource DropZoneHint}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="10"
-                   HorizontalAlignment="Center"/>
     </Grid>
 </UserControl>

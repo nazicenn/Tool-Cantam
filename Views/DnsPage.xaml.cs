@@ -1,13 +1,27 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class DnsPage : UserControl
+/// <summary>
+/// DNS Lookup sayfası. Sorgu async, iptal edilebilir; sınırlar servis tarafından uygulanır.
+/// </summary>
+public partial class DnsPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.DnsViewModel>
 {
-    public DnsPage(DnsViewModel viewModel)
+    public ViewModels.DnsViewModel ViewModel { get; }
+
+    public DnsPage(ViewModels.DnsViewModel viewModel)
     {
+        ViewModel = viewModel;
         InitializeComponent();
-        DataContext = viewModel;
+        DataContext = this;
+
+        ViewModel.RequestTargetFocus += FocusTarget;
+    }
+
+    private void FocusTarget()
+    {
+        if (!IsLoaded) return;
+        TargetTextBox.Focus();
+        TargetTextBox.SelectAll();
     }
 }

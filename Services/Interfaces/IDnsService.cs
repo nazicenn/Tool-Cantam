@@ -1,22 +1,36 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using tool_cantam.Core.Models;
 
 namespace tool_cantam.Services.Interfaces;
 
 public interface IDnsService
 {
-    Task<DnsRecord> LookupAsync(string domain);
-    bool IsValidDomain(string domain);
+    int QueryTimeoutMs { get; }
+    IReadOnlyList<string> SupportedRecordTypes { get; }
+
+    ToolResult<string> ValidateDomain(string? domain);
+
+    Task<ToolResult<DnsLookupReport>> LookupAsync(
+        string? domain,
+        CancellationToken cancellationToken = default);
 }
 
-public class DnsRecord
+public sealed record DnsRecordEntry(string Type, string Name, string Value, int? Priority = null);
+
+public sealed record DnsLookupReport(
+    string Domain,
+    TimeSpan Elapsed,
+    IReadOnlyList<DnsRecordEntry> Records)
 {
-    public string Domain { get; set; } = string.Empty;
-    public List<string> A { get; set; } = new();        // IPv4 adresleri
-    public List<string> AAAA { get; set; } = new();     // IPv6 adresleri
-    public List<string> MX { get; set; } = new();       // Mail sunucuları
-    public List<string> NS { get; set; } = new();       // Name sunucuları
-    public List<string> TXT { get; set; } = new();      // TXT kayıtları (SPF, DKIM)
-    public List<string> CNAME { get; set; } = new();    // Canonical name
-    public string SOA { get; set; } = string.Empty;     // Start of Authority
+    public int TotalCount => Records.Count;
+    public int CountByType(string type)
+    {
+        int count = 0;
+        foreach (var r in Records)
+            if (string.Equals(r.Type, type, StringComparison.OrdinalIgnoreCase)) count++;
+        return count;
+    }
 }
