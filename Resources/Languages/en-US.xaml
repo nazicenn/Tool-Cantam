@@ -240,7 +240,7 @@
 
     <!-- ============ ROT-N (letter rotation) ============ -->
     <sys:String x:Key="L.Rot13.Title">ROT-N LETTER ROTATION</sys:String>
-    <sys:String x:Key="L.Rot13.Notice">ROT13 is not encryption. It only makes text unreadable at a glance and anyone can reverse it. Never use it to protect data, credentials or personal information.</sys:String>
+    <sys:String x:Key="L.Rot13.Notice">ROT13 is not encryption. It only makes text unreadable at a glance and anyone can reverse it.</sys:String>
     <sys:String x:Key="L.Rot13.Shift">Shift</sys:String>
     <sys:String x:Key="L.Rot13.ShiftHelp">How many letters to rotate. 13 is the classic ROT13, where encoding and decoding are the same operation.</sys:String>
     <sys:String x:Key="L.Rot13.Encode">ENCODE</sys:String>
@@ -891,6 +891,39 @@
 
     <sys:String x:Key="L.TextCounter.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
     <sys:String x:Key="L.TextCounter.Error.InvalidUnicode">The text contains an invalid Unicode character (unpaired surrogate).</sys:String>
+    <!-- ============ String Reverser ============ -->
+    <sys:String x:Key="L.StringReverser.Title">STRING REVERSER</sys:String>
+    <sys:String x:Key="L.StringReverser.InputLabel">Input Text</sys:String>
+    <sys:String x:Key="L.StringReverser.OutputLabel">Output Result</sys:String>
+    <sys:String x:Key="L.StringReverser.ReverseAll">REVERSE ALL</sys:String>
+    <sys:String x:Key="L.StringReverser.ReverseWords">Reverse Words</sys:String>
+    <sys:String x:Key="L.StringReverser.ReverseEachWord">Reverse Each Word</sys:String>
+    <sys:String x:Key="L.StringReverser.ReverseLines">Reverse Lines</sys:String>
+    <sys:String x:Key="L.StringReverser.ReverseLinesContent">Reverse Lines + Content</sys:String>
+    <sys:String x:Key="L.StringReverser.Swap">SWAP</sys:String>
+    <sys:String x:Key="L.StringReverser.Copy">COPY</sys:String>
+    <sys:String x:Key="L.StringReverser.Save">SAVE</sys:String>
+    <sys:String x:Key="L.StringReverser.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.StringReverser.InputAutomationName">Text to reverse</sys:String>
+    <sys:String x:Key="L.StringReverser.OutputAutomationName">Reversed result</sys:String>
+    <sys:String x:Key="L.StringReverser.Limits">Max length: {0} characters.</sys:String>
+
+    <sys:String x:Key="L.StringReverser.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.StringReverser.Status.Reversed">Reversed {1} character(s) using {0}.</sys:String>
+    <sys:String x:Key="L.StringReverser.Status.Copied">Output copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.StringReverser.Status.Saved">Output saved to file.</sys:String>
+    <sys:String x:Key="L.StringReverser.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.StringReverser.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.StringReverser.Status.Swapped">Input and output swapped.</sys:String>
+
+    <sys:String x:Key="L.StringReverser.Validation.EmptyInput">Please enter text to reverse.</sys:String>
+    <sys:String x:Key="L.StringReverser.Validation.NothingToCopy">There is no output to copy.</sys:String>
+    <sys:String x:Key="L.StringReverser.Validation.NothingToSave">There is no output to save.</sys:String>
+
+    <sys:String x:Key="L.StringReverser.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
+    <sys:String x:Key="L.StringReverser.Error.InvalidUnicode">The text contains an invalid Unicode character (unpaired surrogate).</sys:String>
+    <sys:String x:Key="L.StringReverser.Error.UnknownMode">Unknown reverse mode.</sys:String>
+
     
-    
+
 </ResourceDictionary>

@@ -8,70 +8,175 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="STRING REVERSER" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.StringReverser.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <Grid Grid.Row="1">
-            <Grid Grid.Column="0" Margin="0,0,0,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+        <Border Grid.Row="1" Padding="20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Text="Input Text" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
+                <!-- SOL: INPUT -->
+                <Grid Grid.Column="0" Margin="0,0,15,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{DynamicResource L.StringReverser.InputLabel}"
+                               Style="{StaticResource LabelPrimary}"
+                               Margin="0,0,0,10"/>
+                    <TextBox Grid.Row="1"
+                             x:Name="InputTextBox"
+                             Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto"
+                             TabIndex="0"
+                             Foreground="{StaticResource TextPrimaryBrush}"
+                             BorderBrush="{StaticResource BorderDefaultBrush}"
+                             AutomationProperties.Name="{DynamicResource L.StringReverser.InputAutomationName}"/>
+                </Grid>
 
-                <TextBox Grid.Row="1" 
-                         Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" 
-                         AcceptsReturn="True" 
-                         TextWrapping="Wrap" 
-                         Margin="0,0,0,12"
-                         VerticalAlignment="Stretch" 
-                         MinHeight="120"
-                         VerticalScrollBarVisibility="Auto"
-                         Foreground="{StaticResource TextPrimaryBrush}"
-                         BorderBrush="{StaticResource BorderDefaultBrush}"/>
-
-                <TextBlock Grid.Row="2" Text="Output Result" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
-
-                <TextBox Grid.Row="3" 
-                         Text="{Binding OutputText, Mode=OneWay}" 
-                         IsReadOnly="True" 
-                         TextWrapping="Wrap" 
-                         Margin="0,0,0,12"
-                         VerticalAlignment="Stretch" 
-                         MinHeight="120"
-                         VerticalScrollBarVisibility="Auto"
-                         Foreground="{StaticResource AccentPrimaryBrush}"
-                         BorderBrush="{StaticResource BorderDefaultBrush}"/>
-
-                <UniformGrid Grid.Row="4" Columns="3">
-                    <Button Content="REVERSE" Command="{Binding ReverseCommand}" 
-                            Height="34" Margin="0,0,5,0"
-                            Background="{StaticResource GreenBrush}" 
+                <!-- ORTA: BUTONLAR -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0">
+                    <Button Content="{DynamicResource L.StringReverser.ReverseAll}"
+                            Command="{Binding ViewModel.ReverseAllCommand}"
+                            Height="34" Width="130" Margin="0,0,0,6"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"
                             Foreground="{StaticResource TextPrimaryBrush}"
-                            FontWeight="Bold"
-                            Style="{StaticResource ModernButton}"/>
-                    <Button Content="COPY" Command="{Binding CopyOutputCommand}" 
-                            Height="34" Margin="5,0,5,0"
-                            Background="{StaticResource StatusWarningBrush}" 
+                            TabIndex="1"/>
+                    <Button Content="{DynamicResource L.StringReverser.ReverseWords}"
+                            Command="{Binding ViewModel.ReverseWordsCommand}"
+                            Height="34" Width="130" Margin="0,0,0,6"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"
                             Foreground="{StaticResource TextPrimaryBrush}"
-                            FontWeight="Bold"
-                            Style="{StaticResource ModernButton}"/>
-                    <Button Content="CLEAR" Command="{Binding ClearCommand}" 
-                            Height="34" Margin="5,0,0,0"
-                            Background="{StaticResource RedBrush}" 
+                            TabIndex="2"/>
+                    <Button Content="{DynamicResource L.StringReverser.ReverseEachWord}"
+                            Command="{Binding ViewModel.ReverseEachWordCommand}"
+                            Height="34" Width="130" Margin="0,0,0,6"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"
                             Foreground="{StaticResource TextPrimaryBrush}"
-                            FontWeight="Bold"
-                            Style="{StaticResource ModernButton}"/>
-                </UniformGrid>
+                            TabIndex="3"/>
+                    <Button Content="{DynamicResource L.StringReverser.ReverseLines}"
+                            Command="{Binding ViewModel.ReverseLinesCommand}"
+                            Height="34" Width="130" Margin="0,0,0,6"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource AccentPrimaryBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="4"/>
+                    <Button Content="{DynamicResource L.StringReverser.ReverseLinesContent}"
+                            Command="{Binding ViewModel.ReverseLinesAndContentCommand}"
+                            Height="34" Width="130" Margin="0,0,0,6"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource AccentPrimaryBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="5"/>
+                    <Button Content="{DynamicResource L.StringReverser.Swap}"
+                            Command="{Binding ViewModel.SwapCommand}"
+                            Height="34" Width="130" Margin="0,0,0,6"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="6"/>
+                    <Button Content="{DynamicResource L.Common.Cancel}"
+                            Command="{Binding ViewModel.ReverseAllCancelCommand}"
+                            Height="34" Width="130" Margin="0,0,0,6"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusDangerBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="7"
+                            Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <Button Content="{DynamicResource L.StringReverser.Clear}"
+                            Command="{Binding ViewModel.ClearCommand}"
+                            Height="34" Width="130"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="8"/>
+                </StackPanel>
+
+                <!-- SAĞ: OUTPUT -->
+                <Grid Grid.Column="2" Margin="15,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{DynamicResource L.StringReverser.OutputLabel}"
+                                   Style="{StaticResource LabelPrimary}"
+                                   VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Button Command="{Binding ViewModel.CopyOutputCommand}"
+                                    Content="{DynamicResource L.StringReverser.Copy}"
+                                    Width="70" Height="28" Margin="0,0,5,0"
+                                    Style="{StaticResource ModernButton}"
+                                    Background="{StaticResource StatusWarningBrush}"
+                                    Foreground="{StaticResource TextPrimaryBrush}"
+                                    TabIndex="9"/>
+                            <Button Command="{Binding ViewModel.SaveOutputCommand}"
+                                    Content="{DynamicResource L.StringReverser.Save}"
+                                    Width="70" Height="28"
+                                    Style="{StaticResource ModernButton}"
+                                    Background="{StaticResource AccentPrimaryBrush}"
+                                    Foreground="{StaticResource TextPrimaryBrush}"
+                                    TabIndex="10"/>
+                        </StackPanel>
+                    </Grid>
+                    <TextBox Grid.Row="1"
+                             Text="{Binding ViewModel.OutputText, Mode=OneWay}"
+                             IsReadOnly="True"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto"
+                             TabIndex="11"
+                             Foreground="{StaticResource AccentPrimaryBrush}"
+                             BorderBrush="{StaticResource BorderDefaultBrush}"
+                             AutomationProperties.Name="{DynamicResource L.StringReverser.OutputAutomationName}"/>
+                </Grid>
             </Grid>
-        </Grid>
+        </Border>
+
+        <Border Grid.Row="2" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0"
+                                 Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ViewModel.StatusText}"
+                           Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                           FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center"
+                           AutomationProperties.LiveSetting="Polite"/>
+
+                <TextBlock Grid.Column="2"
+                           Text="{Binding ViewModel.LimitsText}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           VerticalAlignment="Center"
+                           Opacity="0.6"
+                           TextWrapping="Wrap"
+                           MaxWidth="420"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

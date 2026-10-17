@@ -1,13 +1,24 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class StringReverserPage : UserControl
+public partial class StringReverserPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.StringReverserViewModel>
 {
-    public StringReverserPage(StringReverserViewModel viewModel)
+    public ViewModels.StringReverserViewModel ViewModel { get; }
+
+    public StringReverserPage(ViewModels.StringReverserViewModel viewModel)
     {
+        ViewModel = viewModel;
         InitializeComponent();
-        DataContext = viewModel;
+        DataContext = this;
+
+        ViewModel.RequestInputFocus += FocusInput;
+    }
+
+    private void FocusInput()
+    {
+        if (!IsLoaded) return;
+        InputTextBox.Focus();
+        InputTextBox.SelectAll();
     }
 }

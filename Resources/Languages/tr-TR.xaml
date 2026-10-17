@@ -240,7 +240,7 @@
 
     <!-- ============ ROT-N (harf döndürme) ============ -->
     <sys:String x:Key="L.Rot13.Title">ROT-N HARF DÖNDÜRME</sys:String>
-    <sys:String x:Key="L.Rot13.Notice">ROT13 bir şifreleme değildir. Metni yalnızca ilk bakışta okunmaz hâle getirir ve herkes geri çevirebilir. Veri, kimlik bilgisi veya kişisel bilgi korumak için kullanmayın.</sys:String>
+    <sys:String x:Key="L.Rot13.Notice">ROT13 bir şifreleme değildir. Metni yalnızca ilk bakışta okunmaz hâle getirir ve herkes geri çevirebilir.</sys:String>
     <sys:String x:Key="L.Rot13.Shift">Kaydırma</sys:String>
     <sys:String x:Key="L.Rot13.ShiftHelp">Kaç harf döndürüleceği. 13 klasik ROT13'tür; bu değerde kodlama ve çözme aynı işlemdir.</sys:String>
     <sys:String x:Key="L.Rot13.Encode">KODLA</sys:String>
@@ -892,7 +892,38 @@
 
     <sys:String x:Key="L.TextCounter.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
     <sys:String x:Key="L.TextCounter.Error.InvalidUnicode">Metin geçersiz bir Unicode karakteri içeriyor (eşleşmemiş surrogate).</sys:String>
-    
-    
-    
+    <!-- ============ String Reverser ============ -->
+    <sys:String x:Key="L.StringReverser.Title">METİN TERS ÇEVİRİCİ</sys:String>
+    <sys:String x:Key="L.StringReverser.InputLabel">Giriş Metni</sys:String>
+    <sys:String x:Key="L.StringReverser.OutputLabel">Çıkış Sonucu</sys:String>
+    <sys:String x:Key="L.StringReverser.ReverseAll">TÜMÜNÜ TERS ÇEVİR</sys:String>
+    <sys:String x:Key="L.StringReverser.ReverseWords">Kelimeleri Ters Çevir</sys:String>
+    <sys:String x:Key="L.StringReverser.ReverseEachWord">Her Kelimeyi Ters Çevir</sys:String>
+    <sys:String x:Key="L.StringReverser.ReverseLines">Satırları Ters Çevir</sys:String>
+    <sys:String x:Key="L.StringReverser.ReverseLinesContent">Satır + İçerik Ters</sys:String>
+    <sys:String x:Key="L.StringReverser.Swap">TAKAS</sys:String>
+    <sys:String x:Key="L.StringReverser.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.StringReverser.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.StringReverser.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.StringReverser.InputAutomationName">Ters çevrilecek metin</sys:String>
+    <sys:String x:Key="L.StringReverser.OutputAutomationName">Ters çevrilmiş sonuç</sys:String>
+    <sys:String x:Key="L.StringReverser.Limits">Maks uzunluk: {0} karakter.</sys:String>
+
+    <sys:String x:Key="L.StringReverser.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.StringReverser.Status.Reversed">{1} karakter {0} ile ters çevrildi.</sys:String>
+    <sys:String x:Key="L.StringReverser.Status.Copied">Çıktı panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.StringReverser.Status.Saved">Çıktı dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.StringReverser.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.StringReverser.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.StringReverser.Status.Swapped">Giriş ve çıkış takas edildi.</sys:String>
+
+    <sys:String x:Key="L.StringReverser.Validation.EmptyInput">Lütfen ters çevrilecek metni girin.</sys:String>
+    <sys:String x:Key="L.StringReverser.Validation.NothingToCopy">Kopyalanacak çıktı yok.</sys:String>
+    <sys:String x:Key="L.StringReverser.Validation.NothingToSave">Kaydedilecek çıktı yok.</sys:String>
+
+    <sys:String x:Key="L.StringReverser.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
+    <sys:String x:Key="L.StringReverser.Error.InvalidUnicode">Metin geçersiz bir Unicode karakteri içeriyor (eşleşmemiş surrogate).</sys:String>
+    <sys:String x:Key="L.StringReverser.Error.UnknownMode">Bilinmeyen ters çevirme modu.</sys:String>
+
+
 </ResourceDictionary>
