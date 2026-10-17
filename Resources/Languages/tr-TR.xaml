@@ -959,7 +959,45 @@
     <sys:String x:Key="L.JsonFormatter.Error.InvalidJson">Geçersiz JSON. Söz dizimini kontrol edip tekrar deneyin.</sys:String>
     <sys:String x:Key="L.JsonFormatter.Error.DepthTooLarge">JSON yapısı maksimum derinliği aşıyor.</sys:String>
     <sys:String x:Key="L.JsonFormatter.Error.InvalidIndent">Girinti boyutu aralık dışında (1–8).</sys:String>
+    <!-- ============ JWT Decoder ============ -->
+    <sys:String x:Key="L.Jwt.Title">JWT ÇÖZÜCÜ</sys:String>
+    <sys:String x:Key="L.Jwt.InputLabel">Kodlanmış JWT Dizesi</sys:String>
+    <sys:String x:Key="L.Jwt.HeaderLabel">Başlık (Header)</sys:String>
+    <sys:String x:Key="L.Jwt.PayloadLabel">Yük (Payload)</sys:String>
+    <sys:String x:Key="L.Jwt.Decode">ÇÖZ</sys:String>
+    <sys:String x:Key="L.Jwt.CopyHeader">BAŞLIĞI KOPYALA</sys:String>
+    <sys:String x:Key="L.Jwt.CopyPayload">YÜKÜ KOPYALA</sys:String>
+    <sys:String x:Key="L.Jwt.Save">YÜKÜ KAYDET</sys:String>
+    <sys:String x:Key="L.Jwt.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Jwt.Algorithm">Algoritma:</sys:String>
+    <sys:String x:Key="L.Jwt.Type">Tür:</sys:String>
+    <sys:String x:Key="L.Jwt.Expires">Bitiş:</sys:String>
+    <sys:String x:Key="L.Jwt.InputAutomationName">JWT token girişi</sys:String>
+    <sys:String x:Key="L.Jwt.HeaderAutomationName">Çözülmüş JWT başlığı</sys:String>
+    <sys:String x:Key="L.Jwt.PayloadAutomationName">Çözülmüş JWT yükü</sys:String>
+    <sys:String x:Key="L.Jwt.Limits">Maks token uzunluğu: {0} karakter. Bu araç yalnızca çözer — imzayı DOĞRULAMAZ.</sys:String>
 
+    <sys:String x:Key="L.Jwt.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Jwt.Status.Decoded">✓ Çözüldü · alg: {0} · typ: {1}</sys:String>
+    <sys:String x:Key="L.Jwt.Status.PayloadCopied">Yük panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Jwt.Status.HeaderCopied">Başlık panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Jwt.Status.Saved">Yük dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.Jwt.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.Jwt.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.Jwt.Expiry.Expired">⚠ SÜRESİ DOLMUŞ</sys:String>
+    <sys:String x:Key="L.Jwt.Expiry.Valid">✓ {0}s {1}dk geçerli</sys:String>
+    <sys:String x:Key="L.Jwt.Expiry.NoExp">Bitiş tarihi yok</sys:String>
+
+    <sys:String x:Key="L.Jwt.Validation.EmptyInput">Lütfen bir JWT token girin.</sys:String>
+    <sys:String x:Key="L.Jwt.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.Jwt.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
+
+    <sys:String x:Key="L.Jwt.Error.EmptyInput">JWT token boş.</sys:String>
+    <sys:String x:Key="L.Jwt.Error.TokenTooLarge">Token çok büyük. Sınır 100 KB'tır.</sys:String>
+    <sys:String x:Key="L.Jwt.Error.InvalidFormat">Geçersiz JWT formatı. Bir JWT 2 veya 3 noktayla ayrılmış parça içermelidir.</sys:String>
+    <sys:String x:Key="L.Jwt.Error.InvalidBase64">JWT parçalarından biri geçerli Base64Url değil.</sys:String>
+    <sys:String x:Key="L.Jwt.Error.InvalidJson">JWT parçalarından biri geçerli JSON değil.</sys:String>
 
 
 </ResourceDictionary>

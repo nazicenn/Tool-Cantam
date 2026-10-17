@@ -958,6 +958,46 @@
     <sys:String x:Key="L.JsonFormatter.Error.InvalidJson">Invalid JSON. Check the syntax and try again.</sys:String>
     <sys:String x:Key="L.JsonFormatter.Error.DepthTooLarge">JSON structure exceeds the maximum depth.</sys:String>
     <sys:String x:Key="L.JsonFormatter.Error.InvalidIndent">Indent size is out of range (1–8).</sys:String>
+    <!-- ============ JWT Decoder ============ -->
+    <sys:String x:Key="L.Jwt.Title">JWT DECODER</sys:String>
+    <sys:String x:Key="L.Jwt.InputLabel">Encoded JWT String</sys:String>
+    <sys:String x:Key="L.Jwt.HeaderLabel">Header</sys:String>
+    <sys:String x:Key="L.Jwt.PayloadLabel">Payload</sys:String>
+    <sys:String x:Key="L.Jwt.Decode">DECODE</sys:String>
+    <sys:String x:Key="L.Jwt.CopyHeader">COPY HEADER</sys:String>
+    <sys:String x:Key="L.Jwt.CopyPayload">COPY PAYLOAD</sys:String>
+    <sys:String x:Key="L.Jwt.Save">SAVE PAYLOAD</sys:String>
+    <sys:String x:Key="L.Jwt.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.Jwt.Algorithm">Algorithm:</sys:String>
+    <sys:String x:Key="L.Jwt.Type">Type:</sys:String>
+    <sys:String x:Key="L.Jwt.Expires">Expires:</sys:String>
+    <sys:String x:Key="L.Jwt.InputAutomationName">JWT token input</sys:String>
+    <sys:String x:Key="L.Jwt.HeaderAutomationName">Decoded JWT header</sys:String>
+    <sys:String x:Key="L.Jwt.PayloadAutomationName">Decoded JWT payload</sys:String>
+    <sys:String x:Key="L.Jwt.Limits">Max token length: {0} characters. This tool decodes only — it does NOT verify signatures.</sys:String>
+
+    <sys:String x:Key="L.Jwt.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Jwt.Status.Decoded">✓ Decoded · alg: {0} · typ: {1}</sys:String>
+    <sys:String x:Key="L.Jwt.Status.PayloadCopied">Payload copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Jwt.Status.HeaderCopied">Header copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Jwt.Status.Saved">Payload saved to file.</sys:String>
+    <sys:String x:Key="L.Jwt.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.Jwt.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.Jwt.Expiry.Expired">⚠ EXPIRED</sys:String>
+    <sys:String x:Key="L.Jwt.Expiry.Valid">✓ Valid for {0}h {1}m</sys:String>
+    <sys:String x:Key="L.Jwt.Expiry.NoExp">No expiration claim</sys:String>
+
+    <sys:String x:Key="L.Jwt.Validation.EmptyInput">Please enter a JWT token.</sys:String>
+    <sys:String x:Key="L.Jwt.Validation.NothingToCopy">There is nothing to copy.</sys:String>
+    <sys:String x:Key="L.Jwt.Validation.NothingToSave">There is nothing to save.</sys:String>
+
+    <sys:String x:Key="L.Jwt.Error.EmptyInput">JWT token is empty.</sys:String>
+    <sys:String x:Key="L.Jwt.Error.TokenTooLarge">Token is too large. The limit is 100 KB.</sys:String>
+    <sys:String x:Key="L.Jwt.Error.InvalidFormat">Invalid JWT format. A JWT must have 2 or 3 parts separated by dots.</sys:String>
+    <sys:String x:Key="L.Jwt.Error.InvalidBase64">A JWT segment is not valid Base64Url.</sys:String>
+    <sys:String x:Key="L.Jwt.Error.InvalidJson">A JWT segment is not valid JSON.</sys:String>
+
 
 
 </ResourceDictionary>

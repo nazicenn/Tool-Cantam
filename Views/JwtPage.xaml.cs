@@ -5,17 +5,20 @@ namespace tool_cantam.Views;
 public partial class JwtPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.JwtViewModel>
 {
     public ViewModels.JwtViewModel ViewModel { get; }
-    
+
     public JwtPage(ViewModels.JwtViewModel viewModel)
     {
         ViewModel = viewModel;
-        DataContext = this;
         InitializeComponent();
+        DataContext = this;
+
+        ViewModel.RequestInputFocus += FocusInput;
     }
 
-    private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+    private void FocusInput()
     {
-
+        if (!IsLoaded) return;
+        InputTextBox.Focus();
+        InputTextBox.SelectAll();
     }
 }
-
