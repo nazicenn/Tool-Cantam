@@ -199,4 +199,43 @@
     <sys:String x:Key="L.Html.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
     <sys:String x:Key="L.Html.Error.OutputTooLarge">The decoded result would be too large. The limit is 10 MB.</sys:String>
 
+    <!-- ============ Binary Encoder / Decoder ============ -->
+    <sys:String x:Key="L.Binary.Title">BINARY ENCODER / DECODER</sys:String>
+    <sys:String x:Key="L.Binary.Format">Output format</sys:String>
+    <sys:String x:Key="L.Binary.Format.Compact">Compact (0100100001101001)</sys:String>
+    <sys:String x:Key="L.Binary.Format.Spaced">Spaced per byte (01001000 01101001)</sys:String>
+    <sys:String x:Key="L.Binary.FormatHelp">The format only affects encoding. Decoding accepts spaces, underscores and 0b prefixes.</sys:String>
+    <sys:String x:Key="L.Binary.BytePrefix">Prefix every byte with 0b</sys:String>
+    <sys:String x:Key="L.Binary.BytePrefixHelp">Writes 0b01001000 instead of 01001000. Useful when pasting into source code.</sys:String>
+    <sys:String x:Key="L.Binary.Encode">ENCODE</sys:String>
+    <sys:String x:Key="L.Binary.Decode">DECODE</sys:String>
+    <sys:String x:Key="L.Binary.Copy">COPY</sys:String>
+    <sys:String x:Key="L.Binary.Save">SAVE</sys:String>
+    <sys:String x:Key="L.Binary.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.Binary.Swap">SWAP</sys:String>
+    <sys:String x:Key="L.Binary.SwapHelp">Swap input and output</sys:String>
+    <sys:String x:Key="L.Binary.Hint">A bit count that is not a multiple of 8 is an error, not silently dropped data.</sys:String>
+    <sys:String x:Key="L.Binary.InputAutomationName">Text or binary payload</sys:String>
+    <sys:String x:Key="L.Binary.OutputAutomationName">Conversion result</sys:String>
+
+    <sys:String x:Key="L.Binary.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Binary.Status.Encoded">Encoded: {0} character(s) to {1} bit character(s).</sys:String>
+    <sys:String x:Key="L.Binary.Status.Decoded">Decoded: {0} character(s).</sys:String>
+    <sys:String x:Key="L.Binary.Status.Copied">Output copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Binary.Status.Saved">Output saved to file.</sys:String>
+    <sys:String x:Key="L.Binary.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.Binary.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.Binary.Status.Swapped">Input and output swapped.</sys:String>
+
+    <sys:String x:Key="L.Binary.Validation.EmptyInput">Please enter text or binary data to convert.</sys:String>
+    <sys:String x:Key="L.Binary.Validation.NothingToCopy">There is no output to copy.</sys:String>
+    <sys:String x:Key="L.Binary.Validation.NothingToSave">There is no output to save.</sys:String>
+
+    <sys:String x:Key="L.Binary.Error.InvalidDigit">Invalid binary input: only 0 and 1 are allowed (spaces, underscores and 0b prefixes are ignored).</sys:String>
+    <sys:String x:Key="L.Binary.Error.OddBitCount">Invalid binary input: the bit count is not a multiple of 8, so the last byte is incomplete.</sys:String>
+    <sys:String x:Key="L.Binary.Error.NotUtf8">The binary payload does not form valid UTF-8 text.</sys:String>
+    <sys:String x:Key="L.Binary.Error.InvalidUnicode">The text contains an invalid Unicode character (unpaired surrogate).</sys:String>
+    <sys:String x:Key="L.Binary.Error.InputTooLarge">Input is too large. The binary representation is limited to 10 million characters.</sys:String>
+    <sys:String x:Key="L.Binary.Error.OutputTooLarge">The decoded result would be too large. The limit is 10 MB.</sys:String>
+
 </ResourceDictionary>

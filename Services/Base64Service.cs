@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using tool_cantam.Core.Enums;
 using tool_cantam.Core.Models;
+using tool_cantam.Core.Text;
 using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.Services;
@@ -21,9 +22,6 @@ public sealed class Base64Service : IBase64Service
     public const int MaxTextBytesLimit = 10 * 1024 * 1024;
 
     private const int StreamBufferSize = 81920;
-
-    /// <summary>Geçersiz bayt dizilerini sessizce değiştirmek yerine hata veren UTF-8 kod çözücü.</summary>
-    private static readonly UTF8Encoding StrictUtf8 = new(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true);
 
     public int MaxTextBytes => MaxTextBytesLimit;
 
@@ -84,7 +82,7 @@ public sealed class Base64Service : IBase64Service
 
         try
         {
-            return ToolResult<string>.Ok(StrictUtf8.GetString(decoded));
+            return ToolResult<string>.Ok(TextEncodings.StrictUtf8.GetString(decoded));
         }
         catch (DecoderFallbackException ex)
         {

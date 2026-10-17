@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="tool_cantam.Views.BinaryEncoderPage"
+<UserControl x:Class="tool_cantam.Views.BinaryEncoderPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -7,86 +7,173 @@
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="BINARY ENCODER / DECODER" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.Binary.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <Grid Grid.Row="1">
-            <Grid Grid.Column="0" Margin="0,0,0,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+        <!-- Gösterim seçenekleri: yalnızca kodlamayı etkiler, çözme tüm biçimleri kabul eder -->
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,0,0,15">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{DynamicResource L.Binary.Format}"
+                           Style="{StaticResource LabelPrimary}"
+                           VerticalAlignment="Center"
+                           Margin="0,0,10,0"/>
+                <ComboBox ItemsSource="{Binding ViewModel.Formats}"
+                          SelectedItem="{Binding ViewModel.SelectedFormat}"
+                          DisplayMemberPath="DisplayName"
+                          Width="220"
+                          Margin="0,0,20,0"
+                          TabIndex="0"
+                          AutomationProperties.HelpText="{DynamicResource L.Binary.FormatHelp}"/>
+                <CheckBox Content="{DynamicResource L.Binary.BytePrefix}"
+                          IsChecked="{Binding ViewModel.IncludeBytePrefix}"
+                          Foreground="{StaticResource TextPrimaryBrush}"
+                          VerticalAlignment="Center"
+                          TabIndex="1"
+                          AutomationProperties.HelpText="{DynamicResource L.Binary.BytePrefixHelp}"/>
+            </StackPanel>
+        </Border>
 
-                <TextBlock Grid.Row="0" Text="Input Text" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-                <TextBox Grid.Row="1" 
-                         Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" 
-                         AcceptsReturn="True" 
-                         TextWrapping="Wrap" 
-                         Margin="0,0,0,12"
-                         VerticalAlignment="Stretch" 
-                         MinHeight="120"
-                         VerticalScrollBarVisibility="Auto"
-                         Foreground="{StaticResource TextPrimaryBrush}"
-                         BorderBrush="{StaticResource BorderDefaultBrush}"/>
+            <TextBlock Grid.Row="0" Text="{DynamicResource L.Input}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
 
-                <TextBlock Grid.Row="2" Text="Output Result" Style="{StaticResource LabelPrimary}" Margin="0,0,0,5"/>
+            <TextBox Grid.Row="1"
+                     x:Name="InputTextBox"
+                     Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     Margin="0,0,0,12"
+                     VerticalAlignment="Stretch"
+                     MinHeight="120"
+                     VerticalScrollBarVisibility="Auto"
+                     TabIndex="2"
+                     Foreground="{StaticResource TextPrimaryBrush}"
+                     BorderBrush="{StaticResource BorderDefaultBrush}"
+                     AutomationProperties.Name="{DynamicResource L.Binary.InputAutomationName}"/>
 
-                <TextBox Grid.Row="3" 
-                         Text="{Binding OutputText, Mode=OneWay}" 
-                         IsReadOnly="True" 
-                         TextWrapping="Wrap" 
-                         Margin="0,0,0,12"
-                         VerticalAlignment="Stretch" 
-                         MinHeight="120"
-                         VerticalScrollBarVisibility="Auto"
-                         Foreground="{StaticResource AccentPrimaryBrush}"
-                         BorderBrush="{StaticResource BorderDefaultBrush}"/>
-
-                <UniformGrid Grid.Row="4" Columns="4">
-                    <Button Content="ENCODE" Command="{Binding EncodeCommand}" 
-                            Height="34" Margin="0,0,5,0"
-                            Background="{StaticResource GreenBrush}" 
-                            Foreground="{StaticResource TextPrimaryBrush}"
-                            FontWeight="Bold"
-                            Style="{StaticResource ModernButton}"/>
-                    <Button Content="DECODE" Command="{Binding DecodeCommand}" 
-                            Height="34" Margin="5,0,5,0"
-                            Background="{StaticResource GreenBrush}" 
-                            Foreground="{StaticResource TextPrimaryBrush}"
-                            FontWeight="Bold"
-                            Style="{StaticResource ModernButton}"/>
-                    <Button Content="COPY" Command="{Binding CopyOutputCommand}" 
-                            Height="34" Margin="5,0,5,0"
-                            Background="{StaticResource StatusWarningBrush}" 
-                            Foreground="{StaticResource TextPrimaryBrush}"
-                            FontWeight="Bold"
-                            Style="{StaticResource ModernButton}"/>
-                    <Button Content="CLEAR" Command="{Binding ClearCommand}" 
-                            Height="34" Margin="5,0,0,0"
-                            Background="{StaticResource RedBrush}" 
-                            Foreground="{StaticResource TextPrimaryBrush}"
-                            FontWeight="Bold"
-                            Style="{StaticResource ModernButton}"/>
-                </UniformGrid>
+            <Grid Grid.Row="2" Margin="0,0,0,5">
+                <TextBlock Text="{DynamicResource L.Output}" Style="{StaticResource LabelPrimary}" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="{DynamicResource L.Binary.Copy}"
+                            Command="{Binding ViewModel.CopyOutputCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"
+                            Height="26" FontSize="10" Padding="12,0"
+                            Margin="0,0,6,0"
+                            TabIndex="7"/>
+                    <Button Content="{DynamicResource L.Binary.Save}"
+                            Command="{Binding ViewModel.SaveOutputCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource AccentPrimaryBrush}"
+                            Height="26" FontSize="10" Padding="12,0"
+                            TabIndex="8"/>
+                </StackPanel>
             </Grid>
+
+            <TextBox Grid.Row="3"
+                     Text="{Binding ViewModel.OutputText, Mode=OneWay}"
+                     IsReadOnly="True"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     Margin="0,0,0,12"
+                     VerticalAlignment="Stretch"
+                     MinHeight="120"
+                     VerticalScrollBarVisibility="Auto"
+                     TabIndex="3"
+                     Foreground="{StaticResource AccentPrimaryBrush}"
+                     BorderBrush="{StaticResource BorderDefaultBrush}"
+                     AutomationProperties.Name="{DynamicResource L.Binary.OutputAutomationName}"/>
+
+            <UniformGrid Grid.Row="4" Columns="5">
+                <Button Content="{DynamicResource L.Binary.Encode}"
+                        Command="{Binding ViewModel.EncodeCommand}"
+                        Height="34" Margin="0,0,5,0"
+                        TabIndex="4"
+                        Background="{StaticResource GreenBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        Style="{StaticResource ModernButton}"/>
+                <Button Content="{DynamicResource L.Binary.Decode}"
+                        Command="{Binding ViewModel.DecodeCommand}"
+                        Height="34" Margin="5,0,5,0"
+                        TabIndex="5"
+                        Background="{StaticResource GreenBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        Style="{StaticResource ModernButton}"/>
+                <Button Content="{DynamicResource L.Binary.Swap}"
+                        Command="{Binding ViewModel.SwapCommand}"
+                        Height="34" Margin="5,0,5,0"
+                        TabIndex="6"
+                        ToolTip="{DynamicResource L.Binary.SwapHelp}"
+                        Background="{StaticResource BorderDefaultBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        Style="{StaticResource ModernButton}"/>
+                <Button Content="{DynamicResource L.Binary.Clear}"
+                        Command="{Binding ViewModel.ClearCommand}"
+                        Height="34" Margin="5,0,5,0"
+                        TabIndex="9"
+                        Background="{StaticResource RedBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        Style="{StaticResource ModernButton}"/>
+                <Button Content="{DynamicResource L.Common.Cancel}"
+                        Command="{Binding ViewModel.EncodeCancelCommand}"
+                        Height="34" Margin="5,0,0,0"
+                        TabIndex="10"
+                        Background="{StaticResource StatusDangerBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        Style="{StaticResource ModernButton}"
+                        Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </UniformGrid>
         </Grid>
 
-        <!-- STATUS TEXT (ALTTA) -->
-        <TextBlock Grid.Row="2" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,15,0,0"/>
+        <!-- DURUM SATIRI -->
+        <Border Grid.Row="3"
+                Style="{StaticResource OptionsPanel}"
+                Padding="12"
+                Margin="0,15,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ui:ProgressRing Grid.Column="0"
+                                 IsIndeterminate="True"
+                                 Width="16" Height="16"
+                                 Margin="0,0,8,0"
+                                 Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ViewModel.StatusText}"
+                           Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                           FontSize="11"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"
+                           AutomationProperties.LiveSetting="Polite"/>
+
+                <TextBlock Grid.Column="2"
+                           Text="{DynamicResource L.Binary.Hint}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           VerticalAlignment="Center"
+                           Opacity="0.6"
+                           TextWrapping="Wrap"
+                           MaxWidth="420"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

@@ -18,9 +18,6 @@ public sealed class UrlService : IUrlService
 {
     public const int MaxTextLengthLimit = 10 * 1024 * 1024;
 
-    /// <summary>Geçersiz bayt dizilerini sessizce değiştirmek yerine hata veren UTF-8 kod çözücü.</summary>
-    private static readonly UTF8Encoding StrictUtf8 = new(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true);
-
     public int MaxTextLength => MaxTextLengthLimit;
 
     public ToolResult<string> Encode(string? text, UrlEncodingMode mode = UrlEncodingMode.Component)
@@ -182,7 +179,7 @@ public sealed class UrlService : IUrlService
 
         try
         {
-            return ToolResult<string>.Ok(StrictUtf8.GetString(bytes.ToArray()));
+            return ToolResult<string>.Ok(TextEncodings.StrictUtf8.GetString(bytes.ToArray()));
         }
         catch (DecoderFallbackException ex)
         {

@@ -27,12 +27,13 @@ Ek kurallar:
 - Kültürden bağımsız çıktı: `InvariantCulture`, gerekirse kullanıcı yereli ayrıca kabul edilir.
 - Yerelleştirme dosyaları (`en-US.xaml`, `tr-TR.xaml`) anahtar kümesi bakımından **birebir** olmalıdır; testle doğrulanır.
 - Ölü kod bırakılmaz: kullanılmayan sözleşme, alan veya delege silinir.
+- Tekrar eden metin yardımcıları tek yerde tutulur: `Core/Text/HexDigits`, `TextEncodings`, `TextValidation`, `HtmlEntities`.
 
 ## Faz 0 — Ortak omurga durumu
 
 | Bileşen | Durum |
 |---|---|
-| Test projesi (xunit v3 + Microsoft.Testing.Platform, `tests/tool-cantam.Tests`) | ✅ 359 test geçiyor |
+| Test projesi (xunit v3 + Microsoft.Testing.Platform, `tests/tool-cantam.Tests`) | ✅ 416 test geçiyor |
 | Sonuç/hata modeli (`ToolResult<T>`, `ToolErrorKind`) | ✅ |
 | Yerelleştirme altyapısı (`ILocalizerService`, dil kodu eşlemesi, anahtar parite testi) | ✅ (dil değiştirme hatası düzeltildi) |
 | Yerelleştirme anahtarı denetimi (görünüm ve ViewModel'lerde kullanılan anahtarlar) | ✅ testle korunuyor |
@@ -51,7 +52,7 @@ Sıra, uygulamadaki araç listesiyle (kayıt sırası) aynıdır; işaretlenen a
 | 2 | URL Encoder/Decoder | ✅ tamam |
 | 3 | Hex Encoder/Decoder | ✅ tamam |
 | 4 | HTML Encoder/Decoder | ✅ tamam |
-| 5 | Binary Encoder/Decoder | ⬜ |
+| 5 | Binary Encoder/Decoder | ✅ tamam |
 | 6 | ROT13 Cipher | ⬜ |
 | 7 | ASCII Converter | ⬜ |
 | 8 | Unicode Converter | ⬜ |

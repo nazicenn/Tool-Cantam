@@ -199,4 +199,43 @@
     <sys:String x:Key="L.Html.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
     <sys:String x:Key="L.Html.Error.OutputTooLarge">Çözülecek sonuç çok büyük. Sınır 10 MB'tır.</sys:String>
 
+    <!-- ============ İkili (Binary) Kodlayıcı / Çözücü ============ -->
+    <sys:String x:Key="L.Binary.Title">İKİLİ (BINARY) KODLAYICI / ÇÖZÜCÜ</sys:String>
+    <sys:String x:Key="L.Binary.Format">Çıktı biçimi</sys:String>
+    <sys:String x:Key="L.Binary.Format.Compact">Bitişik (0100100001101001)</sys:String>
+    <sys:String x:Key="L.Binary.Format.Spaced">Bayt başına boşluklu (01001000 01101001)</sys:String>
+    <sys:String x:Key="L.Binary.FormatHelp">Biçim yalnızca kodlamayı etkiler. Çözme; boşluk, alt çizgi ve 0b öneklerini kabul eder.</sys:String>
+    <sys:String x:Key="L.Binary.BytePrefix">Her baytın başına 0b ekle</sys:String>
+    <sys:String x:Key="L.Binary.BytePrefixHelp">01001000 yerine 0b01001000 yazar. Kaynak koda yapıştırırken kullanışlıdır.</sys:String>
+    <sys:String x:Key="L.Binary.Encode">KODLA</sys:String>
+    <sys:String x:Key="L.Binary.Decode">ÇÖZ</sys:String>
+    <sys:String x:Key="L.Binary.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.Binary.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.Binary.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Binary.Swap">TAKAS</sys:String>
+    <sys:String x:Key="L.Binary.SwapHelp">Giriş ve çıkışı takas et</sys:String>
+    <sys:String x:Key="L.Binary.Hint">8'in katı olmayan bit sayısı hata verir; sessizce atılmış veri üretilmez.</sys:String>
+    <sys:String x:Key="L.Binary.InputAutomationName">Metin veya ikili veri</sys:String>
+    <sys:String x:Key="L.Binary.OutputAutomationName">Dönüşüm sonucu</sys:String>
+
+    <sys:String x:Key="L.Binary.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Binary.Status.Encoded">Kodlandı: {0} karakter, {1} bit karakteri.</sys:String>
+    <sys:String x:Key="L.Binary.Status.Decoded">Çözüldü: {0} karakter.</sys:String>
+    <sys:String x:Key="L.Binary.Status.Copied">Çıktı panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Binary.Status.Saved">Çıktı dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.Binary.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.Binary.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.Binary.Status.Swapped">Giriş ve çıkış takas edildi.</sys:String>
+
+    <sys:String x:Key="L.Binary.Validation.EmptyInput">Lütfen dönüştürülecek metni veya ikili veriyi girin.</sys:String>
+    <sys:String x:Key="L.Binary.Validation.NothingToCopy">Kopyalanacak çıktı yok.</sys:String>
+    <sys:String x:Key="L.Binary.Validation.NothingToSave">Kaydedilecek çıktı yok.</sys:String>
+
+    <sys:String x:Key="L.Binary.Error.InvalidDigit">Geçersiz ikili girdi: yalnızca 0 ve 1 kullanılabilir (boşluk, alt çizgi ve 0b önekleri yok sayılır).</sys:String>
+    <sys:String x:Key="L.Binary.Error.OddBitCount">Geçersiz ikili girdi: bit sayısı 8'in katı değil, bu yüzden son bayt eksik.</sys:String>
+    <sys:String x:Key="L.Binary.Error.NotUtf8">İkili veri geçerli UTF-8 metni oluşturmuyor.</sys:String>
+    <sys:String x:Key="L.Binary.Error.InvalidUnicode">Metin geçersiz bir Unicode karakteri içeriyor (eşleşmemiş surrogate).</sys:String>
+    <sys:String x:Key="L.Binary.Error.InputTooLarge">Girdi çok büyük. İkili gösterim 10 milyon karakterle sınırlıdır.</sys:String>
+    <sys:String x:Key="L.Binary.Error.OutputTooLarge">Çözülecek sonuç çok büyük. Sınır 10 MB'tır.</sys:String>
+
 </ResourceDictionary>

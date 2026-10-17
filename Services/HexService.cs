@@ -18,9 +18,6 @@ public sealed class HexService : IHexService
 {
     public const int MaxTextLengthLimit = 10 * 1024 * 1024;
 
-    /// <summary>Geçersiz bayt dizilerini sessizce değiştirmek yerine hata veren UTF-8 kod çözücü.</summary>
-    private static readonly UTF8Encoding StrictUtf8 = new(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true);
-
     public int MaxTextLength => MaxTextLengthLimit;
 
     public ToolResult<string> Encode(string? text, HexFormat format = HexFormat.Compact, bool uppercase = true)
@@ -37,7 +34,7 @@ public sealed class HexService : IHexService
         }
 
         // Eşleşmemiş surrogate sessizce U+FFFD'ye dönüşmemeli.
-        if (TryFindUnpairedSurrogate(text, out int surrogateIndex))
+        if (TextValidation.TryFindUnpairedSurrogate(text, out int surrogateIndex))
         {
             return ToolResult<string>.Fail(
                 ToolErrorKind.Validation,
@@ -132,7 +129,7 @@ public sealed class HexService : IHexService
 
         try
         {
-            return ToolResult<string>.Ok(StrictUtf8.GetString(bytes.ToArray()));
+            return ToolResult<string>.Ok(TextEncodings.StrictUtf8.GetString(bytes.ToArray()));
         }
         catch (DecoderFallbackException ex)
         {
@@ -158,34 +155,5 @@ public sealed class HexService : IHexService
         }
 
         return builder.ToString();
-    }
-
-    private static bool TryFindUnpairedSurrogate(string text, out int index)
-    {
-        for (int position = 0; position < text.Length; position++)
-        {
-            char character = text[position];
-
-            if (char.IsHighSurrogate(character))
-            {
-                if (position + 1 >= text.Length || !char.IsLowSurrogate(text[position + 1]))
-                {
-                    index = position;
-                    return true;
-                }
-
-                position++;
-                continue;
-            }
-
-            if (char.IsLowSurrogate(character))
-            {
-                index = position;
-                return true;
-            }
-        }
-
-        index = -1;
-        return false;
     }
 }
