@@ -1,18 +1,28 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class SubdomainPage : UserControl
+/// <summary>
+/// Subdomain Scanner sayfası. Adım sayısı ve eşzamanlı sorgu sınırları servis tarafından uygulanır;
+/// sayfa bu sınırları kullanıcıya gösterir ve iptal edilebilir.
+/// </summary>
+public partial class SubdomainPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.SubdomainViewModel>
 {
-    public SubdomainPage(SubdomainViewModel viewModel)
+    public ViewModels.SubdomainViewModel ViewModel { get; }
+
+    public SubdomainPage(ViewModels.SubdomainViewModel viewModel)
     {
+        ViewModel = viewModel;
         InitializeComponent();
-        DataContext = viewModel;
+        DataContext = this;
+
+        ViewModel.RequestTargetFocus += FocusTarget;
     }
 
-    private void SubdomainsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void FocusTarget()
     {
-
+        if (!IsLoaded) return;
+        TargetTextBox.Focus();
+        TargetTextBox.SelectAll();
     }
 }
