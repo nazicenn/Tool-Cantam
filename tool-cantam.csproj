@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
@@ -30,6 +30,15 @@
 		<PackageReference Include="WPF-UI" Version="4.3.0" />
 		<PackageReference Include="YamlDotNet" Version="17.1.0" />
 		<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.14" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Test projesi uygulama derlemesine dahil edilmez (kendi projesi ve derlemesi vardır). -->
+		<Compile Remove="tests\**" />
+		<None Remove="tests\**" />
+		<Content Remove="tests\**" />
+		<Page Remove="tests\**" />
+		<ApplicationDefinition Remove="tests\**" />
 	</ItemGroup>
 
 </Project>

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<IsPackable>false</IsPackable>
+		<RootNamespace>ToolCantam.Tests</RootNamespace>
+		<AssemblyName>tool-cantam.Tests</AssemblyName>
+		<!-- xunit v3 kendi kendini çalıştıran bir uygulamadır; ayrı bir test ana süreci (testhost) gerekmez. -->
+		<OutputType>Exe</OutputType>
+		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="xunit.v3" Version="4.0.1" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\tool-cantam.csproj" />
+	</ItemGroup>
+
+</Project>

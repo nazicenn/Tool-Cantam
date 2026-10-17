@@ -1,9 +1,11 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
 VisualStudioVersion = 18.5.11716.220 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tool-cantam", "tool-cantam.csproj", "{9BC4A128-462D-BC53-E985-0340AA3ED141}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tool-cantam.Tests", "tests\tool-cantam.Tests\tool-cantam.Tests.csproj", "{7F3A2C91-5D64-4E18-9B27-1C8E5A4D6B30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{9BC4A128-462D-BC53-E985-0340AA3ED141}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BC4A128-462D-BC53-E985-0340AA3ED141}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BC4A128-462D-BC53-E985-0340AA3ED141}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F3A2C91-5D64-4E18-9B27-1C8E5A4D6B30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F3A2C91-5D64-4E18-9B27-1C8E5A4D6B30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F3A2C91-5D64-4E18-9B27-1C8E5A4D6B30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F3A2C91-5D64-4E18-9B27-1C8E5A4D6B30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
