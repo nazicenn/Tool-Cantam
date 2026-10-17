@@ -128,11 +128,10 @@ public static class ToolDefinitions
         ToolRegistry.Register(new ToolDefinition
         {
             Name = "Port Scanner",
-            Description = "TCP port scanning tool",
+            Description = "TCP connect scan with per-port timeouts, progress, cancellation and service names",
             Category = ToolCategory.NetworkScanner,
             ViewModelType = typeof(PortScannerViewModel),
-            ViewType = typeof(PortScannerPage),
-            Execute = async (input) => "Port scanning results"
+            ViewType = typeof(PortScannerPage)
         });
 
         ToolRegistry.Register(new ToolDefinition
