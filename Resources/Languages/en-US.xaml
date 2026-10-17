@@ -775,7 +775,56 @@
     <sys:String x:Key="L.SslChecker.Error.ConnectionFailed">Could not connect to the server on port 443.</sys:String>
     <sys:String x:Key="L.SslChecker.Error.Timeout">Connection timed out. Try again.</sys:String>
     <sys:String x:Key="L.SslChecker.Error.NoCertificate">The server did not present a certificate.</sys:String>
-    
+    <!-- ============ Ping Test ============ -->
+    <sys:String x:Key="L.Ping.Title">PING TEST</sys:String>
+    <sys:String x:Key="L.Ping.Target">Host</sys:String>
+    <sys:String x:Key="L.Ping.Count">Count</sys:String>
+    <sys:String x:Key="L.Ping.Timeout">Timeout</sys:String>
+    <sys:String x:Key="L.Ping.Start">PING</sys:String>
+    <sys:String x:Key="L.Ping.Copy">COPY</sys:String>
+    <sys:String x:Key="L.Ping.Save">SAVE</sys:String>
+    <sys:String x:Key="L.Ping.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.Ping.Results">Ping results</sys:String>
+    <sys:String x:Key="L.Ping.Sent">Sent</sys:String>
+    <sys:String x:Key="L.Ping.Received">Received</sys:String>
+    <sys:String x:Key="L.Ping.Lost">Lost</sys:String>
+    <sys:String x:Key="L.Ping.PacketLoss">Loss</sys:String>
+    <sys:String x:Key="L.Ping.MinAvgMax">Min/Avg/Max</sys:String>
+    <sys:String x:Key="L.Ping.Progress">Progress</sys:String>
+    <sys:String x:Key="L.Ping.Column.Target">Target</sys:String>
+    <sys:String x:Key="L.Ping.Column.Sent">Sent</sys:String>
+    <sys:String x:Key="L.Ping.Column.Received">Received</sys:String>
+    <sys:String x:Key="L.Ping.Column.Lost">Lost</sys:String>
+    <sys:String x:Key="L.Ping.Column.Min">Min</sys:String>
+    <sys:String x:Key="L.Ping.Column.Max">Max</sys:String>
+    <sys:String x:Key="L.Ping.Column.Avg">Avg</sys:String>
+    <sys:String x:Key="L.Ping.Column.Sequence">#</sys:String>
+    <sys:String x:Key="L.Ping.Column.Status">Status</sys:String>
+    <sys:String x:Key="L.Ping.Column.Rtt">RTT</sys:String>
+    <sys:String x:Key="L.Ping.Column.Address">Address</sys:String>
+    <sys:String x:Key="L.Ping.TargetAutomationName">Host to ping</sys:String>
+    <sys:String x:Key="L.Ping.Limits">Max count: {0}. Timeout: {1}–{2} ms. Requires ICMP access.</sys:String>
+
+    <sys:String x:Key="L.Ping.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Ping.Status.Pinging">Pinging {0} ({1} packets)...</sys:String>
+    <sys:String x:Key="L.Ping.Status.Finished">✓ {0}/{1} replies received.</sys:String>
+    <sys:String x:Key="L.Ping.Status.NoReply">⚠ No reply from any of {0} packets.</sys:String>
+    <sys:String x:Key="L.Ping.Status.Summary">{0} · {1} sent · {2} received · {3} lost ({4}%) · min/avg/max = {5}/{7}/{6} ms · {8:0.0}s</sys:String>
+    <sys:String x:Key="L.Ping.Status.Copied">Result copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Ping.Status.Saved">Result saved to file.</sys:String>
+    <sys:String x:Key="L.Ping.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.Ping.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.Ping.Validation.InvalidTarget">Please enter a valid hostname or IP address.</sys:String>
+    <sys:String x:Key="L.Ping.Validation.NothingToCopy">There is no result to copy.</sys:String>
+    <sys:String x:Key="L.Ping.Validation.NothingToSave">There is no result to save.</sys:String>
+
+    <sys:String x:Key="L.Ping.Error.InvalidTarget">Invalid target: enter a hostname or IP address.</sys:String>
+    <sys:String x:Key="L.Ping.Error.TargetNotFound">The target could not be resolved.</sys:String>
+    <sys:String x:Key="L.Ping.Error.InvalidCount">Packet count is out of range.</sys:String>
+    <sys:String x:Key="L.Ping.Error.InvalidTimeout">Timeout is out of range.</sys:String>
+    <sys:String x:Key="L.Ping.Error.NoReply">No ICMP reply was received. The host may be down or blocking ICMP.</sys:String>
+    <sys:String x:Key="L.Ping.Error.IcmpBlocked">ICMP is blocked by the system. Run the application as administrator or check your firewall settings.</sys:String>
 
 
 </ResourceDictionary>

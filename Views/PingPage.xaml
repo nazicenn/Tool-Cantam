@@ -7,158 +7,203 @@
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="PING TEST" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.Ping.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <Border Grid.Row="1" 
-                Padding="20">
-
+        <!-- Hedef ve ayarlar -->
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,0,0,10">
             <StackPanel>
-                <!-- Target Host -->
-                <TextBlock Text="Hostname or IP" 
-                           Style="{StaticResource LabelPrimary}" 
-                           Margin="0,0,0,8"/>
-                <TextBox Text="{Binding TargetHost, UpdateSourceTrigger=PropertyChanged}"
-                         ToolTip="e.g., google.com or 8.8.8.8"
-                         Margin="0,0,0,15"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{DynamicResource L.Ping.Target}"
+                               Style="{StaticResource LabelPrimary}"
+                               VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox x:Name="TargetTextBox"
+                             Text="{Binding ViewModel.TargetHost, UpdateSourceTrigger=PropertyChanged}"
+                             Width="240" Height="32" VerticalContentAlignment="Center"
+                             FontFamily="{StaticResource MonoFont}"
+                             Margin="0,0,15,0" TabIndex="0"
+                             AutomationProperties.Name="{DynamicResource L.Ping.TargetAutomationName}"/>
 
-                <!-- Count and Timeout -->
-                <Grid Margin="0,0,0,15">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                        <TextBlock Text="Packets" Style="{StaticResource LabelSecondary}" FontSize="11"/>
-                        <TextBox Text="{Binding Count}" />
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                        <TextBlock Text="Timeout (ms)" Style="{StaticResource LabelSecondary}" FontSize="11"/>
-                        <TextBox Text="{Binding TimeoutMs}" />
-                    </StackPanel>
-                </Grid>
+                    <TextBlock Text="{DynamicResource L.Ping.Count}"
+                               Style="{StaticResource LabelPrimary}"
+                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <TextBox Text="{Binding ViewModel.Count, UpdateSourceTrigger=PropertyChanged}"
+                             Width="60" Height="32" VerticalContentAlignment="Center"
+                             FontFamily="{StaticResource MonoFont}"
+                             Margin="0,0,15,0" TabIndex="1"/>
 
-                <!-- Action Buttons -->
-                <UniformGrid Columns="2" Margin="0,0,0,15">
-                    <Button Command="{Binding StartPingCommand}" 
-                            Content="START PING"
-                            Height="36" 
-                            Margin="0,0,5,0"
-                            IsEnabled="{Binding IsPinging, Converter={StaticResource InverseBooleanConverter}}"
+                    <TextBlock Text="{DynamicResource L.Ping.Timeout}"
+                               Style="{StaticResource LabelPrimary}"
+                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <TextBox Text="{Binding ViewModel.TimeoutMs, UpdateSourceTrigger=PropertyChanged}"
+                             Width="80" Height="32" VerticalContentAlignment="Center"
+                             FontFamily="{StaticResource MonoFont}"
+                             Margin="0,0,15,0" TabIndex="2"/>
+
+                    <Button Content="{DynamicResource L.Ping.Start}"
+                            Command="{Binding ViewModel.PingCommand}"
                             Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
-                    <Button Command="{Binding CancelPingCommand}" 
-                            Content="CANCEL"
-                            Height="36" 
-                            Margin="5,0,0,0"
-                            IsEnabled="{Binding IsPinging}"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource RedBrush}"/>
-                </UniformGrid>
-
-                <!-- Progress -->
-                <StackPanel Margin="0,0,0,15"
-                            Visibility="{Binding IsPinging, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <ProgressBar IsIndeterminate="True" 
-                                 Height="4"
-                                 Foreground="{StaticResource GreenBrush}"
-                                 Background="{StaticResource BgInputBrush}"/>
-                    <TextBlock Text="{Binding StatusText}" 
-                               Foreground="{StaticResource TextSecondaryBrush}"
-                               FontSize="10"
-                               HorizontalAlignment="Center"
-                               Margin="0,5,0,0"/>
+                            Background="{StaticResource GreenBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="32" MinWidth="100" TabIndex="3"/>
                 </StackPanel>
 
-                <!-- Summary -->
-                <Border Style="{StaticResource OptionsPanel}"
-                        Padding="12"
-                        Margin="0,0,0,15"
-                        Visibility="{Binding SummaryText, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <TextBlock Text="{Binding SummaryText}" 
-                               Foreground="{StaticResource TextPrimaryBrush}"
-                               FontFamily="{StaticResource MonoFont}"
-                               FontSize="12"
-                               TextWrapping="Wrap"/>
-                </Border>
-
-                <!-- Results List -->
-                <Border Style="{StaticResource OptionsPanel}"
-                        Padding="10"
-                        MaxHeight="200">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <ItemsControl ItemsSource="{Binding Results}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border 
-                                            CornerRadius="4"
-                                            Padding="8,5"
-                                            Margin="0,0,0,4">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="40"/>
-                                                <ColumnDefinition Width="80"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" 
-                                                       Text="{Binding Sequence}" 
-                                                       Foreground="{StaticResource TextSecondaryBrush}"
-                                                       FontSize="11"/>
-                                            <TextBlock Grid.Column="1" 
-                                                       Text="{Binding Status}" 
-                                                       Foreground="{Binding RoundtripTime, Converter={StaticResource PingStatusConverter}}"
-                                                       FontWeight="Bold"
-                                                       FontSize="11"/>
-                                            <TextBlock Grid.Column="2" 
-                                                       Text="{Binding RoundtripTime, StringFormat={}{0} ms}" 
-                                                       Foreground="{StaticResource AccentPrimaryBrush}"
-                                                       FontSize="11"
-                                                       Visibility="{Binding RoundtripTime, Converter={StaticResource PositiveNumberToVisibilityConverter}}"/>
-                                            <TextBlock Grid.Column="3" 
-                                                       Text="{Binding Address}" 
-                                                       Foreground="{StaticResource TextPrimaryBrush}"
-                                                       FontSize="10"/>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-                </Border>
-
-                <!-- Bottom Buttons -->
-                <UniformGrid Columns="2" Margin="0,15,0,0">
-                    <Button Command="{Binding CopyResultsCommand}" 
-                            Content="COPY RESULTS"
-                            Height="34" 
-                            Margin="0,0,5,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
-                    <Button Command="{Binding ClearCommand}" 
-                            Content="CLEAR"
-                            Height="34" 
-                            Margin="5,0,0,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource RedBrush}"/>
-                </UniformGrid>
+                <TextBlock Text="{Binding ViewModel.LimitsText}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Opacity="0.6" FontSize="10" Margin="0,10,0,0" TextWrapping="Wrap"/>
             </StackPanel>
         </Border>
 
-        <TextBlock Grid.Row="2" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,15,0,0"/>
+        <!-- Sonuçlar -->
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,5">
+                <TextBlock Text="{DynamicResource L.Ping.Results}" Style="{StaticResource LabelPrimary}" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding ViewModel.SummaryText}"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Center"
+                           TextWrapping="Wrap" MaxWidth="620"/>
+            </Grid>
+
+            <!-- İstatistikler -->
+            <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,0,0,10">
+                <UniformGrid Columns="6">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource L.Ping.Sent}" Style="{StaticResource LabelSecondary}" FontSize="10"/>
+                        <TextBlock Text="{Binding ViewModel.Sent}" Style="{StaticResource LabelPrimary}" FontWeight="Bold"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource L.Ping.Received}" Style="{StaticResource LabelSecondary}" FontSize="10"/>
+                        <TextBlock Text="{Binding ViewModel.Received}" Style="{StaticResource LabelPrimary}" FontWeight="Bold"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource L.Ping.Lost}" Style="{StaticResource LabelSecondary}" FontSize="10"/>
+                        <TextBlock Text="{Binding ViewModel.Lost}" Style="{StaticResource LabelPrimary}" FontWeight="Bold"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource L.Ping.PacketLoss}" Style="{StaticResource LabelSecondary}" FontSize="10"/>
+                        <TextBlock Text="{Binding ViewModel.PacketLoss, StringFormat={}{0}%}" Style="{StaticResource LabelPrimary}" FontWeight="Bold"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource L.Ping.MinAvgMax}" Style="{StaticResource LabelSecondary}" FontSize="10"/>
+                        <TextBlock Style="{StaticResource LabelPrimary}" FontWeight="Bold">
+                            <Run Text="{Binding ViewModel.MinText, Mode=OneWay}"/>
+                            <Run Text=" / "/>
+                            <Run Text="{Binding ViewModel.AvgText, Mode=OneWay}"/>
+                            <Run Text=" / "/>
+                            <Run Text="{Binding ViewModel.MaxText, Mode=OneWay}"/>
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource L.Ping.Progress}" Style="{StaticResource LabelSecondary}" FontSize="10"/>
+                        <ProgressBar Height="10" Minimum="0" Maximum="100" Value="{Binding ViewModel.ProgressPercent}" Foreground="{StaticResource GreenBrush}"/>
+                    </StackPanel>
+                </UniformGrid>
+            </Border>
+
+            <!-- Liste -->
+            <Border Grid.Row="2"
+                    Background="{StaticResource OptionsBgBrush}"
+                    BorderBrush="{StaticResource OptionsBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Padding="8">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding ViewModel.Results}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Sequence}"
+                                               Foreground="{StaticResource TextSecondaryBrush}"
+                                               FontFamily="{StaticResource MonoFont}" FontSize="11"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Status}"
+                                               FontFamily="{StaticResource MonoFont}" FontSize="11" FontWeight="Bold"
+                                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding RttText}"
+                                               Foreground="{StaticResource AccentPrimaryBrush}"
+                                               FontFamily="{StaticResource MonoFont}" FontSize="11"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding Address}"
+                                               Foreground="{StaticResource TextSecondaryBrush}"
+                                               FontFamily="{StaticResource MonoFont}" FontSize="11"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <!-- Alt bar -->
+        <Border Grid.Row="3" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <UniformGrid Grid.Row="0" Columns="4">
+                    <Button Content="{DynamicResource L.Ping.Copy}"
+                            Command="{Binding ViewModel.CopyResultsCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="0,0,5,0" TabIndex="4"/>
+                    <Button Content="{DynamicResource L.Ping.Save}"
+                            Command="{Binding ViewModel.SaveResultCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource AccentPrimaryBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="5,0,5,0" TabIndex="5"/>
+                    <Button Content="{DynamicResource L.Ping.Clear}"
+                            Command="{Binding ViewModel.ClearCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="5,0,5,0" TabIndex="6"/>
+                    <Button Content="{DynamicResource L.Common.Cancel}"
+                            Command="{Binding ViewModel.PingCancelCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusDangerBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="5,0,0,0" TabIndex="7"
+                            Visibility="{Binding ViewModel.IsPinging, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </UniformGrid>
+
+                <Grid Grid.Row="1" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0"
+                                     Visibility="{Binding ViewModel.IsPinging, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding ViewModel.StatusText}"
+                               Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                               FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center"
+                               AutomationProperties.LiveSetting="Polite"/>
+                </Grid>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

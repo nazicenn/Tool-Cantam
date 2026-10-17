@@ -776,6 +776,55 @@
     <sys:String x:Key="L.SslChecker.Error.ConnectionFailed">Sunucuya port 443 üzerinden bağlanılamadı.</sys:String>
     <sys:String x:Key="L.SslChecker.Error.Timeout">Bağlantı zaman aşımına uğradı. Tekrar deneyin.</sys:String>
     <sys:String x:Key="L.SslChecker.Error.NoCertificate">Sunucu bir sertifika sunmadı.</sys:String>
-    
+    <!-- ============ Ping Test ============ -->
+    <sys:String x:Key="L.Ping.Title">PING TESTİ</sys:String>
+    <sys:String x:Key="L.Ping.Target">Sunucu</sys:String>
+    <sys:String x:Key="L.Ping.Count">Adet</sys:String>
+    <sys:String x:Key="L.Ping.Timeout">Zaman Aşımı</sys:String>
+    <sys:String x:Key="L.Ping.Start">PING AT</sys:String>
+    <sys:String x:Key="L.Ping.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.Ping.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.Ping.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Ping.Results">Ping sonuçları</sys:String>
+    <sys:String x:Key="L.Ping.Sent">Gönderilen</sys:String>
+    <sys:String x:Key="L.Ping.Received">Alınan</sys:String>
+    <sys:String x:Key="L.Ping.Lost">Kayıp</sys:String>
+    <sys:String x:Key="L.Ping.PacketLoss">Kayıp %</sys:String>
+    <sys:String x:Key="L.Ping.MinAvgMax">Min/Ort/Maks</sys:String>
+    <sys:String x:Key="L.Ping.Progress">İlerleme</sys:String>
+    <sys:String x:Key="L.Ping.Column.Target">Hedef</sys:String>
+    <sys:String x:Key="L.Ping.Column.Sent">Gönderilen</sys:String>
+    <sys:String x:Key="L.Ping.Column.Received">Alınan</sys:String>
+    <sys:String x:Key="L.Ping.Column.Lost">Kayıp</sys:String>
+    <sys:String x:Key="L.Ping.Column.Min">Min</sys:String>
+    <sys:String x:Key="L.Ping.Column.Max">Maks</sys:String>
+    <sys:String x:Key="L.Ping.Column.Avg">Ort</sys:String>
+    <sys:String x:Key="L.Ping.Column.Sequence">#</sys:String>
+    <sys:String x:Key="L.Ping.Column.Status">Durum</sys:String>
+    <sys:String x:Key="L.Ping.Column.Rtt">RTT</sys:String>
+    <sys:String x:Key="L.Ping.Column.Address">Adres</sys:String>
+    <sys:String x:Key="L.Ping.TargetAutomationName">Ping atılacak sunucu</sys:String>
+    <sys:String x:Key="L.Ping.Limits">Maks adet: {0}. Zaman aşımı: {1}–{2} ms. ICMP erişimi gerektirir.</sys:String>
+
+    <sys:String x:Key="L.Ping.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Ping.Status.Pinging">{0} sunucusuna ping atılıyor ({1} paket)...</sys:String>
+    <sys:String x:Key="L.Ping.Status.Finished">✓ {1} paketten {0} yanıt alındı.</sys:String>
+    <sys:String x:Key="L.Ping.Status.NoReply">⚠ {0} paketten hiç yanıt alınamadı.</sys:String>
+    <sys:String x:Key="L.Ping.Status.Summary">{0} · {1} gönderilen · {2} alınan · {3} kayıp ({4}%) · min/ort/maks = {5}/{7}/{6} ms · {8:0.0}sn</sys:String>
+    <sys:String x:Key="L.Ping.Status.Copied">Sonuç panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Ping.Status.Saved">Sonuç dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.Ping.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.Ping.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.Ping.Validation.InvalidTarget">Lütfen geçerli bir sunucu adı veya IP adresi girin.</sys:String>
+    <sys:String x:Key="L.Ping.Validation.NothingToCopy">Kopyalanacak sonuç yok.</sys:String>
+    <sys:String x:Key="L.Ping.Validation.NothingToSave">Kaydedilecek sonuç yok.</sys:String>
+
+    <sys:String x:Key="L.Ping.Error.InvalidTarget">Geçersiz hedef: bir sunucu adı veya IP adresi girin.</sys:String>
+    <sys:String x:Key="L.Ping.Error.TargetNotFound">Hedef çözümlenemedi.</sys:String>
+    <sys:String x:Key="L.Ping.Error.InvalidCount">Paket sayısı aralık dışında.</sys:String>
+    <sys:String x:Key="L.Ping.Error.InvalidTimeout">Zaman aşımı aralık dışında.</sys:String>
+    <sys:String x:Key="L.Ping.Error.NoReply">Hiç ICMP yanıtı alınamadı. Sunucu kapalı veya ICMP engelli olabilir.</sys:String>
+    <sys:String x:Key="L.Ping.Error.IcmpBlocked">ICMP sistem tarafından engelleniyor. Uygulamayı yönetici olarak çalıştırın veya güvenlik duvarı ayarlarını kontrol edin.</sys:String>
 
 </ResourceDictionary>
