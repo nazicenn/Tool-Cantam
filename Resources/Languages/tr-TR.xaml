@@ -826,5 +826,39 @@
     <sys:String x:Key="L.Ping.Error.InvalidTimeout">Zaman aşımı aralık dışında.</sys:String>
     <sys:String x:Key="L.Ping.Error.NoReply">Hiç ICMP yanıtı alınamadı. Sunucu kapalı veya ICMP engelli olabilir.</sys:String>
     <sys:String x:Key="L.Ping.Error.IcmpBlocked">ICMP sistem tarafından engelleniyor. Uygulamayı yönetici olarak çalıştırın veya güvenlik duvarı ayarlarını kontrol edin.</sys:String>
+    <!-- ============ Case Converter ============ -->
+    <sys:String x:Key="L.Case.Title">HARF DÖNÜŞTÜRÜCÜ</sys:String>
+    <sys:String x:Key="L.Case.Upper">BÜYÜK</sys:String>
+    <sys:String x:Key="L.Case.Lower">küçük</sys:String>
+    <sys:String x:Key="L.Case.TitleBtn">Başlık</sys:String>
+    <sys:String x:Key="L.Case.Sentence">Cümle</sys:String>
+    <sys:String x:Key="L.Case.Camel">camelCase</sys:String>
+    <sys:String x:Key="L.Case.Pascal">PascalCase</sys:String>
+    <sys:String x:Key="L.Case.Snake">snake_case</sys:String>
+    <sys:String x:Key="L.Case.Kebab">kebab-case</sys:String>
+    <sys:String x:Key="L.Case.Alternating">dEğİşTiR</sys:String>
+    <sys:String x:Key="L.Case.Invert">tERSÇEVİR</sys:String>
+    <sys:String x:Key="L.Case.Swap">TAKAS</sys:String>
+    <sys:String x:Key="L.Case.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.Case.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.Case.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Case.InputAutomationName">Dönüştürülecek metin</sys:String>
+    <sys:String x:Key="L.Case.OutputAutomationName">Dönüşüm sonucu</sys:String>
+    <sys:String x:Key="L.Case.Limits">Tüm dönüşümler kültürden bağımsızdır. Maksimum uzunluk: {0} karakter.</sys:String>
 
+    <sys:String x:Key="L.Case.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Case.Status.Converted">{1} karakter {0} ile dönüştürüldü.</sys:String>
+    <sys:String x:Key="L.Case.Status.Copied">Çıktı panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Case.Status.Saved">Çıktı dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.Case.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.Case.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.Case.Status.Swapped">Giriş ve çıkış takas edildi.</sys:String>
+
+    <sys:String x:Key="L.Case.Validation.EmptyInput">Lütfen dönüştürülecek metni girin.</sys:String>
+    <sys:String x:Key="L.Case.Validation.NothingToCopy">Kopyalanacak çıktı yok.</sys:String>
+    <sys:String x:Key="L.Case.Validation.NothingToSave">Kaydedilecek çıktı yok.</sys:String>
+
+    <sys:String x:Key="L.Case.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
+    <sys:String x:Key="L.Case.Error.InvalidUnicode">Metin geçersiz bir Unicode karakteri içeriyor (eşleşmemiş surrogate).</sys:String>
+    <sys:String x:Key="L.Case.Error.UnknownMode">Bilinmeyen dönüşüm modu.</sys:String>
 </ResourceDictionary>

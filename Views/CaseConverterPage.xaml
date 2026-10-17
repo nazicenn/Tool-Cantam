@@ -11,17 +11,13 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="CASE CONVERTER" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.Case.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <Border Grid.Row="1" 
-                Padding="20">
-
+        <Border Grid.Row="1" Padding="20">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -35,60 +31,108 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="INPUT" 
-                               Style="{StaticResource LabelPrimary}" 
+                    <TextBlock Text="{DynamicResource L.Input}"
+                               Style="{StaticResource LabelPrimary}"
                                Margin="0,0,0,10"/>
-                    <TextBox Grid.Row="1" 
-                             Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBox Grid.Row="1"
+                             x:Name="InputTextBox"
+                             Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}"
                              AcceptsReturn="True"
                              TextWrapping="Wrap"
-                             VerticalScrollBarVisibility="Auto"/>
+                             VerticalScrollBarVisibility="Auto"
+                             TabIndex="0"
+                             Foreground="{StaticResource TextPrimaryBrush}"
+                             BorderBrush="{StaticResource BorderDefaultBrush}"
+                             AutomationProperties.Name="{DynamicResource L.Case.InputAutomationName}"/>
                 </Grid>
 
-                <!-- ORTA: ACTION BUTTONS -->
+                <!-- ORTA: BUTONLAR -->
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0">
-                    <Button Command="{Binding ToUpperCommand}"
-                            Content="UPPER"
-                            Height="32"
-                            Width="80"
-                            Margin="0,0,0,8"
+                    <Button Content="{DynamicResource L.Case.Upper}"
+                            Command="{Binding ViewModel.ToUpperCommand}"
+                            Height="32" Width="103" Margin="0,0,0,6"
                             Style="{StaticResource ModernButton}"
-                            Background="{StaticResource AccentPrimaryBrush}"/>
-                    <Button Command="{Binding ToLowerCommand}"
-                            Content="lower"
-                            Height="32"
-                            Width="80"
-                            Margin="0,0,0,8"
+                            Background="{StaticResource AccentPrimaryBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="1"/>
+                    <Button Content="{DynamicResource L.Case.Lower}"
+                            Command="{Binding ViewModel.ToLowerCommand}"
+                            Height="32" Width="103" Margin="0,0,0,6"
                             Style="{StaticResource ModernButton}"
-                            Background="{StaticResource AccentPrimaryBrush}"/>
-                    <Button Command="{Binding ToTitleCaseCommand}"
-                            Content="Title"
-                            Height="32"
-                            Width="80"
-                            Margin="0,0,0,8"
+                            Background="{StaticResource AccentPrimaryBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="2"/>
+                    <Button Content="{DynamicResource L.Case.TitleBtn}"
+                            Command="{Binding ViewModel.ToTitleCommand}"
+                            Height="32" Width="103" Margin="0,0,0,6"
                             Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
-                    <Button Command="{Binding ToCamelCaseCommand}"
-                            Content="camel"
-                            Height="32"
-                            Width="80"
-                            Margin="0,0,0,8"
+                            Background="{StaticResource GreenBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="3"/>
+                    <Button Content="{DynamicResource L.Case.Sentence}"
+                            Command="{Binding ViewModel.ToSentenceCommand}"
+                            Height="32" Width="103" Margin="0,0,0,6"
                             Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
-                    <Button Command="{Binding ToSnakeCaseCommand}"
-                            Content="snake"
-                            Height="32"
-                            Width="80"
-                            Margin="0,0,0,8"
+                            Background="{StaticResource GreenBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="4"/>
+                    <Button Content="{DynamicResource L.Case.Camel}"
+                            Command="{Binding ViewModel.ToCamelCommand}"
+                            Height="32" Width="103" Margin="0,0,0,6"
                             Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
-                    <Button Command="{Binding ClearCommand}"
-                            Content="CLEAR"
-                            Height="32"
-                            Width="80"
-                            Margin="0,0,0,0"
+                            Background="{StaticResource GreenBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="5"/>
+                    <Button Content="{DynamicResource L.Case.Snake}"
+                            Command="{Binding ViewModel.ToSnakeCommand}"
+                            Height="32" Width="103" Margin="0,0,0,6"
                             Style="{StaticResource ModernButton}"
-                            Background="{StaticResource RedBrush}"/>
+                            Background="{StaticResource GreenBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="7"/>
+                    <Button Content="{DynamicResource L.Case.Kebab}"
+                            Command="{Binding ViewModel.ToKebabCommand}"
+                            Height="32" Width="103" Margin="0,0,0,6"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource GreenBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="8"/>
+                    <Button Content="{DynamicResource L.Case.Alternating}"
+                            Command="{Binding ViewModel.ToAlternatingCommand}"
+                            Height="32" Width="103" Margin="0,0,0,6"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="9"/>
+                    <Button Content="{DynamicResource L.Case.Invert}"
+                            Command="{Binding ViewModel.ToInvertCommand}"
+                            Height="32" Width="103" Margin="0,0,0,6"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="10"/>
+                    <Button Content="{DynamicResource L.Case.Swap}"
+                            Command="{Binding ViewModel.SwapCommand}"
+                            Height="32" Width="103" Margin="0,0,0,6"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource BorderDefaultBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="11"/>
+                    <Button Content="{DynamicResource L.Common.Cancel}"
+                            Command="{Binding ViewModel.ToUpperCancelCommand}"
+                            Height="32" Width="103" Margin="0,0,0,6"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusDangerBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="12"
+                            Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <Button Content="{DynamicResource L.Case.Clear}"
+                            Command="{Binding ViewModel.ClearCommand}"
+                            Height="32" Width="103" Margin="0,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="13"/>
                 </StackPanel>
 
                 <!-- SAĞ: OUTPUT -->
@@ -103,34 +147,67 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="OUTPUT" 
-                                   Style="{StaticResource LabelPrimary}" 
+                        <TextBlock Text="{DynamicResource L.Output}"
+                                   Style="{StaticResource LabelPrimary}"
                                    VerticalAlignment="Center"/>
-                        <Button Grid.Column="1" 
-                                Command="{Binding CopyOutputCommand}"
-                                Content="COPY"
-                                Width="70"
-                                Height="28"
-                                Style="{StaticResource ModernButton}"
-                                Background="{StaticResource StatusWarningBrush}"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Button Command="{Binding ViewModel.CopyOutputCommand}"
+                                    Content="{DynamicResource L.Case.Copy}"
+                                    Width="70" Height="28" Margin="0,0,5,0"
+                                    Style="{StaticResource ModernButton}"
+                                    Background="{StaticResource StatusWarningBrush}"
+                                    Foreground="{StaticResource TextPrimaryBrush}"
+                                    TabIndex="14"/>
+                            <Button Command="{Binding ViewModel.SaveOutputCommand}"
+                                    Content="{DynamicResource L.Case.Save}"
+                                    Width="70" Height="28"
+                                    Style="{StaticResource ModernButton}"
+                                    Background="{StaticResource AccentPrimaryBrush}"
+                                    Foreground="{StaticResource TextPrimaryBrush}"
+                                    TabIndex="15"/>
+                        </StackPanel>
                     </Grid>
-                    <TextBox Grid.Row="2" 
-                             Text="{Binding OutputText, Mode=OneWay}"
+                    <TextBox Grid.Row="2"
+                             Text="{Binding ViewModel.OutputText, Mode=OneWay}"
                              IsReadOnly="True"
                              AcceptsReturn="True"
                              TextWrapping="Wrap"
-                             VerticalScrollBarVisibility="Auto"/>
+                             VerticalScrollBarVisibility="Auto"
+                             TabIndex="16"
+                             Foreground="{StaticResource AccentPrimaryBrush}"
+                             BorderBrush="{StaticResource BorderDefaultBrush}"
+                             AutomationProperties.Name="{DynamicResource L.Case.OutputAutomationName}"/>
                 </Grid>
             </Grid>
         </Border>
 
-        <TextBlock Grid.Row="2" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,15,0,0"/>
+        <Border Grid.Row="2" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,15,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0"
+                                 Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ViewModel.StatusText}"
+                           Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                           FontSize="11"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"
+                           AutomationProperties.LiveSetting="Polite"/>
+
+                <TextBlock Grid.Column="2"
+                           Text="{Binding ViewModel.LimitsText}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           VerticalAlignment="Center"
+                           Opacity="0.6"
+                           TextWrapping="Wrap"
+                           MaxWidth="420"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

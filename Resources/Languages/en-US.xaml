@@ -825,6 +825,40 @@
     <sys:String x:Key="L.Ping.Error.InvalidTimeout">Timeout is out of range.</sys:String>
     <sys:String x:Key="L.Ping.Error.NoReply">No ICMP reply was received. The host may be down or blocking ICMP.</sys:String>
     <sys:String x:Key="L.Ping.Error.IcmpBlocked">ICMP is blocked by the system. Run the application as administrator or check your firewall settings.</sys:String>
+    <!-- ============ Case Converter ============ -->
+    <sys:String x:Key="L.Case.Title">CASE CONVERTER</sys:String>
+    <sys:String x:Key="L.Case.Upper">UPPER</sys:String>
+    <sys:String x:Key="L.Case.Lower">lower</sys:String>
+    <sys:String x:Key="L.Case.TitleBtn">Title</sys:String>
+    <sys:String x:Key="L.Case.Sentence">Sentence</sys:String>
+    <sys:String x:Key="L.Case.Camel">camelCase</sys:String>
+    <sys:String x:Key="L.Case.Pascal">PascalCase</sys:String>
+    <sys:String x:Key="L.Case.Snake">snake_case</sys:String>
+    <sys:String x:Key="L.Case.Kebab">kebab-case</sys:String>
+    <sys:String x:Key="L.Case.Alternating">aLtErNaTe</sys:String>
+    <sys:String x:Key="L.Case.Invert">iNVERT</sys:String>
+    <sys:String x:Key="L.Case.Swap">SWAP</sys:String>
+    <sys:String x:Key="L.Case.Copy">COPY</sys:String>
+    <sys:String x:Key="L.Case.Save">SAVE</sys:String>
+    <sys:String x:Key="L.Case.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.Case.InputAutomationName">Text to convert</sys:String>
+    <sys:String x:Key="L.Case.OutputAutomationName">Converted result</sys:String>
+    <sys:String x:Key="L.Case.Limits">All conversions are culture-invariant. Max length: {0} characters.</sys:String>
 
+    <sys:String x:Key="L.Case.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Case.Status.Converted">Converted {1} character(s) using {0}.</sys:String>
+    <sys:String x:Key="L.Case.Status.Copied">Output copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Case.Status.Saved">Output saved to file.</sys:String>
+    <sys:String x:Key="L.Case.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.Case.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.Case.Status.Swapped">Input and output swapped.</sys:String>
+
+    <sys:String x:Key="L.Case.Validation.EmptyInput">Please enter text to convert.</sys:String>
+    <sys:String x:Key="L.Case.Validation.NothingToCopy">There is no output to copy.</sys:String>
+    <sys:String x:Key="L.Case.Validation.NothingToSave">There is no output to save.</sys:String>
+
+    <sys:String x:Key="L.Case.Error.InputTooLarge">Input is too large. The limit is 10 MB.</sys:String>
+    <sys:String x:Key="L.Case.Error.InvalidUnicode">The text contains an invalid Unicode character (unpaired surrogate).</sys:String>
+    <sys:String x:Key="L.Case.Error.UnknownMode">Unknown conversion mode.</sys:String>
 
 </ResourceDictionary>
