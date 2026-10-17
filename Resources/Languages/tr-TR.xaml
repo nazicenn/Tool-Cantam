@@ -476,4 +476,306 @@
     <sys:String x:Key="L.Hmac.Error.AlgorithmUnavailable">Bu HMAC algoritması bu sistemde kullanılamıyor.</sys:String>
     <sys:String x:Key="L.Hmac.Error.InvalidExpectedMac">Beklenen MAC ne hex ne de Base64.</sys:String>
 
+    <!-- ============ Port tarayıcı ============ -->
+    <sys:String x:Key="L.PortScan.Title">TCP PORT TARAYICI</sys:String>
+    <sys:String x:Key="L.PortScan.Target">Hedef</sys:String>
+    <sys:String x:Key="L.PortScan.StartPort">Başlangıç</sys:String>
+    <sys:String x:Key="L.PortScan.EndPort">Bitiş</sys:String>
+    <sys:String x:Key="L.PortScan.Timeout">Zaman aşımı</sys:String>
+    <sys:String x:Key="L.PortScan.TimeoutHelp">Her portun filtrelenmiş sayılmadan önce ne kadar bekleneceği. Uzun zaman aşımı yavaştır ama güvenlik duvarı arkasındaki hedefleri bulur.</sys:String>
+    <sys:String x:Key="L.PortScan.Limits">Tarama başına sınırlar: {0} port, {1} paralel bağlantı, en fazla {2} ms zaman aşımı. Yalnızca yetkili olduğunuz aralıkları tarayın.</sys:String>
+    <sys:String x:Key="L.PortScan.Scan">TARA</sys:String>
+    <sys:String x:Key="L.PortScan.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.PortScan.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.PortScan.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.PortScan.Results">Açık portlar</sys:String>
+    <sys:String x:Key="L.PortScan.TargetAutomationName">Taranacak IP adresi veya sunucu adı</sys:String>
+    <sys:String x:Key="L.PortScan.ResultsAutomationName">Bulunan açık portlar</sys:String>
+    <sys:String x:Key="L.PortScan.Column.Port">PORT</sys:String>
+    <sys:String x:Key="L.PortScan.Column.Service">SERVİS</sys:String>
+    <sys:String x:Key="L.PortScan.Filter.Csv">CSV dosyaları</sys:String>
+
+    <sys:String x:Key="L.PortScan.Progress.Initial">{0} port taranmaya hazır.</sys:String>
+    <sys:String x:Key="L.PortScan.Progress.Scanning">{0}/{1} tarandı · {2} açık</sys:String>
+
+    <sys:String x:Key="L.PortScan.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.PortScan.Status.Scanning">{0} hedefinde {1}-{2} portları taranıyor...</sys:String>
+    <sys:String x:Key="L.PortScan.Status.Finished">{1} port tarandı, {0} açık port bulundu.</sys:String>
+    <sys:String x:Key="L.PortScan.Status.NoOpenPorts">Taranan {0} portta açık port bulunamadı.</sys:String>
+    <sys:String x:Key="L.PortScan.Status.Summary">{0} · {1} tarandı · {2} açık · {3} kapalı · {4} filtrelendi · {5:0.0}sn</sys:String>
+    <sys:String x:Key="L.PortScan.Status.Copied">Sonuç panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.PortScan.Status.Saved">Sonuç dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.PortScan.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.PortScan.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.PortScan.Validation.InvalidTarget">Lütfen geçerli bir IP adresi veya sunucu adı girin.</sys:String>
+    <sys:String x:Key="L.PortScan.Validation.InvalidRange">Port aralığı geçersiz: 1-65535 arası kullanın ve başlangıç bitişten büyük olmasın.</sys:String>
+    <sys:String x:Key="L.PortScan.Validation.RangeTooLarge">Aralık {0} port içeriyor; tarama başına sınır {1}. Daha küçük parçalara bölün.</sys:String>
+    <sys:String x:Key="L.PortScan.Validation.NothingToCopy">Kopyalanacak sonuç yok.</sys:String>
+    <sys:String x:Key="L.PortScan.Validation.NothingToSave">Kaydedilecek sonuç yok.</sys:String>
+
+    <sys:String x:Key="L.PortScan.Error.InvalidTarget">Geçersiz hedef: bir IP adresi veya sunucu adı girin.</sys:String>
+    <sys:String x:Key="L.PortScan.Error.TargetNotFound">Hedef bir IP adresine çözümlenemedi.</sys:String>
+    <sys:String x:Key="L.PortScan.Error.InvalidRange">Geçersiz port aralığı.</sys:String>
+    <sys:String x:Key="L.PortScan.Error.RangeTooLarge">Port aralığı bu aracın izin verdiğinden büyük.</sys:String>
+
+    <!-- ============ Subdomain Scanner ============ -->
+    <sys:String x:Key="L.Subdomain.Title">SUBDOMAIN TARAYICI</sys:String>
+    <sys:String x:Key="L.Subdomain.Target">Hedef</sys:String>
+    <sys:String x:Key="L.Subdomain.Scan">TARA</sys:String>
+    <sys:String x:Key="L.Subdomain.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.Subdomain.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.Subdomain.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Subdomain.Results">Bulunan subdomainler</sys:String>
+    <sys:String x:Key="L.Subdomain.Column.Host">SUNUCU</sys:String>
+    <sys:String x:Key="L.Subdomain.Column.Ip">IP</sys:String>
+    <sys:String x:Key="L.Subdomain.Filter.Csv">CSV dosyaları</sys:String>
+    <sys:String x:Key="L.Subdomain.TargetAutomationName">Subdomain taranacak domain</sys:String>
+    <sys:String x:Key="L.Subdomain.ResultsAutomationName">Bulunan subdomainler</sys:String>
+    <sys:String x:Key="L.Subdomain.Limits">Tarama başına sınırlar: {0} aday, {1} paralel sorgu, {2} ms zaman aşımı. Yalnızca yetkili olduğunuz domainleri tarayın.</sys:String>
+
+    <sys:String x:Key="L.Subdomain.Progress.Initial">{0} aday kontrol edilmeye hazır.</sys:String>
+    <sys:String x:Key="L.Subdomain.Progress.Scanning">{0}/{1} kontrol edildi · {2} bulundu</sys:String>
+
+    <sys:String x:Key="L.Subdomain.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.Scanning">{0} taranıyor...</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.Finished">{1} aday kontrol edildi, {0} subdomain bulundu.</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.NoResults">Kontrol edilen {0} adayda subdomain bulunamadı.</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.Summary">{0} · {1} kontrol · {2} bulundu · {3} başarısız · {4:0.0}sn</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.Copied">Sonuç panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.Saved">Sonuç dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.Subdomain.Validation.InvalidDomain">Lütfen example.com gibi geçerli bir domain girin.</sys:String>
+    <sys:String x:Key="L.Subdomain.Validation.NothingToCopy">Kopyalanacak sonuç yok.</sys:String>
+    <sys:String x:Key="L.Subdomain.Validation.NothingToSave">Kaydedilecek sonuç yok.</sys:String>
+
+    <sys:String x:Key="L.Subdomain.Error.InvalidDomain">Geçersiz domain: example.com gibi bir sunucu adı girin.</sys:String>
+    <sys:String x:Key="L.Subdomain.Error.DomainNotFound">Domain çözümlenemedi. Yazımı ve bağlantınızı kontrol edin.</sys:String>
+
+    <!-- ============ DNS Lookup ============ -->
+    <sys:String x:Key="L.Dns.Title">DNS SORGU</sys:String>
+    <sys:String x:Key="L.Dns.Target">Domain</sys:String>
+    <sys:String x:Key="L.Dns.Query">SORGULA</sys:String>
+    <sys:String x:Key="L.Dns.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.Dns.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.Dns.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Dns.Results">DNS kayıtları</sys:String>
+    <sys:String x:Key="L.Dns.Column.Type">TİP</sys:String>
+    <sys:String x:Key="L.Dns.Column.Priority">ÖNCELİK</sys:String>
+    <sys:String x:Key="L.Dns.Column.Value">DEĞER</sys:String>
+    <sys:String x:Key="L.Dns.Filter.Csv">CSV dosyaları</sys:String>
+    <sys:String x:Key="L.Dns.TargetAutomationName">Sorgulanacak domain adı</sys:String>
+    <sys:String x:Key="L.Dns.ResultsAutomationName">DNS sorgu sonuçları</sys:String>
+    <sys:String x:Key="L.Dns.Limits">Zaman aşımı: {0} ms. Kayıt tipleri: {1}.</sys:String>
+
+    <sys:String x:Key="L.Dns.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Dns.Status.Querying">{0} için DNS kayıtları sorgulanıyor...</sys:String>
+    <sys:String x:Key="L.Dns.Status.Finished">{1} için {0} DNS kaydı bulundu.</sys:String>
+    <sys:String x:Key="L.Dns.Status.Summary">{0} · {1} kayıt · A:{2} AAAA:{3} MX:{4} NS:{5} TXT:{6} SOA:{7} · {8:0.0}sn</sys:String>
+    <sys:String x:Key="L.Dns.Status.Copied">Sonuç panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Dns.Status.Saved">Sonuç dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.Dns.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.Dns.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.Dns.Validation.InvalidDomain">Lütfen example.com gibi geçerli bir domain girin.</sys:String>
+    <sys:String x:Key="L.Dns.Validation.NothingToCopy">Kopyalanacak sonuç yok.</sys:String>
+    <sys:String x:Key="L.Dns.Validation.NothingToSave">Kaydedilecek sonuç yok.</sys:String>
+
+    <sys:String x:Key="L.Dns.Error.InvalidDomain">Geçersiz domain: example.com gibi bir sunucu adı girin.</sys:String>
+    <sys:String x:Key="L.Dns.Error.DomainNotFound">Domain çözümlenemedi. Yazımı ve bağlantınızı kontrol edin.</sys:String>
+    <sys:String x:Key="L.Dns.Error.QueryTimeout">DNS sunucusu zamanında yanıt vermedi. Tekrar deneyin.</sys:String>
+
+    <!-- ============ Reverse DNS ============ -->
+    <sys:String x:Key="L.ReverseDns.Title">REVERSE DNS SORGU</sys:String>
+    <sys:String x:Key="L.ReverseDns.Target">IP Adresi</sys:String>
+    <sys:String x:Key="L.ReverseDns.Lookup">SORGULA</sys:String>
+    <sys:String x:Key="L.ReverseDns.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.ReverseDns.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.ReverseDns.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.ReverseDns.Results">Sorgu sonucu</sys:String>
+    <sys:String x:Key="L.ReverseDns.Column.Ip">IP</sys:String>
+    <sys:String x:Key="L.ReverseDns.Column.Family">Aile</sys:String>
+    <sys:String x:Key="L.ReverseDns.Column.Hostname">Sunucu Adı</sys:String>
+    <sys:String x:Key="L.ReverseDns.Column.Aliases">Alternatif İsimler</sys:String>
+    <sys:String x:Key="L.ReverseDns.TargetAutomationName">Reverse lookup için IP adresi</sys:String>
+    <sys:String x:Key="L.ReverseDns.ResultsAutomationName">Reverse DNS sonucu</sys:String>
+    <sys:String x:Key="L.ReverseDns.Limits">Zaman aşımı: {0} ms. IPv4 ve IPv6 desteklenir.</sys:String>
+
+    <sys:String x:Key="L.ReverseDns.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Status.Querying">{0} için PTR kaydı sorgulanıyor...</sys:String>
+    <sys:String x:Key="L.ReverseDns.Status.Finished">Çözümlendi: {0}.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Status.Summary">{0} · {1} · {2} alternatif isim · {3:0.0}sn</sys:String>
+    <sys:String x:Key="L.ReverseDns.Status.Copied">Sonuç panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Status.Saved">Sonuç dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.ReverseDns.Validation.InvalidIp">Lütfen 8.8.8.8 gibi geçerli bir IP adresi girin.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Validation.NothingToCopy">Kopyalanacak sonuç yok.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Validation.NothingToSave">Kaydedilecek sonuç yok.</sys:String>
+
+    <sys:String x:Key="L.ReverseDns.Error.InvalidIp">Geçersiz IP adresi. IPv4 veya IPv6 adresi girin.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Error.NotFound">Bu IP adresi için PTR kaydı bulunamadı.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Error.QueryTimeout">DNS sunucusu zamanında yanıt vermedi. Tekrar deneyin.</sys:String>
+
+    <!-- ============ IP Info ============ -->
+    <sys:String x:Key="L.IpInfo.Title">IP BİLGİSİ</sys:String>
+    <sys:String x:Key="L.IpInfo.Target">IP Adresi</sys:String>
+    <sys:String x:Key="L.IpInfo.Lookup">SORGULA</sys:String>
+    <sys:String x:Key="L.IpInfo.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.IpInfo.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.IpInfo.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.IpInfo.Results">IP bilgisi</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Ip">IP</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Family">Aile</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Country">Ülke</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Region">Bölge</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.City">Şehir</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Zip">Posta Kodu</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Coordinates">Koordinatlar</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Timezone">Saat Dilimi</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Isp">ISS</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Org">Organizasyon</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Asn">ASN</sys:String>
+    <sys:String x:Key="L.IpInfo.TargetAutomationName">Sorgulanacak IP adresi</sys:String>
+    <sys:String x:Key="L.IpInfo.Limits">Zaman aşımı: {0} ms. ip-api.com tarafından sağlanır (45 istek/dakika).</sys:String>
+
+    <sys:String x:Key="L.IpInfo.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.IpInfo.Status.Querying">{0} sorgulanıyor...</sys:String>
+    <sys:String x:Key="L.IpInfo.Status.Finished">Konum: {0}.</sys:String>
+    <sys:String x:Key="L.IpInfo.Status.Summary">{0} · {1} · {2:0.0}sn</sys:String>
+    <sys:String x:Key="L.IpInfo.Status.Copied">Sonuç panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.IpInfo.Status.Saved">Sonuç dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.IpInfo.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.IpInfo.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.IpInfo.Validation.InvalidIp">Lütfen 8.8.8.8 gibi geçerli bir IP adresi girin.</sys:String>
+    <sys:String x:Key="L.IpInfo.Validation.NothingToCopy">Kopyalanacak sonuç yok.</sys:String>
+    <sys:String x:Key="L.IpInfo.Validation.NothingToSave">Kaydedilecek sonuç yok.</sys:String>
+
+    <sys:String x:Key="L.IpInfo.Error.InvalidIp">Geçersiz IP adresi. IPv4 veya IPv6 adresi girin.</sys:String>
+    <sys:String x:Key="L.IpInfo.Error.NotFound">IP adresi veritabanında bulunamadı.</sys:String>
+    <sys:String x:Key="L.IpInfo.Error.RateLimited">İstek sınırı aşıldı. Bir dakika bekleyip tekrar deneyin.</sys:String>
+    <sys:String x:Key="L.IpInfo.Error.NetworkError">Ağ hatası. Bağlantınızı kontrol edin.</sys:String>
+    <sys:String x:Key="L.IpInfo.Error.QueryTimeout">Servis zamanında yanıt vermedi. Tekrar deneyin.</sys:String>
+    <!-- ============ WHOIS Lookup ============ -->
+    <sys:String x:Key="L.Whois.Title">WHOIS SORGU</sys:String>
+    <sys:String x:Key="L.Whois.Target">Domain</sys:String>
+    <sys:String x:Key="L.Whois.Lookup">SORGULA</sys:String>
+    <sys:String x:Key="L.Whois.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.Whois.Save">HAM KAYDET</sys:String>
+    <sys:String x:Key="L.Whois.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Whois.Results">WHOIS kaydı</sys:String>
+    <sys:String x:Key="L.Whois.Column.Domain">Domain</sys:String>
+    <sys:String x:Key="L.Whois.Column.WhoisServer">WHOIS Sunucusu</sys:String>
+    <sys:String x:Key="L.Whois.Column.Registrar">Kayıt Şirketi</sys:String>
+    <sys:String x:Key="L.Whois.Column.CreationDate">Oluşturma Tarihi</sys:String>
+    <sys:String x:Key="L.Whois.Column.ExpirationDate">Bitiş Tarihi</sys:String>
+    <sys:String x:Key="L.Whois.Column.UpdatedDate">Güncelleme Tarihi</sys:String>
+    <sys:String x:Key="L.Whois.Column.NameServers">Ad Sunucuları</sys:String>
+    <sys:String x:Key="L.Whois.Column.Statuses">Durum</sys:String>
+    <sys:String x:Key="L.Whois.Column.RegistrantOrg">Kayıt Sahibi Kurum</sys:String>
+    <sys:String x:Key="L.Whois.Column.RegistrantName">Kayıt Sahibi</sys:String>
+    <sys:String x:Key="L.Whois.Column.RegistrantCountry">Kayıt Ülkesi</sys:String>
+    <sys:String x:Key="L.Whois.Column.RegistrantEmail">Kayıt E-postası</sys:String>
+    <sys:String x:Key="L.Whois.TargetAutomationName">WHOIS sorgulanacak domain</sys:String>
+    <sys:String x:Key="L.Whois.Limits">Zaman aşımı: {0} ms. TCP port 43 (WHOIS protokolü).</sys:String>
+
+    <sys:String x:Key="L.Whois.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Whois.Status.Querying">{0} için WHOIS sorgulanıyor...</sys:String>
+    <sys:String x:Key="L.Whois.Status.Finished">{0} için WHOIS kaydı alındı.</sys:String>
+    <sys:String x:Key="L.Whois.Status.Summary">{0} (.{1}) · {2:0.0}sn</sys:String>
+    <sys:String x:Key="L.Whois.Status.Copied">Sonuç panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.Whois.Status.Saved">Ham WHOIS dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.Whois.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.Whois.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.Whois.Validation.InvalidDomain">Lütfen example.com gibi geçerli bir domain girin.</sys:String>
+    <sys:String x:Key="L.Whois.Validation.NothingToCopy">Kopyalanacak sonuç yok.</sys:String>
+    <sys:String x:Key="L.Whois.Validation.NothingToSave">Kaydedilecek sonuç yok.</sys:String>
+
+    <sys:String x:Key="L.Whois.Error.InvalidDomain">Geçersiz domain: example.com gibi bir sunucu adı girin.</sys:String>
+    <sys:String x:Key="L.Whois.Error.UnsupportedTld">Bu domain'in TLD'si için WHOIS sunucusu tanımlı değil.</sys:String>
+    <sys:String x:Key="L.Whois.Error.ServerUnreachable">WHOIS sunucusuna ulaşılamadı. Sonra tekrar deneyin.</sys:String>
+    <sys:String x:Key="L.Whois.Error.NoData">Bu domain için WHOIS kaydı bulunamadı.</sys:String>
+    <sys:String x:Key="L.Whois.Error.QueryTimeout">WHOIS sunucusu zamanında yanıt vermedi. Tekrar deneyin.</sys:String>
+    <!-- ============ MAC Lookup ============ -->
+    <sys:String x:Key="L.MacLookup.Title">MAC ADRES SORGULAMA</sys:String>
+    <sys:String x:Key="L.MacLookup.Target">MAC Adresi</sys:String>
+    <sys:String x:Key="L.MacLookup.Lookup">SORGULA</sys:String>
+    <sys:String x:Key="L.MacLookup.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.MacLookup.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.MacLookup.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.MacLookup.Results">Satıcı bilgisi</sys:String>
+    <sys:String x:Key="L.MacLookup.Column.Mac">MAC</sys:String>
+    <sys:String x:Key="L.MacLookup.Column.Oui">OUI</sys:String>
+    <sys:String x:Key="L.MacLookup.Column.Vendor">Üretici</sys:String>
+    <sys:String x:Key="L.MacLookup.Column.Address">Adres</sys:String>
+    <sys:String x:Key="L.MacLookup.Column.Country">Ülke</sys:String>
+    <sys:String x:Key="L.MacLookup.Column.Type">Tip</sys:String>
+    <sys:String x:Key="L.MacLookup.TargetAutomationName">Sorgulanacak MAC adresi</sys:String>
+    <sys:String x:Key="L.MacLookup.Limits">Zaman aşımı: {0} ms. maclookup.app tarafından sağlanır.</sys:String>
+
+    <sys:String x:Key="L.MacLookup.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.MacLookup.Status.Querying">{0} sorgulanıyor...</sys:String>
+    <sys:String x:Key="L.MacLookup.Status.Finished">Üretici: {0}.</sys:String>
+    <sys:String x:Key="L.MacLookup.Status.Summary">{0} · {1} · {2:0.0}sn</sys:String>
+    <sys:String x:Key="L.MacLookup.Status.Copied">Sonuç panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.MacLookup.Status.Saved">Sonuç dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.MacLookup.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.MacLookup.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.MacLookup.Validation.InvalidMac">Lütfen 00:1A:2B:3C:4D:5E gibi bir MAC adresi girin.</sys:String>
+    <sys:String x:Key="L.MacLookup.Validation.NothingToCopy">Kopyalanacak sonuç yok.</sys:String>
+    <sys:String x:Key="L.MacLookup.Validation.NothingToSave">Kaydedilecek sonuç yok.</sys:String>
+
+    <sys:String x:Key="L.MacLookup.Error.InvalidMac">Geçersiz MAC adresi. 12 hex basamak kullanın (iki nokta, tire ve nokta yok sayılır).</sys:String>
+    <sys:String x:Key="L.MacLookup.Error.VendorNotFound">Bu MAC adresi için üretici bulunamadı.</sys:String>
+    <sys:String x:Key="L.MacLookup.Error.RateLimited">İstek sınırı aşıldı. Bir süre bekleyip tekrar deneyin.</sys:String>
+    <sys:String x:Key="L.MacLookup.Error.NetworkError">Ağ hatası. Bağlantınızı kontrol edin.</sys:String>
+    <sys:String x:Key="L.MacLookup.Error.QueryTimeout">Servis zamanında yanıt vermedi. Tekrar deneyin.</sys:String>
+    <!-- ============ SSL Checker ============ -->
+    <sys:String x:Key="L.SslChecker.Title">SSL SERTİFİKA KONTROLÜ</sys:String>
+    <sys:String x:Key="L.SslChecker.Target">Domain</sys:String>
+    <sys:String x:Key="L.SslChecker.Check">KONTROL ET</sys:String>
+    <sys:String x:Key="L.SslChecker.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.SslChecker.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.SslChecker.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.SslChecker.Results">Sertifika detayları</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.Domain">Domain</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.Status">Durum</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.Subject">Konu</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.Issuer">Veren</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.CommonName">Ortak Ad</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.Validity">Geçerlilik</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.RemainingDays">Kalan Gün</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.SerialNumber">Seri No</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.SignatureAlgorithm">İmza Algoritması</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.TlsProtocol">TLS Protokolü</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.ChainIssues">Zincir Sorunları</sys:String>
+    <sys:String x:Key="L.SslChecker.TargetAutomationName">SSL sertifikası kontrol edilecek domain</sys:String>
+    <sys:String x:Key="L.SslChecker.Limits">Zaman aşımı: {0} ms. TCP port 443 (TLS el sıkışması).</sys:String>
+
+    <sys:String x:Key="L.SslChecker.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.Checking">{0} için sertifika kontrol ediliyor...</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.Valid">✓ Geçerli sertifika · {0} gün kaldı.</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.Invalid">⚠ Sertifika sorunu: {0}.</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.Summary">{0} · {1} · {2:0.0}sn</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.Copied">Sonuç panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.Saved">Sonuç dosyaya kaydedildi.</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.SaveCancelled">Kaydetme iptal edildi.</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.SslChecker.Validation.InvalidDomain">Lütfen example.com gibi geçerli bir domain girin.</sys:String>
+    <sys:String x:Key="L.SslChecker.Validation.NothingToCopy">Kopyalanacak sonuç yok.</sys:String>
+    <sys:String x:Key="L.SslChecker.Validation.NothingToSave">Kaydedilecek sonuç yok.</sys:String>
+
+    <sys:String x:Key="L.SslChecker.Error.InvalidDomain">Geçersiz domain: example.com gibi bir sunucu adı girin.</sys:String>
+    <sys:String x:Key="L.SslChecker.Error.ConnectionFailed">Sunucuya port 443 üzerinden bağlanılamadı.</sys:String>
+    <sys:String x:Key="L.SslChecker.Error.Timeout">Bağlantı zaman aşımına uğradı. Tekrar deneyin.</sys:String>
+    <sys:String x:Key="L.SslChecker.Error.NoCertificate">Sunucu bir sertifika sunmadı.</sys:String>
+    
+
 </ResourceDictionary>

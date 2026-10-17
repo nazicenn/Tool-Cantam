@@ -476,4 +476,306 @@
     <sys:String x:Key="L.Hmac.Error.AlgorithmUnavailable">This HMAC algorithm is not available on this system.</sys:String>
     <sys:String x:Key="L.Hmac.Error.InvalidExpectedMac">The expected MAC is neither hex nor Base64.</sys:String>
 
+    <!-- ============ Port scanner ============ -->
+    <sys:String x:Key="L.PortScan.Title">TCP PORT SCANNER</sys:String>
+    <sys:String x:Key="L.PortScan.Target">Target</sys:String>
+    <sys:String x:Key="L.PortScan.StartPort">From</sys:String>
+    <sys:String x:Key="L.PortScan.EndPort">To</sys:String>
+    <sys:String x:Key="L.PortScan.Timeout">Timeout</sys:String>
+    <sys:String x:Key="L.PortScan.TimeoutHelp">How long to wait for each port before treating it as filtered. Longer timeouts are slower but find hosts behind a firewall.</sys:String>
+    <sys:String x:Key="L.PortScan.Limits">Limits per scan: {0} ports, {1} parallel connections, {2} ms maximum timeout. Scan ranges you are authorised to test.</sys:String>
+    <sys:String x:Key="L.PortScan.Scan">SCAN</sys:String>
+    <sys:String x:Key="L.PortScan.Copy">COPY</sys:String>
+    <sys:String x:Key="L.PortScan.Save">SAVE</sys:String>
+    <sys:String x:Key="L.PortScan.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.PortScan.Results">Open ports</sys:String>
+    <sys:String x:Key="L.PortScan.TargetAutomationName">IP address or host name to scan</sys:String>
+    <sys:String x:Key="L.PortScan.ResultsAutomationName">Open ports found</sys:String>
+    <sys:String x:Key="L.PortScan.Column.Port">PORT</sys:String>
+    <sys:String x:Key="L.PortScan.Column.Service">SERVICE</sys:String>
+    <sys:String x:Key="L.PortScan.Filter.Csv">CSV files</sys:String>
+
+    <sys:String x:Key="L.PortScan.Progress.Initial">{0} port(s) ready to scan.</sys:String>
+    <sys:String x:Key="L.PortScan.Progress.Scanning">{0}/{1} scanned · {2} open</sys:String>
+
+    <sys:String x:Key="L.PortScan.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.PortScan.Status.Scanning">Scanning {0} ports {1}-{2}...</sys:String>
+    <sys:String x:Key="L.PortScan.Status.Finished">{0} open port(s) found out of {1} scanned.</sys:String>
+    <sys:String x:Key="L.PortScan.Status.NoOpenPorts">No open port found in {0} scanned port(s).</sys:String>
+    <sys:String x:Key="L.PortScan.Status.Summary">{0} · scanned {1} · open {2} · closed {3} · filtered {4} · {5:0.0}s</sys:String>
+    <sys:String x:Key="L.PortScan.Status.Copied">Result copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.PortScan.Status.Saved">Result saved to file.</sys:String>
+    <sys:String x:Key="L.PortScan.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.PortScan.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.PortScan.Validation.InvalidTarget">Please enter a valid IP address or host name.</sys:String>
+    <sys:String x:Key="L.PortScan.Validation.InvalidRange">The port range is not valid: use 1-65535 and make sure "from" is not greater than "to".</sys:String>
+    <sys:String x:Key="L.PortScan.Validation.RangeTooLarge">The range contains {0} ports; the limit is {1} per scan. Scan it in smaller parts.</sys:String>
+    <sys:String x:Key="L.PortScan.Validation.NothingToCopy">There is no result to copy.</sys:String>
+    <sys:String x:Key="L.PortScan.Validation.NothingToSave">There is no result to save.</sys:String>
+
+    <sys:String x:Key="L.PortScan.Error.InvalidTarget">Invalid target: enter an IP address or host name.</sys:String>
+    <sys:String x:Key="L.PortScan.Error.TargetNotFound">The target could not be resolved to an IP address.</sys:String>
+    <sys:String x:Key="L.PortScan.Error.InvalidRange">Invalid port range.</sys:String>
+    <sys:String x:Key="L.PortScan.Error.RangeTooLarge">The port range is larger than this tool allows.</sys:String>
+
+    <!-- ============ Subdomain Scanner ============ -->
+    <sys:String x:Key="L.Subdomain.Title">SUBDOMAIN SCANNER</sys:String>
+    <sys:String x:Key="L.Subdomain.Target">Target</sys:String>
+    <sys:String x:Key="L.Subdomain.Scan">SCAN</sys:String>
+    <sys:String x:Key="L.Subdomain.Copy">COPY</sys:String>
+    <sys:String x:Key="L.Subdomain.Save">SAVE</sys:String>
+    <sys:String x:Key="L.Subdomain.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.Subdomain.Results">Discovered subdomains</sys:String>
+    <sys:String x:Key="L.Subdomain.Column.Host">HOST</sys:String>
+    <sys:String x:Key="L.Subdomain.Column.Ip">IP</sys:String>
+    <sys:String x:Key="L.Subdomain.Filter.Csv">CSV files</sys:String>
+    <sys:String x:Key="L.Subdomain.TargetAutomationName">Domain to scan for subdomains</sys:String>
+    <sys:String x:Key="L.Subdomain.ResultsAutomationName">Discovered subdomains</sys:String>
+    <sys:String x:Key="L.Subdomain.Limits">Limits per scan: {0} candidates, {1} parallel queries, {2} ms timeout. Scan domains you are authorised to test.</sys:String>
+
+    <sys:String x:Key="L.Subdomain.Progress.Initial">{0} candidate(s) ready to check.</sys:String>
+    <sys:String x:Key="L.Subdomain.Progress.Scanning">{0}/{1} checked · {2} found</sys:String>
+
+    <sys:String x:Key="L.Subdomain.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.Scanning">Scanning {0}...</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.Finished">{0} subdomain(s) found out of {1} checked.</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.NoResults">No subdomain found out of {0} checked.</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.Summary">{0} · checked {1} · found {2} · failed {3} · {4:0.0}s</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.Copied">Result copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.Saved">Result saved to file.</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.Subdomain.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.Subdomain.Validation.InvalidDomain">Please enter a valid domain such as example.com.</sys:String>
+    <sys:String x:Key="L.Subdomain.Validation.NothingToCopy">There is no result to copy.</sys:String>
+    <sys:String x:Key="L.Subdomain.Validation.NothingToSave">There is no result to save.</sys:String>
+
+    <sys:String x:Key="L.Subdomain.Error.InvalidDomain">Invalid domain: enter a host name such as example.com.</sys:String>
+    <sys:String x:Key="L.Subdomain.Error.DomainNotFound">The domain could not be resolved. Check the spelling and your connection.</sys:String>
+    
+    <!-- ============ DNS Lookup ============ -->
+    <sys:String x:Key="L.Dns.Title">DNS LOOKUP</sys:String>
+    <sys:String x:Key="L.Dns.Target">Domain</sys:String>
+    <sys:String x:Key="L.Dns.Query">LOOKUP</sys:String>
+    <sys:String x:Key="L.Dns.Copy">COPY</sys:String>
+    <sys:String x:Key="L.Dns.Save">SAVE</sys:String>
+    <sys:String x:Key="L.Dns.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.Dns.Results">DNS records</sys:String>
+    <sys:String x:Key="L.Dns.Column.Type">TYPE</sys:String>
+    <sys:String x:Key="L.Dns.Column.Priority">PRIORITY</sys:String>
+    <sys:String x:Key="L.Dns.Column.Value">VALUE</sys:String>
+    <sys:String x:Key="L.Dns.Filter.Csv">CSV files</sys:String>
+    <sys:String x:Key="L.Dns.TargetAutomationName">Domain name to look up</sys:String>
+    <sys:String x:Key="L.Dns.ResultsAutomationName">DNS lookup results</sys:String>
+    <sys:String x:Key="L.Dns.Limits">Timeout: {0} ms. Record types: {1}.</sys:String>
+
+    <sys:String x:Key="L.Dns.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Dns.Status.Querying">Looking up DNS records for {0}...</sys:String>
+    <sys:String x:Key="L.Dns.Status.Finished">{0} DNS record(s) found for {1}.</sys:String>
+    <sys:String x:Key="L.Dns.Status.Summary">{0} · {1} record(s) · A:{2} AAAA:{3} MX:{4} NS:{5} TXT:{6} SOA:{7} · {8:0.0}s</sys:String>
+    <sys:String x:Key="L.Dns.Status.Copied">Result copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Dns.Status.Saved">Result saved to file.</sys:String>
+    <sys:String x:Key="L.Dns.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.Dns.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.Dns.Validation.InvalidDomain">Please enter a valid domain such as example.com.</sys:String>
+    <sys:String x:Key="L.Dns.Validation.NothingToCopy">There is no result to copy.</sys:String>
+    <sys:String x:Key="L.Dns.Validation.NothingToSave">There is no result to save.</sys:String>
+
+    <sys:String x:Key="L.Dns.Error.InvalidDomain">Invalid domain: enter a host name such as example.com.</sys:String>
+    <sys:String x:Key="L.Dns.Error.DomainNotFound">The domain could not be resolved. Check the spelling and your connection.</sys:String>
+    <sys:String x:Key="L.Dns.Error.QueryTimeout">The DNS server did not respond in time. Try again.</sys:String>
+
+    <!-- ============ Reverse DNS ============ -->
+    <sys:String x:Key="L.ReverseDns.Title">REVERSE DNS LOOKUP</sys:String>
+    <sys:String x:Key="L.ReverseDns.Target">IP Address</sys:String>
+    <sys:String x:Key="L.ReverseDns.Lookup">LOOKUP</sys:String>
+    <sys:String x:Key="L.ReverseDns.Copy">COPY</sys:String>
+    <sys:String x:Key="L.ReverseDns.Save">SAVE</sys:String>
+    <sys:String x:Key="L.ReverseDns.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.ReverseDns.Results">Lookup result</sys:String>
+    <sys:String x:Key="L.ReverseDns.Column.Ip">IP</sys:String>
+    <sys:String x:Key="L.ReverseDns.Column.Family">Family</sys:String>
+    <sys:String x:Key="L.ReverseDns.Column.Hostname">Hostname</sys:String>
+    <sys:String x:Key="L.ReverseDns.Column.Aliases">Aliases</sys:String>
+    <sys:String x:Key="L.ReverseDns.TargetAutomationName">IP address to reverse-lookup</sys:String>
+    <sys:String x:Key="L.ReverseDns.ResultsAutomationName">Reverse DNS result</sys:String>
+    <sys:String x:Key="L.ReverseDns.Limits">Timeout: {0} ms. Supports IPv4 and IPv6.</sys:String>
+
+    <sys:String x:Key="L.ReverseDns.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Status.Querying">Looking up PTR record for {0}...</sys:String>
+    <sys:String x:Key="L.ReverseDns.Status.Finished">Resolved: {0}.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Status.Summary">{0} · {1} · {2} alias(es) · {3:0.0}s</sys:String>
+    <sys:String x:Key="L.ReverseDns.Status.Copied">Result copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Status.Saved">Result saved to file.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.ReverseDns.Validation.InvalidIp">Please enter a valid IP address such as 8.8.8.8.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Validation.NothingToCopy">There is no result to copy.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Validation.NothingToSave">There is no result to save.</sys:String>
+
+    <sys:String x:Key="L.ReverseDns.Error.InvalidIp">Invalid IP address. Enter an IPv4 or IPv6 address.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Error.NotFound">No PTR record found for this IP address.</sys:String>
+    <sys:String x:Key="L.ReverseDns.Error.QueryTimeout">The DNS server did not respond in time. Try again.</sys:String>
+    <!-- ============ IP Info ============ -->
+    <sys:String x:Key="L.IpInfo.Title">IP INFO</sys:String>
+    <sys:String x:Key="L.IpInfo.Target">IP Address</sys:String>
+    <sys:String x:Key="L.IpInfo.Lookup">LOOKUP</sys:String>
+    <sys:String x:Key="L.IpInfo.Copy">COPY</sys:String>
+    <sys:String x:Key="L.IpInfo.Save">SAVE</sys:String>
+    <sys:String x:Key="L.IpInfo.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.IpInfo.Results">IP information</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Ip">IP</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Family">Family</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Country">Country</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Region">Region</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.City">City</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Zip">ZIP</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Coordinates">Coordinates</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Timezone">Timezone</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Isp">ISP</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Org">Organization</sys:String>
+    <sys:String x:Key="L.IpInfo.Column.Asn">ASN</sys:String>
+    <sys:String x:Key="L.IpInfo.TargetAutomationName">IP address to look up</sys:String>
+    <sys:String x:Key="L.IpInfo.Limits">Timeout: {0} ms. Powered by ip-api.com (45 requests/minute).</sys:String>
+
+    <sys:String x:Key="L.IpInfo.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.IpInfo.Status.Querying">Looking up {0}...</sys:String>
+    <sys:String x:Key="L.IpInfo.Status.Finished">Located: {0}.</sys:String>
+    <sys:String x:Key="L.IpInfo.Status.Summary">{0} · {1} · {2:0.0}s</sys:String>
+    <sys:String x:Key="L.IpInfo.Status.Copied">Result copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.IpInfo.Status.Saved">Result saved to file.</sys:String>
+    <sys:String x:Key="L.IpInfo.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.IpInfo.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.IpInfo.Validation.InvalidIp">Please enter a valid IP address such as 8.8.8.8.</sys:String>
+    <sys:String x:Key="L.IpInfo.Validation.NothingToCopy">There is no result to copy.</sys:String>
+    <sys:String x:Key="L.IpInfo.Validation.NothingToSave">There is no result to save.</sys:String>
+
+    <sys:String x:Key="L.IpInfo.Error.InvalidIp">Invalid IP address. Enter an IPv4 or IPv6 address.</sys:String>
+    <sys:String x:Key="L.IpInfo.Error.NotFound">IP address not found in the database.</sys:String>
+    <sys:String x:Key="L.IpInfo.Error.RateLimited">Rate limit exceeded. Wait a minute and try again.</sys:String>
+    <sys:String x:Key="L.IpInfo.Error.NetworkError">Network error. Check your connection.</sys:String>
+    <sys:String x:Key="L.IpInfo.Error.QueryTimeout">The service did not respond in time. Try again.</sys:String>
+    <!-- ============ WHOIS Lookup ============ -->
+    <sys:String x:Key="L.Whois.Title">WHOIS LOOKUP</sys:String>
+    <sys:String x:Key="L.Whois.Target">Domain</sys:String>
+    <sys:String x:Key="L.Whois.Lookup">LOOKUP</sys:String>
+    <sys:String x:Key="L.Whois.Copy">COPY</sys:String>
+    <sys:String x:Key="L.Whois.Save">SAVE RAW</sys:String>
+    <sys:String x:Key="L.Whois.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.Whois.Results">WHOIS record</sys:String>
+    <sys:String x:Key="L.Whois.Column.Domain">Domain</sys:String>
+    <sys:String x:Key="L.Whois.Column.WhoisServer">WHOIS Server</sys:String>
+    <sys:String x:Key="L.Whois.Column.Registrar">Registrar</sys:String>
+    <sys:String x:Key="L.Whois.Column.CreationDate">Creation Date</sys:String>
+    <sys:String x:Key="L.Whois.Column.ExpirationDate">Expiration Date</sys:String>
+    <sys:String x:Key="L.Whois.Column.UpdatedDate">Updated Date</sys:String>
+    <sys:String x:Key="L.Whois.Column.NameServers">Name Servers</sys:String>
+    <sys:String x:Key="L.Whois.Column.Statuses">Status</sys:String>
+    <sys:String x:Key="L.Whois.Column.RegistrantOrg">Registrant Org</sys:String>
+    <sys:String x:Key="L.Whois.Column.RegistrantName">Registrant Name</sys:String>
+    <sys:String x:Key="L.Whois.Column.RegistrantCountry">Registrant Country</sys:String>
+    <sys:String x:Key="L.Whois.Column.RegistrantEmail">Registrant Email</sys:String>
+    <sys:String x:Key="L.Whois.TargetAutomationName">Domain to look up in WHOIS</sys:String>
+    <sys:String x:Key="L.Whois.Limits">Timeout: {0} ms. TCP port 43 (WHOIS protocol).</sys:String>
+
+    <sys:String x:Key="L.Whois.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Whois.Status.Querying">Looking up WHOIS for {0}...</sys:String>
+    <sys:String x:Key="L.Whois.Status.Finished">WHOIS record retrieved for {0}.</sys:String>
+    <sys:String x:Key="L.Whois.Status.Summary">{0} (.{1}) · {2:0.0}s</sys:String>
+    <sys:String x:Key="L.Whois.Status.Copied">Result copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.Whois.Status.Saved">Raw WHOIS saved to file.</sys:String>
+    <sys:String x:Key="L.Whois.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.Whois.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.Whois.Validation.InvalidDomain">Please enter a valid domain such as example.com.</sys:String>
+    <sys:String x:Key="L.Whois.Validation.NothingToCopy">There is no result to copy.</sys:String>
+    <sys:String x:Key="L.Whois.Validation.NothingToSave">There is no result to save.</sys:String>
+
+    <sys:String x:Key="L.Whois.Error.InvalidDomain">Invalid domain: enter a host name such as example.com.</sys:String>
+    <sys:String x:Key="L.Whois.Error.UnsupportedTld">No WHOIS server is known for this domain's TLD.</sys:String>
+    <sys:String x:Key="L.Whois.Error.ServerUnreachable">The WHOIS server could not be reached. Try again later.</sys:String>
+    <sys:String x:Key="L.Whois.Error.NoData">No WHOIS record found for this domain.</sys:String>
+    <sys:String x:Key="L.Whois.Error.QueryTimeout">The WHOIS server did not respond in time. Try again.</sys:String>
+    <!-- ============ MAC Lookup ============ -->
+    <sys:String x:Key="L.MacLookup.Title">MAC ADDRESS LOOKUP</sys:String>
+    <sys:String x:Key="L.MacLookup.Target">MAC Address</sys:String>
+    <sys:String x:Key="L.MacLookup.Lookup">LOOKUP</sys:String>
+    <sys:String x:Key="L.MacLookup.Copy">COPY</sys:String>
+    <sys:String x:Key="L.MacLookup.Save">SAVE</sys:String>
+    <sys:String x:Key="L.MacLookup.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.MacLookup.Results">Vendor information</sys:String>
+    <sys:String x:Key="L.MacLookup.Column.Mac">MAC</sys:String>
+    <sys:String x:Key="L.MacLookup.Column.Oui">OUI</sys:String>
+    <sys:String x:Key="L.MacLookup.Column.Vendor">Vendor</sys:String>
+    <sys:String x:Key="L.MacLookup.Column.Address">Address</sys:String>
+    <sys:String x:Key="L.MacLookup.Column.Country">Country</sys:String>
+    <sys:String x:Key="L.MacLookup.Column.Type">Type</sys:String>
+    <sys:String x:Key="L.MacLookup.TargetAutomationName">MAC address to look up</sys:String>
+    <sys:String x:Key="L.MacLookup.Limits">Timeout: {0} ms. Powered by maclookup.app.</sys:String>
+
+    <sys:String x:Key="L.MacLookup.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.MacLookup.Status.Querying">Looking up {0}...</sys:String>
+    <sys:String x:Key="L.MacLookup.Status.Finished">Vendor: {0}.</sys:String>
+    <sys:String x:Key="L.MacLookup.Status.Summary">{0} · {1} · {2:0.0}s</sys:String>
+    <sys:String x:Key="L.MacLookup.Status.Copied">Result copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.MacLookup.Status.Saved">Result saved to file.</sys:String>
+    <sys:String x:Key="L.MacLookup.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.MacLookup.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.MacLookup.Validation.InvalidMac">Please enter a MAC address such as 00:1A:2B:3C:4D:5E.</sys:String>
+    <sys:String x:Key="L.MacLookup.Validation.NothingToCopy">There is no result to copy.</sys:String>
+    <sys:String x:Key="L.MacLookup.Validation.NothingToSave">There is no result to save.</sys:String>
+
+    <sys:String x:Key="L.MacLookup.Error.InvalidMac">Invalid MAC address. Use 12 hex digits (colons, dashes and dots are ignored).</sys:String>
+    <sys:String x:Key="L.MacLookup.Error.VendorNotFound">No vendor found for this MAC address.</sys:String>
+    <sys:String x:Key="L.MacLookup.Error.RateLimited">Rate limit exceeded. Wait a moment and try again.</sys:String>
+    <sys:String x:Key="L.MacLookup.Error.NetworkError">Network error. Check your connection.</sys:String>
+    <sys:String x:Key="L.MacLookup.Error.QueryTimeout">The service did not respond in time. Try again.</sys:String>
+    <!-- ============ SSL Checker ============ -->
+    <sys:String x:Key="L.SslChecker.Title">SSL CERTIFICATE CHECKER</sys:String>
+    <sys:String x:Key="L.SslChecker.Target">Domain</sys:String>
+    <sys:String x:Key="L.SslChecker.Check">CHECK</sys:String>
+    <sys:String x:Key="L.SslChecker.Copy">COPY</sys:String>
+    <sys:String x:Key="L.SslChecker.Save">SAVE</sys:String>
+    <sys:String x:Key="L.SslChecker.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.SslChecker.Results">Certificate details</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.Domain">Domain</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.Status">Status</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.Subject">Subject</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.Issuer">Issuer</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.CommonName">Common Name</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.Validity">Validity</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.RemainingDays">Remaining Days</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.SerialNumber">Serial Number</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.SignatureAlgorithm">Signature Algorithm</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.TlsProtocol">TLS Protocol</sys:String>
+    <sys:String x:Key="L.SslChecker.Column.ChainIssues">Chain Issues</sys:String>
+    <sys:String x:Key="L.SslChecker.TargetAutomationName">Domain to check SSL certificate for</sys:String>
+    <sys:String x:Key="L.SslChecker.Limits">Timeout: {0} ms. TCP port 443 (TLS handshake).</sys:String>
+
+    <sys:String x:Key="L.SslChecker.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.Checking">Checking certificate for {0}...</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.Valid">✓ Valid certificate · {0} day(s) remaining.</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.Invalid">⚠ Certificate issue: {0}.</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.Summary">{0} · {1} · {2:0.0}s</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.Copied">Result copied to the clipboard.</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.Saved">Result saved to file.</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.SaveCancelled">Save cancelled.</sys:String>
+    <sys:String x:Key="L.SslChecker.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.SslChecker.Validation.InvalidDomain">Please enter a valid domain such as example.com.</sys:String>
+    <sys:String x:Key="L.SslChecker.Validation.NothingToCopy">There is no result to copy.</sys:String>
+    <sys:String x:Key="L.SslChecker.Validation.NothingToSave">There is no result to save.</sys:String>
+
+    <sys:String x:Key="L.SslChecker.Error.InvalidDomain">Invalid domain: enter a host name such as example.com.</sys:String>
+    <sys:String x:Key="L.SslChecker.Error.ConnectionFailed">Could not connect to the server on port 443.</sys:String>
+    <sys:String x:Key="L.SslChecker.Error.Timeout">Connection timed out. Try again.</sys:String>
+    <sys:String x:Key="L.SslChecker.Error.NoCertificate">The server did not present a certificate.</sys:String>
+    
+
+
 </ResourceDictionary>
