@@ -1,13 +1,27 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class ReverseDnsPage : UserControl
+/// <summary>
+/// Reverse DNS sayfası. IP doğrulama, timeout ve iptal servis tarafından yönetilir.
+/// </summary>
+public partial class ReverseDnsPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.ReverseDnsViewModel>
 {
-    public ReverseDnsPage(ReverseDnsViewModel viewModel)
+    public ViewModels.ReverseDnsViewModel ViewModel { get; }
+
+    public ReverseDnsPage(ViewModels.ReverseDnsViewModel viewModel)
     {
+        ViewModel = viewModel;
         InitializeComponent();
-        DataContext = viewModel;
+        DataContext = this;
+
+        ViewModel.RequestTargetFocus += FocusTarget;
+    }
+
+    private void FocusTarget()
+    {
+        if (!IsLoaded) return;
+        TargetTextBox.Focus();
+        TargetTextBox.SelectAll();
     }
 }

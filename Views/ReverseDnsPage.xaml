@@ -7,98 +7,194 @@
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="REVERSE DNS" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.ReverseDns.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <Border Grid.Row="1" 
-                Padding="20">
-
+        <!-- Hedef -->
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,0,0,10">
             <StackPanel>
-                <TextBlock Text="IP Address" 
-                           Style="{StaticResource LabelPrimary}" 
-                           Margin="0,0,0,10"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{DynamicResource L.ReverseDns.Target}"
+                               Style="{StaticResource LabelPrimary}"
+                               VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox x:Name="TargetTextBox"
+                             Text="{Binding ViewModel.TargetIp, UpdateSourceTrigger=PropertyChanged}"
+                             Width="280" Height="32" VerticalContentAlignment="Center"
+                             FontFamily="{StaticResource MonoFont}"
+                             Margin="0,0,10,0" TabIndex="0"
+                             AutomationProperties.Name="{DynamicResource L.ReverseDns.TargetAutomationName}"/>
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBox Grid.Column="0" 
-                             Text="{Binding TargetIp, UpdateSourceTrigger=PropertyChanged}"
-                             ToolTip="example: 8.8.8.8"/>
-
-                    <Button Grid.Column="1" 
-                            Command="{Binding LookupCommand}"
-                            Content="LOOKUP"
-                            Height="40"
-                            Width="100"
-                            Margin="10,0,0,0"
+                    <Button Content="{DynamicResource L.ReverseDns.Lookup}"
+                            Command="{Binding ViewModel.LookupCommand}"
                             Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
-                </Grid>
-
-                <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                    <ui:ProgressRing IsIndeterminate="True" 
-                                     Width="16" 
-                                     Height="16" 
-                                     Margin="0,0,10,0"
-                                     Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                     Foreground="{StaticResource AccentPrimaryBrush}"/>
-                    <TextBlock Text="{Binding StatusText}" 
-                               Foreground="{StaticResource TextSecondaryBrush}"
-                               FontSize="11"
-                               VerticalAlignment="Center"/>
+                            Background="{StaticResource GreenBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="32" MinWidth="100" TabIndex="1"/>
                 </StackPanel>
 
-                <!-- Sonuç -->
-                <Border Style="{StaticResource OptionsPanel}"
-                        Margin="0,15,0,0"
-                        Padding="15">
-                    <StackPanel>
-                        <TextBlock Text="HOSTNAME / DOMAIN:" 
-                                   Style="{StaticResource LabelSecondary}" 
-                                   Margin="0,0,0,10"/>
-
-                        <TextBlock Text="{Binding Result}" 
-                                   Style="{StaticResource LabelPrimary}"
-                                   FontFamily="{StaticResource MonoFont}"
-                                   FontSize="13"
-                                   TextWrapping="Wrap"/>
-                    </StackPanel>
-                </Border>
-
-                <UniformGrid Columns="2" Margin="0,15,0,0">
-                    <Button Command="{Binding CopyResultCommand}" 
-                            Content="COPY RESULT"
-                            Height="34" 
-                            Margin="0,0,5,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
-                    <Button Command="{Binding ClearCommand}" 
-                            Content="CLEAR"
-                            Height="34" 
-                            Margin="5,0,0,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource RedBrush}"/>
-                </UniformGrid>
+                <TextBlock Text="{Binding ViewModel.LimitsText}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Opacity="0.6" FontSize="10" Margin="0,10,0,0" TextWrapping="Wrap"/>
             </StackPanel>
         </Border>
 
-        <TextBlock Grid.Row="2" 
-                   Text="🌐 Reverse DNS - Find hostname or domain from an IP address (PTR record lookup)"
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="10"
-                   HorizontalAlignment="Center"
-                   Margin="0,15,0,0"/>
+        <!-- Sonuçlar -->
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,5">
+                <TextBlock Text="{DynamicResource L.ReverseDns.Results}" Style="{StaticResource LabelPrimary}" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding ViewModel.SummaryText}"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Center"
+                           TextWrapping="Wrap" MaxWidth="620"/>
+            </Grid>
+
+            <Border Grid.Row="1"
+                    Background="{StaticResource OptionsBgBrush}"
+                    BorderBrush="{StaticResource OptionsBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- IP Address -->
+                    <Grid Grid.Row="0" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource L.ReverseDns.Column.Ip}"
+                                   Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.TargetIp}"
+                                   Foreground="{StaticResource AccentPrimaryBrush}"
+                                   FontFamily="{StaticResource MonoFont}"
+                                   FontWeight="Bold"/>
+                    </Grid>
+
+                    <!-- Address Family -->
+                    <Grid Grid.Row="1" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource L.ReverseDns.Column.Family}"
+                                   Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.AddressFamily}"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   FontFamily="{StaticResource MonoFont}"/>
+                    </Grid>
+
+                    <!-- Hostname -->
+                    <Grid Grid.Row="2" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource L.ReverseDns.Column.Hostname}"
+                                   Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.HostName}"
+                                   Foreground="{StaticResource AccentPrimaryBrush}"
+                                   FontFamily="{StaticResource MonoFont}"
+                                   FontWeight="Bold"
+                                   FontSize="14"
+                                   TextWrapping="Wrap"/>
+                    </Grid>
+
+                    <!-- Aliases -->
+                    <TextBlock Grid.Row="3"
+                               Text="{DynamicResource L.ReverseDns.Column.Aliases}"
+                               Style="{StaticResource LabelSecondary}"
+                               Margin="0,8,0,4"
+                               Visibility="{Binding ViewModel.HasAliases, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                    <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Auto" MaxHeight="200">
+                        <ItemsControl ItemsSource="{Binding ViewModel.Aliases}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"
+                                               Foreground="{StaticResource TextSecondaryBrush}"
+                                               FontFamily="{StaticResource MonoFont}"
+                                               FontSize="11"
+                                               Margin="15,2,0,2"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Alt bar -->
+        <Border Grid.Row="3" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <UniformGrid Grid.Row="0" Columns="4">
+                    <Button Content="{DynamicResource L.ReverseDns.Copy}"
+                            Command="{Binding ViewModel.CopyResultCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="0,0,5,0" TabIndex="2"/>
+                    <Button Content="{DynamicResource L.ReverseDns.Save}"
+                            Command="{Binding ViewModel.SaveResultCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource AccentPrimaryBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="5,0,5,0" TabIndex="3"/>
+                    <Button Content="{DynamicResource L.ReverseDns.Clear}"
+                            Command="{Binding ViewModel.ClearCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="5,0,5,0" TabIndex="4"/>
+                    <Button Content="{DynamicResource L.Common.Cancel}"
+                            Command="{Binding ViewModel.LookupCancelCommand}"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusDangerBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            Height="34" Margin="5,0,0,0" TabIndex="5"
+                            Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </UniformGrid>
+
+                <Grid Grid.Row="1" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0"
+                                     Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding ViewModel.StatusText}"
+                               Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                               FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center"
+                               AutomationProperties.LiveSetting="Polite"/>
+                </Grid>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
