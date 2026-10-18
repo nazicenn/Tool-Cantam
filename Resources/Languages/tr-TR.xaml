@@ -1193,6 +1193,37 @@
     <sys:String x:Key="L.HttpHeader.Error.UnsupportedScheme">Yalnızca http:// ve https:// kullanılabilir.</sys:String>
     <sys:String x:Key="L.HttpHeader.Error.HttpError">HTTP isteği başarısız oldu.</sys:String>
     <sys:String x:Key="L.HttpHeader.Error.Timeout">İstek zaman aşımına uğradı.</sys:String>
-    
+    <!-- ============ Text Sorter ============ -->
+    <sys:String x:Key="L.TextSorter.Title">METİN SIRALAYICI</sys:String>
+    <sys:String x:Key="L.TextSorter.IgnoreCase">Büyük/küçük harf yoksay</sys:String>
+    <sys:String x:Key="L.TextSorter.RemoveEmpty">Boş satırları kaldır</sys:String>
+    <sys:String x:Key="L.TextSorter.Trim">Satırları kırp</sys:String>
+    <sys:String x:Key="L.TextSorter.RemoveDuplicates">Yinelenenleri kaldır</sys:String>
+    <sys:String x:Key="L.TextSorter.Label.Direction">Yön</sys:String>
+    <sys:String x:Key="L.TextSorter.Label.Mode">Karşılaştırma</sys:String>
+    <sys:String x:Key="L.TextSorter.Label.Input">GİRİŞ</sys:String>
+    <sys:String x:Key="L.TextSorter.Label.Output">ÇIKIŞ</sys:String>
+    <sys:String x:Key="L.TextSorter.Sort">SIRALA</sys:String>
+    <sys:String x:Key="L.TextSorter.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.TextSorter.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.TextSorter.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.TextSorter.LineInfo">{0} → {1} satır · boş kaldırıldı: {2} · yinelenen kaldırıldı: {3}</sys:String>
+    <sys:String x:Key="L.TextSorter.Limits">Maks giriş: {0} MB.</sys:String>
+    <sys:String x:Key="L.TextSorter.Filter.Text">Metin Dosyaları (*.txt)|*.txt|Tüm Dosyalar (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.TextSorter.Automation.Input">Sıralanacak metin</sys:String>
+    <sys:String x:Key="L.TextSorter.Automation.Output">Sıralanmış sonuç</sys:String>
+    <sys:String x:Key="L.TextSorter.Automation.Direction">Sıralama yönü</sys:String>
+    <sys:String x:Key="L.TextSorter.Automation.Mode">Karşılaştırma modu</sys:String>
+    <sys:String x:Key="L.TextSorter.Automation.Sort">Metni sırala</sys:String>
+    <sys:String x:Key="L.TextSorter.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.TextSorter.Status.Sorted">✓ Sıralandı · {0} satır.</sys:String>
+    <sys:String x:Key="L.TextSorter.Status.Copied">Panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.TextSorter.Status.Saved">Kaydedildi: {0}</sys:String>
+    <sys:String x:Key="L.TextSorter.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.TextSorter.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.TextSorter.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
+    <sys:String x:Key="L.TextSorter.Error.EmptyInput">Lütfen sıralanacak metni girin.</sys:String>
+    <sys:String x:Key="L.TextSorter.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
+
 
 </ResourceDictionary>

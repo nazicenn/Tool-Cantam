@@ -1,14 +1,15 @@
-﻿// Views/TextSorterPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class TextSorterPage : UserControl
+public partial class TextSorterPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.TextSorterViewModel>
 {
-    public TextSorterPage(TextSorterViewModel viewModel)
+    public ViewModels.TextSorterViewModel ViewModel { get; }
+
+    public TextSorterPage(ViewModels.TextSorterViewModel viewModel)
     {
+        ViewModel = viewModel;
+        DataContext = this;
         InitializeComponent();
-        DataContext = viewModel;
     }
 }

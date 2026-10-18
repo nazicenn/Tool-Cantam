@@ -1192,6 +1192,37 @@
     <sys:String x:Key="L.HttpHeader.Error.UnsupportedScheme">Only http:// and https:// are allowed.</sys:String>
     <sys:String x:Key="L.HttpHeader.Error.HttpError">HTTP request failed.</sys:String>
     <sys:String x:Key="L.HttpHeader.Error.Timeout">Request timed out.</sys:String>
-    
+    <!-- ============ Text Sorter ============ -->
+        <sys:String x:Key="L.TextSorter.Title">TEXT SORTER</sys:String>
+        <sys:String x:Key="L.TextSorter.IgnoreCase">Ignore case</sys:String>
+        <sys:String x:Key="L.TextSorter.RemoveEmpty">Remove empty lines</sys:String>
+        <sys:String x:Key="L.TextSorter.Trim">Trim lines</sys:String>
+        <sys:String x:Key="L.TextSorter.RemoveDuplicates">Remove duplicates</sys:String>
+        <sys:String x:Key="L.TextSorter.Label.Direction">Direction</sys:String>
+        <sys:String x:Key="L.TextSorter.Label.Mode">Comparison</sys:String>
+        <sys:String x:Key="L.TextSorter.Label.Input">INPUT</sys:String>
+        <sys:String x:Key="L.TextSorter.Label.Output">OUTPUT</sys:String>
+        <sys:String x:Key="L.TextSorter.Sort">SORT</sys:String>
+        <sys:String x:Key="L.TextSorter.Copy">COPY</sys:String>
+        <sys:String x:Key="L.TextSorter.Save">SAVE</sys:String>
+        <sys:String x:Key="L.TextSorter.Clear">CLEAR</sys:String>
+        <sys:String x:Key="L.TextSorter.LineInfo">{0} → {1} lines · empty removed: {2} · dup removed: {3}</sys:String>
+        <sys:String x:Key="L.TextSorter.Limits">Max input: {0} MB.</sys:String>
+        <sys:String x:Key="L.TextSorter.Filter.Text">Text Files (*.txt)|*.txt|All Files (*.*)|*.*</sys:String>
+        <sys:String x:Key="L.TextSorter.Automation.Input">Text to sort</sys:String>
+        <sys:String x:Key="L.TextSorter.Automation.Output">Sorted result</sys:String>
+        <sys:String x:Key="L.TextSorter.Automation.Direction">Sort direction</sys:String>
+        <sys:String x:Key="L.TextSorter.Automation.Mode">Comparison mode</sys:String>
+        <sys:String x:Key="L.TextSorter.Automation.Sort">Sort text</sys:String>
+        <sys:String x:Key="L.TextSorter.Status.Ready">Ready.</sys:String>
+        <sys:String x:Key="L.TextSorter.Status.Sorted">✓ Sorted · {0} lines.</sys:String>
+        <sys:String x:Key="L.TextSorter.Status.Copied">Copied to clipboard.</sys:String>
+        <sys:String x:Key="L.TextSorter.Status.Saved">Saved: {0}</sys:String>
+        <sys:String x:Key="L.TextSorter.Status.Cleared">Cleared. Ready.</sys:String>
+        <sys:String x:Key="L.TextSorter.Validation.NothingToCopy">Nothing to copy.</sys:String>
+        <sys:String x:Key="L.TextSorter.Validation.NothingToSave">Nothing to save.</sys:String>
+        <sys:String x:Key="L.TextSorter.Error.EmptyInput">Please enter text to sort.</sys:String>
+        <sys:String x:Key="L.TextSorter.Error.InputTooLarge">Input is too large. Limit is 10 MB.</sys:String>
+
 
 </ResourceDictionary>
