@@ -1,14 +1,8 @@
-﻿// Views/SqlFormatterPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class SqlFormatterPage : UserControl
+public partial class SqlFormatterPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.SqlFormatterViewModel>
 {
-    public SqlFormatterPage(SqlFormatterViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.SqlFormatterViewModel ViewModel { get; }
+    public SqlFormatterPage(ViewModels.SqlFormatterViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
