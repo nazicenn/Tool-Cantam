@@ -2114,6 +2114,25 @@
     <sys:String x:Key="L.WordCounter.Status.Cleared">Temizlendi.</sys:String>
     <sys:String x:Key="L.WordCounter.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
     <sys:String x:Key="L.WordCounter.Error.InputTooLarge">Girdi çok büyük.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Title">RENK SEÇİCİ</sys:String>
+    <sys:String x:Key="L.ColorPicker.Preview">ÖNİZLEME</sys:String>
+    <sys:String x:Key="L.ColorPicker.Apply">UYGULA</sys:String>
+    <sys:String x:Key="L.ColorPicker.Random">RASTGELE</sys:String>
+    <sys:String x:Key="L.ColorPicker.CopyHex">HEX KOPYALA</sys:String>
+    <sys:String x:Key="L.ColorPicker.CopyRgb">RGB KOPYALA</sys:String>
+    <sys:String x:Key="L.ColorPicker.CopyHsl">HSL KOPYALA</sys:String>
+    <sys:String x:Key="L.ColorPicker.Clear">SIFIRLA</sys:String>
+    <sys:String x:Key="L.ColorPicker.Limits">Maks HEX: {0} karakter.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Status.HexApplied">✓ Uygulandı: {0}</sys:String>
+    <sys:String x:Key="L.ColorPicker.Status.CopiedHex">HEX kopyalandı.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Status.CopiedRgb">RGB kopyalandı.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Status.CopiedHsl">HSL kopyalandı.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Status.Random">Rastgele renk.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Status.Cleared">Sıfırlandı.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Error.InvalidHex">Geçersiz HEX.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Error.InvalidRgb">Geçersiz RGB.</sys:String>
 
 
 

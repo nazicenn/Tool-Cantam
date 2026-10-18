@@ -2113,6 +2113,25 @@
     <sys:String x:Key="L.WordCounter.Status.Cleared">Cleared.</sys:String>
     <sys:String x:Key="L.WordCounter.Validation.NothingToCopy">Nothing to copy.</sys:String>
     <sys:String x:Key="L.WordCounter.Error.InputTooLarge">Input too large.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Title">COLOR PICKER</sys:String>
+    <sys:String x:Key="L.ColorPicker.Preview">PREVIEW</sys:String>
+    <sys:String x:Key="L.ColorPicker.Apply">APPLY</sys:String>
+    <sys:String x:Key="L.ColorPicker.Random">RANDOM</sys:String>
+    <sys:String x:Key="L.ColorPicker.CopyHex">COPY HEX</sys:String>
+    <sys:String x:Key="L.ColorPicker.CopyRgb">COPY RGB</sys:String>
+    <sys:String x:Key="L.ColorPicker.CopyHsl">COPY HSL</sys:String>
+    <sys:String x:Key="L.ColorPicker.Clear">RESET</sys:String>
+    <sys:String x:Key="L.ColorPicker.Limits">Max HEX: {0} chars.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Status.HexApplied">✓ Applied: {0}</sys:String>
+    <sys:String x:Key="L.ColorPicker.Status.CopiedHex">HEX copied.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Status.CopiedRgb">RGB copied.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Status.CopiedHsl">HSL copied.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Status.Random">Random color.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Status.Cleared">Reset.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Error.InvalidHex">Invalid HEX.</sys:String>
+    <sys:String x:Key="L.ColorPicker.Error.InvalidRgb">Invalid RGB.</sys:String>
 
 
 
