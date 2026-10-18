@@ -1,10 +1,8 @@
-﻿<!-- Views/CsvToJsonPage.xaml -->
-<UserControl x:Class="tool_cantam.Views.CsvToJsonPage"
+﻿<UserControl x:Class="tool_cantam.Views.CsvToJsonPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              Background="{StaticResource BorderDefaultBrush}">
-
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -13,106 +11,72 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="CSV TO JSON" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource L.CsvToJson.Title}" Style="{StaticResource LabelPrimary}" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <!-- Settings -->
-        <Border Grid.Row="1" 
-                Style="{StaticResource OptionsPanel}" 
-                Padding="15" 
-                Margin="0,0,0,15">
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="15" Margin="0,0,0,12">
             <StackPanel>
                 <WrapPanel>
-                    <Grid Margin="0,0,20,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Separator:" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                        <ComboBox Grid.Column="1" SelectedItem="{Binding Separator}" Width="80" Height="30">
-                            <ComboBoxItem>,</ComboBoxItem>
-                            <ComboBoxItem>;</ComboBoxItem>
-                            <ComboBoxItem>\t</ComboBoxItem>
-                            <ComboBoxItem>|</ComboBoxItem>
-                        </ComboBox>
-                    </Grid>
-                    <CheckBox Content="First Row as Header" IsChecked="{Binding FirstRowAsHeader}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{DynamicResource L.CsvToJson.Delimiter}" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <ComboBox ItemsSource="{Binding ViewModel.Delimiters}" SelectedItem="{Binding ViewModel.Delimiter}" Width="60" Height="28" TabIndex="0" Margin="0,0,20,0"/>
+                    <CheckBox Content="{DynamicResource L.CsvToJson.FirstRowAsHeader}" IsChecked="{Binding ViewModel.FirstRowAsHeader}" Margin="0,0,20,5" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="1"/>
+                    <CheckBox Content="{DynamicResource L.CsvToJson.TrimValues}" IsChecked="{Binding ViewModel.TrimValues}" Margin="0,0,20,5" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="2"/>
+                    <CheckBox Content="{DynamicResource L.CsvToJson.DetectTypes}" IsChecked="{Binding ViewModel.DetectTypes}" Margin="0,0,20,5" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="3"/>
+                    <TextBlock Text="{DynamicResource L.CsvToJson.IndentSize}" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <ComboBox ItemsSource="{Binding ViewModel.IndentSizes}" SelectedItem="{Binding ViewModel.IndentSize}" Width="60" Height="28" TabIndex="4"/>
                 </WrapPanel>
-
-                <UniformGrid Columns="4" Margin="0,10,0,0">
-                    <Button Command="{Binding ConvertCommand}" 
-                            Content="CONVERT" Height="35" Margin="0,0,5,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
-                    <Button Command="{Binding LoadSampleCommand}" 
-                            Content="SAMPLE" Height="35" Margin="5,0,5,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
-                    <Button Command="{Binding ClearCommand}" 
-                            Content="CLEAR" Height="35" Margin="5,0,5,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource RedBrush}"/>
-                    <Button Command="{Binding CopyOutputCommand}" 
-                            Content="COPY" Height="35" Margin="5,0,0,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
+                <UniformGrid Columns="5" Margin="0,10,0,0">
+                    <Button Command="{Binding ViewModel.ConvertCommand}" Content="{DynamicResource L.CsvToJson.Convert}" Height="35" Margin="0,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource GreenBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="5"/>
+                    <Button Command="{Binding ViewModel.LoadSampleCommand}" Content="{DynamicResource L.CsvToJson.Sample}" Height="35" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="6"/>
+                    <Button Command="{Binding ViewModel.CopyOutputCommand}" Content="{DynamicResource L.CsvToJson.Copy}" Height="35" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="7"/>
+                    <Button Command="{Binding ViewModel.SaveOutputCommand}" Content="{DynamicResource L.CsvToJson.Save}" Height="35" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource AccentPrimaryBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="8"/>
+                    <Button Command="{Binding ViewModel.ClearCommand}" Content="{DynamicResource L.CsvToJson.Clear}" Height="35" Margin="4,0,0,0" Style="{StaticResource ModernButton}" Background="{StaticResource RedBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="9"/>
                 </UniformGrid>
             </StackPanel>
         </Border>
 
-        <!-- Input/Output -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
-            <!-- Input CSV -->
-            <Border Grid.Column="0" 
-                    Padding="15" 
-                    Margin="0,0,10,0">
-                <StackPanel>
-                    <TextBlock Text="INPUT CSV" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
-                    <TextBox Text="{Binding InputCsv, UpdateSourceTrigger=PropertyChanged}"
-                             TextWrapping="Wrap"
-                             AcceptsReturn="True"
-                             MinHeight="300"
-                             VerticalScrollBarVisibility="Auto"
-                             FontFamily="Consolas"/>
-                </StackPanel>
+            <Border Grid.Column="0" Style="{StaticResource OptionsPanel}" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource L.CsvToJson.Label.Input}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                    <TextBox Grid.Row="1" Text="{Binding ViewModel.InputCsv, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" FontFamily="{StaticResource MonoFont}" Background="{StaticResource OptionsBgBrush}" Foreground="{StaticResource TextPrimaryBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" Padding="8" TabIndex="10"/>
+                </Grid>
             </Border>
-
-            <!-- Output JSON -->
-            <Border Grid.Column="1" 
-                    Padding="15" 
-                    Margin="10,0,0,0">
-                <StackPanel>
-                    <TextBlock Text="OUTPUT JSON" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
-                    <TextBox Text="{Binding OutputJson}"
-                             IsReadOnly="True"
-                             TextWrapping="Wrap"
-                             MinHeight="300"
-                             VerticalScrollBarVisibility="Auto"
-                             FontFamily="Consolas"/>
-                    <Button Command="{Binding CopyOutputCommand}" 
-                            Content="COPY OUTPUT" Height="30" Width="130" Margin="0,10,0,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"
-                            HorizontalAlignment="Right"/>
-                </StackPanel>
+            <Border Grid.Column="2" Style="{StaticResource OptionsPanel}" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource L.CsvToJson.Label.Output}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                    <Border Grid.Row="1" Background="{StaticResource OptionsBgBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" BorderThickness="1" CornerRadius="4" Padding="8">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,0">
+                            <TextBlock Text="{Binding ViewModel.OutputJson}" FontFamily="{StaticResource MonoFont}" Foreground="{StaticResource TextPrimaryBrush}" TextWrapping="Wrap"/>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
             </Border>
         </Grid>
 
-        <TextBlock Grid.Row="3" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,10,0,0"/>
+        <Border Grid.Row="3" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0" Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Grid.Column="1" Text="{Binding ViewModel.StatusText}" Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}" FontSize="11" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="2" Text="{Binding ViewModel.LimitsText}" Foreground="{StaticResource TextPrimaryBrush}" Opacity="0.6" FontSize="10"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

@@ -1,14 +1,8 @@
-﻿// Views/CsvToJsonPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class CsvToJsonPage : UserControl
+public partial class CsvToJsonPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.CsvToJsonViewModel>
 {
-    public CsvToJsonPage(CsvToJsonViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.CsvToJsonViewModel ViewModel { get; }
+    public CsvToJsonPage(ViewModels.CsvToJsonViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
