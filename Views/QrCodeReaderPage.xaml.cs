@@ -1,14 +1,15 @@
-﻿// Views/QrCodeReaderPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class QrCodeReaderPage : UserControl
+public partial class QrCodeReaderPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.QrCodeReaderViewModel>
 {
-    public QrCodeReaderPage(QrCodeReaderViewModel viewModel)
+    public ViewModels.QrCodeReaderViewModel ViewModel { get; }
+
+    public QrCodeReaderPage(ViewModels.QrCodeReaderViewModel viewModel)
     {
+        ViewModel = viewModel;
+        DataContext = this;
         InitializeComponent();
-        DataContext = viewModel;
     }
 }

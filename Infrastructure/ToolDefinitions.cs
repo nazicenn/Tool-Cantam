@@ -311,6 +311,15 @@ public static class ToolDefinitions
             Execute = async (input) => "QR code generated"
         });
 
+        ToolRegistry.Register(new ToolDefinition
+        {
+            Name = "QR Code Reader",
+            Description = "Decode QR codes from image files",
+            Category = ToolCategory.ApiWeb,
+            ViewModelType = typeof(QrCodeReaderViewModel),
+            ViewType = typeof(QrCodeReaderPage)
+        });
+
         // ==================== NETWORK & SCANNER ====================
         ToolRegistry.Register(new ToolDefinition
         {
