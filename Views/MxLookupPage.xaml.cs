@@ -1,14 +1,8 @@
-﻿// Views/MxLookupPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class MxLookupPage : UserControl
+public partial class MxLookupPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.MxLookupViewModel>
 {
-    public MxLookupPage(MxLookupViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.MxLookupViewModel ViewModel { get; }
+    public MxLookupPage(ViewModels.MxLookupViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
