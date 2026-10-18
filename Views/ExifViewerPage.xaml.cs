@@ -1,14 +1,8 @@
-﻿// Views/ExifViewerPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class ExifViewerPage : UserControl
+public partial class ExifViewerPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.ExifViewerViewModel>
 {
-    public ExifViewerPage(ExifViewerViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.ExifViewerViewModel ViewModel { get; }
+    public ExifViewerPage(ViewModels.ExifViewerViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
