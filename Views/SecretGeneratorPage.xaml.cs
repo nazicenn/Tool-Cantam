@@ -1,14 +1,8 @@
-﻿// Views/SecretGeneratorPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class SecretGeneratorPage : UserControl
+public partial class SecretGeneratorPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.SecretGeneratorViewModel>
 {
-    public SecretGeneratorPage(SecretGeneratorViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.SecretGeneratorViewModel ViewModel { get; }
+    public SecretGeneratorPage(ViewModels.SecretGeneratorViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
