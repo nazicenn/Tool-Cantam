@@ -1,14 +1,8 @@
-﻿// Views/CertificateDecoderPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class CertificateDecoderPage : UserControl
+public partial class CertificateDecoderPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.CertificateDecoderViewModel>
 {
-    public CertificateDecoderPage(CertificateDecoderViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.CertificateDecoderViewModel ViewModel { get; }
+    public CertificateDecoderPage(ViewModels.CertificateDecoderViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
