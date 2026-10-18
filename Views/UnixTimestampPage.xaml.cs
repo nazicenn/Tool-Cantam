@@ -1,13 +1,15 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class UnixTimestampPage : UserControl
+public partial class UnixTimestampPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.UnixTimestampViewModel>
 {
-    public UnixTimestampPage(UnixTimestampViewModel viewModel)
+    public ViewModels.UnixTimestampViewModel ViewModel { get; }
+
+    public UnixTimestampPage(ViewModels.UnixTimestampViewModel viewModel)
     {
+        ViewModel = viewModel;
+        DataContext = this;
         InitializeComponent();
-        DataContext = viewModel;
     }
 }

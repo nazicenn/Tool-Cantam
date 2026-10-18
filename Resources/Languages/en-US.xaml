@@ -1071,7 +1071,48 @@
     <sys:String x:Key="L.Metadata.Error.CorruptImage">The image file appears to be corrupted.</sys:String>
     <sys:String x:Key="L.Metadata.Error.IoError">Could not read or write the file. Check permissions and free space.</sys:String>
     <sys:String x:Key="L.Metadata.Error.NoOptionsSelected">Select at least one metadata type to remove.</sys:String>
-    
-    
+    <!-- ============ Unix Timestamp ============ -->
+    <sys:String x:Key="L.UnixTimestamp.Title">UNIX TIMESTAMP CONVERTER</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Section.ToDate">TIMESTAMP → DATE</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Section.ToTimestamp">DATE → TIMESTAMP</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Timestamp">Unix Timestamp</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Date">Date (yyyy-MM-dd HH:mm:ss)</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Readable">Readable</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Iso">ISO 8601</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Rfc">RFC 1123</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Seconds">Unix Seconds</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Millis">Unix Milliseconds</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Current">Current:</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Now">NOW</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Convert">CONVERT</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Copy">COPY</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Limits">Range: {0}..{1} seconds.</sys:String>
+
+    <sys:String x:Key="L.UnixTimestamp.Automation.TimestampInput">Unix timestamp input</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Automation.DateInput">Date input</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Automation.ConvertToDate">Convert timestamp to date</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Automation.ConvertToTimestamp">Convert date to timestamp</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Automation.Unit">Timestamp unit</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Automation.Mode">Display mode</sys:String>
+
+    <sys:String x:Key="L.UnixTimestamp.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.ConvertedToDate">✓ Converted · {0}</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.ConvertedToTimestamp">✓ Unix seconds: {0}</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.NowLoaded">Current time loaded.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.CopiedReadable">Readable copied.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.CopiedIso">ISO 8601 copied.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.CopiedRfc">RFC 1123 copied.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.CopiedSeconds">Seconds copied.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.CopiedMillis">Milliseconds copied.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.UnixTimestamp.Validation.NothingToCopy">Nothing to copy.</sys:String>
+
+    <sys:String x:Key="L.UnixTimestamp.Error.EmptyInput">Please enter a value.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Error.InvalidNumber">Invalid number.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Error.OutOfRange">Value is outside supported range.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Error.InvalidDate">Unrecognized date format.</sys:String>
+
 
 </ResourceDictionary>

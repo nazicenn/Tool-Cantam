@@ -1072,6 +1072,48 @@
     <sys:String x:Key="L.Metadata.Error.CorruptImage">Resim dosyası bozuk görünüyor.</sys:String>
     <sys:String x:Key="L.Metadata.Error.IoError">Dosya okunamadı veya yazılamadı. İzinleri ve boş disk alanını kontrol edin.</sys:String>
     <sys:String x:Key="L.Metadata.Error.NoOptionsSelected">En az bir metadata türü seçin.</sys:String>
+    <!-- ============ Unix Timestamp ============ -->
+    <sys:String x:Key="L.UnixTimestamp.Title">UNIX ZAMAN DAMGASI DÖNÜŞTÜRÜCÜ</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Section.ToDate">ZAMAN DAMGASI → TARİH</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Section.ToTimestamp">TARİH → ZAMAN DAMGASI</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Timestamp">Unix Zaman Damgası</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Date">Tarih (yyyy-MM-dd HH:mm:ss)</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Readable">Okunabilir</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Iso">ISO 8601</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Rfc">RFC 1123</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Seconds">Unix Saniye</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Millis">Unix Milisaniye</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Label.Current">Şu an:</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Now">ŞİMDİ</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Convert">DÖNÜŞTÜR</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Limits">Aralık: {0}..{1} saniye.</sys:String>
+
+    <sys:String x:Key="L.UnixTimestamp.Automation.TimestampInput">Unix zaman damgası girişi</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Automation.DateInput">Tarih girişi</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Automation.ConvertToDate">Zaman damgasını tarihe çevir</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Automation.ConvertToTimestamp">Tarihi zaman damgasına çevir</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Automation.Unit">Zaman damgası birimi</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Automation.Mode">Görüntüleme modu</sys:String>
+
+    <sys:String x:Key="L.UnixTimestamp.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.ConvertedToDate">✓ Dönüştürüldü · {0}</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.ConvertedToTimestamp">✓ Unix saniye: {0}</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.NowLoaded">Şu anki zaman yüklendi.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.CopiedReadable">Okunabilir kopyalandı.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.CopiedIso">ISO 8601 kopyalandı.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.CopiedRfc">RFC 1123 kopyalandı.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.CopiedSeconds">Saniye kopyalandı.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.CopiedMillis">Milisaniye kopyalandı.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.UnixTimestamp.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+
+    <sys:String x:Key="L.UnixTimestamp.Error.EmptyInput">Lütfen bir değer girin.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Error.InvalidNumber">Geçersiz sayı.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Error.OutOfRange">Değer desteklenen aralık dışında.</sys:String>
+    <sys:String x:Key="L.UnixTimestamp.Error.InvalidDate">Tanınmayan tarih formatı.</sys:String>
     
-    
+
 </ResourceDictionary>

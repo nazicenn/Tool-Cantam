@@ -12,177 +12,260 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="UNIX TIMESTAMP CONVERTER" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.UnixTimestamp.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <Border Grid.Row="1" 
-                Padding="20">
-
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="20">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- SOL: Timestamp → Date -->
-                <StackPanel Grid.Column="0" Margin="0,0,15,0">
-                    <TextBlock Text="TIMESTAMP → DATE" 
-                               Style="{StaticResource LabelPrimary}" 
-                               Margin="0,0,0,15"/>
+                <ScrollViewer Grid.Column="0"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Padding="0,0,12,0">
+                    <StackPanel Margin="0,0,4,0">
+                        <TextBlock Text="{DynamicResource L.UnixTimestamp.Section.ToDate}"
+                                   Style="{StaticResource LabelPrimary}"
+                                   FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"/>
 
-                    <TextBlock Text="Unix Timestamp" 
-                               Style="{StaticResource LabelSecondary}" 
-                               Margin="0,0,0,5"/>
+                        <TextBlock Text="{DynamicResource L.UnixTimestamp.Label.Timestamp}"
+                                   Style="{StaticResource LabelSecondary}" Margin="0,0,0,5"/>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
+                                     Text="{Binding ViewModel.TimestampInput, UpdateSourceTrigger=PropertyChanged}"
+                                     Height="35" Padding="10,6"
+                                     FontFamily="{StaticResource MonoFont}"
+                                     Background="{StaticResource OptionsBgBrush}"
+                                     Foreground="{StaticResource TextPrimaryBrush}"
+                                     BorderBrush="{StaticResource BorderDefaultBrush}"
+                                     TabIndex="0"
+                                     AutomationProperties.Name="{DynamicResource L.UnixTimestamp.Automation.TimestampInput}"/>
+                            <Button Grid.Column="1"
+                                    Command="{Binding ViewModel.UseNowCommand}"
+                                    Content="{DynamicResource L.UnixTimestamp.Now}"
+                                    Width="70" Height="35" Margin="8,0,0,0"
+                                    Style="{StaticResource ModernButton}"
+                                    Background="{StaticResource AccentPrimaryBrush}"
+                                    Foreground="{StaticResource TextPrimaryBrush}"
+                                    TabIndex="1"/>
+                        </Grid>
 
-                        <TextBox Grid.Column="0" 
-                                 Text="{Binding TimestampInput, UpdateSourceTrigger=PropertyChanged}"
-                                 ToolTip="example: 1733673600"/>
-
-                        <Button Grid.Column="1" 
-                                Command="{Binding UseCurrentTimestampCommand}"
-                                Content="NOW"
-                                Width="60"
-                                Height="35"
-                                Margin="8,0,0,0"
+                        <Button Command="{Binding ViewModel.TimestampToDateCommand}"
+                                Content="{DynamicResource L.UnixTimestamp.Convert}"
+                                Height="29" Margin="0,0,0,8"
                                 Style="{StaticResource ModernButton}"
-                                Background="{StaticResource AccentPrimaryBrush}"/>
-                    </Grid>
+                                Background="{StaticResource GreenBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="2"
+                                AutomationProperties.Name="{DynamicResource L.UnixTimestamp.Automation.ConvertToDate}"/>
 
-                    <Button Command="{Binding TimestampToDateCommand}"
-                            Content="CONVERT"
-                            Height="35"
-                            Margin="0,15,0,10"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
+                        <Button Command="{Binding ViewModel.TimestampToDateCancelCommand}"
+                                Content="{DynamicResource L.Common.Cancel}"
+                                Height="30" Margin="0,0,0,10"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource StatusWarningBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="3"
+                                Visibility="{Binding ViewModel.TimestampToDateCancelCommand.CanExecute, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-                    <TextBlock Text="Human Date" 
-                               Style="{StaticResource LabelSecondary}" 
-                               Margin="0,5,0,5"/>
+                        <TextBlock Text="{DynamicResource L.UnixTimestamp.Label.Readable}"
+                                   Style="{StaticResource LabelSecondary}" Margin="0,0,0,3"/>
+                        <TextBlock Text="{Binding ViewModel.ReadableOutput}"
+                                   Style="{StaticResource LabelPrimary}"
+                                   FontFamily="{StaticResource MonoFont}" FontSize="13"
+                                   TextWrapping="Wrap" MinHeight="20" Margin="0,0,0,6"/>
+                        <Button Command="{Binding ViewModel.CopyReadableCommand}"
+                                Content="{DynamicResource L.UnixTimestamp.Copy}"
+                                Height="23" Margin="0,0,0,10"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource OptionsBgBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="4"/>
 
-                    <TextBox Text="{Binding DateOutput, Mode=OneWay}"
-                             IsReadOnly="True"
-                             Height="40"/>
+                        <TextBlock Text="{DynamicResource L.UnixTimestamp.Label.Iso}"
+                                   Style="{StaticResource LabelSecondary}" Margin="0,0,0,3"/>
+                        <TextBlock Text="{Binding ViewModel.IsoOutput}"
+                                   Style="{StaticResource LabelPrimary}"
+                                   FontFamily="{StaticResource MonoFont}" FontSize="12"
+                                   TextWrapping="Wrap" MinHeight="20" Margin="0,0,0,6"/>
+                        <Button Command="{Binding ViewModel.CopyIsoCommand}"
+                                Content="{DynamicResource L.UnixTimestamp.Copy}"
+                                Height="23" Margin="0,0,0,10"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource OptionsBgBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="5"/>
 
-                    <Button Command="{Binding CopyDateResultCommand}"
-                            Content="COPY DATE"
-                            Height="30"
-                            Margin="0,10,0,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
-
-                </StackPanel>
+                        <TextBlock Text="{DynamicResource L.UnixTimestamp.Label.Rfc}"
+                                   Style="{StaticResource LabelSecondary}" Margin="0,0,0,3"/>
+                        <TextBlock Text="{Binding ViewModel.RfcOutput}"
+                                   Style="{StaticResource LabelPrimary}"
+                                   FontFamily="{StaticResource MonoFont}" FontSize="12"
+                                   TextWrapping="Wrap" MinHeight="20" Margin="0,0,0,6"/>
+                        <Button Command="{Binding ViewModel.CopyRfcCommand}"
+                                Content="{DynamicResource L.UnixTimestamp.Copy}"
+                                Height="23" Margin="0,0,0,10"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource OptionsBgBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="6"/>
+                    </StackPanel>
+                </ScrollViewer>
 
                 <!-- SAĞ: Date → Timestamp -->
-                <StackPanel Grid.Column="1" Margin="15,0,0,0">
-                    <TextBlock Text="DATE → TIMESTAMP" 
-                               Style="{StaticResource LabelPrimary}" 
-                               Margin="0,0,0,15"/>
+                <ScrollViewer Grid.Column="2"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Padding="0,0,12,0">
+                    <StackPanel Margin="0,0,4,0">
+                        <TextBlock Text="{DynamicResource L.UnixTimestamp.Section.ToTimestamp}"
+                                   Style="{StaticResource LabelPrimary}"
+                                   FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"/>
 
-                    <TextBlock Text="Human Date" 
-                               Style="{StaticResource LabelSecondary}" 
-                               Margin="0,0,0,5"/>
+                        <TextBlock Text="{DynamicResource L.UnixTimestamp.Label.Date}"
+                                   Style="{StaticResource LabelSecondary}" Margin="0,0,0,5"/>
 
-                    <TextBox Text="{Binding DateInput, UpdateSourceTrigger=PropertyChanged}"
-                             ToolTip="example: 2024-12-08 20:00:00"/>
+                        <TextBox Text="{Binding ViewModel.DateInput, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="35" Padding="10,6" Margin="0,0,0,10"
+                                 FontFamily="{StaticResource MonoFont}"
+                                 Background="{StaticResource OptionsBgBrush}"
+                                 Foreground="{StaticResource TextPrimaryBrush}"
+                                 BorderBrush="{StaticResource BorderDefaultBrush}"
+                                 TabIndex="7"
+                                 AutomationProperties.Name="{DynamicResource L.UnixTimestamp.Automation.DateInput}"/>
 
-                    <Button Command="{Binding DateToTimestampCommand}"
-                            Content="CONVERT"
-                            Height="35"
-                            Margin="0,15,0,10"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
+                        <Button Command="{Binding ViewModel.DateToTimestampCommand}"
+                                Content="{DynamicResource L.UnixTimestamp.Convert}"
+                                Height="30" Margin="0,0,0,8"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource GreenBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="8"
+                                AutomationProperties.Name="{DynamicResource L.UnixTimestamp.Automation.ConvertToTimestamp}"/>
 
-                    <TextBlock Text="Unix Timestamp" 
-                               Style="{StaticResource LabelSecondary}" 
-                               Margin="0,5,0,5"/>
+                        <Button Command="{Binding ViewModel.DateToTimestampCancelCommand}"
+                                Content="{DynamicResource L.Common.Cancel}"
+                                Height="30" Margin="0,0,0,10"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource StatusWarningBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="9"
+                                Visibility="{Binding ViewModel.DateToTimestampCancelCommand.CanExecute, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-                    <TextBox Text="{Binding TimestampOutput, Mode=OneWay}"
-                             IsReadOnly="True"
-                             Height="40"/>
+                        <TextBlock Text="{DynamicResource L.UnixTimestamp.Label.Seconds}"
+                                   Style="{StaticResource LabelSecondary}" Margin="0,0,0,3"/>
+                        <TextBlock Text="{Binding ViewModel.UnixSecondsOutput}"
+                                   Style="{StaticResource LabelPrimary}"
+                                   FontFamily="{StaticResource MonoFont}" FontSize="16"
+                                   FontWeight="Bold" MinHeight="20" Margin="0,0,0,6"/>
+                        <Button Command="{Binding ViewModel.CopySecondsCommand}"
+                                Content="{DynamicResource L.UnixTimestamp.Copy}"
+                                Height="23" Margin="0,0,0,10"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource OptionsBgBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="10"/>
 
-                    <Button Command="{Binding CopyTimestampResultCommand}"
-                            Content="COPY TIMESTAMP"
-                            Height="30"
-                            Margin="0,10,0,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
-                </StackPanel>
+                        <TextBlock Text="{DynamicResource L.UnixTimestamp.Label.Millis}"
+                                   Style="{StaticResource LabelSecondary}" Margin="0,0,0,3"/>
+                        <TextBlock Text="{Binding ViewModel.UnixMillisOutput}"
+                                   Style="{StaticResource LabelPrimary}"
+                                   FontFamily="{StaticResource MonoFont}" FontSize="14"
+                                   FontWeight="Bold" MinHeight="20" Margin="0,0,0,6"/>
+                        <Button Command="{Binding ViewModel.CopyMillisCommand}"
+                                Content="{DynamicResource L.UnixTimestamp.Copy}"
+                                Height="23" Margin="0,0,0,10"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource OptionsBgBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="11"/>
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
         </Border>
 
-        <!-- Alt Bilgi: Current Timestamp + UTC/Local Seçimi -->
-        <Border Grid.Row="2" 
-                Style="{StaticResource OptionsPanel}"
-                Padding="15"
-                Margin="0,15,0,0">
-
-            <Grid>
+        <!-- Alt: Current + Unit/Mode + Clear -->
+        <Border Grid.Row="2" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid Margin="0,0,0,7">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Current Timestamp -->
-                <StackPanel Grid.Column="0" Orientation="Horizontal">
-                    <TextBlock Text="Current Unix Timestamp:" 
-                               Style="{StaticResource LabelSecondary}"/>
-                    <TextBlock Text="{Binding CurrentTimestamp}" 
-                               Style="{StaticResource LabelPrimary}"
-                               FontFamily="{StaticResource MonoFont}"
-                               FontSize="13"
-                               FontWeight="Bold"
-                               Margin="10,0,0,0"/>
-                </StackPanel>
+                <TextBlock Grid.Column="0"
+                           Text="{DynamicResource L.UnixTimestamp.Label.Current}"
+                           Style="{StaticResource LabelSecondary}"
+                           VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ViewModel.CurrentTimestamp}"
+                           Style="{StaticResource LabelPrimary}"
+                           FontFamily="{StaticResource MonoFont}" FontWeight="Bold"
+                           FontSize="13" VerticalAlignment="Center" Margin="8,0,0,0"/>
 
-                <!-- UTC/Local Radio Buttons -->
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="20,0,0,0">
-                    <RadioButton Content="Local" 
-                                 IsChecked="{Binding UseUtc, Converter={StaticResource InverseBooleanConverter}}"
-                                 Foreground="{StaticResource TextPrimaryBrush}"
-                                 FontFamily="{StaticResource MonoFont}"
-                                 GroupName="TimeMode"
-                                 Margin="0,0,15,0"/>
-                    <RadioButton Content="UTC" 
-                                 IsChecked="{Binding UseUtc}"
-                                 Foreground="{StaticResource AccentPrimaryBrush}"
-                                 FontFamily="{StaticResource MonoFont}"
-                                 GroupName="TimeMode"/>
-                </StackPanel>
+                <ComboBox Grid.Column="2"
+                          ItemsSource="{Binding ViewModel.Units}"
+                          SelectedItem="{Binding ViewModel.Unit}"
+                          Width="120" Margin="16,0,0,0"
+                          TabIndex="12"
+                          AutomationProperties.Name="{DynamicResource L.UnixTimestamp.Automation.Unit}" VerticalAlignment="Stretch"/>
+
+                <ComboBox Grid.Column="3"
+                          ItemsSource="{Binding ViewModel.Modes}"
+                          SelectedItem="{Binding ViewModel.Mode}"
+                          Width="100" Height="37" Margin="8,0,0,0"
+                          TabIndex="13"
+                          AutomationProperties.Name="{DynamicResource L.UnixTimestamp.Automation.Mode}"/>
+
+                <Button Grid.Column="4"
+                        Command="{Binding ViewModel.ClearCommand}"
+                        Content="{DynamicResource L.UnixTimestamp.Clear}"
+                        Height="37" Width="100" Margin="16,0,0,0"
+                        Style="{StaticResource ModernButton}"
+                        Background="{StaticResource RedBrush}"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        TabIndex="14" VerticalAlignment="Center"/>
             </Grid>
         </Border>
 
-        <!-- Durum Mesajı + CLEAR ALL Butonu -->
-        <Grid Grid.Row="3" Margin="0,15,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <!-- Durum -->
+        <Border Grid.Row="3" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" 
-                       Text="{Binding StatusText}" 
-                       Foreground="{StaticResource TextSecondaryBrush}"
-                       FontSize="11"
-                       VerticalAlignment="Center"/>
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0"
+                                 Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-            <Button Grid.Column="1" 
-                    Command="{Binding ClearCommand}"
-                    Content="CLEAR ALL"
-                    Height="30"
-                    Width="110"
-                    Style="{StaticResource ModernButton}"
-                    Background="{StaticResource RedBrush}"/>
-        </Grid>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ViewModel.StatusText}"
+                           Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                           FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center"
+                           AutomationProperties.LiveSetting="Polite"/>
+
+                <TextBlock Grid.Column="2"
+                           Text="{Binding ViewModel.LimitsText}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Opacity="0.6" FontSize="10" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
