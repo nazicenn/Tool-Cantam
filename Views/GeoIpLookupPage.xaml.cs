@@ -1,14 +1,8 @@
-﻿// Views/GeoIpLookupPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class GeoIpLookupPage : UserControl
+public partial class GeoIpLookupPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.GeoIpLookupViewModel>
 {
-    public GeoIpLookupPage(GeoIpLookupViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.GeoIpLookupViewModel ViewModel { get; }
+    public GeoIpLookupPage(ViewModels.GeoIpLookupViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }

@@ -1,164 +1,109 @@
-﻿// ViewModels/GeoIpLookupViewModel.cs
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Net.Http;
-using System.Text.Json;
+using System.IO;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
+using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
 public partial class GeoIpLookupViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private string _ipAddress = string.Empty;
+    private readonly IGeoIpLookupService _service;
+    private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<GeoIpLookupViewModel> _logger;
 
-    [ObservableProperty]
-    private string _country = string.Empty;
+    [ObservableProperty] private string _ipAddress = string.Empty;
+    [ObservableProperty] private string _country = string.Empty;
+    [ObservableProperty] private string _countryCode = string.Empty;
+    [ObservableProperty] private string _region = string.Empty;
+    [ObservableProperty] private string _city = string.Empty;
+    [ObservableProperty] private string _zipCode = string.Empty;
+    [ObservableProperty] private string _latitude = string.Empty;
+    [ObservableProperty] private string _longitude = string.Empty;
+    [ObservableProperty] private string _isp = string.Empty;
+    [ObservableProperty] private string _organization = string.Empty;
+    [ObservableProperty] private string _timezone = string.Empty;
+    [ObservableProperty] private bool _isProxy;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
 
-    [ObservableProperty]
-    private string _city = string.Empty;
-
-    [ObservableProperty]
-    private string _region = string.Empty;
-
-    [ObservableProperty]
-    private string _zipCode = string.Empty;
-
-    [ObservableProperty]
-    private string _latitude = string.Empty;
-
-    [ObservableProperty]
-    private string _longitude = string.Empty;
-
-    [ObservableProperty]
-    private string _isp = string.Empty;
-
-    [ObservableProperty]
-    private string _organization = string.Empty;
-
-    [ObservableProperty]
-    private string _timezone = string.Empty;
-
-    [ObservableProperty]
-    private bool _isLoading = false;
-
-    [ObservableProperty]
-    private string _statusText = "Ready";
-
-    private readonly HttpClient _httpClient = new HttpClient();
-
-    [RelayCommand]
-    private async Task LookupAsync()
+    public GeoIpLookupViewModel(IGeoIpLookupService service, IFileExportService fe, ILocalizerService loc, ILogger<GeoIpLookupViewModel> log)
     {
-        if (string.IsNullOrWhiteSpace(IpAddress))
-        {
-            StatusText = "Please enter an IP address";
-            return;
-        }
-
-        IsLoading = true;
-        StatusText = $"Looking up {IpAddress}...";
-
-        try
-        {
-            string ip = IpAddress.Trim();
-            var url = $"https://ip-api.com/json/{ip}?fields=status,message,country,city,regionName,zip,lat,lon,isp,org,timezone";
-            var response = await _httpClient.GetStringAsync(url);
-            var json = JsonSerializer.Deserialize<JsonElement>(response);
-
-            if (json.GetProperty("status").GetString() == "success")
-            {
-                Country = json.GetProperty("country").GetString() ?? "Unknown";
-                City = json.GetProperty("city").GetString() ?? "Unknown";
-                Region = json.GetProperty("regionName").GetString() ?? "Unknown";
-                ZipCode = json.GetProperty("zip").GetString() ?? "Unknown";
-                Latitude = json.GetProperty("lat").GetDouble().ToString("F4");
-                Longitude = json.GetProperty("lon").GetDouble().ToString("F4");
-                Isp = json.GetProperty("isp").GetString() ?? "Unknown";
-                Organization = json.GetProperty("org").GetString() ?? "Unknown";
-                Timezone = json.GetProperty("timezone").GetString() ?? "Unknown";
-
-                StatusText = $"✓ Location found for {IpAddress}";
-            }
-            else
-            {
-                var message = json.GetProperty("message").GetString();
-                StatusText = $"✗ {message}";
-                ClearResults();
-            }
-        }
-        catch (HttpRequestException)
-        {
-            StatusText = "✗ Network error. Please check your connection.";
-        }
-        catch (Exception ex)
-        {
-            StatusText = $"✗ Error: {ex.Message}";
-        }
-        finally
-        {
-            IsLoading = false;
-        }
+        _service = service; _fileExportService = fe; _localizer = loc; _logger = log;
+        StatusText = _localizer.Get("L.GeoIpLookup.Status.Ready");
     }
 
-    [RelayCommand]
-    private async Task LookupMyIpAsync()
-    {
-        IsLoading = true;
-        StatusText = "Looking up your IP...";
+    public string LimitsText => _localizer.Format("L.GeoIpLookup.Limits", _service.RequestTimeout.TotalSeconds);
 
+    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanLookup))]
+    private async Task LookupAsync(CancellationToken ct)
+    {
+        IsBusy = true;
         try
         {
-            var response = await _httpClient.GetStringAsync("https://api.ipify.org");
-            IpAddress = response.Trim();
-            await LookupAsync();
+            var r = await _service.LookupAsync(IpAddress, ct);
+            if (!r.IsSuccess) { ReportFailure(r, "lookup"); ClearResults(); return; }
+            var v = r.Value!;
+            Country = v.Country; CountryCode = v.CountryCode; Region = v.Region;
+            City = v.City; ZipCode = v.Zip;
+            Latitude = v.Lat.ToString("F4"); Longitude = v.Lon.ToString("F4");
+            Isp = v.Isp; Organization = v.Org; Timezone = v.Timezone;
+            IsProxy = v.IsProxy;
+            _logger.LogInformation("GeoIP: {Ip} → {Country}, {City}", v.IpAddress, v.Country, v.City);
+            SetStatus(NotificationType.Success, "L.GeoIpLookup.Status.Found", v.City, v.Country);
         }
-        catch (Exception ex)
-        {
-            StatusText = $"✗ Error: {ex.Message}";
-        }
-        finally
-        {
-            IsLoading = false;
-        }
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "GeoIP failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
     }
 
-    [RelayCommand]
-    private void Clear()
+    private bool CanLookup() => !string.IsNullOrWhiteSpace(IpAddress);
+
+    [RelayCommand(IncludeCancelCommand = true)]
+    private async Task LookupMyIpAsync(CancellationToken ct)
     {
-        IpAddress = string.Empty;
-        ClearResults();
-        StatusText = "Cleared";
+        IsBusy = true;
+        try
+        {
+            var r = await _service.GetMyIpAsync(ct);
+            if (!r.IsSuccess) { ReportFailure(r, "myip"); return; }
+            IpAddress = r.Value!;
+            await LookupAsync(ct);
+        }
+        finally { IsBusy = false; }
     }
 
     [RelayCommand]
     private void CopyResults()
     {
-        var results = $"IP: {IpAddress}\n" +
-                      $"Country: {Country}\n" +
-                      $"City: {City}\n" +
-                      $"Region: {Region}\n" +
-                      $"ZIP: {ZipCode}\n" +
-                      $"Coordinates: {Latitude}, {Longitude}\n" +
-                      $"ISP: {Isp}\n" +
-                      $"Organization: {Organization}\n" +
-                      $"Timezone: {Timezone}";
-        Clipboard.SetText(results);
-        StatusText = "Results copied to clipboard!";
+        if (string.IsNullOrWhiteSpace(Country)) { SetStatus(NotificationType.Warning, "L.GeoIpLookup.Validation.NothingToCopy"); return; }
+        var sb = new StringBuilder();
+        sb.AppendLine($"IP: {IpAddress}");
+        sb.AppendLine($"Country: {Country} ({CountryCode})");
+        sb.AppendLine($"Region: {Region}");
+        sb.AppendLine($"City: {City}");
+        sb.AppendLine($"ZIP: {ZipCode}");
+        sb.AppendLine($"Coordinates: {Latitude}, {Longitude}");
+        sb.AppendLine($"ISP: {Isp}");
+        sb.AppendLine($"Org: {Organization}");
+        sb.AppendLine($"Timezone: {Timezone}");
+        sb.AppendLine($"Proxy: {IsProxy}");
+        try { _fileExportService.CopyToClipboard(sb.ToString()); SetStatus(NotificationType.Success, "L.GeoIpLookup.Status.Copied"); }
+        catch (Exception ex) { _logger.LogError(ex, "Copy failed."); SetStatus(NotificationType.Error, "L.Common.Error.Clipboard"); }
     }
 
-    private void ClearResults()
-    {
-        Country = string.Empty;
-        City = string.Empty;
-        Region = string.Empty;
-        ZipCode = string.Empty;
-        Latitude = string.Empty;
-        Longitude = string.Empty;
-        Isp = string.Empty;
-        Organization = string.Empty;
-        Timezone = string.Empty;
-    }
+    [RelayCommand] private void Clear() { IpAddress = string.Empty; ClearResults(); SetStatus(NotificationType.Info, "L.GeoIpLookup.Status.Cleared"); }
+
+    private void ClearResults() { Country = string.Empty; CountryCode = string.Empty; Region = string.Empty; City = string.Empty; ZipCode = string.Empty; Latitude = string.Empty; Longitude = string.Empty; Isp = string.Empty; Organization = string.Empty; Timezone = string.Empty; IsProxy = false; }
+
+    private void SetStatus(NotificationType t, string k, params object?[] a) { StatusType = t; StatusText = _localizer.Format(k, a); }
+    private void ReportFailure<T>(ToolResult<T> r, string op) { _logger.LogWarning("GeoIpLookup {Op} failed: {Kind} {Code}", op, r.ErrorKind, r.ErrorCode); SetStatus(NotificationType.Error, r.ErrorCode ?? "L.Common.Error.Unexpected"); }
 }
