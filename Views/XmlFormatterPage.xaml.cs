@@ -1,14 +1,8 @@
-﻿// Views/XmlFormatterPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class XmlFormatterPage : UserControl
+public partial class XmlFormatterPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.XmlFormatterViewModel>
 {
-    public XmlFormatterPage(XmlFormatterViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.XmlFormatterViewModel ViewModel { get; }
+    public XmlFormatterPage(ViewModels.XmlFormatterViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
