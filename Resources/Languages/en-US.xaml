@@ -1248,6 +1248,38 @@
     <sys:String x:Key="L.UuidGenerator.Validation.NothingToCopy">Nothing to copy.</sys:String>
     <sys:String x:Key="L.UuidGenerator.Validation.NothingToSave">Nothing to save.</sys:String>
     <sys:String x:Key="L.UuidGenerator.Error.InvalidCount">Count must be between 1 and 1000.</sys:String>
+    <!-- ============ Random String Generator ============ -->
+    <sys:String x:Key="L.RandomStringGenerator.Title">RANDOM STRING GENERATOR</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Label.Length">Length:</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Label.Count">Count:</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Label.Output">GENERATED STRINGS</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.IncludeUpper">Uppercase (A-Z)</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.IncludeLower">Lowercase (a-z)</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.IncludeDigits">Digits (0-9)</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.IncludeSymbols">Symbols (!@#$)</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.ExcludeSimilar">Exclude similar (0/O, 1/l/I)</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.EnsureEachType">Ensure each selected type</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Generate">GENERATE</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Copy">COPY</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Save">SAVE</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Limits">Length: {0}–{1} · Count: {2}–{3}.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Filter.Text">Text Files (*.txt)|*.txt|All Files (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Automation.Length">String length</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Automation.Count">String count</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Automation.Generate">Generate random strings</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Automation.Output">Generated random strings</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Status.Generated">✓ Generated {0} string(s) · ~{1} bits entropy.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Status.Copied">Copied to clipboard.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Status.Saved">Saved: {0}</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Validation.NothingToSave">Nothing to save.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Error.InvalidLength">Length must be between 4 and 256.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Error.InvalidCount">Count must be between 1 and 100.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Error.NoCharacterSet">Select at least one character set.</sys:String>
+
 
 
 

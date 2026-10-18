@@ -1249,7 +1249,37 @@
     <sys:String x:Key="L.UuidGenerator.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
     <sys:String x:Key="L.UuidGenerator.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
     <sys:String x:Key="L.UuidGenerator.Error.InvalidCount">Adet 1 ile 1000 arasında olmalı.</sys:String>
-    
+    <!-- ============ Random String Generator ============ -->
+    <sys:String x:Key="L.RandomStringGenerator.Title">RASTGELE METİN ÜRETİCİ</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Label.Length">Uzunluk:</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Label.Count">Adet:</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Label.Output">ÜRETİLEN METİNLER</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.IncludeUpper">Büyük harf (A-Z)</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.IncludeLower">Küçük harf (a-z)</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.IncludeDigits">Rakam (0-9)</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.IncludeSymbols">Sembol (!@#$)</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.ExcludeSimilar">Benzerleri çıkar (0/O, 1/l/I)</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.EnsureEachType">Her seçili türden en az bir karakter</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Generate">ÜRET</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Limits">Uzunluk: {0}–{1} · Adet: {2}–{3}.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Filter.Text">Metin Dosyaları (*.txt)|*.txt|Tüm Dosyalar (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Automation.Length">Metin uzunluğu</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Automation.Count">Metin adedi</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Automation.Generate">Rastgele metinleri üret</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Automation.Output">Üretilen rastgele metinler</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Status.Generated">✓ {0} metin üretildi · ~{1} bit entropi.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Status.Copied">Panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Status.Saved">Kaydedildi: {0}</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Error.InvalidLength">Uzunluk 4 ile 256 arasında olmalı.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Error.InvalidCount">Adet 1 ile 100 arasında olmalı.</sys:String>
+    <sys:String x:Key="L.RandomStringGenerator.Error.NoCharacterSet">En az bir karakter seti seçin.</sys:String>
 
 
 </ResourceDictionary>

@@ -1,14 +1,15 @@
-﻿// Views/RandomStringGeneratorPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class RandomStringGeneratorPage : UserControl
+public partial class RandomStringGeneratorPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.RandomStringGeneratorViewModel>
 {
-    public RandomStringGeneratorPage(RandomStringGeneratorViewModel viewModel)
+    public ViewModels.RandomStringGeneratorViewModel ViewModel { get; }
+
+    public RandomStringGeneratorPage(ViewModels.RandomStringGeneratorViewModel viewModel)
     {
+        ViewModel = viewModel;
+        DataContext = this;
         InitializeComponent();
-        DataContext = viewModel;
     }
 }
