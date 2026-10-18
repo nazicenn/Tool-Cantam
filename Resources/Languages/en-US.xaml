@@ -1342,6 +1342,45 @@
     <sys:String x:Key="L.FindReplace.Error.EmptyFind">Please enter text to find.</sys:String>
     <sys:String x:Key="L.FindReplace.Error.InputTooLarge">Input is too large. Limit is 10 MB.</sys:String>
     <sys:String x:Key="L.FindReplace.Error.InvalidRegex">Invalid regular expression.</sys:String>
+    <!-- ============ Regex Tester ============ -->
+    <sys:String x:Key="L.RegexTester.Title">REGEX TESTER</sys:String>
+    <sys:String x:Key="L.RegexTester.Label.Pattern">Pattern:</sys:String>
+    <sys:String x:Key="L.RegexTester.Label.Replace">Replace with:</sys:String>
+    <sys:String x:Key="L.RegexTester.Label.Input">INPUT</sys:String>
+    <sys:String x:Key="L.RegexTester.Label.Highlighted">HIGHLIGHTED MATCHES</sys:String>
+    <sys:String x:Key="L.RegexTester.IgnoreCase">Ignore case</sys:String>
+    <sys:String x:Key="L.RegexTester.Multiline">Multiline</sys:String>
+    <sys:String x:Key="L.RegexTester.Singleline">Singleline</sys:String>
+    <sys:String x:Key="L.RegexTester.ExplicitCapture">Explicit capture</sys:String>
+    <sys:String x:Key="L.RegexTester.IgnoreWhitespace">Ignore pattern whitespace</sys:String>
+    <sys:String x:Key="L.RegexTester.ReplaceMode">Replace mode</sys:String>
+    <sys:String x:Key="L.RegexTester.Test">TEST</sys:String>
+    <sys:String x:Key="L.RegexTester.Copy">COPY</sys:String>
+    <sys:String x:Key="L.RegexTester.Save">SAVE</sys:String>
+    <sys:String x:Key="L.RegexTester.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.RegexTester.Limits">Max input: {0} MB · {1} max matches · {2}s timeout.</sys:String>
+    <sys:String x:Key="L.RegexTester.Filter.Text">Text Files (*.txt)|*.txt|All Files (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.RegexTester.Automation.Pattern">Regex pattern</sys:String>
+    <sys:String x:Key="L.RegexTester.Automation.Samples">Sample patterns</sys:String>
+    <sys:String x:Key="L.RegexTester.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.RegexTester.Status.Matched">✓ {0} match(es).</sys:String>
+    <sys:String x:Key="L.RegexTester.Status.NoMatches">No matches.</sys:String>
+    <sys:String x:Key="L.RegexTester.Status.Copied">Copied to clipboard.</sys:String>
+    <sys:String x:Key="L.RegexTester.Status.Saved">Saved: {0}</sys:String>
+    <sys:String x:Key="L.RegexTester.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.RegexTester.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.RegexTester.Validation.NothingToSave">Nothing to save.</sys:String>
+    <sys:String x:Key="L.RegexTester.Error.EmptyPattern">Please enter a regex pattern.</sys:String>
+    <sys:String x:Key="L.RegexTester.Error.EmptyInput">Please enter input text.</sys:String>
+    <sys:String x:Key="L.RegexTester.Error.InputTooLarge">Input is too large. Limit is 10 MB.</sys:String>
+    <sys:String x:Key="L.RegexTester.Error.TooManyMatches">Too many matches. Refine the pattern.</sys:String>
+    <sys:String x:Key="L.RegexTester.Error.InvalidPattern">Invalid regex pattern.</sys:String>
+    <sys:String x:Key="L.RegexTester.Error.Timeout">Regex timed out. Simplify the pattern.</sys:String>
+    <sys:String x:Key="L.RegexTester.Sample.Email">Email</sys:String>
+    <sys:String x:Key="L.RegexTester.Sample.Url">URL</sys:String>
+    <sys:String x:Key="L.RegexTester.Sample.Date">Date</sys:String>
+    <sys:String x:Key="L.RegexTester.Sample.Ip">IPv4</sys:String>
+    <sys:String x:Key="L.RegexTester.Sample.TurkishWord">Turkish word</sys:String>
 
 
 

@@ -1,14 +1,15 @@
-﻿// Views/RegexTesterPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class RegexTesterPage : UserControl
+public partial class RegexTesterPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.RegexTesterViewModel>
 {
-    public RegexTesterPage(RegexTesterViewModel viewModel)
+    public ViewModels.RegexTesterViewModel ViewModel { get; }
+
+    public RegexTesterPage(ViewModels.RegexTesterViewModel viewModel)
     {
+        ViewModel = viewModel;
+        DataContext = this;
         InitializeComponent();
-        DataContext = viewModel;
     }
 }

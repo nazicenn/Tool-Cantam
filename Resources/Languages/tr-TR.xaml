@@ -1343,6 +1343,45 @@
     <sys:String x:Key="L.FindReplace.Error.EmptyFind">Lütfen aranacak metni girin.</sys:String>
     <sys:String x:Key="L.FindReplace.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
     <sys:String x:Key="L.FindReplace.Error.InvalidRegex">Geçersiz düzenli ifade.</sys:String>
+    <!-- ============ Regex Tester ============ -->
+    <sys:String x:Key="L.RegexTester.Title">REGEX TEST ARACI</sys:String>
+    <sys:String x:Key="L.RegexTester.Label.Pattern">Desen:</sys:String>
+    <sys:String x:Key="L.RegexTester.Label.Replace">Değiştir:</sys:String>
+    <sys:String x:Key="L.RegexTester.Label.Input">GİRİŞ</sys:String>
+    <sys:String x:Key="L.RegexTester.Label.Highlighted">VURGULANMIŞ EŞLEŞMELER</sys:String>
+    <sys:String x:Key="L.RegexTester.IgnoreCase">Büyük/küçük harf yoksay</sys:String>
+    <sys:String x:Key="L.RegexTester.Multiline">Çok satırlı</sys:String>
+    <sys:String x:Key="L.RegexTester.Singleline">Tek satır</sys:String>
+    <sys:String x:Key="L.RegexTester.ExplicitCapture">Açık yakalama</sys:String>
+    <sys:String x:Key="L.RegexTester.IgnoreWhitespace">Desen boşluklarını yoksay</sys:String>
+    <sys:String x:Key="L.RegexTester.ReplaceMode">Değiştirme modu</sys:String>
+    <sys:String x:Key="L.RegexTester.Test">TEST ET</sys:String>
+    <sys:String x:Key="L.RegexTester.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.RegexTester.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.RegexTester.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.RegexTester.Limits">Maks giriş: {0} MB · {1} maks eşleşme · {2}sn zaman aşımı.</sys:String>
+    <sys:String x:Key="L.RegexTester.Filter.Text">Metin Dosyaları (*.txt)|*.txt|Tüm Dosyalar (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.RegexTester.Automation.Pattern">Regex deseni</sys:String>
+    <sys:String x:Key="L.RegexTester.Automation.Samples">Örnek desenler</sys:String>
+    <sys:String x:Key="L.RegexTester.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.RegexTester.Status.Matched">✓ {0} eşleşme.</sys:String>
+    <sys:String x:Key="L.RegexTester.Status.NoMatches">Eşleşme yok.</sys:String>
+    <sys:String x:Key="L.RegexTester.Status.Copied">Panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.RegexTester.Status.Saved">Kaydedildi: {0}</sys:String>
+    <sys:String x:Key="L.RegexTester.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.RegexTester.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.RegexTester.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
+    <sys:String x:Key="L.RegexTester.Error.EmptyPattern">Lütfen bir regex deseni girin.</sys:String>
+    <sys:String x:Key="L.RegexTester.Error.EmptyInput">Lütfen giriş metni girin.</sys:String>
+    <sys:String x:Key="L.RegexTester.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
+    <sys:String x:Key="L.RegexTester.Error.TooManyMatches">Çok fazla eşleşme. Deseni daraltın.</sys:String>
+    <sys:String x:Key="L.RegexTester.Error.InvalidPattern">Geçersiz regex deseni.</sys:String>
+    <sys:String x:Key="L.RegexTester.Error.Timeout">Regex zaman aşımına uğradı. Deseni sadeleştirin.</sys:String>
+    <sys:String x:Key="L.RegexTester.Sample.Email">E-posta</sys:String>
+    <sys:String x:Key="L.RegexTester.Sample.Url">URL</sys:String>
+    <sys:String x:Key="L.RegexTester.Sample.Date">Tarih</sys:String>
+    <sys:String x:Key="L.RegexTester.Sample.Ip">IPv4</sys:String>
+    <sys:String x:Key="L.RegexTester.Sample.TurkishWord">Türkçe kelime</sys:String>
 
 
 
