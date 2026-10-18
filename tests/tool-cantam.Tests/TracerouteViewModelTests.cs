@@ -18,13 +18,18 @@ public sealed class TracerouteViewModelTests
         public int MinHops => 1;
         public int MaxHopsLimit => 64;
         public ToolResult<TraceReport>? Result { get; set; }
+
         public Task<ToolResult<TraceReport>> TraceAsync(string? h, int m, IProgress<TraceHop>? p, CancellationToken ct)
         {
+            if (Result is { IsSuccess: false })
+                return Task.FromResult(Result);
+
             p?.Report(new TraceHop(1, "1.1.1.1", 10, "TtlExpired"));
             return Task.FromResult(Result ?? ToolResult<TraceReport>.Ok(new TraceReport(
                 h ?? "", new List<TraceHop> { new(1, "1.1.1.1", 10, "TtlExpired") }, TimeSpan.Zero, false)));
         }
     }
+
     private sealed class FakeFe : IFileExportService
     {
         public string? LastCopied { get; private set; }
@@ -34,6 +39,7 @@ public sealed class TracerouteViewModelTests
         public Task<bool> ExportTextAsync(string c, string f, string e, string n = "Export") => Task.FromResult(true);
         public void CopyToClipboard(string c) => LastCopied = c;
     }
+
     private sealed class FakeLoc : ILocalizerService
     {
         private string _c = "tr-TR";
@@ -43,9 +49,11 @@ public sealed class TracerouteViewModelTests
         public string Format(string k, params object?[] a) => a is { Length: > 0 } ? $"{k} [{string.Join(", ", a)}]" : k;
         public bool SetCulture(string c) { _c = c; return true; }
     }
+
     private static TracerouteViewModel Create(out FakeSvc svc, out FakeFe fe)
     {
-        svc = new FakeSvc(); fe = new FakeFe();
+        svc = new FakeSvc();
+        fe = new FakeFe();
         return new TracerouteViewModel(svc, fe, new FakeLoc(), NullLogger<TracerouteViewModel>.Instance);
     }
 
