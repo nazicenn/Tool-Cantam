@@ -1168,6 +1168,31 @@
     <sys:String x:Key="L.QrCodeReader.Error.CorruptImage">Resim bozuk görünüyor.</sys:String>
     <sys:String x:Key="L.QrCodeReader.Error.NoQrFound">Bu resimde QR kod bulunamadı.</sys:String>
     <sys:String x:Key="L.QrCodeReader.Error.IoError">Dosya okunamadı. İzinleri kontrol edin.</sys:String>
-
+    <!-- ============ HTTP Header Analyzer ============ -->
+    <sys:String x:Key="L.HttpHeader.Title">HTTP BAŞLIK ANALİZİ</sys:String>
+    <sys:String x:Key="L.HttpHeader.Label.Url">Hedef URL</sys:String>
+    <sys:String x:Key="L.HttpHeader.Analyze">ANALİZ ET</sys:String>
+    <sys:String x:Key="L.HttpHeader.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.HttpHeader.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.HttpHeader.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.HttpHeader.Summary">Durum {0} {1} · Sunucu: {2} · {3:0} ms</sys:String>
+    <sys:String x:Key="L.HttpHeader.Limits">Zaman aşımı: {0}sn · Maks {1} başlık.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Filter.Text">Metin Dosyaları (*.txt)|*.txt|Tüm Dosyalar (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.HttpHeader.Automation.Url">Hedef URL girişi</sys:String>
+    <sys:String x:Key="L.HttpHeader.Automation.Analyze">HTTP başlıklarını analiz et</sys:String>
+    <sys:String x:Key="L.HttpHeader.Automation.Results">HTTP başlık sonuçları</sys:String>
+    <sys:String x:Key="L.HttpHeader.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Status.Analyzed">✓ Analiz edildi · {0} başlık.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Status.Copied">Panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Status.Saved">Kaydedildi: {0}</sys:String>
+    <sys:String x:Key="L.HttpHeader.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Error.EmptyUrl">Lütfen bir URL girin.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Error.InvalidUrl">Geçersiz URL formatı.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Error.UnsupportedScheme">Yalnızca http:// ve https:// kullanılabilir.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Error.HttpError">HTTP isteği başarısız oldu.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Error.Timeout">İstek zaman aşımına uğradı.</sys:String>
+    
 
 </ResourceDictionary>

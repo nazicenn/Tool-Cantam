@@ -1167,6 +1167,31 @@
     <sys:String x:Key="L.QrCodeReader.Error.CorruptImage">Image appears to be corrupted.</sys:String>
     <sys:String x:Key="L.QrCodeReader.Error.NoQrFound">No QR code found in this image.</sys:String>
     <sys:String x:Key="L.QrCodeReader.Error.IoError">Could not read file. Check permissions.</sys:String>
+    <!-- ============ HTTP Header Analyzer ============ -->
+    <sys:String x:Key="L.HttpHeader.Title">HTTP HEADER ANALYZER</sys:String>
+    <sys:String x:Key="L.HttpHeader.Label.Url">Target URL</sys:String>
+    <sys:String x:Key="L.HttpHeader.Analyze">ANALYZE</sys:String>
+    <sys:String x:Key="L.HttpHeader.Copy">COPY</sys:String>
+    <sys:String x:Key="L.HttpHeader.Save">SAVE</sys:String>
+    <sys:String x:Key="L.HttpHeader.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.HttpHeader.Summary">Status {0} {1} · Server: {2} · {3:0} ms</sys:String>
+    <sys:String x:Key="L.HttpHeader.Limits">Timeout: {0}s · Max {1} headers.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Filter.Text">Text Files (*.txt)|*.txt|All Files (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.HttpHeader.Automation.Url">Target URL input</sys:String>
+    <sys:String x:Key="L.HttpHeader.Automation.Analyze">Analyze HTTP headers</sys:String>
+    <sys:String x:Key="L.HttpHeader.Automation.Results">HTTP header results</sys:String>
+    <sys:String x:Key="L.HttpHeader.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Status.Analyzed">✓ Analyzed · {0} headers.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Status.Copied">Copied to clipboard.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Status.Saved">Saved: {0}</sys:String>
+    <sys:String x:Key="L.HttpHeader.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Validation.NothingToSave">Nothing to save.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Error.EmptyUrl">Please enter a URL.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Error.InvalidUrl">Invalid URL format.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Error.UnsupportedScheme">Only http:// and https:// are allowed.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Error.HttpError">HTTP request failed.</sys:String>
+    <sys:String x:Key="L.HttpHeader.Error.Timeout">Request timed out.</sys:String>
     
 
 </ResourceDictionary>

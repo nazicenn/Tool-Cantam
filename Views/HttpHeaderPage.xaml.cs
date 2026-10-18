@@ -1,13 +1,15 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class HttpHeaderPage : UserControl
+public partial class HttpHeaderPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.HttpHeaderViewModel>
 {
-    public HttpHeaderPage(HttpHeaderViewModel viewModel)
+    public ViewModels.HttpHeaderViewModel ViewModel { get; }
+
+    public HttpHeaderPage(ViewModels.HttpHeaderViewModel viewModel)
     {
+        ViewModel = viewModel;
+        DataContext = this;
         InitializeComponent();
-        DataContext = viewModel;
     }
 }

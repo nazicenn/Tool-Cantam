@@ -11,85 +11,92 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="HTTP HEADER ANALYZER" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.HttpHeader.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <Border Grid.Row="1" 
-                Padding="20">
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <StackPanel>
-                <TextBlock Text="Target URL" 
-                           Style="{StaticResource LabelPrimary}" 
-                           Margin="0,0,0,10"/>
+                <TextBlock Grid.Row="0"
+                           Text="{DynamicResource L.HttpHeader.Label.Url}"
+                           Style="{StaticResource LabelSecondary}" Margin="0,0,0,6"/>
 
-                <Grid>
+                <Grid Grid.Row="1" Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-
-                    <TextBox Grid.Column="0" 
-                             Text="{Binding TargetUrl, UpdateSourceTrigger=PropertyChanged}"
-                             ToolTip="example: https://google.com"/>
-
-                    <Button Grid.Column="1" 
-                            Command="{Binding AnalyzeCommand}"
-                            Content="ANALYZE"
-                            Height="40"
-                            Width="100"
-                            Margin="10,0,0,0"
+                    <TextBox Grid.Column="0"
+                             Text="{Binding ViewModel.TargetUrl, UpdateSourceTrigger=PropertyChanged}"
+                             Height="35" Padding="10,6"
+                             FontFamily="{StaticResource MonoFont}"
+                             Background="{StaticResource OptionsBgBrush}"
+                             Foreground="{StaticResource TextPrimaryBrush}"
+                             BorderBrush="{StaticResource BorderDefaultBrush}"
+                             TabIndex="0"
+                             AutomationProperties.Name="{DynamicResource L.HttpHeader.Automation.Url}"/>
+                    <Button Grid.Column="1"
+                            Command="{Binding ViewModel.AnalyzeCommand}"
+                            Content="{DynamicResource L.HttpHeader.Analyze}"
+                            Height="35" Width="110" Margin="8,0,0,0"
                             Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
+                            Background="{StaticResource GreenBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="1"
+                            AutomationProperties.Name="{DynamicResource L.HttpHeader.Automation.Analyze}"/>
+                    <Button Grid.Column="2"
+                            Command="{Binding ViewModel.AnalyzeCancelCommand}"
+                            Content="{DynamicResource L.Common.Cancel}"
+                            Height="35" Width="80" Margin="8,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource StatusWarningBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="2"
+                            Visibility="{Binding ViewModel.AnalyzeCancelCommand.CanExecute, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </Grid>
 
-                <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                    <ui:ProgressRing IsIndeterminate="True" 
-                                     Width="16" 
-                                     Height="16" 
-                                     Margin="0,0,10,0"
-                                     Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                     Foreground="{StaticResource AccentPrimaryBrush}"/>
-                    <TextBlock Text="{Binding StatusText}" 
-                               Foreground="{StaticResource TextSecondaryBrush}"
-                               FontSize="11"
-                               VerticalAlignment="Center"/>
-                </StackPanel>
+                <TextBlock Grid.Row="2"
+                           Text="{Binding ViewModel.SummaryText}"
+                           Style="{StaticResource LabelSecondary}"
+                           FontFamily="{StaticResource MonoFont}"
+                           FontSize="11" Margin="0,0,0,6"/>
 
-                <!-- Results List -->
-                <Border Style="{StaticResource OptionsPanel}"
-                        Margin="0,15,0,0"
-                        Padding="10"
-                        Height="350">
+                <Border Grid.Row="2" Margin="0,20,0,0"
+                        Background="{StaticResource OptionsBgBrush}"
+                        CornerRadius="6" Padding="10">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <ItemsControl ItemsSource="{Binding Headers}">
+                        <ItemsControl ItemsSource="{Binding ViewModel.Headers}"
+                                      AutomationProperties.Name="{DynamicResource L.HttpHeader.Automation.Results}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Background="{StaticResource BgInputBrush}"
-                                            CornerRadius="4"
-                                            Padding="10,8"
-                                            Margin="0,0,0,5">
+                                    <Border Background="{StaticResource BorderDefaultBrush}"
+                                            CornerRadius="4" Padding="10,8" Margin="0,0,0,4">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="180"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" 
-                                                       Text="{Binding Key}" 
+                                            <TextBlock Grid.Column="0"
+                                                       Text="{Binding Name}"
                                                        Foreground="{StaticResource AccentPrimaryBrush}"
-                                                       FontWeight="Bold"
                                                        FontFamily="{StaticResource MonoFont}"
-                                                       FontSize="12"/>
-                                            <TextBlock Grid.Column="1" 
-                                                       Text="{Binding Value}" 
+                                                       FontWeight="Bold" FontSize="11"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding Value}"
                                                        Foreground="{StaticResource TextPrimaryBrush}"
                                                        FontFamily="{StaticResource MonoFont}"
-                                                       FontSize="11"
-                                                       TextWrapping="Wrap"/>
+                                                       FontSize="11" TextWrapping="Wrap"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
@@ -98,28 +105,59 @@
                     </ScrollViewer>
                 </Border>
 
-                <UniformGrid Columns="2" Margin="0,15,0,0">
-                    <Button Command="{Binding CopyResultsCommand}" 
-                            Content="COPY RESULTS"
-                            Height="34" 
-                            Margin="0,0,5,0"
+                <Grid Grid.Row="3" Margin="0,15,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"
+                            Command="{Binding ViewModel.CopyResultsCommand}"
+                            Content="{DynamicResource L.HttpHeader.Copy}"
+                            Height="34" Margin="0,0,5,0"
                             Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
-                    <Button Command="{Binding ClearCommand}" 
-                            Content="CLEAR"
-                            Height="34" 
-                            Margin="5,0,0,0"
+                            Background="{StaticResource StatusWarningBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="3"/>
+                    <Button Grid.Column="1"
+                            Command="{Binding ViewModel.SaveResultsCommand}"
+                            Content="{DynamicResource L.HttpHeader.Save}"
+                            Height="34" Margin="5,0,5,0"
                             Style="{StaticResource ModernButton}"
-                            Background="{StaticResource RedBrush}"/>
-                </UniformGrid>
-            </StackPanel>
+                            Background="{StaticResource AccentPrimaryBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="4"/>
+                    <Button Grid.Column="2"
+                            Command="{Binding ViewModel.ClearCommand}"
+                            Content="{DynamicResource L.HttpHeader.Clear}"
+                            Height="34" Margin="5,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="5"/>
+                </Grid>
+            </Grid>
         </Border>
 
-        <TextBlock Grid.Row="2" 
-                   Text="🌐 HTTP Header Analyzer - View security headers, server info, cache policies and more"
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,15,0,0"/>
+        <Border Grid.Row="2" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0"
+                                 Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ViewModel.StatusText}"
+                           Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                           FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center"
+                           AutomationProperties.LiveSetting="Polite"/>
+                <TextBlock Grid.Column="2"
+                           Text="{Binding ViewModel.LimitsText}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Opacity="0.6" FontSize="10" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
