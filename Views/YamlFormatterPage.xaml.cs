@@ -1,14 +1,8 @@
-﻿// Views/YamlFormatterPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class YamlFormatterPage : UserControl
+public partial class YamlFormatterPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.YamlFormatterViewModel>
 {
-    public YamlFormatterPage(YamlFormatterViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.YamlFormatterViewModel ViewModel { get; }
+    public YamlFormatterPage(ViewModels.YamlFormatterViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
