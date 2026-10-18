@@ -1,14 +1,8 @@
-﻿// Views/CronParserPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class CronParserPage : UserControl
+public partial class CronParserPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.CronParserViewModel>
 {
-    public CronParserPage(CronParserViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.CronParserViewModel ViewModel { get; }
+    public CronParserPage(ViewModels.CronParserViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
