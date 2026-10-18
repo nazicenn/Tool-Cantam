@@ -1224,6 +1224,32 @@
     <sys:String x:Key="L.TextSorter.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
     <sys:String x:Key="L.TextSorter.Error.EmptyInput">Lütfen sıralanacak metni girin.</sys:String>
     <sys:String x:Key="L.TextSorter.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
+    <!-- ============ UUID Generator ============ -->
+    <sys:String x:Key="L.UuidGenerator.Title">UUID ÜRETİCİ</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Label.Count">Adet:</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Label.Case">Durum:</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Label.Output">ÜRETİLEN UUID'LER</sys:String>
+    <sys:String x:Key="L.UuidGenerator.IncludeHyphens">Tireleri ekle</sys:String>
+    <sys:String x:Key="L.UuidGenerator.IncludeBraces">Süslü parantez { } ekle</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Generate">ÜRET</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Limits">Adet: {0}–{1} (UUID v4).</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Filter.Text">Metin Dosyaları (*.txt)|*.txt|Tüm Dosyalar (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Automation.Count">UUID adedi</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Automation.Case">UUID büyük/küçük</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Automation.Generate">UUID'leri üret</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Automation.Output">Üretilen UUID listesi</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Status.Generated">✓ {0} UUID üretildi.</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Status.Copied">Panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Status.Saved">Kaydedildi: {0}</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
+    <sys:String x:Key="L.UuidGenerator.Error.InvalidCount">Adet 1 ile 1000 arasında olmalı.</sys:String>
+    
 
 
 </ResourceDictionary>
