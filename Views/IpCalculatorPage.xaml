@@ -1,10 +1,8 @@
-﻿<!-- Views/IpCalculatorPage.xaml -->
-<UserControl x:Class="tool_cantam.Views.IpCalculatorPage"
+﻿<UserControl x:Class="tool_cantam.Views.IpCalculatorPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              Background="{StaticResource BorderDefaultBrush}">
-
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -13,147 +11,138 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="IP CALCULATOR" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource L.IpCalculator.Title}" Style="{StaticResource LabelPrimary}" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <!-- Input -->
-        <Border Grid.Row="1" 
-                Style="{StaticResource OptionsPanel}" 
-                Padding="15" 
-                Margin="0,0,0,15">
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="15" Margin="0,0,0,12">
             <StackPanel>
-                <Grid>
+                <Grid Margin="0,0,0,8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="IP Address:" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <TextBox Grid.Column="1" Text="{Binding IpAddress}" FontFamily="Consolas" Height="35" Margin="0,0,10,0"/>
+                    <TextBlock Grid.Column="0" Text="{DynamicResource L.IpCalculator.IpAddress}" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox Grid.Column="1" Text="{Binding ViewModel.IpAddress, UpdateSourceTrigger=PropertyChanged}" FontFamily="{StaticResource MonoFont}" Height="34" Padding="8,6" Background="{StaticResource OptionsBgBrush}" Foreground="{StaticResource TextPrimaryBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" TabIndex="0"/>
+                    <TextBlock Grid.Column="2" Text="/" Style="{StaticResource LabelPrimary}" VerticalAlignment="Center" Margin="8,0"/>
+                    <ui:NumberBox Grid.Column="3" Value="{Binding ViewModel.Cidr}" Minimum="0" Maximum="32" ClearButtonEnabled="False" Width="90" Height="34" Padding="8,4" TabIndex="1"/>
                 </Grid>
-
-                <UniformGrid Columns="4" Margin="0,10,0,0">
-                    <Button Command="{Binding CalculateCommand}" 
-                            Content="CALCULATE" Height="35" Margin="0,0,5,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
-                    <Button Command="{Binding LoadSampleCommand}" 
-                            Content="SAMPLE" Height="35" Margin="5,0,5,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
-                    <Button Command="{Binding ClearCommand}" 
-                            Content="CLEAR" Height="35" Margin="5,0,5,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource RedBrush}"/>
-                    <Button Command="{Binding CopyResultCommand}" 
-                            Content="COPY" Height="35" Margin="5,0,0,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
+                <UniformGrid Columns="4">
+                    <Button Command="{Binding ViewModel.CalculateCommand}" Content="{DynamicResource L.IpCalculator.Calculate}" Height="34" Margin="0,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource GreenBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="2"/>
+                    <Button Command="{Binding ViewModel.LoadSampleCommand}" Content="{DynamicResource L.IpCalculator.Sample}" Height="34" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="3"/>
+                    <Button Command="{Binding ViewModel.CopyResultCommand}" Content="{DynamicResource L.IpCalculator.Copy}" Height="34" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="4"/>
+                    <Button Command="{Binding ViewModel.ClearCommand}" Content="{DynamicResource L.IpCalculator.Clear}" Height="34" Margin="4,0,0,0" Style="{StaticResource ModernButton}" Background="{StaticResource RedBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="5"/>
                 </UniformGrid>
             </StackPanel>
         </Border>
 
-        <!-- Results -->
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <Border Style="{StaticResource OptionsPanel}" Padding="15">
                 <StackPanel>
-                    <Grid Margin="0,0,0,10">
+                    <Grid Margin="0,0,0,6">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="140"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Network Address:" Style="{StaticResource LabelSecondary}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding NetworkAddress}" Style="{StaticResource LabelPrimary}" FontFamily="Consolas"/>
+                        <TextBlock Text="{DynamicResource L.IpCalculator.Network}" Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.NetworkAddress}" Style="{StaticResource LabelPrimary}" FontFamily="{StaticResource MonoFont}"/>
                     </Grid>
-                    <Grid Margin="0,0,0,10">
+                    <Grid Margin="0,0,0,6">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="140"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Subnet Mask:" Style="{StaticResource LabelSecondary}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding SubnetMask}" Style="{StaticResource LabelPrimary}" FontFamily="Consolas"/>
+                        <TextBlock Text="{DynamicResource L.IpCalculator.Subnet}" Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.SubnetMask}" Style="{StaticResource LabelPrimary}" FontFamily="{StaticResource MonoFont}"/>
                     </Grid>
-                    <Grid Margin="0,0,0,10">
+                    <Grid Margin="0,0,0,6">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="140"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Wildcard Mask:" Style="{StaticResource LabelSecondary}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding WildcardMask}" Style="{StaticResource LabelPrimary}" FontFamily="Consolas"/>
+                        <TextBlock Text="{DynamicResource L.IpCalculator.Wildcard}" Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.WildcardMask}" Style="{StaticResource LabelPrimary}" FontFamily="{StaticResource MonoFont}"/>
                     </Grid>
-                    <Grid Margin="0,0,0,10">
+                    <Grid Margin="0,0,0,6">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="140"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Broadcast Address:" Style="{StaticResource LabelSecondary}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding BroadcastAddress}" Style="{StaticResource LabelPrimary}" FontFamily="Consolas"/>
+                        <TextBlock Text="{DynamicResource L.IpCalculator.Broadcast}" Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.BroadcastAddress}" Style="{StaticResource LabelPrimary}" FontFamily="{StaticResource MonoFont}"/>
                     </Grid>
-                    <Grid Margin="0,0,0,10">
+                    <Grid Margin="0,0,0,6">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="140"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="First Usable:" Style="{StaticResource LabelSecondary}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding FirstUsable}" Style="{StaticResource LabelPrimary}" FontFamily="Consolas" Foreground="{StaticResource GreenBrush}"/>
+                        <TextBlock Text="{DynamicResource L.IpCalculator.First}" Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.FirstUsable}" FontFamily="{StaticResource MonoFont}" Foreground="{StaticResource GreenBrush}"/>
                     </Grid>
-                    <Grid Margin="0,0,0,10">
+                    <Grid Margin="0,0,0,6">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="140"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Last Usable:" Style="{StaticResource LabelSecondary}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding LastUsable}" Style="{StaticResource LabelPrimary}" FontFamily="Consolas" Foreground="{StaticResource GreenBrush}"/>
+                        <TextBlock Text="{DynamicResource L.IpCalculator.Last}" Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.LastUsable}" FontFamily="{StaticResource MonoFont}" Foreground="{StaticResource GreenBrush}"/>
                     </Grid>
-                    <Grid Margin="0,0,0,10">
+                    <Grid Margin="0,0,0,6">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="140"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Total Hosts:" Style="{StaticResource LabelSecondary}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding TotalHosts}" Style="{StaticResource LabelPrimary}" FontWeight="Bold"/>
+                        <TextBlock Text="{DynamicResource L.IpCalculator.TotalHosts}" Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.TotalHosts}" FontWeight="Bold"/>
                     </Grid>
-                    <Grid Margin="0,0,0,10">
+                    <Grid Margin="0,0,0,6">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="140"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Usable Hosts:" Style="{StaticResource LabelSecondary}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding UsableHosts}" Style="{StaticResource LabelPrimary}" FontWeight="Bold" Foreground="{StaticResource GreenBrush}"/>
+                        <TextBlock Text="{DynamicResource L.IpCalculator.UsableHosts}" Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.UsableHosts}" FontWeight="Bold" Foreground="{StaticResource GreenBrush}"/>
                     </Grid>
-
-                    <TextBlock Text="Binary" Style="{StaticResource LabelPrimary}" Margin="0,10,0,10"/>
-                    <Grid Margin="0,0,0,5">
+                    <Grid Margin="0,0,0,6">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{DynamicResource L.IpCalculator.Private}" Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.IsPrivate}" FontWeight="Bold"/>
+                    </Grid>
+                    <TextBlock Text="{DynamicResource L.IpCalculator.Binary}" Style="{StaticResource LabelPrimary}" Margin="0,10,0,6"/>
+                    <Grid Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="140"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="IP:" Style="{StaticResource LabelSecondary}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding BinaryIp}" Style="{StaticResource LabelPrimary}" FontFamily="Consolas" FontSize="11"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.BinaryIp}" FontFamily="{StaticResource MonoFont}" FontSize="11"/>
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="140"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Mask:" Style="{StaticResource LabelSecondary}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding BinaryMask}" Style="{StaticResource LabelPrimary}" FontFamily="Consolas" FontSize="11"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.BinaryMask}" FontFamily="{StaticResource MonoFont}" FontSize="11"/>
                     </Grid>
                 </StackPanel>
             </Border>
         </ScrollViewer>
 
-        <TextBlock Grid.Row="3" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,10,0,0"/>
+        <Border Grid.Row="3" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0" Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Grid.Column="1" Text="{Binding ViewModel.StatusText}" Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}" FontSize="11" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="2" Text="{Binding ViewModel.LimitsText}" Foreground="{StaticResource TextPrimaryBrush}" Opacity="0.6" FontSize="10"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

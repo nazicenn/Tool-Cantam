@@ -1,181 +1,91 @@
-﻿// ViewModels/IpCalculatorViewModel.cs
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Net;
-using System.Windows;
+using System.Threading;
+using System.Threading.Tasks;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
+using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
 public partial class IpCalculatorViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private string _ipAddress = "192.168.1.0";
+    private readonly IIpCalculatorService _service;
+    private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<IpCalculatorViewModel> _logger;
 
-    [ObservableProperty]
-    private int _cidr = 24;
+    [ObservableProperty] private string _ipAddress = "192.168.1.0";
+    [ObservableProperty] private int _cidr = 24;
+    [ObservableProperty] private string _networkAddress = string.Empty;
+    [ObservableProperty] private string _broadcastAddress = string.Empty;
+    [ObservableProperty] private string _firstUsable = string.Empty;
+    [ObservableProperty] private string _lastUsable = string.Empty;
+    [ObservableProperty] private string _subnetMask = string.Empty;
+    [ObservableProperty] private string _wildcardMask = string.Empty;
+    [ObservableProperty] private long _totalHosts;
+    [ObservableProperty] private long _usableHosts;
+    [ObservableProperty] private string _binaryIp = string.Empty;
+    [ObservableProperty] private string _binaryMask = string.Empty;
+    [ObservableProperty] private bool _isPrivate;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
 
-    [ObservableProperty]
-    private string _networkAddress = string.Empty;
-
-    [ObservableProperty]
-    private string _broadcastAddress = string.Empty;
-
-    [ObservableProperty]
-    private string _firstUsable = string.Empty;
-
-    [ObservableProperty]
-    private string _lastUsable = string.Empty;
-
-    [ObservableProperty]
-    private string _subnetMask = string.Empty;
-
-    [ObservableProperty]
-    private string _wildcardMask = string.Empty;
-
-    [ObservableProperty]
-    private int _totalHosts = 0;
-
-    [ObservableProperty]
-    private int _usableHosts = 0;
-
-    [ObservableProperty]
-    private string _binaryIp = string.Empty;
-
-    [ObservableProperty]
-    private string _binaryMask = string.Empty;
-
-    [ObservableProperty]
-    private string _statusText = "Ready";
-
-    [RelayCommand]
-    private void Calculate()
+    public IpCalculatorViewModel(IIpCalculatorService service, IFileExportService fe, ILocalizerService loc, ILogger<IpCalculatorViewModel> log)
     {
-        if (string.IsNullOrWhiteSpace(IpAddress))
-        {
-            StatusText = "Please enter an IP address";
-            return;
-        }
+        _service = service; _fileExportService = fe; _localizer = loc; _logger = log;
+        StatusText = _localizer.Get("L.IpCalculator.Status.Ready");
+    }
 
+    public string LimitsText => _localizer.Get("L.IpCalculator.Limits");
+
+    [RelayCommand(IncludeCancelCommand = true)]
+    private async Task CalculateAsync(CancellationToken ct)
+    {
+        IsBusy = true;
         try
         {
-            if (!IPAddress.TryParse(IpAddress, out var ip))
-            {
-                StatusText = "Invalid IP address format";
-                return;
-            }
-
-            if (Cidr < 0 || Cidr > 32)
-            {
-                StatusText = "CIDR must be between 0 and 32";
-                return;
-            }
-
-            var ipBytes = ip.GetAddressBytes();
-
-            // Binary IP
-            BinaryIp = string.Join(".", Array.ConvertAll(ipBytes, b => Convert.ToString(b, 2).PadLeft(8, '0')));
-
-            // Subnet Mask
-            uint mask = 0xFFFFFFFF << (32 - Cidr);
-            var maskBytes = BitConverter.GetBytes(IPAddress.HostToNetworkOrder((int)mask));
-            SubnetMask = new IPAddress(maskBytes).ToString();
-            BinaryMask = string.Join(".", Array.ConvertAll(maskBytes, b => Convert.ToString(b, 2).PadLeft(8, '0')));
-
-            // Wildcard
-            var wildcardBytes = Array.ConvertAll(maskBytes, b => (byte)~b);
-            WildcardMask = new IPAddress(wildcardBytes).ToString();
-
-            // Network
-            var networkBytes = new byte[4];
-            for (int i = 0; i < 4; i++)
-                networkBytes[i] = (byte)(ipBytes[i] & maskBytes[i]);
-            NetworkAddress = new IPAddress(networkBytes).ToString();
-
-            // Broadcast
-            var broadcastBytes = new byte[4];
-            for (int i = 0; i < 4; i++)
-                broadcastBytes[i] = (byte)(ipBytes[i] | ~maskBytes[i]);
-            BroadcastAddress = new IPAddress(broadcastBytes).ToString();
-
-            // Hosts
-            TotalHosts = (int)Math.Pow(2, 32 - Cidr);
-            UsableHosts = Math.Max(0, TotalHosts - 2);
-
-            // First Usable
-            var firstBytes = (byte[])networkBytes.Clone();
-            if (UsableHosts > 0)
-            {
-                for (int i = 3; i >= 0; i--)
-                {
-                    if (firstBytes[i] < 255)
-                    {
-                        firstBytes[i]++;
-                        break;
-                    }
-                }
-            }
-            FirstUsable = new IPAddress(firstBytes).ToString();
-
-            // Last Usable
-            var lastBytes = (byte[])broadcastBytes.Clone();
-            if (UsableHosts > 0)
-            {
-                for (int i = 3; i >= 0; i--)
-                {
-                    if (lastBytes[i] > 0)
-                    {
-                        lastBytes[i]--;
-                        break;
-                    }
-                }
-            }
-            LastUsable = new IPAddress(lastBytes).ToString();
-
-            StatusText = $"✓ Calculated for {NetworkAddress}/{Cidr}";
+            var r = await _service.CalculateAsync(IpAddress, Cidr, ct);
+            if (!r.IsSuccess) { ReportFailure(r, "calc"); ClearResults(); return; }
+            var v = r.Value!;
+            NetworkAddress = v.Network;
+            BroadcastAddress = v.Broadcast;
+            FirstUsable = v.FirstUsable;
+            LastUsable = v.LastUsable;
+            SubnetMask = v.SubnetMask;
+            WildcardMask = v.WildcardMask;
+            TotalHosts = v.TotalHosts;
+            UsableHosts = v.UsableHosts;
+            BinaryIp = v.BinaryIp;
+            BinaryMask = v.BinaryMask;
+            IsPrivate = v.IsPrivate;
+            _logger.LogInformation("IP calc: {Ip}/{Cidr}", v.IpAddress, v.Cidr);
+            SetStatus(NotificationType.Success, "L.IpCalculator.Status.Calculated", v.Network, v.Cidr);
         }
-        catch (Exception ex)
-        {
-            StatusText = $"✗ Error: {ex.Message}";
-        }
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "IP calc failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
     }
 
-    [RelayCommand]
-    private void LoadSample()
-    {
-        IpAddress = "192.168.1.0";
-        Cidr = 24;
-        Calculate();
-    }
-
-    [RelayCommand]
-    private void Clear()
-    {
-        NetworkAddress = string.Empty;
-        BroadcastAddress = string.Empty;
-        FirstUsable = string.Empty;
-        LastUsable = string.Empty;
-        SubnetMask = string.Empty;
-        WildcardMask = string.Empty;
-        TotalHosts = 0;
-        UsableHosts = 0;
-        BinaryIp = string.Empty;
-        BinaryMask = string.Empty;
-        StatusText = "Cleared";
-    }
+    [RelayCommand] private void LoadSample() { IpAddress = "192.168.1.0"; Cidr = 24; CalculateCommand.Execute(null); }
 
     [RelayCommand]
     private void CopyResult()
     {
-        var result = $"Network: {NetworkAddress}/{Cidr}\n" +
-                     $"Subnet Mask: {SubnetMask}\n" +
-                     $"Wildcard: {WildcardMask}\n" +
-                     $"Broadcast: {BroadcastAddress}\n" +
-                     $"First Usable: {FirstUsable}\n" +
-                     $"Last Usable: {LastUsable}\n" +
-                     $"Total Hosts: {TotalHosts}\n" +
-                     $"Usable Hosts: {UsableHosts}";
-        Clipboard.SetText(result);
-        StatusText = "Copied to clipboard!";
+        if (string.IsNullOrWhiteSpace(NetworkAddress)) { SetStatus(NotificationType.Warning, "L.IpCalculator.Validation.NothingToCopy"); return; }
+        var text = $"IP: {IpAddress}/{Cidr}\nNetwork: {NetworkAddress}\nBroadcast: {BroadcastAddress}\nSubnet: {SubnetMask}\nWildcard: {WildcardMask}\nFirst: {FirstUsable}\nLast: {LastUsable}\nTotal: {TotalHosts}\nUsable: {UsableHosts}\nPrivate: {IsPrivate}";
+        try { _fileExportService.CopyToClipboard(text); SetStatus(NotificationType.Success, "L.IpCalculator.Status.Copied"); }
+        catch (Exception ex) { _logger.LogError(ex, "Copy failed."); SetStatus(NotificationType.Error, "L.Common.Error.Clipboard"); }
     }
+
+    [RelayCommand]
+    private void Clear() { ClearResults(); SetStatus(NotificationType.Info, "L.IpCalculator.Status.Cleared"); }
+
+    private void ClearResults() { NetworkAddress = string.Empty; BroadcastAddress = string.Empty; FirstUsable = string.Empty; LastUsable = string.Empty; SubnetMask = string.Empty; WildcardMask = string.Empty; TotalHosts = 0; UsableHosts = 0; BinaryIp = string.Empty; BinaryMask = string.Empty; IsPrivate = false; }
+
+    private void SetStatus(NotificationType t, string k, params object?[] a) { StatusType = t; StatusText = _localizer.Format(k, a); }
+    private void ReportFailure<T>(ToolResult<T> r, string op) { _logger.LogWarning("IpCalculator {Op} failed: {Kind} {Code}", op, r.ErrorKind, r.ErrorCode); SetStatus(NotificationType.Error, r.ErrorCode ?? "L.Common.Error.Unexpected"); }
 }
