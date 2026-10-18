@@ -4,29 +4,6 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:helpers="clr-namespace:tool_cantam.Helpers"
              Background="{StaticResource BorderDefaultBrush}">
-
-    <UserControl.Resources>
-        <Style x:Key="StatusTextStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="0,15,0,0"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding StatusType}" Value="Success">
-                    <Setter Property="Foreground" Value="{StaticResource GreenBrush}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding StatusType}" Value="Warning">
-                    <Setter Property="Foreground" Value="{StaticResource StatusWarningBrush}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding StatusType}" Value="Error">
-                    <Setter Property="Foreground" Value="{StaticResource RedBrush}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding StatusType}" Value="Info">
-                    <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </UserControl.Resources>
-
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -34,113 +11,64 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="BASE64 IMAGE CONVERTER" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource L.Base64Image.Title}" Style="{StaticResource LabelPrimary}" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Left: Image to Base64 -->
-            <Border Grid.Column="0" 
-                    Style="{StaticResource OptionsPanel}" 
-                    Padding="15" 
-                    Margin="0,0,10,0">
+            <Border Grid.Column="0" Style="{StaticResource OptionsPanel}" Padding="15">
                 <StackPanel>
-                    <TextBlock Text="RESİM → BASE64" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
-
-                    <Border Style="{StaticResource DropZone}" 
-                            Padding="20" MinHeight="150"
+                    <TextBlock Text="{DynamicResource L.Base64Image.Label.ImageToBase64}" Style="{StaticResource LabelPrimary}" FontSize="13" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                    <Border Style="{StaticResource DropZone}" Height="120" Margin="0,0,0,8"
                             helpers:FileDragDropBehavior.IsEnabled="True"
-                            helpers:FileDragDropBehavior.FilePath="{Binding FilePath, Mode=TwoWay}">
-                        <StackPanel>
-                            <ui:SymbolIcon Symbol="Image24" FontSize="32" HorizontalAlignment="Center" Foreground="{StaticResource TextPrimaryBrush}"/>
-                            <TextBlock Text="Drop image here" HorizontalAlignment="Center" Margin="0,10,0,5" Foreground="{StaticResource TextPrimaryBrush}"/>
-                            <TextBlock Text="{Binding FilePath, TargetNullValue='veya seçmek için tıklayın'}" 
-                                       FontSize="10" TextAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource TextPrimaryBrush}"/>
-                            <TextBlock Text="Supported formats: PNG, JPG, GIF, BMP, WEBP" 
-                                       FontSize="9" Foreground="{StaticResource TextSecondaryBrush}"
-                                       HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                            helpers:FileDragDropBehavior.FilePath="{Binding ViewModel.FilePath, Mode=TwoWay}">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <ui:SymbolIcon Symbol="Image24" FontSize="32" Foreground="{StaticResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource L.Base64Image.DropHint}" Style="{StaticResource DropZoneHint}" Margin="0,8,0,0" TextAlignment="Center"/>
+                            <TextBlock Text="{Binding ViewModel.FilePathDisplay}" Style="{StaticResource LabelSecondary}" TextTrimming="CharacterEllipsis" MaxWidth="300" HorizontalAlignment="Center" Margin="0,4,0,0"/>
                         </StackPanel>
                     </Border>
-
-                    <Button Command="{Binding ConvertImageToBase64Command}" 
-                            Content="🔑 CONVERT BASE64" 
-                            Height="40" Margin="0,15,0,10"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
-
-                    <Border CornerRadius="6" Padding="10">
-                        <StackPanel>
-                            <TextBlock Text="PREVIEW" Style="{StaticResource LabelSecondary}" FontSize="11" Margin="0,0,0,5"/>
-                            <Image Source="{Binding PreviewImage}" 
-                                   MaxHeight="100" 
-                                   Stretch="Uniform"/>
-                        </StackPanel>
+                    <Button Command="{Binding ViewModel.SelectFileCommand}" Content="{DynamicResource L.Base64Image.SelectFile}" Height="32" Margin="0,0,0,8" Style="{StaticResource ModernButton}" Background="{StaticResource AccentPrimaryBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="0"/>
+                    <Button Command="{Binding ViewModel.ConvertImageToBase64Command}" Content="{DynamicResource L.Base64Image.ConvertToBase64}" Height="34" Margin="0,0,0,8" Style="{StaticResource ModernButton}" Background="{StaticResource GreenBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="1"/>
+                    <Border Background="{StaticResource OptionsBgBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" BorderThickness="1" CornerRadius="4" Height="120">
+                        <Image Source="{Binding ViewModel.PreviewImage}" Stretch="Uniform" Margin="4"/>
                     </Border>
                 </StackPanel>
             </Border>
 
-            <!-- Center Buttons -->
-            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10">
-                <Button Command="{Binding CopyBase64Command}" 
-                        Content="COPY" Height="40" Width="70" Margin="0,5"
-                        Style="{StaticResource ModernButton}"
-                        Background="{StaticResource StatusWarningBrush}"/>
-                <Button Command="{Binding ClearCommand}" 
-                        Content="CLEAR" Height="40" Width="70" Margin="0,5"
-                        Style="{StaticResource ModernButton}"
-                        Background="{StaticResource RedBrush}"/>
-            </StackPanel>
-
-            <!-- Right: Base64 to Image -->
-            <Border Grid.Column="2" 
-                    Style="{StaticResource OptionsPanel}" 
-                    Padding="15" 
-                    Margin="10,0,0,0">
+            <Border Grid.Column="2" Style="{StaticResource OptionsPanel}" Padding="15">
                 <StackPanel>
-                    <TextBlock Text="BASE64 → RESİM" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
-
-                    <!-- SADECE DİKEY SCROLL - YATAY YOK -->
-                    <ScrollViewer MaxHeight="200" 
-                                  VerticalScrollBarVisibility="Auto"
-                                  HorizontalScrollBarVisibility="Disabled">
-                        <TextBox Text="{Binding Base64Text}" 
-                                 TextWrapping="Wrap"
-                                 AcceptsReturn="True"
-                                 MinHeight="150"
-                                 FontFamily="Consolas"
-                                 FontSize="11"/>
-                    </ScrollViewer>
-
-                    <Button Command="{Binding ConvertBase64ToImageCommand}" 
-                            Content="🔑 CONVERT İMAGE" 
-                            Height="40" Margin="0,10,0,10"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
-
-                    <Border CornerRadius="6" Padding="10">
-                        <StackPanel>
-                            <TextBlock Text="PREVIEW" Style="{StaticResource LabelSecondary}" FontSize="11" Margin="0,0,0,5"/>
-                            <Image Source="{Binding PreviewImage}" 
-                                   MaxHeight="100" 
-                                   Stretch="Uniform"/>
-                        </StackPanel>
+                    <TextBlock Text="{DynamicResource L.Base64Image.Label.Base64ToImage}" Style="{StaticResource LabelPrimary}" FontSize="13" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                    <TextBox Text="{Binding ViewModel.Base64Text, UpdateSourceTrigger=PropertyChanged}" Height="140" Padding="8,6" Margin="0,0,0,8" FontFamily="{StaticResource MonoFont}" FontSize="10" Background="{StaticResource OptionsBgBrush}" Foreground="{StaticResource TextPrimaryBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" TabIndex="2"/>
+                    <UniformGrid Columns="2" Margin="0,0,0,8">
+                        <Button Command="{Binding ViewModel.ConvertBase64ToImageCommand}" Content="{DynamicResource L.Base64Image.ConvertToImage}" Height="34" Margin="0,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource GreenBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="3"/>
+                        <Button Command="{Binding ViewModel.CopyBase64Command}" Content="{DynamicResource L.Base64Image.Copy}" Height="34" Margin="4,0,0,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="4"/>
+                    </UniformGrid>
+                    <Border Background="{StaticResource OptionsBgBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" BorderThickness="1" CornerRadius="4" Height="120">
+                        <Image Source="{Binding ViewModel.PreviewImage}" Stretch="Uniform" Margin="4"/>
                     </Border>
+                    <TextBlock Text="{Binding ViewModel.FileInfoText}" Style="{StaticResource LabelSecondary}" FontFamily="{StaticResource MonoFont}" FontSize="10" Margin="0,4,0,0"/>
                 </StackPanel>
             </Border>
         </Grid>
 
-        <TextBlock Grid.Row="2" 
-                   Text="{Binding StatusText}" 
-                   Style="{StaticResource StatusTextStyle}"/>
+        <Border Grid.Row="2" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0" Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Grid.Column="1" Text="{Binding ViewModel.StatusText}" Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}" FontSize="11" VerticalAlignment="Center"/>
+                <Button Grid.Column="2" Command="{Binding ViewModel.ClearCommand}" Content="{DynamicResource L.Base64Image.Clear}" Height="26" Width="90" Margin="8,0,8,0" Style="{StaticResource ModernButton}" Background="{StaticResource RedBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="5"/>
+                <TextBlock Grid.Column="3" Text="{Binding ViewModel.LimitsText}" Foreground="{StaticResource TextPrimaryBrush}" Opacity="0.6" FontSize="10"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

@@ -1,168 +1,122 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
 using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
 public partial class Base64ImageConverterViewModel : ObservableObject
 {
-    private readonly IImageConverterService _imageConverterService;
-    private readonly IClipboardService _clipboardService;
+    private readonly IBase64ImageService _service;
+    private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<Base64ImageConverterViewModel> _logger;
 
-    [ObservableProperty]
-    private string _base64Text = string.Empty;
+    [ObservableProperty] private string _base64Text = string.Empty;
+    [ObservableProperty] private string _filePath = string.Empty;
+    [ObservableProperty] private BitmapImage? _previewImage;
+    [ObservableProperty] private string _fileInfoText = string.Empty;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
 
-    [ObservableProperty]
-    private string _filePath = string.Empty;
-
-    [ObservableProperty]
-    private BitmapImage? _previewImage;
-
-    [ObservableProperty]
-    private string _statusText = "Ready";
-
-    [ObservableProperty]
-    private NotificationType _statusType = NotificationType.Info;
-
-    public Base64ImageConverterViewModel(
-        IImageConverterService imageConverterService,
-        IClipboardService clipboardService)
+    public Base64ImageConverterViewModel(IBase64ImageService service, IFileExportService fe, ILocalizerService loc, ILogger<Base64ImageConverterViewModel> log)
     {
-        _imageConverterService = imageConverterService;
-        _clipboardService = clipboardService;
+        _service = service; _fileExportService = fe; _localizer = loc; _logger = log;
+        StatusText = _localizer.Get("L.Base64Image.Status.Ready");
     }
 
-    partial void OnFilePathChanged(string value)
-    {
-        if (!string.IsNullOrWhiteSpace(value) && File.Exists(value))
-        {
-            ConvertImageToBase64();
-        }
-    }
+    public string FilePathDisplay => string.IsNullOrWhiteSpace(FilePath) ? _localizer.Get("L.Base64Image.NoFile") : FilePath;
+    public string LimitsText => _localizer.Format("L.Base64Image.Limits", _service.MaxFileSize / (1024 * 1024));
+
+    partial void OnFilePathChanged(string value) => OnPropertyChanged(nameof(FilePathDisplay));
 
     [RelayCommand]
-    private void ConvertImageToBase64()
+    private void SelectFile()
     {
-        if (string.IsNullOrWhiteSpace(FilePath))
-        {
-            UpdateStatus("Please select or drop an image file", NotificationType.Warning);
-            return;
-        }
-
-        if (!File.Exists(FilePath))
-        {
-            UpdateStatus($"File not found: {FilePath}", NotificationType.Error);
-            return;
-        }
-
-        try
-        {
-            // Secure conversion (only allows image files)
-            Base64Text = _imageConverterService.ConvertImageToBase64(FilePath);
-
-            // Load preview
-            PreviewImage = new BitmapImage(new Uri(FilePath));
-
-            UpdateStatus($"✓ Converted: {Path.GetFileName(FilePath)}", NotificationType.Success);
-        }
-        catch (InvalidOperationException ex)
-        {
-            UpdateStatus(ex.Message, NotificationType.Error);
-            PreviewImage = null;
-        }
-        catch (Exception ex)
-        {
-            UpdateStatus($"✗ Conversion failed: {ex.Message}", NotificationType.Error);
-            PreviewImage = null;
-        }
+        var path = _fileExportService.RequestOpenPath(_localizer.Get("L.Base64Image.Filter.Image"), _localizer.Get("L.Base64Image.Dialog.SelectFile"));
+        if (!string.IsNullOrWhiteSpace(path)) { FilePath = path; ConvertImageToBase64Command.Execute(null); }
     }
 
-    [RelayCommand]
-    private void ConvertBase64ToImage()
+    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanConvertImage))]
+    private async Task ConvertImageToBase64Async(CancellationToken ct)
     {
-        if (string.IsNullOrWhiteSpace(Base64Text))
-        {
-            UpdateStatus("Please enter Base64 text", NotificationType.Warning);
-            PreviewImage = null;
-            return;
-        }
-
+        IsBusy = true;
         try
         {
-            if (_imageConverterService.TryConvertBase64ToImage(Base64Text, out byte[] imageBytes, out string errorMessage))
-            {
-                // Load preview
-                using var ms = new MemoryStream(imageBytes);
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = ms;
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
-                bitmap.Freeze();
-                PreviewImage = bitmap;
+            var r = await _service.ImageToBase64Async(FilePath, ct);
+            if (!r.IsSuccess) { ReportFailure(r, "img2b64"); Base64Text = string.Empty; PreviewImage = null; return; }
+            Base64Text = r.Value!.Base64;
+            FileInfoText = $"{r.Value.Format} · {r.Value.OriginalBytes:N0} B";
+            LoadPreview();
+            SetStatus(NotificationType.Success, "L.Base64Image.Status.Converted", r.Value.Format, r.Value.OriginalBytes);
+        }
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "Image→Base64 failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
+    }
 
-                UpdateStatus("✓ Base64 converted to image", NotificationType.Success);
-            }
-            else
-            {
-                PreviewImage = null;
-                UpdateStatus($"✗ {errorMessage}", NotificationType.Error);
-            }
-        }
-        catch (Exception ex)
+    private bool CanConvertImage() => !string.IsNullOrWhiteSpace(FilePath) && File.Exists(FilePath);
+
+    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanConvertBase64))]
+    private async Task ConvertBase64ToImageAsync(CancellationToken ct)
+    {
+        IsBusy = true;
+        try
         {
-            PreviewImage = null;
-            UpdateStatus($"✗ Unexpected error: {ex.Message}", NotificationType.Error);
+            var r = await _service.Base64ToImageAsync(Base64Text, ct);
+            if (!r.IsSuccess) { ReportFailure(r, "b642img"); PreviewImage = null; return; }
+            var bytes = r.Value!.ImageBytes;
+            var bmp = new BitmapImage();
+            bmp.BeginInit();
+            bmp.StreamSource = new MemoryStream(bytes);
+            bmp.CacheOption = BitmapCacheOption.OnLoad;
+            bmp.EndInit();
+            bmp.Freeze();
+            PreviewImage = bmp;
+            FileInfoText = $"{r.Value.DetectedFormat} · {r.Value.ByteCount:N0} B";
+            SetStatus(NotificationType.Success, "L.Base64Image.Status.ConvertedBack", r.Value.DetectedFormat, r.Value.ByteCount);
         }
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "Base64→Image failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
+    }
+
+    private bool CanConvertBase64() => !string.IsNullOrWhiteSpace(Base64Text);
+
+    private void LoadPreview()
+    {
+        try
+        {
+            var bmp = new BitmapImage();
+            bmp.BeginInit();
+            bmp.CacheOption = BitmapCacheOption.OnLoad;
+            bmp.UriSource = new Uri(FilePath, UriKind.Absolute);
+            bmp.EndInit();
+            bmp.Freeze();
+            PreviewImage = bmp;
+        }
+        catch (Exception ex) { _logger.LogWarning(ex, "Preview load failed."); }
     }
 
     [RelayCommand]
     private void CopyBase64()
     {
-        if (string.IsNullOrWhiteSpace(Base64Text))
-        {
-            UpdateStatus("Nothing to copy - Base64 is empty", NotificationType.Warning);
-            return;
-        }
-
-        try
-        {
-            _clipboardService.CopyToClipboard(Base64Text);
-            UpdateStatus("✓ Base64 copied to clipboard!", NotificationType.Success);
-        }
-        catch (Exception ex)
-        {
-            UpdateStatus($"✗ Copy failed: {ex.Message}", NotificationType.Error);
-        }
+        if (string.IsNullOrWhiteSpace(Base64Text)) { SetStatus(NotificationType.Warning, "L.Base64Image.Validation.NothingToCopy"); return; }
+        try { _fileExportService.CopyToClipboard(Base64Text); SetStatus(NotificationType.Success, "L.Base64Image.Status.Copied"); }
+        catch (Exception ex) { _logger.LogError(ex, "Copy failed."); SetStatus(NotificationType.Error, "L.Common.Error.Clipboard"); }
     }
 
     [RelayCommand]
-    private void Clear()
-    {
-        Base64Text = string.Empty;
-        FilePath = string.Empty;
-        PreviewImage = null;
-        UpdateStatus("✓ Cleared", NotificationType.Success);
-    }
+    private void Clear() { Base64Text = string.Empty; FilePath = string.Empty; PreviewImage = null; FileInfoText = string.Empty; SetStatus(NotificationType.Info, "L.Base64Image.Status.Cleared"); }
 
-    private void UpdateStatus(string message, NotificationType type)
-    {
-        StatusText = message;
-        StatusType = type;
-
-        if (type == NotificationType.Success)
-        {
-            System.Threading.Tasks.Task.Delay(3000).ContinueWith(_ =>
-            {
-                if (StatusText == message)
-                {
-                    StatusText = "Ready";
-                    StatusType = NotificationType.Info;
-                }
-            });
-        }
-    }
+    private void SetStatus(NotificationType t, string k, params object?[] a) { StatusType = t; StatusText = _localizer.Format(k, a); }
+    private void ReportFailure<T>(ToolResult<T> r, string op) { _logger.LogWarning("Base64Image {Op} failed: {Kind} {Code}", op, r.ErrorKind, r.ErrorCode); SetStatus(NotificationType.Error, r.ErrorCode ?? "L.Common.Error.Unexpected"); }
 }

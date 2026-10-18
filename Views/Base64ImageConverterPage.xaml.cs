@@ -1,14 +1,8 @@
-﻿// Views/Base64ImageConverterPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class Base64ImageConverterPage : UserControl
+public partial class Base64ImageConverterPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.Base64ImageConverterViewModel>
 {
-    public Base64ImageConverterPage(Base64ImageConverterViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.Base64ImageConverterViewModel ViewModel { get; }
+    public Base64ImageConverterPage(ViewModels.Base64ImageConverterViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
