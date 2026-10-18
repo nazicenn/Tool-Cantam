@@ -1,13 +1,8 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class RgbColorPage : UserControl
+public partial class RgbColorPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.RgbColorViewModel>
 {
-    public RgbColorPage(RgbColorViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.RgbColorViewModel ViewModel { get; }
+    public RgbColorPage(ViewModels.RgbColorViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }

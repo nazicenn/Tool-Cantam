@@ -1,162 +1,132 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Media;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
 using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
 public partial class RgbColorViewModel : ObservableObject
 {
-    private readonly IColorConverterService _colorService;
-    private readonly IClipboardService _clipboardService;
+    private readonly IRgbColorService _service;
+    private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<RgbColorViewModel> _logger;
 
-    [ObservableProperty]
-    private double _red = 0;
+    [ObservableProperty] private int _red;
+    [ObservableProperty] private int _green;
+    [ObservableProperty] private int _blue;
+    [ObservableProperty] private string _hexValue = "#000000";
+    [ObservableProperty] private string _rgbValue = "rgb(0, 0, 0)";
+    [ObservableProperty] private string _hslValue = "hsl(0, 0%, 0%)";
+    [ObservableProperty] private string _colorInfo = string.Empty;
+    [ObservableProperty] private Color _previewColor = Colors.Black;
+    [ObservableProperty] private Color _previewTextColor = Colors.White;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
 
-    [ObservableProperty]
-    private double _green = 0;
+    private bool _suppressAutoConvert;
 
-    [ObservableProperty]
-    private double _blue = 0;
-
-    [ObservableProperty]
-    private string _hexValue = "#000000";
-
-    [ObservableProperty]
-    private string _hslValue = "hsl(0, 0%, 0%)";
-
-    [ObservableProperty]
-    private string _rgbValue = "rgb(0, 0, 0)";
-
-    [ObservableProperty]
-    private Color _previewColor = Colors.Black;
-
-    [ObservableProperty]
-    private Color _previewTextColor = Colors.White;
-
-    [ObservableProperty]
-    private string _colorInfo = "Black color";
-
-    [ObservableProperty]
-    private string _statusText = "Ready.";
-
-    [ObservableProperty]
-    private NotificationType _statusType = NotificationType.Info;
-
-    public RgbColorViewModel(
-        IColorConverterService colorService,
-        IClipboardService clipboardService)
+    public RgbColorViewModel(IRgbColorService service, IFileExportService fe, ILocalizerService loc, ILogger<RgbColorViewModel> log)
     {
-        _colorService = colorService;
-        _clipboardService = clipboardService;
+        _service = service; _fileExportService = fe; _localizer = loc; _logger = log;
+        StatusText = _localizer.Get("L.RgbColor.Status.Ready");
+        _ = ConvertFromRgbAsync();
     }
 
-    partial void OnRedChanged(double value) => UpdateFromRgb();
-    partial void OnGreenChanged(double value) => UpdateFromRgb();
-    partial void OnBlueChanged(double value) => UpdateFromRgb();
+    public string LimitsText => _localizer.Get("L.RgbColor.Limits");
 
-    private void UpdateFromRgb()
+    partial void OnRedChanged(int value) { if (!_suppressAutoConvert) _ = ConvertFromRgbAsync(); }
+    partial void OnGreenChanged(int value) { if (!_suppressAutoConvert) _ = ConvertFromRgbAsync(); }
+    partial void OnBlueChanged(int value) { if (!_suppressAutoConvert) _ = ConvertFromRgbAsync(); }
+
+    private async Task ConvertFromRgbAsync()
     {
-        int r = (int)Math.Clamp(Red, 0, 255);
-        int g = (int)Math.Clamp(Green, 0, 255);
-        int b = (int)Math.Clamp(Blue, 0, 255);
-
-        HexValue = _colorService.RgbToHex(r, g, b);
-        HslValue = _colorService.RgbToHsl(r, g, b);
-        RgbValue = $"rgb({r}, {g}, {b})";
-        PreviewColor = Color.FromRgb((byte)r, (byte)g, (byte)b);
-
-        // Kontrast için yazı rengi
-        double brightness = (r * 0.299 + g * 0.587 + b * 0.114);
-        PreviewTextColor = brightness > 128 ? Colors.Black : Colors.White;
-
-        // Renk bilgisi
-        ColorInfo = GetColorDescription(r, g, b);
-    }
-
-    private string GetColorDescription(int r, int g, int b)
-    {
-        if (r == 0 && g == 0 && b == 0) return "Black";
-        if (r == 255 && g == 255 && b == 255) return "White";
-        if (r == 255 && g == 0 && b == 0) return "Pure Red";
-        if (r == 0 && g == 255 && b == 0) return "Pure Green";
-        if (r == 0 && g == 0 && b == 255) return "Pure Blue";
-
-        string tone = "";
-        int avg = (r + g + b) / 3;
-        if (avg < 85) tone = "Dark";
-        else if (avg < 170) tone = "Medium";
-        else tone = "Light";
-
-        string dominant = "";
-        int max = Math.Max(r, Math.Max(g, b));
-        if (max == r) dominant = "Reddish";
-        else if (max == g) dominant = "Greenish";
-        else dominant = "Bluish";
-
-        return $"{tone} {dominant} (R:{r}, G:{g}, B:{b})";
-    }
-
-    [RelayCommand]
-    private void ApplyHex()
-    {
-        if (_colorService.TryParseHex(HexValue, out int r, out int g, out int b))
+        try
         {
-            Red = r;
-            Green = g;
-            Blue = b;
-            UpdateStatus($"✓ HEX applied: {HexValue.ToUpperInvariant()}", NotificationType.Success);
+            var r = await _service.FromRgbAsync(Red, Green, Blue, CancellationToken.None);
+            if (r.IsSuccess) Apply(r.Value!);
         }
-        else
+        catch (Exception ex) { _logger.LogWarning(ex, "RGB conversion failed."); }
+    }
+
+    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanApplyHex))]
+    private async Task ApplyHexAsync(CancellationToken ct)
+    {
+        IsBusy = true;
+        try
         {
-            UpdateStatus("✗ Invalid HEX format. Use #RRGGBB or #RGB", NotificationType.Error);
+            var r = await _service.FromHexAsync(HexValue, ct);
+            if (!r.IsSuccess) { ReportFailure(r, "hex"); return; }
+            _suppressAutoConvert = true;
+            try { Red = r.Value!.Red; Green = r.Value.Green; Blue = r.Value.Blue; }
+            finally { _suppressAutoConvert = false; }
+            Apply(r.Value!);
+            SetStatus(NotificationType.Success, "L.RgbColor.Status.HexApplied", r.Value!.Hex);
         }
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "Apply hex failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
     }
 
-    [RelayCommand]
-    private void CopyHex()
+    private bool CanApplyHex() => !string.IsNullOrWhiteSpace(HexValue);
+
+    [RelayCommand(IncludeCancelCommand = true)]
+    private async Task RandomColorAsync(CancellationToken ct)
     {
-        _clipboardService.CopyToClipboard(HexValue);
-        UpdateStatus("✓ HEX copied to clipboard", NotificationType.Success);
+        IsBusy = true;
+        try
+        {
+            var r = await _service.RandomAsync(ct);
+            if (!r.IsSuccess) { ReportFailure(r, "random"); return; }
+            _suppressAutoConvert = true;
+            try { Red = r.Value!.Red; Green = r.Value.Green; Blue = r.Value.Blue; }
+            finally { _suppressAutoConvert = false; }
+            Apply(r.Value!);
+            SetStatus(NotificationType.Info, "L.RgbColor.Status.Random");
+        }
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "Random color failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
     }
 
-    [RelayCommand]
-    private void CopyRgb()
-    {
-        _clipboardService.CopyToClipboard(RgbValue);
-        UpdateStatus("✓ RGB copied to clipboard", NotificationType.Success);
-    }
+    [RelayCommand] private void CopyHex() => Copy(HexValue, "L.RgbColor.Status.HexCopied");
+    [RelayCommand] private void CopyRgb() => Copy(RgbValue, "L.RgbColor.Status.RgbCopied");
+    [RelayCommand] private void CopyHsl() => Copy(HslValue, "L.RgbColor.Status.HslCopied");
 
-    [RelayCommand]
-    private void CopyHsl()
+    private void Copy(string text, string successKey)
     {
-        _clipboardService.CopyToClipboard(HslValue);
-        UpdateStatus("✓ HSL copied to clipboard", NotificationType.Success);
-    }
-
-    [RelayCommand]
-    private void RandomColor()
-    {
-        // Her tıklamada new Random() oluşturmak aynı tohumu kullanıp aynı rengi üretebiliyordu.
-        Red = Random.Shared.Next(0, 256);
-        Green = Random.Shared.Next(0, 256);
-        Blue = Random.Shared.Next(0, 256);
-        UpdateStatus("🎲 Random color generated", NotificationType.Info);
+        if (string.IsNullOrWhiteSpace(text)) { SetStatus(NotificationType.Warning, "L.RgbColor.Validation.NothingToCopy"); return; }
+        try { _fileExportService.CopyToClipboard(text); SetStatus(NotificationType.Success, successKey); }
+        catch (Exception ex) { _logger.LogError(ex, "Copy failed."); SetStatus(NotificationType.Error, "L.Common.Error.Clipboard"); }
     }
 
     [RelayCommand]
     private void Clear()
     {
-        Red = 0;
-        Green = 0;
-        Blue = 0;
-        UpdateStatus("✓ Reset to black", NotificationType.Success);
+        _suppressAutoConvert = true;
+        try { Red = 0; Green = 0; Blue = 0; }
+        finally { _suppressAutoConvert = false; }
+        _ = ConvertFromRgbAsync();
+        SetStatus(NotificationType.Info, "L.RgbColor.Status.Cleared");
     }
 
-    private void UpdateStatus(string message, NotificationType type)
+    private void Apply(ColorReport c)
     {
-        StatusText = message;
-        StatusType = type;
+        HexValue = c.Hex;
+        RgbValue = c.Rgb;
+        HslValue = c.Hsl;
+        ColorInfo = c.Description;
+        PreviewColor = Color.FromRgb((byte)c.Red, (byte)c.Green, (byte)c.Blue);
+        PreviewTextColor = c.IsLight ? Colors.Black : Colors.White;
     }
+
+    private void SetStatus(NotificationType t, string k, params object?[] a) { StatusType = t; StatusText = _localizer.Format(k, a); }
+    private void ReportFailure<T>(ToolResult<T> r, string op) { _logger.LogWarning("RgbColor {Op} failed: {Kind} {Code}", op, r.ErrorKind, r.ErrorCode); SetStatus(NotificationType.Error, r.ErrorCode ?? "L.Common.Error.Unexpected"); }
 }
