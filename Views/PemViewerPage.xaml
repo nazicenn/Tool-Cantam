@@ -1,10 +1,8 @@
-﻿<!-- Views/PemViewerPage.xaml -->
-<UserControl x:Class="tool_cantam.Views.PemViewerPage"
+﻿<UserControl x:Class="tool_cantam.Views.PemViewerPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              Background="{StaticResource BorderDefaultBrush}">
-
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -13,154 +11,147 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="PEM VIEWER" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource L.PemViewer.Title}" Style="{StaticResource LabelPrimary}" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <!-- Input -->
-        <Border Grid.Row="1" 
-                Style="{StaticResource OptionsPanel}" 
-                Padding="15" 
-                Margin="0,0,0,15">
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="15" Margin="0,0,0,12">
             <StackPanel>
-                <TextBlock Text="PEM CERTIFICATE" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
-                <TextBox Text="{Binding PemInput, UpdateSourceTrigger=PropertyChanged}"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True"
-                         MinHeight="150"
-                         FontFamily="Consolas"
-                         FontSize="11"
-                         Margin="0,0,0,10"/>
-
-                <UniformGrid Columns="3">
-                    <Button Command="{Binding ParseCommand}" 
-                            Content="📋 PARSE" Height="35" Margin="0,0,5,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
-                    <Button Command="{Binding LoadSampleCommand}" 
-                            Content="📁 SAMPLE" Height="35" Margin="5,0,5,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
-                    <Button Command="{Binding ClearCommand}" 
-                            Content="🗑️ CLEAR" Height="35" Margin="5,0,0,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource RedBrush}"/>
+                <TextBlock Text="{DynamicResource L.PemViewer.Label.Input}" Style="{StaticResource LabelSecondary}" Margin="0,0,0,4"/>
+                <TextBox Text="{Binding ViewModel.PemInput, UpdateSourceTrigger=PropertyChanged}" Height="120" Padding="8,6" Margin="0,0,0,8" FontFamily="{StaticResource MonoFont}" FontSize="11" Background="{StaticResource OptionsBgBrush}" Foreground="{StaticResource TextPrimaryBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" TabIndex="0"/>
+                <UniformGrid Columns="4">
+                    <Button Command="{Binding ViewModel.ParseCommand}" Content="{DynamicResource L.PemViewer.Parse}" Height="34" Margin="0,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource GreenBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="1"/>
+                    <Button Command="{Binding ViewModel.LoadSampleCommand}" Content="{DynamicResource L.PemViewer.Sample}" Height="34" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="2"/>
+                    <Button Command="{Binding ViewModel.CopyAllCommand}" Content="{DynamicResource L.PemViewer.Copy}" Height="34" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="3"/>
+                    <Button Command="{Binding ViewModel.ClearCommand}" Content="{DynamicResource L.PemViewer.Clear}" Height="34" Margin="4,0,0,0" Style="{StaticResource ModernButton}" Background="{StaticResource RedBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="4"/>
                 </UniformGrid>
             </StackPanel>
         </Border>
 
-        <!-- Results -->
-        <Border Grid.Row="2" 
-                Style="{StaticResource OptionsPanel}" 
-                Padding="15">
-            <StackPanel>
-                <TextBlock Text="CERTIFICATE INFO" Style="{StaticResource LabelPrimary}" Margin="0,0,0,15"/>
-
-                <Grid Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Subject:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Subject}" Style="{StaticResource LabelPrimary}" TextWrapping="Wrap"/>
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <Border Style="{StaticResource OptionsPanel}" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.PemViewer.Subject}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.Subject}" TextWrapping="Wrap" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.PemViewer.Issuer}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.Issuer}" TextWrapping="Wrap" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.PemViewer.Serial}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.SerialNumber}" FontFamily="{StaticResource MonoFont}" FontSize="11" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.PemViewer.ValidFrom}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.ValidFrom}" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.PemViewer.ValidTo}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.ValidTo}" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.PemViewer.PublicKey}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.PublicKey}" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.PemViewer.Signature}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.SignatureAlgorithm}" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.PemViewer.Thumbprint}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.Thumbprint}" FontFamily="{StaticResource MonoFont}" FontSize="11" TextWrapping="Wrap" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.PemViewer.Status}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" FontWeight="Bold">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="✗ Invalid"/>
+                                        <Setter Property="Foreground" Value="{StaticResource RedBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ViewModel.IsValid}" Value="True">
+                                                <Setter Property="Text" Value="✓ Valid"/>
+                                                <Setter Property="Foreground" Value="{StaticResource GreenBrush}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Margin="0,12,0,0">
+                        <TextBlock Text="{DynamicResource L.PemViewer.Label.Blocks}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,6"/>
+                        <ItemsControl ItemsSource="{Binding ViewModel.Blocks}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Label}" FontFamily="{StaticResource MonoFont}" FontSize="11" Foreground="{StaticResource AccentPrimaryBrush}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding ByteCount, StringFormat={}{0} B}" FontSize="11" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
                 </Grid>
+            </Border>
+        </ScrollViewer>
 
-                <Grid Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Issuer:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Issuer}" Style="{StaticResource LabelPrimary}" TextWrapping="Wrap"/>
-                </Grid>
-
-                <Grid Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Serial Number:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="{Binding SerialNumber}" Style="{StaticResource LabelPrimary}" FontFamily="Consolas" FontSize="11"/>
-                </Grid>
-
-                <Grid Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Valid From:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="{Binding ValidFrom}" Style="{StaticResource LabelPrimary}"/>
-                </Grid>
-
-                <Grid Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Valid To:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="{Binding ValidTo}" Style="{StaticResource LabelPrimary}"/>
-                </Grid>
-
-                <Grid Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Public Key:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="{Binding PublicKey}" Style="{StaticResource LabelPrimary}"/>
-                </Grid>
-
-                <Grid Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Signature:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="{Binding SignatureAlgorithm}" Style="{StaticResource LabelPrimary}"/>
-                </Grid>
-
-                <Grid Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Thumbprint:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Thumbprint}" Style="{StaticResource LabelPrimary}" FontFamily="Consolas" FontSize="11" TextWrapping="Wrap"/>
-                </Grid>
-
-                <Grid Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Status:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Text" Value="❌ Expired/Invalid"/>
-                                <Setter Property="Foreground" Value="{StaticResource RedBrush}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsValid}" Value="True">
-                                        <Setter Property="Text" Value="✅ Valid"/>
-                                        <Setter Property="Foreground" Value="{StaticResource GreenBrush}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-            </StackPanel>
+        <Border Grid.Row="3" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0" Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Grid.Column="1" Text="{Binding ViewModel.StatusText}" Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}" FontSize="11" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="2" Text="{Binding ViewModel.LimitsText}" Foreground="{StaticResource TextPrimaryBrush}" Opacity="0.6" FontSize="10"/>
+            </Grid>
         </Border>
-
-        <TextBlock Grid.Row="3" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,10,0,0"/>
     </Grid>
 </UserControl>

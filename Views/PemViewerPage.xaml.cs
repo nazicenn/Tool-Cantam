@@ -1,14 +1,8 @@
-﻿// Views/PemViewerPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class PemViewerPage : UserControl
+public partial class PemViewerPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.PemViewerViewModel>
 {
-    public PemViewerPage(PemViewerViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.PemViewerViewModel ViewModel { get; }
+    public PemViewerPage(ViewModels.PemViewerViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
