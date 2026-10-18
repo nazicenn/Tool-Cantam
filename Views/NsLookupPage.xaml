@@ -1,10 +1,8 @@
-﻿<!-- Views/NsLookupPage.xaml -->
-<UserControl x:Class="tool_cantam.Views.NsLookupPage"
+﻿<UserControl x:Class="tool_cantam.Views.NsLookupPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              Background="{StaticResource BorderDefaultBrush}">
-
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -13,72 +11,60 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="NS LOOKUP" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource L.NsLookup.Title}" Style="{StaticResource LabelPrimary}" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <!-- Input -->
-        <Border Grid.Row="1" 
-                Style="{StaticResource OptionsPanel}" 
-                Padding="15" 
-                Margin="0,0,0,15">
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="15" Margin="0,0,0,12">
             <StackPanel>
-                <Grid>
+                <Grid Margin="0,0,0,8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Domain:" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <TextBox Grid.Column="1" Text="{Binding Domain}" FontFamily="Consolas" Height="35" Margin="0,0,10,0"/>
-                    <Button Grid.Column="2" Command="{Binding LookupCommand}" 
-                            Content="LOOKUP" Height="35" Width="80"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
+                    <TextBlock Grid.Column="0" Text="{DynamicResource L.NsLookup.Domain}" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox Grid.Column="1" Text="{Binding ViewModel.Domain, UpdateSourceTrigger=PropertyChanged}" FontFamily="{StaticResource MonoFont}" Height="34" Padding="8,6" Background="{StaticResource OptionsBgBrush}" Foreground="{StaticResource TextPrimaryBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" TabIndex="0"/>
+                    <Button Grid.Column="2" Command="{Binding ViewModel.LookupCommand}" Content="{DynamicResource L.NsLookup.Lookup}" Height="34" Width="100" Margin="8,0,0,0" Style="{StaticResource ModernButton}" Background="{StaticResource GreenBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="1"/>
                 </Grid>
-
-                <Button Command="{Binding LoadSampleCommand}" 
-                        Content="📋 SAMPLE" Height="35" Margin="0,10,0,0"
-                        Style="{StaticResource ModernButton}"
-                        Background="{StaticResource StatusWarningBrush}"/>
+                <UniformGrid Columns="3">
+                    <Button Command="{Binding ViewModel.LoadSampleCommand}" Content="{DynamicResource L.NsLookup.Sample}" Height="34" Margin="0,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="2"/>
+                    <Button Command="{Binding ViewModel.CopyResultsCommand}" Content="{DynamicResource L.NsLookup.Copy}" Height="34" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="3"/>
+                    <Button Command="{Binding ViewModel.ClearCommand}" Content="{DynamicResource L.NsLookup.Clear}" Height="34" Margin="4,0,0,0" Style="{StaticResource ModernButton}" Background="{StaticResource RedBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="4"/>
+                </UniformGrid>
             </StackPanel>
         </Border>
 
-        <!-- Results -->
-        <Border Grid.Row="2" 
-                Style="{StaticResource OptionsPanel}" 
-                Padding="15">
-            <StackPanel>
-                <TextBlock Text="NAME SERVERS" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="300">
-                    <ItemsControl ItemsSource="{Binding NameServers}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border BorderBrush="{StaticResource BorderAccentBrush}" BorderThickness="0,0,0,1" Padding="10,8">
-                                    <TextBlock Text="{Binding}" Style="{StaticResource LabelPrimary}" FontFamily="Consolas"/>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
-
-                <Button Command="{Binding CopyResultsCommand}" 
-                        Content="📋 COPY RESULTS" Height="35" Width="130" Margin="0,10,0,0"
-                        Style="{StaticResource ModernButton}"
-                        Background="{StaticResource StatusWarningBrush}"
-                        HorizontalAlignment="Right"/>
-            </StackPanel>
+        <Border Grid.Row="2" Style="{StaticResource OptionsPanel}" Padding="15">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="{DynamicResource L.NsLookup.Label.Results}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                <Border Grid.Row="1" Background="{StaticResource OptionsBgBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" BorderThickness="1" CornerRadius="4" Padding="8">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,0">
+                        <ItemsControl ItemsSource="{Binding ViewModel.NameServers}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" FontFamily="{StaticResource MonoFont}" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
         </Border>
 
-        <TextBlock Grid.Row="3" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,10,0,0"/>
+        <Border Grid.Row="3" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0" Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Grid.Column="1" Text="{Binding ViewModel.StatusText}" Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}" FontSize="11" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="2" Text="{Binding ViewModel.LimitsText}" Foreground="{StaticResource TextPrimaryBrush}" Opacity="0.6" FontSize="10"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
