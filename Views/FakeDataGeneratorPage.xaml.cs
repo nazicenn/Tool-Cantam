@@ -1,14 +1,8 @@
-﻿// Views/FakeDataGeneratorPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class FakeDataGeneratorPage : UserControl
+public partial class FakeDataGeneratorPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.FakeDataGeneratorViewModel>
 {
-    public FakeDataGeneratorPage(FakeDataGeneratorViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.FakeDataGeneratorViewModel ViewModel { get; }
+    public FakeDataGeneratorPage(ViewModels.FakeDataGeneratorViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
