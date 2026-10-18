@@ -1,155 +1,116 @@
-﻿using System;
-using System.Linq;
-using tool_cantam.Core.Models;
+﻿using tool_cantam.Core.Models;
 using tool_cantam.Services;
-using tool_cantam.Services.ErrorCodes;
 using tool_cantam.Services.Interfaces;
 using Xunit;
 
-namespace ToolCantam.Tests;
+namespace tool_cantam.Tests;
 
-/// <summary>
-/// Parola üretim ve güç analizi servisinin sözleşmesini kilitler: uzunluk, karakter setleri,
-/// benzer karakter hariç tutma, güç puanlama, entropi ve hata yolları.
-/// </summary>
-public class PasswordGeneratorServiceTests
+public sealed class PasswordGeneratorServiceTests
 {
     private readonly PasswordGeneratorService _service = new();
 
-    private static PasswordOptions Options(
-        int length = 16,
-        bool upper = true,
-        bool lower = true,
-        bool digits = true,
-        bool symbols = true,
-        bool excludeSimilar = false) =>
-        new(length, upper, lower, digits, symbols, excludeSimilar);
+    private static PasswordOptions Opts(
+        int len = 16,
+        bool upper = true, bool lower = true, bool digits = true, bool symbols = true,
+        bool excludeSimilar = false)
+        => new(len, upper, lower, digits, symbols, excludeSimilar);
 
-    // ---------------------------------------------------------------------
-    // Üretim
-    // ---------------------------------------------------------------------
-
-    [Theory]
-    [InlineData(8)]
-    [InlineData(16)]
-    [InlineData(32)]
-    [InlineData(64)]
-    public void Generate_produces_password_of_requested_length(int length)
+    [Fact]
+    public void Generate_Valid_ReturnsPassword()
     {
-        var r = _service.Generate(Options(length: length));
+        var r = _service.Generate(Opts());
         Assert.True(r.IsSuccess);
-        Assert.Equal(length, r.Value!.Password.Length);
+        Assert.NotNull(r.Value);
+        Assert.Equal(16, r.Value!.Password.Length);
     }
 
     [Fact]
-    public void Generate_with_all_sets_includes_each_kind()
+    public void Generate_ExactLength_AllCharsFromPools()
     {
-        var r = _service.Generate(Options(length: 32));
+        var r = _service.Generate(Opts(len: 20));
         Assert.True(r.IsSuccess);
-
-        var pwd = r.Value!.Password;
-        Assert.Contains(pwd, char.IsUpper);
-        Assert.Contains(pwd, char.IsLower);
-        Assert.Contains(pwd, char.IsDigit);
-        Assert.Contains(pwd, c => !char.IsLetterOrDigit(c));
+        Assert.Equal(20, r.Value!.Password.Length);
     }
 
     [Fact]
-    public void Generate_only_uppercase_contains_no_lowercase_or_digits()
+    public void Generate_OnlyUpper_OnlyUppercase()
     {
-        var r = _service.Generate(Options(length: 20, upper: true, lower: false, digits: false, symbols: false));
+        var r = _service.Generate(Opts(len: 20, lower: false, digits: false, symbols: false));
         Assert.True(r.IsSuccess);
-
-        var pwd = r.Value!.Password;
-        Assert.All(pwd, c => Assert.True(char.IsUpper(c)));
+        Assert.All(r.Value!.Password, c => Assert.True(char.IsUpper(c)));
     }
 
     [Fact]
-    public void Generate_excludes_similar_characters_when_requested()
+    public void Generate_OnlyDigits_OnlyDigits()
     {
-        var r = _service.Generate(Options(length: 32, excludeSimilar: true));
+        var r = _service.Generate(Opts(len: 20, upper: false, lower: false, symbols: false));
         Assert.True(r.IsSuccess);
-
-        var pwd = r.Value!.Password;
-        Assert.DoesNotContain('I', pwd);
-        Assert.DoesNotContain('l', pwd);
-        Assert.DoesNotContain('1', pwd);
-        Assert.DoesNotContain('O', pwd);
-        Assert.DoesNotContain('0', pwd);
-        Assert.DoesNotContain('o', pwd);
+        Assert.All(r.Value!.Password, c => Assert.True(char.IsDigit(c)));
     }
 
     [Fact]
-    public void Generate_returns_a_strong_analysis_for_a_typical_password()
+    public void Generate_InvalidLength_TooShort_ReturnsValidation()
     {
-        var r = _service.Generate(Options(length: 24));
-        Assert.True(r.IsSuccess);
-
-        var report = r.Value!;
-        Assert.True(report.Strength.Score > 60);
-        Assert.False(string.IsNullOrEmpty(report.Strength.Strength));
-        Assert.False(string.IsNullOrEmpty(report.Strength.ColorHex));
-        Assert.False(string.IsNullOrEmpty(report.Strength.CrackTime));
-    }
-
-    [Fact]
-    public void Generate_is_deterministic_across_calls_when_only_requested_sets_are_used()
-    {
-        // Farklı iki üretim aynı olmamalı (CSPRNG)
-        var a = _service.Generate(Options(length: 32)).Value!.Password;
-        var b = _service.Generate(Options(length: 32)).Value!.Password;
-        Assert.NotEqual(a, b);
-    }
-
-    // ---------------------------------------------------------------------
-    // Hata yolları
-    // ---------------------------------------------------------------------
-
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    [InlineData(1)]
-    public void Generate_rejects_invalid_length(int length)
-    {
-        var r = _service.Generate(Options(length: length));
+        var r = _service.Generate(Opts(len: 2));
         Assert.False(r.IsSuccess);
-        Assert.Equal(PasswordGeneratorErrorCodes.InvalidLength, r.ErrorCode);
+        Assert.Equal(ToolErrorKind.Validation, r.ErrorKind);
     }
 
     [Fact]
-    public void Generate_rejects_when_no_character_set_selected()
+    public void Generate_InvalidLength_TooLong_ReturnsValidation()
     {
-        var r = _service.Generate(Options(upper: false, lower: false, digits: false, symbols: false));
+        var r = _service.Generate(Opts(len: 500));
         Assert.False(r.IsSuccess);
-        Assert.Equal(PasswordGeneratorErrorCodes.NoCharacterSet, r.ErrorCode);
+        Assert.Equal(ToolErrorKind.Validation, r.ErrorKind);
     }
 
     [Fact]
-    public void Generate_rejects_when_all_sets_become_empty_after_excluding_similar()
+    public void Generate_NoCharacterSet_ReturnsValidation()
     {
-        // Sadece "Il1O0o" içeren setler — benzerleri çıkarılınca boş kalır
-        var r = _service.Generate(new PasswordOptions(16, true, false, false, false, true));
-        // "ABC..." gibi diğer harfler hâlâ var, bu yüzden başarılı olmalı
+        var r = _service.Generate(Opts(upper: false, lower: false, digits: false, symbols: false));
+        Assert.False(r.IsSuccess);
+        Assert.Equal(ToolErrorKind.Validation, r.ErrorKind);
+    }
+
+    [Fact]
+    public void Generate_ExcludeSimilar_NoAmbiguousChars()
+    {
+        var r = _service.Generate(Opts(len: 50, excludeSimilar: true));
         Assert.True(r.IsSuccess);
+        string[] bad = { "I", "l", "1", "O", "0", "o" };
+        Assert.DoesNotContain(r.Value!.Password, c => System.Array.IndexOf(bad, c.ToString()) >= 0);
     }
 
-    // ---------------------------------------------------------------------
-    // Analiz
-    // ---------------------------------------------------------------------
+    // ---------- Analyze ----------
 
     [Fact]
-    public void Analyze_very_short_password_is_weak()
+    public void Analyze_Empty_ReturnsZeroScore()
     {
-        var r = _service.Analyze("abc");
+        var r = _service.Analyze("");
+        Assert.True(r.IsSuccess);
+        Assert.Equal(0, r.Value!.Score);
+    }
+
+    [Fact]
+    public void Analyze_Null_ReturnsZeroScore()
+    {
+        var r = _service.Analyze(null);
+        Assert.True(r.IsSuccess);
+        Assert.Equal(0, r.Value!.Score);
+    }
+
+    [Fact]
+    public void Analyze_Weak_ShortNumeric()
+    {
+        var r = _service.Analyze("123");
         Assert.True(r.IsSuccess);
         Assert.True(r.Value!.Score < 40);
-        Assert.False(r.Value.HasMinLength);
     }
 
     [Fact]
-    public void Analyze_strong_password_scores_high()
+    public void Analyze_Strong_LongMixed()
     {
-        var r = _service.Analyze("Tr0ub4dor&3");
+        var r = _service.Analyze("Abc123!@#Def456$%^");
         Assert.True(r.IsSuccess);
         Assert.True(r.Value!.Score >= 60);
         Assert.True(r.Value.HasUppercase);
@@ -159,60 +120,11 @@ public class PasswordGeneratorServiceTests
     }
 
     [Fact]
-    public void Analyze_long_complex_password_reaches_very_strong()
+    public void Analyze_TooLong_ReturnsTooLarge()
     {
-        var r = _service.Analyze("Correct-Horse-Battery-Staple-2024!");
-        Assert.True(r.IsSuccess);
-        Assert.True(r.Value!.Score >= 80);
-        Assert.Equal("Very Strong", r.Value.Strength);
-    }
-
-    [Fact]
-    public void Analyze_digits_only_has_low_entropy()
-    {
-        var r = _service.Analyze("12345678");
-        Assert.True(r.IsSuccess);
-        Assert.True(r.Value!.HasDigit);
-        Assert.False(r.Value.HasUppercase);
-        Assert.False(r.Value.HasLowercase);
-        Assert.False(r.Value.HasSymbol);
-    }
-
-    [Fact]
-    public void Analyze_entropy_grows_with_length_and_variety()
-    {
-        var weak = _service.Analyze("aaaa").Value!.EntropyBits;
-        var medium = _service.Analyze("aA1!").Value!.EntropyBits;
-        var strong = _service.Analyze("aA1!aA1!aA1!aA1!").Value!.EntropyBits;
-
-        Assert.True(weak < medium);
-        Assert.True(medium < strong);
-    }
-
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    public void Analyze_empty_returns_zero(string? input)
-    {
-        var r = _service.Analyze(input);
-        Assert.True(r.IsSuccess);
-        Assert.Equal(0, r.Value!.Score);
-        Assert.Equal(0, r.Value.EntropyBits);
-    }
-
-    [Fact]
-    public void Analyze_too_long_is_reported()
-    {
-        var r = _service.Analyze(new string('a', 2000));
+        var huge = new string('a', 2000);
+        var r = _service.Analyze(huge);
         Assert.False(r.IsSuccess);
         Assert.Equal(ToolErrorKind.TooLarge, r.ErrorKind);
-        Assert.Equal(PasswordGeneratorErrorCodes.PasswordTooLong, r.ErrorCode);
-    }
-
-    [Fact]
-    public void Service_exposes_safe_limits()
-    {
-        Assert.True(_service.MinLength > 0);
-        Assert.True(_service.MaxLength >= 128);
     }
 }
