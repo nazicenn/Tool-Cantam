@@ -1,117 +1,97 @@
-﻿// ViewModels/BcryptGeneratorViewModel.cs
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using System;
-using System.IO.Packaging;
-using System.Windows;
+using System.Threading;
+using System.Threading.Tasks;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
+using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
 public partial class BcryptGeneratorViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private string _password = string.Empty;
+    private readonly IBcryptGeneratorService _service;
+    private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<BcryptGeneratorViewModel> _logger;
 
-    [ObservableProperty]
-    private string _hashedPassword = string.Empty;
+    [ObservableProperty] private string _password = string.Empty;
+    [ObservableProperty] private string _hashedPassword = string.Empty;
+    [ObservableProperty] private int _workFactor = 10;
+    [ObservableProperty] private string _verifyPassword = string.Empty;
+    [ObservableProperty] private bool _isVerified;
+    [ObservableProperty] private string _verifyResult = string.Empty;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
 
-    [ObservableProperty]
-    private int _workFactor = 10;
-
-    [ObservableProperty]
-    private string _verifyPassword = string.Empty;
-
-    [ObservableProperty]
-    private bool _isVerified = false;
-
-    [ObservableProperty]
-    private string _verifyResult = string.Empty;
-
-    [ObservableProperty]
-    private string _statusText = "Ready";
-
-    [RelayCommand]
-    private void GenerateHash()
+    public BcryptGeneratorViewModel(IBcryptGeneratorService service, IFileExportService fe, ILocalizerService loc, ILogger<BcryptGeneratorViewModel> log)
     {
-        if (string.IsNullOrWhiteSpace(Password))
-        {
-            StatusText = "Please enter a password";
-            return;
-        }
+        _service = service; _fileExportService = fe; _localizer = loc; _logger = log;
+        StatusText = _localizer.Get("L.BcryptGenerator.Status.Ready");
+    }
 
+    public string LimitsText => _localizer.Format("L.BcryptGenerator.Limits", _service.MinWorkFactor, _service.MaxWorkFactor);
+
+    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanHash))]
+    private async Task HashAsync(CancellationToken ct)
+    {
+        IsBusy = true;
         try
         {
-            HashedPassword = BCrypt.Net.BCrypt.HashPassword(Password, WorkFactor);
-            StatusText = "✓ Hash generated successfully";
+            var r = await _service.HashAsync(Password, WorkFactor, ct);
+            if (!r.IsSuccess) { ReportFailure(r, "hash"); HashedPassword = string.Empty; return; }
+            HashedPassword = r.Value!.Hash;
+            _logger.LogInformation("Bcrypt hash: factor={Factor} in {Ms:0}ms", r.Value.WorkFactor, r.Value.Elapsed.TotalMilliseconds);
+            SetStatus(NotificationType.Success, "L.BcryptGenerator.Status.Hashed", r.Value.WorkFactor);
         }
-        catch (Exception ex)
-        {
-            StatusText = $"✗ Error: {ex.Message}";
-        }
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "Hash failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
     }
 
-    [RelayCommand]
-    private void Verify()
+    private bool CanHash() => !string.IsNullOrEmpty(Password);
+
+    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanVerify))]
+    private async Task VerifyAsync(CancellationToken ct)
     {
-        if (string.IsNullOrWhiteSpace(VerifyPassword))
-        {
-            StatusText = "Please enter password to verify";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(HashedPassword))
-        {
-            StatusText = "Please generate a hash first";
-            return;
-        }
-
+        IsBusy = true;
         try
         {
-            IsVerified = BCrypt.Net.BCrypt.Verify(VerifyPassword, HashedPassword);
-            VerifyResult = IsVerified ? "✓ Password matches!" : "✗ Password does NOT match";
-            StatusText = IsVerified ? "✓ Verification successful" : "✗ Verification failed";
+            var r = await _service.VerifyAsync(VerifyPassword, HashedPassword, ct);
+            if (!r.IsSuccess) { ReportFailure(r, "verify"); IsVerified = false; VerifyResult = string.Empty; return; }
+            IsVerified = r.Value!.IsMatch;
+            VerifyResult = _localizer.Get(IsVerified ? "L.BcryptGenerator.VerifyMatch" : "L.BcryptGenerator.VerifyMismatch");
+            SetStatus(IsVerified ? NotificationType.Success : NotificationType.Warning,
+                IsVerified ? "L.BcryptGenerator.Status.Verified" : "L.BcryptGenerator.Status.NotVerified");
         }
-        catch (Exception ex)
-        {
-            StatusText = $"✗ Error: {ex.Message}";
-        }
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "Verify failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
     }
 
-    [RelayCommand]
-    private void GenerateRandomPassword()
-    {
-        Password = GenerateRandomString(12);
-        StatusText = "Random password generated";
-    }
+    private bool CanVerify() => !string.IsNullOrEmpty(VerifyPassword) && !string.IsNullOrEmpty(HashedPassword);
+
+    [RelayCommand] private void GenerateRandomPassword() { Password = _service.GeneratePassword(16); SetStatus(NotificationType.Info, "L.BcryptGenerator.Status.RandomGenerated"); }
 
     [RelayCommand]
     private void CopyHash()
     {
-        if (!string.IsNullOrWhiteSpace(HashedPassword))
-        {
-            Clipboard.SetText(HashedPassword);
-            StatusText = "Hash copied to clipboard!";
-        }
+        if (string.IsNullOrWhiteSpace(HashedPassword)) { SetStatus(NotificationType.Warning, "L.BcryptGenerator.Validation.NothingToCopy"); return; }
+        try { _fileExportService.CopyToClipboard(HashedPassword); SetStatus(NotificationType.Success, "L.BcryptGenerator.Status.Copied"); }
+        catch (Exception ex) { _logger.LogError(ex, "Copy failed."); SetStatus(NotificationType.Error, "L.Common.Error.Clipboard"); }
     }
 
     [RelayCommand]
     private void Clear()
     {
-        Password = string.Empty;
-        HashedPassword = string.Empty;
-        VerifyPassword = string.Empty;
-        IsVerified = false;
-        VerifyResult = string.Empty;
-        StatusText = "Cleared";
+        Password = string.Empty; HashedPassword = string.Empty; VerifyPassword = string.Empty;
+        IsVerified = false; VerifyResult = string.Empty;
+        SetStatus(NotificationType.Info, "L.BcryptGenerator.Status.Cleared");
     }
 
-    private string GenerateRandomString(int length)
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
-        var random = new Random();
-        var result = new char[length];
-        for (int i = 0; i < length; i++)
-            result[i] = chars[random.Next(chars.Length)];
-        return new string(result);
-    }
+    private void SetStatus(NotificationType t, string k, params object?[] a) { StatusType = t; StatusText = _localizer.Format(k, a); }
+    private void ReportFailure<T>(ToolResult<T> r, string op) { _logger.LogWarning("BcryptGenerator {Op} failed: {Kind} {Code}", op, r.ErrorKind, r.ErrorCode); SetStatus(NotificationType.Error, r.ErrorCode ?? "L.Common.Error.Unexpected"); }
 }
