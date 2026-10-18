@@ -2035,6 +2035,84 @@
     <sys:String x:Key="L.Base64Image.Error.UnsupportedFormat">Unsupported image format.</sys:String>
     <sys:String x:Key="L.Base64Image.Error.InvalidBase64">Invalid Base64.</sys:String>
     <sys:String x:Key="L.Base64Image.Error.NotAnImage">Not a recognized image.</sys:String>
+    <!-- ============ RGB Color Converter ============ -->
+    <sys:String x:Key="L.RgbColor.Title">RGB COLOR CONVERTER</sys:String>
+    <sys:String x:Key="L.RgbColor.Red">Red:</sys:String>
+    <sys:String x:Key="L.RgbColor.Green">Green:</sys:String>
+    <sys:String x:Key="L.RgbColor.Blue">Blue:</sys:String>
+    <sys:String x:Key="L.RgbColor.Hex">HEX:</sys:String>
+    <sys:String x:Key="L.RgbColor.Preview">PREVIEW</sys:String>
+    <sys:String x:Key="L.RgbColor.ColorInfo">COLOR INFORMATION</sys:String>
+    <sys:String x:Key="L.RgbColor.Formats">FORMATS</sys:String>
+    <sys:String x:Key="L.RgbColor.Apply">APPLY</sys:String>
+    <sys:String x:Key="L.RgbColor.Random">RANDOM</sys:String>
+    <sys:String x:Key="L.RgbColor.CopyHex">COPY HEX</sys:String>
+    <sys:String x:Key="L.RgbColor.CopyRgb">COPY RGB</sys:String>
+    <sys:String x:Key="L.RgbColor.CopyHsl">COPY HSL</sys:String>
+    <sys:String x:Key="L.RgbColor.Clear">RESET</sys:String>
+    <sys:String x:Key="L.RgbColor.Limits">RGB: 0–255 · HEX: #RRGGBB or #RGB.</sys:String>
+    <sys:String x:Key="L.RgbColor.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.RgbColor.Status.HexApplied">✓ Applied: {0}</sys:String>
+    <sys:String x:Key="L.RgbColor.Status.HexCopied">HEX copied.</sys:String>
+    <sys:String x:Key="L.RgbColor.Status.RgbCopied">RGB copied.</sys:String>
+    <sys:String x:Key="L.RgbColor.Status.HslCopied">HSL copied.</sys:String>
+    <sys:String x:Key="L.RgbColor.Status.Random">Random color generated.</sys:String>
+    <sys:String x:Key="L.RgbColor.Status.Cleared">Reset to black.</sys:String>
+    <sys:String x:Key="L.RgbColor.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.RgbColor.Error.InvalidRgb">Invalid RGB values.</sys:String>
+    <sys:String x:Key="L.RgbColor.Error.InvalidHex">Invalid HEX format.</sys:String>
+    <sys:String x:Key="L.RgbColor.Error.InvalidHsl">Invalid HSL values.</sys:String>
+
+    <!-- ============ Lorem Ipsum Generator ============ -->
+    <sys:String x:Key="L.LoremIpsum.Title">LOREM IPSUM GENERATOR</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Paragraphs">Paragraphs:</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Sentences">Sentences/para:</sys:String>
+    <sys:String x:Key="L.LoremIpsum.StartWithLorem">Start with 'Lorem ipsum dolor sit amet'</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Label.Output">OUTPUT</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Generate">GENERATE</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Copy">COPY</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Save">SAVE</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Limits">Paragraphs: {0}–{1} · Sentences: {2}–{3}.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Filter.Text">Text Files (*.txt)|*.txt|All Files (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Status.Generated">✓ {0} paragraphs · {1} words.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Status.Copied">Copied.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Status.Saved">Saved: {0}</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Status.Cleared">Cleared.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Validation.NothingToSave">Nothing to save.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Error.InvalidParagraphs">Invalid paragraph count.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Error.InvalidSentences">Invalid sentence count.</sys:String>
+
+    <!-- ============ Word Counter Pro ============ -->
+    <sys:String x:Key="L.WordCounter.Title">WORD COUNTER PRO</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Input">INPUT TEXT</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Statistics">STATISTICS</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Characters">Characters</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.CharactersNoSpaces">No spaces</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Words">Words</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Sentences">Sentences</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Paragraphs">Paragraphs</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Lines">Lines</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Reading">📖 Reading</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Speaking">🎤 Speaking</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.TopWords">TOP WORDS</sys:String>
+    <sys:String x:Key="L.WordCounter.CopyStats">COPY STATS</sys:String>
+    <sys:String x:Key="L.WordCounter.CopyText">COPY TEXT</sys:String>
+    <sys:String x:Key="L.WordCounter.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.WordCounter.Limits">Max input: {0} MB.</sys:String>
+    <sys:String x:Key="L.WordCounter.NoData">No data yet</sys:String>
+    <sys:String x:Key="L.WordCounter.TimeFormat.Sec">{0} sec</sys:String>
+    <sys:String x:Key="L.WordCounter.TimeFormat.Min">{0} min</sys:String>
+    <sys:String x:Key="L.WordCounter.TimeFormat.HourMin">{0}h {1}m</sys:String>
+    <sys:String x:Key="L.WordCounter.Status.StartTyping">Start typing to see statistics...</sys:String>
+    <sys:String x:Key="L.WordCounter.Status.Updated">✓ Updated: {0} words, {1} characters.</sys:String>
+    <sys:String x:Key="L.WordCounter.Status.StatsCopied">Statistics copied.</sys:String>
+    <sys:String x:Key="L.WordCounter.Status.TextCopied">Text copied.</sys:String>
+    <sys:String x:Key="L.WordCounter.Status.Cleared">Cleared.</sys:String>
+    <sys:String x:Key="L.WordCounter.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.WordCounter.Error.InputTooLarge">Input too large.</sys:String>
 
 
 

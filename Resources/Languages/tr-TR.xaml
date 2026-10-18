@@ -2036,6 +2036,84 @@
     <sys:String x:Key="L.Base64Image.Error.UnsupportedFormat">Desteklenmeyen resim formatı.</sys:String>
     <sys:String x:Key="L.Base64Image.Error.InvalidBase64">Geçersiz Base64.</sys:String>
     <sys:String x:Key="L.Base64Image.Error.NotAnImage">Tanınmayan resim formatı.</sys:String>
+    <!-- ============ RGB Color Converter ============ -->
+    <sys:String x:Key="L.RgbColor.Title">RGB RENK DÖNÜŞTÜRÜCÜ</sys:String>
+    <sys:String x:Key="L.RgbColor.Red">Kırmızı:</sys:String>
+    <sys:String x:Key="L.RgbColor.Green">Yeşil:</sys:String>
+    <sys:String x:Key="L.RgbColor.Blue">Mavi:</sys:String>
+    <sys:String x:Key="L.RgbColor.Hex">HEX:</sys:String>
+    <sys:String x:Key="L.RgbColor.Preview">ÖNİZLEME</sys:String>
+    <sys:String x:Key="L.RgbColor.ColorInfo">RENK BİLGİSİ</sys:String>
+    <sys:String x:Key="L.RgbColor.Formats">FORMATLAR</sys:String>
+    <sys:String x:Key="L.RgbColor.Apply">UYGULA</sys:String>
+    <sys:String x:Key="L.RgbColor.Random">RASTGELE</sys:String>
+    <sys:String x:Key="L.RgbColor.CopyHex">HEX KOPYALA</sys:String>
+    <sys:String x:Key="L.RgbColor.CopyRgb">RGB KOPYALA</sys:String>
+    <sys:String x:Key="L.RgbColor.CopyHsl">HSL KOPYALA</sys:String>
+    <sys:String x:Key="L.RgbColor.Clear">SIFIRLA</sys:String>
+    <sys:String x:Key="L.RgbColor.Limits">RGB: 0–255 · HEX: #RRGGBB veya #RGB.</sys:String>
+    <sys:String x:Key="L.RgbColor.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.RgbColor.Status.HexApplied">✓ Uygulandı: {0}</sys:String>
+    <sys:String x:Key="L.RgbColor.Status.HexCopied">HEX kopyalandı.</sys:String>
+    <sys:String x:Key="L.RgbColor.Status.RgbCopied">RGB kopyalandı.</sys:String>
+    <sys:String x:Key="L.RgbColor.Status.HslCopied">HSL kopyalandı.</sys:String>
+    <sys:String x:Key="L.RgbColor.Status.Random">Rastgele renk üretildi.</sys:String>
+    <sys:String x:Key="L.RgbColor.Status.Cleared">Siyaha sıfırlandı.</sys:String>
+    <sys:String x:Key="L.RgbColor.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.RgbColor.Error.InvalidRgb">Geçersiz RGB değerleri.</sys:String>
+    <sys:String x:Key="L.RgbColor.Error.InvalidHex">Geçersiz HEX formatı.</sys:String>
+    <sys:String x:Key="L.RgbColor.Error.InvalidHsl">Geçersiz HSL değerleri.</sys:String>
+
+    <!-- ============ Lorem Ipsum Generator ============ -->
+    <sys:String x:Key="L.LoremIpsum.Title">LOREM IPSUM ÜRETİCİ</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Paragraphs">Paragraf:</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Sentences">Cümle/paragraf:</sys:String>
+    <sys:String x:Key="L.LoremIpsum.StartWithLorem">'Lorem ipsum dolor sit amet' ile başla</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Label.Output">ÇIKIŞ</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Generate">ÜRET</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Limits">Paragraf: {0}–{1} · Cümle: {2}–{3}.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Filter.Text">Metin Dosyaları (*.txt)|*.txt|Tüm Dosyalar (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Status.Generated">✓ {0} paragraf · {1} kelime.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Status.Copied">Kopyalandı.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Status.Saved">Kaydedildi: {0}</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Status.Cleared">Temizlendi.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Error.InvalidParagraphs">Geçersiz paragraf sayısı.</sys:String>
+    <sys:String x:Key="L.LoremIpsum.Error.InvalidSentences">Geçersiz cümle sayısı.</sys:String>
+
+    <!-- ============ Word Counter Pro ============ -->
+    <sys:String x:Key="L.WordCounter.Title">KELİME SAYACI PRO</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Input">GİRİŞ METNİ</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Statistics">İSTATİSTİKLER</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Characters">Karakter</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.CharactersNoSpaces">Boşluksuz</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Words">Kelime</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Sentences">Cümle</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Paragraphs">Paragraf</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Lines">Satır</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Reading">📖 Okuma</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.Speaking">🎤 Konuşma</sys:String>
+    <sys:String x:Key="L.WordCounter.Label.TopWords">EN ÇOK KULLANILAN</sys:String>
+    <sys:String x:Key="L.WordCounter.CopyStats">İSTATİSTİK KOPYALA</sys:String>
+    <sys:String x:Key="L.WordCounter.CopyText">METNİ KOPYALA</sys:String>
+    <sys:String x:Key="L.WordCounter.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.WordCounter.Limits">Maks giriş: {0} MB.</sys:String>
+    <sys:String x:Key="L.WordCounter.NoData">Henüz veri yok</sys:String>
+    <sys:String x:Key="L.WordCounter.TimeFormat.Sec">{0} sn</sys:String>
+    <sys:String x:Key="L.WordCounter.TimeFormat.Min">{0} dk</sys:String>
+    <sys:String x:Key="L.WordCounter.TimeFormat.HourMin">{0}s {1}dk</sys:String>
+    <sys:String x:Key="L.WordCounter.Status.StartTyping">İstatistikleri görmek için yazmaya başlayın...</sys:String>
+    <sys:String x:Key="L.WordCounter.Status.Updated">✓ Güncellendi: {0} kelime, {1} karakter.</sys:String>
+    <sys:String x:Key="L.WordCounter.Status.StatsCopied">İstatistikler kopyalandı.</sys:String>
+    <sys:String x:Key="L.WordCounter.Status.TextCopied">Metin kopyalandı.</sys:String>
+    <sys:String x:Key="L.WordCounter.Status.Cleared">Temizlendi.</sys:String>
+    <sys:String x:Key="L.WordCounter.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.WordCounter.Error.InputTooLarge">Girdi çok büyük.</sys:String>
 
 
 
