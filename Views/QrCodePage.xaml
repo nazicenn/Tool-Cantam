@@ -11,106 +11,149 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Başlık Bölümü -->
-        <TextBlock Grid.Row="0" 
-                   Text="QR CODE GENERATOR" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="18" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,25"/>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.QrCode.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <Border Grid.Row="1" 
-                Padding="30,20">
-
-            <Grid VerticalAlignment="Center">
-                <!-- İçerik dikeyde ortalandı -->
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="20">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- SOL: TEXT INPUT VE BUTONLAR -->
-                <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                    <TextBlock Text="TEXT OR URL" 
-                               Style="{StaticResource LabelPrimary}" 
-                               Margin="0,0,0,10"
-                               HorizontalAlignment="Left"/>
+                <ScrollViewer Grid.Column="0"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Padding="0,0,12,0">
+                    <StackPanel Margin="0,0,4,0">
+                        <TextBlock Text="{DynamicResource L.QrCode.Label.Input}"
+                                   Style="{StaticResource LabelSecondary}" Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}"
+                                 AcceptsReturn="True" TextWrapping="Wrap"
+                                 VerticalScrollBarVisibility="Auto"
+                                 Height="140" Padding="10,8"
+                                 FontFamily="{StaticResource MonoFont}"
+                                 Background="{StaticResource OptionsBgBrush}"
+                                 Foreground="{StaticResource TextPrimaryBrush}"
+                                 BorderBrush="{StaticResource BorderDefaultBrush}"
+                                 VerticalContentAlignment="Top"
+                                 TabIndex="0"
+                                 AutomationProperties.Name="{DynamicResource L.QrCode.Automation.Input}"/>
 
-                    <TextBox Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
-                             AcceptsReturn="True"
-                             TextWrapping="Wrap"
-                             VerticalScrollBarVisibility="Auto"
-                             Height="180"
-                             VerticalContentAlignment="Top"/>
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{DynamicResource L.QrCode.Label.Ecc}"
+                                           Style="{StaticResource LabelSecondary}" Margin="0,0,0,5"/>
+                                <ComboBox ItemsSource="{Binding ViewModel.EccLevels}"
+                                          SelectedItem="{Binding ViewModel.Ecc}"
+                                          Height="40" TabIndex="1"
+                                          AutomationProperties.Name="{DynamicResource L.QrCode.Automation.Ecc}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{DynamicResource L.QrCode.Label.Pixels}"
+                                           Style="{StaticResource LabelSecondary}" Margin="0,0,0,5"/>
+                                <Slider Value="{Binding ViewModel.PixelsPerModule}"
+                                        Minimum="2" Maximum="30"
+                                        TickFrequency="1" IsSnapToTickEnabled="True"
+                                        TabIndex="2"
+                                        AutomationProperties.Name="{DynamicResource L.QrCode.Automation.Pixels}"/>
+                            </StackPanel>
+                        </Grid>
 
-                    <Grid Margin="0,20,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                        <Button Command="{Binding ViewModel.GenerateCommand}"
+                                Content="{DynamicResource L.QrCode.Generate}"
+                                Height="38" Margin="0,15,0,8"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource GreenBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="3"
+                                AutomationProperties.Name="{DynamicResource L.QrCode.Automation.Generate}"/>
 
-                        <!-- Butonlar yan yana veya alt alta daha şık dursun diye Grid içine alınabilir -->
-                        <!-- Mevcut yapını koruyarak devam ediyorum: -->
-                    </Grid>
+                        <Button Command="{Binding ViewModel.GenerateCancelCommand}"
+                                Content="{DynamicResource L.Common.Cancel}"
+                                Height="30" Margin="0,0,0,10"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource StatusWarningBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="4"
+                                Visibility="{Binding ViewModel.GenerateCancelCommand.CanExecute, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-                    <Button Command="{Binding GenerateCommand}"
-                            Content="GENERATE QR CODE"
-                            Height="44"
-                            Margin="0,20,0,10"
-                            HorizontalAlignment="Stretch"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
+                        <Button Command="{Binding ViewModel.ClearCommand}"
+                                Content="{DynamicResource L.QrCode.Clear}"
+                                Height="30" Margin="0,0,0,10"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource RedBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="5"/>
 
-                    <Button Command="{Binding ClearCommand}"
-                            Content="CLEAR"
-                            Height="44"
-                            HorizontalAlignment="Stretch"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource RedBrush}"/>
-                </StackPanel>
+                        <Border Style="{StaticResource OptionsPanel}" Padding="10">
+                            <TextBlock Text="{DynamicResource L.QrCode.Hint}"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       FontSize="11" TextWrapping="Wrap"/>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
 
-                <!-- AYIRICI ÇİZGİ -->
-                <Separator Grid.Column="1" 
-                           Width="1" 
-                           Background="{StaticResource BorderDefaultBrush}" 
-                           Margin="30,10"/>
+                <ScrollViewer Grid.Column="2"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Padding="0,0,12,0">
+                    <StackPanel Margin="0,0,4,0" HorizontalAlignment="Center">
+                        <TextBlock Text="{DynamicResource L.QrCode.Label.Preview}"
+                                   Style="{StaticResource LabelPrimary}"
+                                   FontWeight="SemiBold" FontSize="12"
+                                   HorizontalAlignment="Center" Margin="0,0,0,10"/>
 
-                <!-- SAĞ: QR KOD VE BUTON -->
-                <StackPanel Grid.Column="2" 
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center">
+                        <Border Background="{StaticResource OptionsBgBrush}"
+                                CornerRadius="8" Padding="10"
+                                BorderBrush="{StaticResource BorderDefaultBrush}"
+                                BorderThickness="1"
+                                Width="260" Height="260">
+                            <Image Source="{Binding ViewModel.QrCodeImage}"
+                                   Stretch="Uniform"
+                                   AutomationProperties.Name="{DynamicResource L.QrCode.Automation.Preview}"/>
+                        </Border>
 
-                    <Border Background="{StaticResource GrayBrush}" 
-                            CornerRadius="16"
-                            Padding="20"
-                            BorderBrush="{StaticResource BorderDefaultBrush}"
-                            BorderThickness="1"
-                            Margin="0,0,0,20"
-                            Width="240" 
-                            Height="240">
-                        <!-- Kare form korundu -->
-                        <Image Source="{Binding QrCodeImage}" 
-                               Stretch="Uniform"/>
-                    </Border>
-
-                    <Button Command="{Binding SaveAsImageCommand}"
-                            Content="SAVE AS PNG"
-                            Height="44"
-                            Width="240" 
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
-                </StackPanel>
+                        <Button Command="{Binding ViewModel.SaveAsImageCommand}"
+                                Content="{DynamicResource L.QrCode.Save}"
+                                Height="38" Width="260" Margin="0,15,0,0"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource StatusWarningBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                TabIndex="6"/>
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
         </Border>
 
-        <!-- Alt Bilgi / Status -->
-        <TextBlock Grid.Row="2" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,15,0,0"/>
+        <Border Grid.Row="2" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0"
+                                 Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ViewModel.StatusText}"
+                           Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                           FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center"
+                           AutomationProperties.LiveSetting="Polite"/>
+                <TextBlock Grid.Column="2"
+                           Text="{Binding ViewModel.LimitsText}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Opacity="0.6" FontSize="10" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

@@ -1114,6 +1114,60 @@
     <sys:String x:Key="L.UnixTimestamp.Error.InvalidNumber">Geçersiz sayı.</sys:String>
     <sys:String x:Key="L.UnixTimestamp.Error.OutOfRange">Değer desteklenen aralık dışında.</sys:String>
     <sys:String x:Key="L.UnixTimestamp.Error.InvalidDate">Tanınmayan tarih formatı.</sys:String>
-    
+    <!-- ============ QR Code Generator ============ -->
+    <sys:String x:Key="L.QrCode.Title">QR KOD ÜRETİCİ</sys:String>
+    <sys:String x:Key="L.QrCode.Label.Input">Metin veya URL</sys:String>
+    <sys:String x:Key="L.QrCode.Label.Ecc">Hata düzeltme</sys:String>
+    <sys:String x:Key="L.QrCode.Label.Pixels">Modül başına piksel</sys:String>
+    <sys:String x:Key="L.QrCode.Label.Preview">Önizleme</sys:String>
+    <sys:String x:Key="L.QrCode.Generate">QR KOD ÜRET</sys:String>
+    <sys:String x:Key="L.QrCode.Save">PNG OLARAK KAYDET</sys:String>
+    <sys:String x:Key="L.QrCode.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.QrCode.Hint">Yüksek hata düzeltme (H) daha çok hasara dayanır ama daha az veri taşır. Q dengeli varsayılandır.</sys:String>
+    <sys:String x:Key="L.QrCode.Limits">Maks giriş: {0} karakter.</sys:String>
+    <sys:String x:Key="L.QrCode.Filter.Png">PNG Görüntü (*.png)|*.png</sys:String>
+    <sys:String x:Key="L.QrCode.Automation.Input">QR kod giriş metni</sys:String>
+    <sys:String x:Key="L.QrCode.Automation.Ecc">Hata düzeltme seviyesi</sys:String>
+    <sys:String x:Key="L.QrCode.Automation.Pixels">Modül başına piksel</sys:String>
+    <sys:String x:Key="L.QrCode.Automation.Generate">QR kod üret</sys:String>
+    <sys:String x:Key="L.QrCode.Automation.Preview">QR kod önizlemesi</sys:String>
+    <sys:String x:Key="L.QrCode.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.QrCode.Status.Generated">✓ QR üretildi · {0} bayt.</sys:String>
+    <sys:String x:Key="L.QrCode.Status.Saved">Kaydedildi: {0}</sys:String>
+    <sys:String x:Key="L.QrCode.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.QrCode.Validation.NothingToSave">Önce bir QR kod üretin.</sys:String>
+    <sys:String x:Key="L.QrCode.Error.EmptyInput">Lütfen metin veya URL girin.</sys:String>
+    <sys:String x:Key="L.QrCode.Error.InputTooLong">Girdi çok uzun.</sys:String>
+    <sys:String x:Key="L.QrCode.Error.InvalidParameters">Geçersiz parametreler.</sys:String>
+
+    <!-- ============ QR Code Reader ============ -->
+    <sys:String x:Key="L.QrCodeReader.Title">QR KOD OKUYUCU</sys:String>
+    <sys:String x:Key="L.QrCodeReader.DropHint">QR kod resmini buraya bırakın veya seçmek için tıklayın</sys:String>
+    <sys:String x:Key="L.QrCodeReader.NoFile">Dosya seçilmedi</sys:String>
+    <sys:String x:Key="L.QrCodeReader.SelectFile">DOSYA SEÇ</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Read">QR KODU OKU</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Label.Preview">Önizleme</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Label.Result">Çözülen metin</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Limits">Maks boyut: {0} MB · Formatlar: {1}</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Filter.Image">Resim Dosyaları (*.png;*.jpg;*.jpeg;*.bmp;*.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Tüm Dosyalar (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Dialog.SelectFile">QR kod resmini seçin</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Automation.Read">QR kodu oku</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Automation.Result">Çözülen QR metni</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Status.FileSelected">Dosya seçildi: {0}</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Status.Read">✓ QR çözüldü · {0}</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Status.Copied">Panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Error.PathRequired">Dosya yolu gerekli.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Error.FileNotFound">Seçilen dosya bulunamadı.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Error.UnsupportedFormat">Desteklenmeyen resim formatı.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Error.FileTooLarge">Dosya çok büyük. Sınır 20 MB'tır.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Error.CorruptImage">Resim bozuk görünüyor.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Error.NoQrFound">Bu resimde QR kod bulunamadı.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Error.IoError">Dosya okunamadı. İzinleri kontrol edin.</sys:String>
+
 
 </ResourceDictionary>

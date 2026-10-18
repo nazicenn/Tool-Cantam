@@ -1113,6 +1113,60 @@
     <sys:String x:Key="L.UnixTimestamp.Error.InvalidNumber">Invalid number.</sys:String>
     <sys:String x:Key="L.UnixTimestamp.Error.OutOfRange">Value is outside supported range.</sys:String>
     <sys:String x:Key="L.UnixTimestamp.Error.InvalidDate">Unrecognized date format.</sys:String>
+    <!-- ============ QR Code Generator ============ -->
+    <sys:String x:Key="L.QrCode.Title">QR CODE GENERATOR</sys:String>
+    <sys:String x:Key="L.QrCode.Label.Input">Text or URL</sys:String>
+    <sys:String x:Key="L.QrCode.Label.Ecc">Error correction</sys:String>
+    <sys:String x:Key="L.QrCode.Label.Pixels">Pixels per module</sys:String>
+    <sys:String x:Key="L.QrCode.Label.Preview">Preview</sys:String>
+    <sys:String x:Key="L.QrCode.Generate">GENERATE QR CODE</sys:String>
+    <sys:String x:Key="L.QrCode.Save">SAVE AS PNG</sys:String>
+    <sys:String x:Key="L.QrCode.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.QrCode.Hint">Higher error correction (H) survives more damage but holds less data. Q is the balanced default.</sys:String>
+    <sys:String x:Key="L.QrCode.Limits">Max input: {0} chars.</sys:String>
+    <sys:String x:Key="L.QrCode.Filter.Png">PNG Image (*.png)|*.png</sys:String>
+    <sys:String x:Key="L.QrCode.Automation.Input">QR code input text</sys:String>
+    <sys:String x:Key="L.QrCode.Automation.Ecc">Error correction level</sys:String>
+    <sys:String x:Key="L.QrCode.Automation.Pixels">Pixels per module</sys:String>
+    <sys:String x:Key="L.QrCode.Automation.Generate">Generate QR code</sys:String>
+    <sys:String x:Key="L.QrCode.Automation.Preview">QR code preview</sys:String>
+    <sys:String x:Key="L.QrCode.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.QrCode.Status.Generated">✓ QR generated · {0} bytes.</sys:String>
+    <sys:String x:Key="L.QrCode.Status.Saved">Saved: {0}</sys:String>
+    <sys:String x:Key="L.QrCode.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.QrCode.Validation.NothingToSave">Generate a QR code first.</sys:String>
+    <sys:String x:Key="L.QrCode.Error.EmptyInput">Please enter text or a URL.</sys:String>
+    <sys:String x:Key="L.QrCode.Error.InputTooLong">Input is too long.</sys:String>
+    <sys:String x:Key="L.QrCode.Error.InvalidParameters">Invalid parameters.</sys:String>
 
+    <!-- ============ QR Code Reader ============ -->
+    <sys:String x:Key="L.QrCodeReader.Title">QR CODE READER</sys:String>
+    <sys:String x:Key="L.QrCodeReader.DropHint">Drop QR code image here or click to browse</sys:String>
+    <sys:String x:Key="L.QrCodeReader.NoFile">No file selected</sys:String>
+    <sys:String x:Key="L.QrCodeReader.SelectFile">SELECT FILE</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Read">READ QR CODE</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Copy">COPY</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Label.Preview">Preview</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Label.Result">Decoded text</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Limits">Max size: {0} MB · Formats: {1}</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Filter.Image">Image Files (*.png;*.jpg;*.jpeg;*.bmp;*.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|All Files (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Dialog.SelectFile">Select QR code image</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Automation.Read">Read QR code</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Automation.Result">Decoded QR text</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Status.FileSelected">File selected: {0}</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Status.Read">✓ QR decoded · {0}</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Status.Copied">Copied to clipboard.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Error.PathRequired">File path is required.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Error.FileNotFound">Selected file was not found.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Error.UnsupportedFormat">Unsupported image format.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Error.FileTooLarge">File is too large. Limit is 20 MB.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Error.CorruptImage">Image appears to be corrupted.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Error.NoQrFound">No QR code found in this image.</sys:String>
+    <sys:String x:Key="L.QrCodeReader.Error.IoError">Could not read file. Check permissions.</sys:String>
+    
 
 </ResourceDictionary>

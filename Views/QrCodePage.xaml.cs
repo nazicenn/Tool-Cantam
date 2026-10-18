@@ -1,13 +1,15 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class QrCodePage : UserControl
+public partial class QrCodePage : System.Windows.Controls.UserControl, INavigableView<ViewModels.QrCodeViewModel>
 {
-    public QrCodePage(QrCodeViewModel viewModel)
+    public ViewModels.QrCodeViewModel ViewModel { get; }
+
+    public QrCodePage(ViewModels.QrCodeViewModel viewModel)
     {
+        ViewModel = viewModel;
+        DataContext = this;
         InitializeComponent();
-        DataContext = viewModel;
     }
 }
