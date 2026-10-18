@@ -1781,6 +1781,125 @@
     <sys:String x:Key="L.GeoIpLookup.Error.RateLimited">Rate limit exceeded.</sys:String>
     <sys:String x:Key="L.GeoIpLookup.Error.NetworkError">Network error.</sys:String>
     <sys:String x:Key="L.GeoIpLookup.Error.Timeout">Request timed out.</sys:String>
+    <!-- ============ YAML Formatter ============ -->
+    <sys:String x:Key="L.YamlFormatter.Title">YAML FORMATTER</sys:String>
+    <sys:String x:Key="L.YamlFormatter.IndentSize">Indent:</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Label.Input">INPUT YAML</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Label.Output">OUTPUT YAML</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Format">FORMAT</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Minify">MINIFY</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Swap">SWAP</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Sample">SAMPLE</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Copy">COPY</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Save">SAVE</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Limits">Max input: {0} MB.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Filter.Yaml">YAML Files (*.yaml;*.yml)|*.yaml;*.yml|All Files (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Status.Formatted">✓ Formatted.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Status.Minified">✓ Minified.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Status.Swapped">Swapped.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Status.Copied">Copied.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Status.Saved">Saved: {0}</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Status.Cleared">Cleared.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Validation.NothingToSave">Nothing to save.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Error.EmptyInput">Please enter YAML.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Error.InputTooLarge">Input too large.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Error.InvalidYaml">Invalid YAML.</sys:String>
+
+    <!-- ============ JSON Minifier ============ -->
+    <sys:String x:Key="L.JsonMinifier.Title">JSON MINIFIER</sys:String>
+    <sys:String x:Key="L.JsonMinifier.IndentSize">Indent:</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Label.Input">INPUT JSON</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Label.Output">OUTPUT JSON</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Minify">MINIFY</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Format">FORMAT</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Swap">SWAP</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Sample">SAMPLE</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Copy">COPY</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Save">SAVE</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Limits">Max input: {0} MB.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Filter.Json">JSON Files (*.json)|*.json|All Files (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Status.Minified">✓ Minified · {0} nodes.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Status.Formatted">✓ Formatted · {0} nodes.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Status.Swapped">Swapped.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Status.Copied">Copied.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Status.Saved">Saved: {0}</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Status.Cleared">Cleared.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Validation.NothingToSave">Nothing to save.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Error.EmptyInput">Please enter JSON.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Error.InputTooLarge">Input too large.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Error.InvalidJson">Invalid JSON.</sys:String>
+
+    <!-- ============ Fake Data Generator ============ -->
+    <sys:String x:Key="L.FakeDataGenerator.Title">FAKE DATA GENERATOR</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Count">Count:</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Name">Name</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Email">Email</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Phone">Phone</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Address">Address</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Company">Company</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Label.Output">OUTPUT</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Generate">GENERATE</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Copy">COPY</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Save">SAVE</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Limits">Count: {0}–{1}.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Filter.Json">JSON Files (*.json)|*.json|All Files (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Status.Generated">✓ {0} records.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Status.Copied">Copied.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Status.Saved">Saved: {0}</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Status.Cleared">Cleared.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Validation.NothingToSave">Nothing to save.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Error.InvalidCount">Invalid count.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Error.NoFieldsSelected">Select at least one field.</sys:String>
+
+    <!-- ============ CSS Gradient Generator ============ -->
+    <sys:String x:Key="L.CssGradientGenerator.Title">CSS GRADIENT GENERATOR</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Color1">Color 1:</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Color2">Color 2:</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Direction">Direction:</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Label.Preview">PREVIEW</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Label.Css">CSS CODE</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Generate">GENERATE</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Sample">SAMPLE</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Copy">COPY</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Limits">Colors: #RRGGBB or #RGB.</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Status.Generated">✓ CSS gradient generated.</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Status.Copied">Copied.</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Status.Cleared">Cleared.</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Error.InvalidColor">Invalid hex color.</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Error.SameColors">Colors must differ.</sys:String>
+
+    <!-- ============ MX Lookup ============ -->
+    <sys:String x:Key="L.MxLookup.Title">MX LOOKUP</sys:String>
+    <sys:String x:Key="L.MxLookup.Domain">Domain:</sys:String>
+    <sys:String x:Key="L.MxLookup.Label.Results">MX RECORDS</sys:String>
+    <sys:String x:Key="L.MxLookup.Column.Priority">Priority</sys:String>
+    <sys:String x:Key="L.MxLookup.Column.Exchange">Mail Server</sys:String>
+    <sys:String x:Key="L.MxLookup.Lookup">LOOKUP</sys:String>
+    <sys:String x:Key="L.MxLookup.Sample">SAMPLE</sys:String>
+    <sys:String x:Key="L.MxLookup.Copy">COPY</sys:String>
+    <sys:String x:Key="L.MxLookup.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.MxLookup.Limits">Timeout: {0}s.</sys:String>
+    <sys:String x:Key="L.MxLookup.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.MxLookup.Status.Found">✓ {0} record(s) for {1}.</sys:String>
+    <sys:String x:Key="L.MxLookup.Status.Copied">Copied.</sys:String>
+    <sys:String x:Key="L.MxLookup.Status.Cleared">Cleared.</sys:String>
+    <sys:String x:Key="L.MxLookup.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.MxLookup.Error.EmptyDomain">Domain is empty.</sys:String>
+    <sys:String x:Key="L.MxLookup.Error.InvalidDomain">Invalid domain.</sys:String>
+    <sys:String x:Key="L.MxLookup.Error.DomainNotFound">Domain not found.</sys:String>
+    <sys:String x:Key="L.MxLookup.Error.Timeout">Timeout.</sys:String>
 
 
 

@@ -1782,6 +1782,125 @@
     <sys:String x:Key="L.GeoIpLookup.Error.RateLimited">İstek sınırı aşıldı.</sys:String>
     <sys:String x:Key="L.GeoIpLookup.Error.NetworkError">Ağ hatası.</sys:String>
     <sys:String x:Key="L.GeoIpLookup.Error.Timeout">İstek zaman aşımına uğradı.</sys:String>
+    <!-- ============ YAML Formatter ============ -->
+    <sys:String x:Key="L.YamlFormatter.Title">YAML BİÇİMLENDİRİCİ</sys:String>
+    <sys:String x:Key="L.YamlFormatter.IndentSize">Girinti:</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Label.Input">GİRİŞ YAML</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Label.Output">ÇIKIŞ YAML</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Format">BİÇİMLENDİR</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Minify">KÜÇÜLT</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Swap">TAKAS</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Sample">ÖRNEK</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Limits">Maks giriş: {0} MB.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Filter.Yaml">YAML Dosyaları (*.yaml;*.yml)|*.yaml;*.yml|Tüm Dosyalar (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Status.Formatted">✓ Biçimlendirildi.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Status.Minified">✓ Küçültüldü.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Status.Swapped">Takas edildi.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Status.Copied">Kopyalandı.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Status.Saved">Kaydedildi: {0}</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Status.Cleared">Temizlendi.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Error.EmptyInput">Lütfen YAML girin.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Error.InputTooLarge">Girdi çok büyük.</sys:String>
+    <sys:String x:Key="L.YamlFormatter.Error.InvalidYaml">Geçersiz YAML.</sys:String>
+
+    <!-- ============ JSON Minifier ============ -->
+    <sys:String x:Key="L.JsonMinifier.Title">JSON KÜÇÜLTÜCÜ</sys:String>
+    <sys:String x:Key="L.JsonMinifier.IndentSize">Girinti:</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Label.Input">GİRİŞ JSON</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Label.Output">ÇIKIŞ JSON</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Minify">KÜÇÜLT</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Format">BİÇİMLENDİR</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Swap">TAKAS</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Sample">ÖRNEK</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Limits">Maks giriş: {0} MB.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Filter.Json">JSON Dosyaları (*.json)|*.json|Tüm Dosyalar (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Status.Minified">✓ Küçültüldü · {0} düğüm.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Status.Formatted">✓ Biçimlendirildi · {0} düğüm.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Status.Swapped">Takas edildi.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Status.Copied">Kopyalandı.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Status.Saved">Kaydedildi: {0}</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Status.Cleared">Temizlendi.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Error.EmptyInput">Lütfen JSON girin.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Error.InputTooLarge">Girdi çok büyük.</sys:String>
+    <sys:String x:Key="L.JsonMinifier.Error.InvalidJson">Geçersiz JSON.</sys:String>
+
+    <!-- ============ Fake Data Generator ============ -->
+    <sys:String x:Key="L.FakeDataGenerator.Title">SAHTE VERİ ÜRETİCİ</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Count">Adet:</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Name">Ad</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Email">E-posta</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Phone">Telefon</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Address">Adres</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Company">Şirket</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Label.Output">ÇIKIŞ</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Generate">ÜRET</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Limits">Adet: {0}–{1}.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Filter.Json">JSON Dosyaları (*.json)|*.json|Tüm Dosyalar (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Status.Generated">✓ {0} kayıt.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Status.Copied">Kopyalandı.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Status.Saved">Kaydedildi: {0}</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Status.Cleared">Temizlendi.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Error.InvalidCount">Geçersiz adet.</sys:String>
+    <sys:String x:Key="L.FakeDataGenerator.Error.NoFieldsSelected">En az bir alan seçin.</sys:String>
+
+    <!-- ============ CSS Gradient Generator ============ -->
+    <sys:String x:Key="L.CssGradientGenerator.Title">CSS GRADYAN ÜRETİCİ</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Color1">Renk 1:</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Color2">Renk 2:</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Direction">Yön:</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Label.Preview">ÖNİZLEME</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Label.Css">CSS KODU</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Generate">ÜRET</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Sample">ÖRNEK</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Limits">Renkler: #RRGGBB veya #RGB.</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Status.Generated">✓ CSS gradyan üretildi.</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Status.Copied">Kopyalandı.</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Status.Cleared">Temizlendi.</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Error.InvalidColor">Geçersiz hex renk.</sys:String>
+    <sys:String x:Key="L.CssGradientGenerator.Error.SameColors">Renkler farklı olmalı.</sys:String>
+
+    <!-- ============ MX Lookup ============ -->
+    <sys:String x:Key="L.MxLookup.Title">MX SORGU</sys:String>
+    <sys:String x:Key="L.MxLookup.Domain">Domain:</sys:String>
+    <sys:String x:Key="L.MxLookup.Label.Results">MX KAYITLARI</sys:String>
+    <sys:String x:Key="L.MxLookup.Column.Priority">Öncelik</sys:String>
+    <sys:String x:Key="L.MxLookup.Column.Exchange">Posta Sunucusu</sys:String>
+    <sys:String x:Key="L.MxLookup.Lookup">SORGULA</sys:String>
+    <sys:String x:Key="L.MxLookup.Sample">ÖRNEK</sys:String>
+    <sys:String x:Key="L.MxLookup.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.MxLookup.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.MxLookup.Limits">Zaman aşımı: {0}sn.</sys:String>
+    <sys:String x:Key="L.MxLookup.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.MxLookup.Status.Found">✓ {1} için {0} kayıt.</sys:String>
+    <sys:String x:Key="L.MxLookup.Status.Copied">Kopyalandı.</sys:String>
+    <sys:String x:Key="L.MxLookup.Status.Cleared">Temizlendi.</sys:String>
+    <sys:String x:Key="L.MxLookup.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.MxLookup.Error.EmptyDomain">Domain boş.</sys:String>
+    <sys:String x:Key="L.MxLookup.Error.InvalidDomain">Geçersiz domain.</sys:String>
+    <sys:String x:Key="L.MxLookup.Error.DomainNotFound">Domain bulunamadı.</sys:String>
+    <sys:String x:Key="L.MxLookup.Error.Timeout">Zaman aşımı.</sys:String>
 
 
 
