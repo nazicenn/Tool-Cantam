@@ -1381,6 +1381,38 @@
     <sys:String x:Key="L.RegexTester.Sample.Date">Date</sys:String>
     <sys:String x:Key="L.RegexTester.Sample.Ip">IPv4</sys:String>
     <sys:String x:Key="L.RegexTester.Sample.TurkishWord">Turkish word</sys:String>
+    <!-- ============ Text Diff ============ -->
+    <sys:String x:Key="L.TextDiff.Title">TEXT DIFF</sys:String>
+    <sys:String x:Key="L.TextDiff.Label.Original">ORIGINAL</sys:String>
+    <sys:String x:Key="L.TextDiff.Label.Modified">MODIFIED</sys:String>
+    <sys:String x:Key="L.TextDiff.Label.Diff">DIFFERENCE</sys:String>
+    <sys:String x:Key="L.TextDiff.IgnoreCase">Ignore case</sys:String>
+    <sys:String x:Key="L.TextDiff.IgnoreWhitespace">Ignore whitespace</sys:String>
+    <sys:String x:Key="L.TextDiff.IgnoreEmptyLines">Ignore empty lines</sys:String>
+    <sys:String x:Key="L.TextDiff.Stats.Added">Added:</sys:String>
+    <sys:String x:Key="L.TextDiff.Stats.Removed">Removed:</sys:String>
+    <sys:String x:Key="L.TextDiff.Stats.Changed">Changed:</sys:String>
+    <sys:String x:Key="L.TextDiff.Stats.Unchanged">Unchanged:</sys:String>
+    <sys:String x:Key="L.TextDiff.Compare">COMPARE</sys:String>
+    <sys:String x:Key="L.TextDiff.Swap">SWAP</sys:String>
+    <sys:String x:Key="L.TextDiff.Copy">COPY</sys:String>
+    <sys:String x:Key="L.TextDiff.Save">SAVE</sys:String>
+    <sys:String x:Key="L.TextDiff.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.TextDiff.Limits">Max input: {0} MB per side.</sys:String>
+    <sys:String x:Key="L.TextDiff.Filter.Text">Diff Files (*.diff)|*.diff|Text Files (*.txt)|*.txt|All Files (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.TextDiff.Automation.Left">Original text</sys:String>
+    <sys:String x:Key="L.TextDiff.Automation.Right">Modified text</sys:String>
+    <sys:String x:Key="L.TextDiff.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.TextDiff.Status.Compared">✓ +{0} -{1} ~{2}</sys:String>
+    <sys:String x:Key="L.TextDiff.Status.Copied">Copied to clipboard.</sys:String>
+    <sys:String x:Key="L.TextDiff.Status.Saved">Saved: {0}</sys:String>
+    <sys:String x:Key="L.TextDiff.Status.Swapped">Swapped.</sys:String>
+    <sys:String x:Key="L.TextDiff.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.TextDiff.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.TextDiff.Validation.NothingToSave">Nothing to save.</sys:String>
+    <sys:String x:Key="L.TextDiff.Error.BothEmpty">Both inputs are empty.</sys:String>
+    <sys:String x:Key="L.TextDiff.Error.InputTooLarge">Input is too large. Limit is 10 MB.</sys:String>
+    
 
 
 

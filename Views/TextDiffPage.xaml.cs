@@ -1,14 +1,15 @@
-﻿// Views/TextDiffPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class TextDiffPage : UserControl
+public partial class TextDiffPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.TextDiffViewModel>
 {
-    public TextDiffPage(TextDiffViewModel viewModel)
+    public ViewModels.TextDiffViewModel ViewModel { get; }
+
+    public TextDiffPage(ViewModels.TextDiffViewModel viewModel)
     {
+        ViewModel = viewModel;
+        DataContext = this;
         InitializeComponent();
-        DataContext = viewModel;
     }
 }

@@ -1382,6 +1382,38 @@
     <sys:String x:Key="L.RegexTester.Sample.Date">Tarih</sys:String>
     <sys:String x:Key="L.RegexTester.Sample.Ip">IPv4</sys:String>
     <sys:String x:Key="L.RegexTester.Sample.TurkishWord">Türkçe kelime</sys:String>
+    <!-- ============ Text Diff ============ -->
+    <sys:String x:Key="L.TextDiff.Title">METİN KARŞILAŞTIRMA</sys:String>
+    <sys:String x:Key="L.TextDiff.Label.Original">ORİJİNAL</sys:String>
+    <sys:String x:Key="L.TextDiff.Label.Modified">DEĞİŞTİRİLMİŞ</sys:String>
+    <sys:String x:Key="L.TextDiff.Label.Diff">FARKLAR</sys:String>
+    <sys:String x:Key="L.TextDiff.IgnoreCase">Büyük/küçük harf yoksay</sys:String>
+    <sys:String x:Key="L.TextDiff.IgnoreWhitespace">Boşlukları yoksay</sys:String>
+    <sys:String x:Key="L.TextDiff.IgnoreEmptyLines">Boş satırları yoksay</sys:String>
+    <sys:String x:Key="L.TextDiff.Stats.Added">Eklenen:</sys:String>
+    <sys:String x:Key="L.TextDiff.Stats.Removed">Silinen:</sys:String>
+    <sys:String x:Key="L.TextDiff.Stats.Changed">Değişen:</sys:String>
+    <sys:String x:Key="L.TextDiff.Stats.Unchanged">Aynı:</sys:String>
+    <sys:String x:Key="L.TextDiff.Compare">KARŞILAŞTIR</sys:String>
+    <sys:String x:Key="L.TextDiff.Swap">TAKAS</sys:String>
+    <sys:String x:Key="L.TextDiff.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.TextDiff.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.TextDiff.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.TextDiff.Limits">Her taraf için maks giriş: {0} MB.</sys:String>
+    <sys:String x:Key="L.TextDiff.Filter.Text">Diff Dosyaları (*.diff)|*.diff|Metin Dosyaları (*.txt)|*.txt|Tüm Dosyalar (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.TextDiff.Automation.Left">Orijinal metin</sys:String>
+    <sys:String x:Key="L.TextDiff.Automation.Right">Değiştirilmiş metin</sys:String>
+    <sys:String x:Key="L.TextDiff.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.TextDiff.Status.Compared">✓ +{0} -{1} ~{2}</sys:String>
+    <sys:String x:Key="L.TextDiff.Status.Copied">Panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.TextDiff.Status.Saved">Kaydedildi: {0}</sys:String>
+    <sys:String x:Key="L.TextDiff.Status.Swapped">Takas edildi.</sys:String>
+    <sys:String x:Key="L.TextDiff.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.TextDiff.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.TextDiff.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
+    <sys:String x:Key="L.TextDiff.Error.BothEmpty">Her iki giriş de boş.</sys:String>
+    <sys:String x:Key="L.TextDiff.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
+    
 
 
 

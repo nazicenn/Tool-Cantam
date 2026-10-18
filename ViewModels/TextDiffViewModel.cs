@@ -1,130 +1,183 @@
-﻿// ViewModels/TextDiffViewModel.cs
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Text;
-using System.Windows;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
+using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
+/// <summary>Text Diff sunum katmanı.</summary>
 public partial class TextDiffViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private string _leftText = string.Empty;
+    private readonly ITextDiffService _service;
+    private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<TextDiffViewModel> _logger;
 
-    [ObservableProperty]
-    private string _rightText = string.Empty;
+    [ObservableProperty] private string _leftText = string.Empty;
+    [ObservableProperty] private string _rightText = string.Empty;
+    [ObservableProperty] private string _diffResult = string.Empty;
+    [ObservableProperty] private bool _ignoreCase;
+    [ObservableProperty] private bool _ignoreWhitespace;
+    [ObservableProperty] private bool _ignoreEmptyLines;
+    [ObservableProperty] private int _addedLines;
+    [ObservableProperty] private int _removedLines;
+    [ObservableProperty] private int _changedLines;
+    [ObservableProperty] private int _unchangedLines;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
 
-    [ObservableProperty]
-    private string _diffResult = string.Empty;
+    public ObservableCollection<DiffRow> DiffLines { get; } = new();
 
-    [ObservableProperty]
-    private bool _ignoreCase = false;
-
-    [ObservableProperty]
-    private bool _ignoreWhitespace = false;
-
-    [ObservableProperty]
-    private int _addedLines = 0;
-
-    [ObservableProperty]
-    private int _removedLines = 0;
-
-    [ObservableProperty]
-    private int _changedLines = 0;
-
-    [ObservableProperty]
-    private string _statusText = "Ready";
-
-    [RelayCommand]
-    private void Compare()
+    public TextDiffViewModel(
+        ITextDiffService service,
+        IFileExportService fileExportService,
+        ILocalizerService localizer,
+        ILogger<TextDiffViewModel> logger)
     {
+        _service = service;
+        _fileExportService = fileExportService;
+        _localizer = localizer;
+        _logger = logger;
+        StatusText = _localizer.Get("L.TextDiff.Status.Ready");
+    }
+
+    public string LimitsText => _localizer.Format("L.TextDiff.Limits", _service.MaxInputLength / (1024 * 1024));
+
+    partial void OnLeftTextChanged(string value) => CompareCommand.NotifyCanExecuteChanged();
+    partial void OnRightTextChanged(string value) => CompareCommand.NotifyCanExecuteChanged();
+
+    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanCompare))]
+    private async Task CompareAsync(CancellationToken cancellationToken)
+    {
+        IsBusy = true;
         try
         {
-            var left = LeftText ?? string.Empty;
-            var right = RightText ?? string.Empty;
-
-            if (IgnoreWhitespace)
+            var opts = new DiffOptions(IgnoreCase, IgnoreWhitespace, IgnoreEmptyLines);
+            var result = await _service.CompareAsync(LeftText, RightText, opts, cancellationToken);
+            if (!result.IsSuccess)
             {
-                left = System.Text.RegularExpressions.Regex.Replace(left, @"\s+", " ");
-                right = System.Text.RegularExpressions.Regex.Replace(right, @"\s+", " ");
+                ReportFailure(result, "compare");
+                DiffLines.Clear();
+                DiffResult = string.Empty;
+                ResetCounts();
+                return;
             }
 
-            var leftLines = left.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-            var rightLines = right.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            var r = result.Value!;
+            DiffLines.Clear();
+            var sb = new System.Text.StringBuilder();
 
-            var comparison = IgnoreCase
-                ? StringComparison.OrdinalIgnoreCase
-                : StringComparison.Ordinal;
-
-            var result = new StringBuilder();
-            int added = 0, removed = 0, changed = 0;
-            int maxLines = Math.Max(leftLines.Length, rightLines.Length);
-
-            for (int i = 0; i < maxLines; i++)
+            foreach (var l in r.Lines)
             {
-                string leftLine = i < leftLines.Length ? leftLines[i] : string.Empty;
-                string rightLine = i < rightLines.Length ? rightLines[i] : string.Empty;
+                var row = new DiffRow(
+                    Kind: l.Kind.ToString(),
+                    Sign: l.Kind switch
+                    {
+                        DiffLineKind.Added => "+",
+                        DiffLineKind.Removed => "-",
+                        DiffLineKind.Changed => "~",
+                        _ => " "
+                    },
+                    LeftText: l.Left ?? "",
+                    RightText: l.Right ?? "",
+                    LeftIndex: l.LeftIndex,
+                    RightIndex: l.RightIndex);
 
-                if (string.Equals(leftLine, rightLine, comparison))
+                DiffLines.Add(row);
+
+                var text = l.Kind switch
                 {
-                    result.AppendLine($"  {leftLine}");
-                }
-                else if (string.IsNullOrEmpty(leftLine))
-                {
-                    result.AppendLine($"+ {rightLine}");
-                    added++;
-                }
-                else if (string.IsNullOrEmpty(rightLine))
-                {
-                    result.AppendLine($"- {leftLine}");
-                    removed++;
-                }
-                else
-                {
-                    result.AppendLine($"~ {leftLine} → {rightLine}");
-                    changed++;
-                }
+                    DiffLineKind.Added => $"+ {l.Right}",
+                    DiffLineKind.Removed => $"- {l.Left}",
+                    DiffLineKind.Changed => $"~ {l.Left} -> {l.Right}",
+                    _ => $"  {l.Left}"
+                };
+                sb.AppendLine(text);
             }
 
-            DiffResult = result.ToString();
-            AddedLines = added;
-            RemovedLines = removed;
-            ChangedLines = changed;
-            StatusText = $"Added: {added}, Removed: {removed}, Changed: {changed}";
+            DiffResult = sb.ToString().TrimEnd();
+            AddedLines = r.Added;
+            RemovedLines = r.Removed;
+            ChangedLines = r.Changed;
+            UnchangedLines = r.Unchanged;
+
+            _logger.LogInformation("TextDiff: +{A} -{R} ~{C} ={U} elapsed={Ms:0}ms",
+                r.Added, r.Removed, r.Changed, r.Unchanged, r.Elapsed.TotalMilliseconds);
+
+            SetStatus(NotificationType.Success, "L.TextDiff.Status.Compared",
+                r.Added, r.Removed, r.Changed);
+        }
+        catch (OperationCanceledException)
+        {
+            SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled");
         }
         catch (Exception ex)
         {
-            StatusText = $"Error: {ex.Message}";
+            _logger.LogError(ex, "TextDiff failed unexpectedly.");
+            SetStatus(NotificationType.Error, "L.Common.Error.Unexpected");
         }
+        finally { IsBusy = false; }
     }
 
-    [RelayCommand]
-    private void Clear()
-    {
-        LeftText = string.Empty;
-        RightText = string.Empty;
-        DiffResult = string.Empty;
-        AddedLines = 0;
-        RemovedLines = 0;
-        ChangedLines = 0;
-        StatusText = "Cleared";
-    }
+    private bool CanCompare() => !string.IsNullOrEmpty(LeftText) || !string.IsNullOrEmpty(RightText);
 
     [RelayCommand]
     private void Swap()
     {
         (LeftText, RightText) = (RightText, LeftText);
-        Compare();
+        SetStatus(NotificationType.Info, "L.TextDiff.Status.Swapped");
     }
 
     [RelayCommand]
     private void CopyResult()
     {
-        if (!string.IsNullOrWhiteSpace(DiffResult))
+        if (string.IsNullOrWhiteSpace(DiffResult))
         {
-            Clipboard.SetText(DiffResult);
-            StatusText = "Copied to clipboard!";
+            SetStatus(NotificationType.Warning, "L.TextDiff.Validation.NothingToCopy");
+            return;
+        }
+        try
+        {
+            _fileExportService.CopyToClipboard(DiffResult);
+            SetStatus(NotificationType.Success, "L.TextDiff.Status.Copied");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Copy failed.");
+            SetStatus(NotificationType.Error, "L.Common.Error.Clipboard");
+        }
+    }
+
+    [RelayCommand]
+    private void SaveResult()
+    {
+        if (string.IsNullOrWhiteSpace(DiffResult))
+        {
+            SetStatus(NotificationType.Warning, "L.TextDiff.Validation.NothingToSave");
+            return;
+        }
+        var path = _fileExportService.RequestSavePath(
+            _localizer.Get("L.TextDiff.Filter.Text"), ".diff", "diff");
+        if (string.IsNullOrEmpty(path)) return;
+
+        try
+        {
+            File.WriteAllText(path, DiffResult);
+            SetStatus(NotificationType.Success, "L.TextDiff.Status.Saved", Path.GetFileName(path));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Save failed.");
+            SetStatus(NotificationType.Error, "L.Common.Error.FileSave");
         }
     }
 
@@ -133,6 +186,40 @@ public partial class TextDiffViewModel : ObservableObject
     {
         LeftText = "Merhaba dünya\nBugün hava çok güzel\nBu bir testtir";
         RightText = "Merhaba dünya\nBugün hava çok sıcak\nBu bir testtir\nYeni satır";
-        Compare();
+        CompareCommand.Execute(null);
+    }
+
+    [RelayCommand]
+    private void Clear()
+    {
+        LeftText = string.Empty;
+        RightText = string.Empty;
+        DiffResult = string.Empty;
+        DiffLines.Clear();
+        ResetCounts();
+        SetStatus(NotificationType.Info, "L.TextDiff.Status.Cleared");
+    }
+
+    private void ResetCounts()
+    {
+        AddedLines = 0;
+        RemovedLines = 0;
+        ChangedLines = 0;
+        UnchangedLines = 0;
+    }
+
+    private void SetStatus(NotificationType type, string key, params object?[] args)
+    {
+        StatusType = type;
+        StatusText = _localizer.Format(key, args);
+    }
+
+    private void ReportFailure<T>(ToolResult<T> result, string op)
+    {
+        _logger.LogWarning("TextDiff {Op} failed: kind={Kind} code={Code}",
+            op, result.ErrorKind, result.ErrorCode);
+        SetStatus(NotificationType.Error, result.ErrorCode ?? "L.Common.Error.Unexpected");
     }
 }
+
+public sealed record DiffRow(string Kind, string Sign, string LeftText, string RightText, int LeftIndex, int RightIndex);
