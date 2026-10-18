@@ -1,14 +1,8 @@
-﻿// Views/CssGradientGeneratorPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class CssGradientGeneratorPage : UserControl
+public partial class CssGradientGeneratorPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.CssGradientGeneratorViewModel>
 {
-    public CssGradientGeneratorPage(CssGradientGeneratorViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.CssGradientGeneratorViewModel ViewModel { get; }
+    public CssGradientGeneratorPage(ViewModels.CssGradientGeneratorViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
