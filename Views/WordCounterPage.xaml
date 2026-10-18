@@ -1,10 +1,8 @@
-﻿<!-- Views/WordCounterPage.xaml -->
-<UserControl x:Class="tool_cantam.Views.WordCounterPage"
+﻿<UserControl x:Class="tool_cantam.Views.WordCounterPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              Background="{StaticResource BorderDefaultBrush}">
-
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -12,204 +10,119 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="WORD COUNTER PRO" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource L.WordCounter.Title}" Style="{StaticResource LabelPrimary}" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="15"/>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="320"/>
             </Grid.ColumnDefinitions>
 
-            <!-- SOL: INPUT -->
-            <Border Grid.Column="0" 
-                    Padding="15" 
-                    Style="{StaticResource OptionsPanel}">
+            <Border Grid.Column="0" Style="{StaticResource OptionsPanel}" Padding="15">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0" Text="INPUT TEXT" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
-
-                    <ScrollViewer Grid.Row="1"
-                                  VerticalScrollBarVisibility="Auto"
-                                  HorizontalScrollBarVisibility="Disabled">
-                        <TextBox Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" 
-                                 AcceptsReturn="True"
-                                 TextWrapping="Wrap"
-                                 MinHeight="300"
-                                 FontFamily="Consolas"
-                                 FontSize="12"
-                                 BorderThickness="0"
-                                 Background="Transparent"/>
-                    </ScrollViewer>
-
-                    <UniformGrid Grid.Row="2" Columns="3" Margin="0,10,0,0">
-                        <Button Command="{Binding CopyStatisticsCommand}" 
-                                Content="COPY STATS" Height="35" Margin="0,0,5,0"
-                                Style="{StaticResource ModernButton}"
-                                Background="{StaticResource StatusWarningBrush}"/>
-                        <Button Command="{Binding CopyTextCommand}" 
-                                Content="COPY TEXT" Height="35" Margin="5,0,5,0"
-                                Style="{StaticResource ModernButton}"
-                                Background="{StaticResource StatusWarningBrush}"/>
-                        <Button Command="{Binding ClearCommand}" 
-                                Content="CLEAR" Height="35" Margin="5,0,0,0"
-                                Style="{StaticResource ModernButton}"
-                                Background="{StaticResource RedBrush}"/>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource L.WordCounter.Label.Input}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                    <TextBox Grid.Row="1" Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" FontFamily="{StaticResource MonoFont}" Background="{StaticResource OptionsBgBrush}" Foreground="{StaticResource TextPrimaryBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" Padding="8" TabIndex="0"/>
+                    <UniformGrid Grid.Row="2" Columns="3" Margin="0,8,0,0">
+                        <Button Command="{Binding ViewModel.CopyStatisticsCommand}" Content="{DynamicResource L.WordCounter.CopyStats}" Height="32" Margin="0,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="1"/>
+                        <Button Command="{Binding ViewModel.CopyTextCommand}" Content="{DynamicResource L.WordCounter.CopyText}" Height="32" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="2"/>
+                        <Button Command="{Binding ViewModel.ClearCommand}" Content="{DynamicResource L.WordCounter.Clear}" Height="32" Margin="4,0,0,0" Style="{StaticResource ModernButton}" Background="{StaticResource RedBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="3"/>
                     </UniformGrid>
                 </Grid>
             </Border>
 
-            <!-- SAĞ: İSTATİSTİKLER -->
-            <Border Grid.Column="2" 
-                    Padding="15"
-                    Style="{StaticResource OptionsPanel}">
-                <ScrollViewer VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Disabled">
+            <Border Grid.Column="2" Style="{StaticResource OptionsPanel}" Padding="15">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,0">
                     <StackPanel>
-                        <TextBlock Text="STATISTICS" 
-                                   Style="{StaticResource LabelPrimary}" 
-                                   FontSize="14"
-                                   HorizontalAlignment="Center" 
-                                   Margin="0,0,0,20"/>
-
-                        <!-- Karakter -->
-                        <Grid Margin="0,0,0,8">
+                        <TextBlock Text="{DynamicResource L.WordCounter.Label.Statistics}" Style="{StaticResource LabelPrimary}" FontSize="13" Margin="0,0,0,10"/>
+                        <Grid Margin="0,0,0,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Characters" 
-                                       Style="{StaticResource LabelSecondary}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding CharacterCount}" 
-                                       Style="{StaticResource LabelPrimary}"
-                                       FontWeight="Bold"
-                                       FontFamily="Consolas"/>
+                            <TextBlock Text="{DynamicResource L.WordCounter.Label.Characters}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.CharacterCount}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}"/>
                         </Grid>
-
-                        <Grid Margin="0,0,0,8">
+                        <Grid Margin="0,0,0,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="No Spaces" 
-                                       Style="{StaticResource LabelSecondary}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding CharacterCountNoSpaces}" 
-                                       Style="{StaticResource LabelPrimary}"
-                                       FontWeight="Bold"
-                                       FontFamily="Consolas"/>
+                            <TextBlock Text="{DynamicResource L.WordCounter.Label.CharactersNoSpaces}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.CharacterCountNoSpaces}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}"/>
                         </Grid>
-
-                        <Grid Margin="0,0,0,8">
+                        <Grid Margin="0,0,0,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Words" 
-                                       Style="{StaticResource LabelSecondary}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding WordCount}" 
-                                       Style="{StaticResource LabelPrimary}"
-                                       FontWeight="Bold"
-                                       FontFamily="Consolas"/>
+                            <TextBlock Text="{DynamicResource L.WordCounter.Label.Words}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.WordCount}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}"/>
                         </Grid>
-
-                        <Grid Margin="0,0,0,8">
+                        <Grid Margin="0,0,0,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Sentences" 
-                                       Style="{StaticResource LabelSecondary}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding SentenceCount}" 
-                                       Style="{StaticResource LabelPrimary}"
-                                       FontWeight="Bold"
-                                       FontFamily="Consolas"/>
+                            <TextBlock Text="{DynamicResource L.WordCounter.Label.Sentences}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.SentenceCount}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}"/>
                         </Grid>
-
-                        <Grid Margin="0,0,0,8">
+                        <Grid Margin="0,0,0,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Paragraphs" 
-                                       Style="{StaticResource LabelSecondary}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding ParagraphCount}" 
-                                       Style="{StaticResource LabelPrimary}"
-                                       FontWeight="Bold"
-                                       FontFamily="Consolas"/>
+                            <TextBlock Text="{DynamicResource L.WordCounter.Label.Paragraphs}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.ParagraphCount}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}"/>
                         </Grid>
-
-                        <Grid Margin="0,0,0,8">
+                        <Grid Margin="0,0,0,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Lines" 
-                                       Style="{StaticResource LabelSecondary}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding LineCount}" 
-                                       Style="{StaticResource LabelPrimary}"
-                                       FontWeight="Bold"
-                                       FontFamily="Consolas"/>
+                            <TextBlock Text="{DynamicResource L.WordCounter.Label.Lines}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.LineCount}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}"/>
                         </Grid>
-
-                        <Separator Margin="0,10,0,10"/>
-
-                        <Grid Margin="0,0,0,8">
+                        <Separator Margin="0,8,0,8"/>
+                        <Grid Margin="0,0,0,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="📖 Reading" 
-                                       Style="{StaticResource LabelSecondary}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding ReadingTime}" 
-                                       Style="{StaticResource LabelPrimary}"
-                                       FontWeight="Bold"
-                                       FontFamily="Consolas"/>
+                            <TextBlock Text="{DynamicResource L.WordCounter.Label.Reading}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.ReadingTime}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}" Foreground="{StaticResource GreenBrush}"/>
                         </Grid>
-
-                        <Grid Margin="0,0,0,8">
+                        <Grid Margin="0,0,0,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="🎤 Speaking" 
-                                       Style="{StaticResource LabelSecondary}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding SpeakingTime}" 
-                                       Style="{StaticResource LabelPrimary}"
-                                       FontWeight="Bold"
-                                       FontFamily="Consolas"/>
+                            <TextBlock Text="{DynamicResource L.WordCounter.Label.Speaking}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.SpeakingTime}" FontWeight="Bold" FontFamily="{StaticResource MonoFont}" Foreground="{StaticResource GreenBrush}"/>
                         </Grid>
-
-                        <TextBlock Text="TOP WORDS" 
-                                   Style="{StaticResource LabelPrimary}" 
-                                   FontSize="11"
-                                   Margin="0,15,0,5"/>
-                        <TextBlock Text="{Binding TopWords}" 
-                                   Style="{StaticResource LabelSecondary}"
-                                   TextWrapping="Wrap"
-                                   FontSize="10"
-                                   FontFamily="Consolas"/>
+                        <TextBlock Text="{DynamicResource L.WordCounter.Label.TopWords}" Style="{StaticResource LabelPrimary}" FontSize="11" Margin="0,10,0,4"/>
+                        <TextBlock Text="{Binding ViewModel.TopWords}" Style="{StaticResource LabelSecondary}" TextWrapping="Wrap" FontSize="10" FontFamily="{StaticResource MonoFont}"/>
                     </StackPanel>
                 </ScrollViewer>
             </Border>
         </Grid>
 
-        <!-- Status -->
-        <TextBlock Grid.Row="2" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,10,0,0"/>
+        <Border Grid.Row="2" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0" Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Grid.Column="1" Text="{Binding ViewModel.StatusText}" Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}" FontSize="11" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="2" Text="{Binding ViewModel.LimitsText}" Foreground="{StaticResource TextPrimaryBrush}" Opacity="0.6" FontSize="10"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

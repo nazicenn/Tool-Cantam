@@ -1,211 +1,130 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
 using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
 public partial class WordCounterViewModel : ObservableObject
 {
-    private readonly IClipboardService _clipboardService;
+    private readonly IWordCounterService _service;
+    private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<WordCounterViewModel> _logger;
 
-    [ObservableProperty]
-    private string _inputText = string.Empty;
+    [ObservableProperty] private string _inputText = string.Empty;
+    [ObservableProperty] private int _characterCount;
+    [ObservableProperty] private int _characterCountNoSpaces;
+    [ObservableProperty] private int _wordCount;
+    [ObservableProperty] private int _sentenceCount;
+    [ObservableProperty] private int _paragraphCount;
+    [ObservableProperty] private int _lineCount;
+    [ObservableProperty] private string _readingTime = "0";
+    [ObservableProperty] private string _speakingTime = "0";
+    [ObservableProperty] private string _topWords = string.Empty;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
 
-    [ObservableProperty]
-    private int _characterCount = 0;
+    private CancellationTokenSource? _debounceCts;
 
-    [ObservableProperty]
-    private int _characterCountNoSpaces = 0;
-
-    [ObservableProperty]
-    private int _wordCount = 0;
-
-    [ObservableProperty]
-    private int _sentenceCount = 0;
-
-    [ObservableProperty]
-    private int _paragraphCount = 0;
-
-    [ObservableProperty]
-    private int _lineCount = 0;
-
-    [ObservableProperty]
-    private string _readingTime = "0 min";
-
-    [ObservableProperty]
-    private string _speakingTime = "0 min";
-
-    [ObservableProperty]
-    private string _topWords = string.Empty;
-
-    [ObservableProperty]
-    private string _statusText = "Start typing to see statistics...";
-
-    [ObservableProperty]
-    private NotificationType _statusType = NotificationType.Info;
-
-    public WordCounterViewModel(IClipboardService clipboardService)
+    public WordCounterViewModel(IWordCounterService service, IFileExportService fe, ILocalizerService loc, ILogger<WordCounterViewModel> log)
     {
-        _clipboardService = clipboardService;
+        _service = service; _fileExportService = fe; _localizer = loc; _logger = log;
+        StatusText = _localizer.Get("L.WordCounter.Status.StartTyping");
     }
+
+    public string LimitsText => _localizer.Format("L.WordCounter.Limits", _service.MaxInputLength / (1024 * 1024));
 
     partial void OnInputTextChanged(string value)
     {
-        UpdateStatistics();
+        _debounceCts?.Cancel();
+        _debounceCts = new CancellationTokenSource();
+        _ = AnalyzeDebouncedAsync(value, _debounceCts.Token);
     }
 
-    private void UpdateStatistics()
+    private async Task AnalyzeDebouncedAsync(string text, CancellationToken ct)
     {
-        if (string.IsNullOrEmpty(InputText))
+        try
         {
-            ResetStatistics();
-            StatusText = "Start typing to see statistics...";
-            StatusType = NotificationType.Info;
-            return;
+            await Task.Delay(250, ct); // Debounce
+            await AnalyzeAsync(text, ct);
         }
-
-        // Karakter sayısı
-        CharacterCount = InputText.Length;
-        CharacterCountNoSpaces = InputText.Count(c => !char.IsWhiteSpace(c));
-
-        // Kelime sayısı
-        var words = Regex.Split(InputText.Trim(), @"\s+")
-                         .Where(w => !string.IsNullOrWhiteSpace(w))
-                         .ToArray();
-        WordCount = words.Length;
-
-        // Cümle sayısı (. ! ?)
-        SentenceCount = Regex.Matches(InputText, @"[.!?]+").Count;
-        if (SentenceCount == 0 && !string.IsNullOrWhiteSpace(InputText))
-            SentenceCount = 1;
-
-        // Paragraf sayısı (boş satırlarla ayrılmış)
-        ParagraphCount = InputText.Split(new[] { "\r\n\r\n", "\n\n" }, StringSplitOptions.RemoveEmptyEntries)
-                                  .Count(p => !string.IsNullOrWhiteSpace(p));
-        if (ParagraphCount == 0 && !string.IsNullOrWhiteSpace(InputText))
-            ParagraphCount = 1;
-
-        // Satır sayısı
-        LineCount = InputText.Split('\n').Length;
-
-        // Okuma süresi (200 kelime/dk)
-        double readingMinutes = WordCount / 200.0;
-        ReadingTime = FormatTime(readingMinutes);
-
-        // Konuşma süresi (130 kelime/dk)
-        double speakingMinutes = WordCount / 130.0;
-        SpeakingTime = FormatTime(speakingMinutes);
-
-        // En çok kullanılan kelimeler (top 5)
-        var topWordsList = words
-            .Select(w => w.ToLowerInvariant().Trim('.', ',', '!', '?', ';', ':', '"', '\'', '(', ')'))
-            .Where(w => w.Length > 2 && !IsStopWord(w))
-            .GroupBy(w => w)
-            .OrderByDescending(g => g.Count())
-            .Take(5)
-            .Select(g => $"{g.Key} ({g.Count()})")
-            .ToArray();
-
-        TopWords = topWordsList.Length > 0
-            ? string.Join(", ", topWordsList)
-            : "No data yet";
-
-        StatusText = $"✓ Updated: {WordCount} words, {CharacterCount} characters";
-        StatusType = NotificationType.Success;
+        catch (OperationCanceledException) { /* yeni tuşlama */ }
+        catch (Exception ex) { _logger.LogError(ex, "Debounce failed."); }
     }
 
-    private void ResetStatistics()
+    private async Task AnalyzeAsync(string text, CancellationToken ct)
     {
-        CharacterCount = 0;
-        CharacterCountNoSpaces = 0;
-        WordCount = 0;
-        SentenceCount = 0;
-        ParagraphCount = 0;
-        LineCount = 0;
-        ReadingTime = "0 min";
-        SpeakingTime = "0 min";
-        TopWords = string.Empty;
+        var r = await _service.AnalyzeAsync(text, ct);
+        if (!r.IsSuccess) { SetStatus(NotificationType.Error, r.ErrorCode ?? "L.Common.Error.Unexpected"); return; }
+
+        var v = r.Value!;
+        CharacterCount = v.Characters;
+        CharacterCountNoSpaces = v.CharactersNoSpaces;
+        WordCount = v.Words;
+        SentenceCount = v.Sentences;
+        ParagraphCount = v.Paragraphs;
+        LineCount = v.Lines;
+        ReadingTime = FormatTime(v.ReadingTime);
+        SpeakingTime = FormatTime(v.SpeakingTime);
+        TopWords = v.TopWords.Count == 0
+            ? _localizer.Get("L.WordCounter.NoData")
+            : string.Join(", ", System.Linq.Enumerable.Select(v.TopWords, x => $"{x.Word} ({x.Count})"));
+
+        if (v.Words == 0)
+            SetStatus(NotificationType.Info, "L.WordCounter.Status.StartTyping");
+        else
+            SetStatus(NotificationType.Success, "L.WordCounter.Status.Updated", v.Words, v.Characters);
     }
 
-    private string FormatTime(double minutes)
+    private string FormatTime(TimeSpan t)
     {
-        if (minutes < 1)
-            return $"{(int)(minutes * 60)} sec";
-        if (minutes < 60)
-            return $"{(int)minutes} min";
-
-        int hours = (int)(minutes / 60);
-        int mins = (int)(minutes % 60);
-        return $"{hours}h {mins}m";
+        if (t.TotalSeconds < 1) return _localizer.Format("L.WordCounter.TimeFormat.Sec", 0);
+        if (t.TotalMinutes < 1) return _localizer.Format("L.WordCounter.TimeFormat.Sec", (int)t.TotalSeconds);
+        if (t.TotalHours < 1) return _localizer.Format("L.WordCounter.TimeFormat.Min", (int)t.TotalMinutes);
+        return _localizer.Format("L.WordCounter.TimeFormat.HourMin", (int)t.TotalHours, t.Minutes);
     }
-
-    /// <summary>
-    /// İngilizce etkisiz kelimeler. Her kelime için yeniden oluşturulmaması adına tek seferlik ve paylaşımlıdır.
-    /// </summary>
-    private static readonly HashSet<string> StopWords = new(StringComparer.Ordinal)
-    {
-        "the", "and", "for", "are", "but", "not", "you", "all", "can", "her", "was", "one", "our", "out",
-        "his", "has", "had", "him", "she", "her", "its", "who", "did", "yes", "how", "why", "what",
-        "when", "where", "this", "that", "with", "from", "have", "will", "your", "they", "them", "then",
-        "than", "into", "only", "also", "just", "some", "such", "like", "over", "back", "after", "been",
-        "would", "could", "should", "there", "their", "these", "those", "about", "which", "while"
-    };
-
-    private static bool IsStopWord(string word) => StopWords.Contains(word);
 
     [RelayCommand]
     private void CopyStatistics()
     {
-        if (string.IsNullOrWhiteSpace(InputText))
-        {
-            UpdateStatus("Nothing to copy", NotificationType.Warning);
-            return;
-        }
-
-        var stats = $@"=== TEXT STATISTICS ===
-Characters: {CharacterCount}
-Characters (no spaces): {CharacterCountNoSpaces}
-Words: {WordCount}
-Sentences: {SentenceCount}
-Paragraphs: {ParagraphCount}
-Lines: {LineCount}
-Reading Time: {ReadingTime}
-Speaking Time: {SpeakingTime}
-Top Words: {TopWords}";
-
-        _clipboardService.CopyToClipboard(stats);
-        UpdateStatus("✓ Statistics copied to clipboard", NotificationType.Success);
+        if (WordCount == 0) { SetStatus(NotificationType.Warning, "L.WordCounter.Validation.NothingToCopy"); return; }
+        var sb = new StringBuilder();
+        sb.AppendLine(_localizer.Get("L.WordCounter.Label.Characters") + ": " + CharacterCount);
+        sb.AppendLine(_localizer.Get("L.WordCounter.Label.CharactersNoSpaces") + ": " + CharacterCountNoSpaces);
+        sb.AppendLine(_localizer.Get("L.WordCounter.Label.Words") + ": " + WordCount);
+        sb.AppendLine(_localizer.Get("L.WordCounter.Label.Sentences") + ": " + SentenceCount);
+        sb.AppendLine(_localizer.Get("L.WordCounter.Label.Paragraphs") + ": " + ParagraphCount);
+        sb.AppendLine(_localizer.Get("L.WordCounter.Label.Lines") + ": " + LineCount);
+        sb.AppendLine(_localizer.Get("L.WordCounter.Label.Reading") + ": " + ReadingTime);
+        sb.AppendLine(_localizer.Get("L.WordCounter.Label.Speaking") + ": " + SpeakingTime);
+        sb.AppendLine(_localizer.Get("L.WordCounter.Label.TopWords") + ": " + TopWords);
+        try { _fileExportService.CopyToClipboard(sb.ToString()); SetStatus(NotificationType.Success, "L.WordCounter.Status.StatsCopied"); }
+        catch (Exception ex) { _logger.LogError(ex, "Copy failed."); SetStatus(NotificationType.Error, "L.Common.Error.Clipboard"); }
     }
 
     [RelayCommand]
     private void CopyText()
     {
-        if (string.IsNullOrWhiteSpace(InputText))
-        {
-            UpdateStatus("Nothing to copy", NotificationType.Warning);
-            return;
-        }
-
-        _clipboardService.CopyToClipboard(InputText);
-        UpdateStatus("✓ Text copied to clipboard", NotificationType.Success);
+        if (string.IsNullOrWhiteSpace(InputText)) { SetStatus(NotificationType.Warning, "L.WordCounter.Validation.NothingToCopy"); return; }
+        try { _fileExportService.CopyToClipboard(InputText); SetStatus(NotificationType.Success, "L.WordCounter.Status.TextCopied"); }
+        catch (Exception ex) { _logger.LogError(ex, "Copy failed."); SetStatus(NotificationType.Error, "L.Common.Error.Clipboard"); }
     }
 
     [RelayCommand]
     private void Clear()
     {
         InputText = string.Empty;
-        ResetStatistics();
-        StatusText = "✓ Cleared";
-        StatusType = NotificationType.Success;
+        SetStatus(NotificationType.Info, "L.WordCounter.Status.Cleared");
     }
 
-    private void UpdateStatus(string message, NotificationType type)
-    {
-        StatusText = message;
-        StatusType = type;
-    }
+    private void SetStatus(NotificationType t, string k, params object?[] a) { StatusType = t; StatusText = _localizer.Format(k, a); }
 }
