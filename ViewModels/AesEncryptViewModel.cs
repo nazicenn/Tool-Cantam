@@ -1,207 +1,88 @@
-﻿// ViewModels/AesEncryptViewModel.cs
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
-using System.Security.Cryptography;
-using System.Text;
-using System.Windows;
+using System.Threading;
+using System.Threading.Tasks;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
+using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
 public partial class AesEncryptViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private string _inputText = string.Empty;
+    private readonly IAesEncryptService _service;
+    private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<AesEncryptViewModel> _logger;
 
-    [ObservableProperty]
-    private string _outputText = string.Empty;
+    [ObservableProperty] private string _inputText = string.Empty;
+    [ObservableProperty] private string _outputText = string.Empty;
+    [ObservableProperty] private string _password = string.Empty;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
 
-    [ObservableProperty]
-    private string _password = string.Empty;
-
-    [ObservableProperty]
-    private string _statusText = "Ready";
-
-    [RelayCommand]
-    private void Encrypt()
+    public AesEncryptViewModel(IAesEncryptService service, IFileExportService fe, ILocalizerService loc, ILogger<AesEncryptViewModel> log)
     {
-        if (string.IsNullOrWhiteSpace(InputText))
-        {
-            StatusText = "Please enter text to encrypt";
-            return;
-        }
+        _service = service; _fileExportService = fe; _localizer = loc; _logger = log;
+        StatusText = _localizer.Get("L.AesEncrypt.Status.Ready");
+    }
 
-        if (string.IsNullOrWhiteSpace(Password))
-        {
-            StatusText = "Please enter a password";
-            return;
-        }
+    public string LimitsText => _localizer.Format("L.AesEncrypt.Limits", _service.MinPasswordLength);
 
+    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanEncrypt))]
+    private async Task EncryptAsync(CancellationToken ct)
+    {
+        IsBusy = true;
         try
         {
-            var encrypted = EncryptString(InputText, Password);
-            OutputText = Convert.ToBase64String(encrypted);
-            StatusText = "✓ Encrypted successfully";
+            var r = await _service.EncryptAsync(InputText, Password, ct);
+            if (!r.IsSuccess) { ReportFailure(r, "encrypt"); OutputText = string.Empty; return; }
+            OutputText = r.Value!.Output;
+            _logger.LogInformation("AES encrypt: {In}->{Out}", r.Value.InputLength, r.Value.OutputLength);
+            SetStatus(NotificationType.Success, "L.AesEncrypt.Status.Encrypted");
         }
-        catch (Exception ex)
-        {
-            StatusText = $"✗ Error: {ex.Message}";
-        }
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "Encrypt failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
     }
 
-    [RelayCommand]
-    private void Decrypt()
+    private bool CanEncrypt() => !string.IsNullOrEmpty(InputText) && !string.IsNullOrWhiteSpace(Password);
+
+    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanEncrypt))]
+    private async Task DecryptAsync(CancellationToken ct)
     {
-        if (string.IsNullOrWhiteSpace(InputText))
-        {
-            StatusText = "Please enter text to decrypt";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(Password))
-        {
-            StatusText = "Please enter the password";
-            return;
-        }
-
+        IsBusy = true;
         try
         {
-            var encrypted = Convert.FromBase64String(InputText);
-
-            // Minimum length check: salt(16) + iv(16) = 32
-            if (encrypted.Length < 32)
-            {
-                StatusText = "✗ Invalid encrypted data";
-                return;
-            }
-
-            var decrypted = DecryptString(encrypted, Password);
-            OutputText = decrypted;
-            StatusText = "✓ Decrypted successfully";
+            var r = await _service.DecryptAsync(InputText, Password, ct);
+            if (!r.IsSuccess) { ReportFailure(r, "decrypt"); OutputText = string.Empty; return; }
+            OutputText = r.Value!.Output;
+            _logger.LogInformation("AES decrypt: {In}->{Out}", r.Value.InputLength, r.Value.OutputLength);
+            SetStatus(NotificationType.Success, "L.AesEncrypt.Status.Decrypted");
         }
-        catch (FormatException)
-        {
-            StatusText = "✗ Invalid Base64 format";
-        }
-        catch (Exception ex)
-        {
-            StatusText = $"✗ Error: {ex.Message}";
-        }
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "Decrypt failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
     }
 
-    [RelayCommand]
-    private void GeneratePassword()
-    {
-        Password = GenerateRandomPassword(16);
-        StatusText = "✓ Random password generated (16 chars)";
-    }
-
-    [RelayCommand]
-    private void Clear()
-    {
-        InputText = string.Empty;
-        OutputText = string.Empty;
-        Password = string.Empty;
-        StatusText = "Cleared";
-    }
+    [RelayCommand] private void GeneratePassword() => Password = _service.GeneratePassword(16);
+    [RelayCommand] private void Swap() { (InputText, OutputText) = (OutputText, InputText); SetStatus(NotificationType.Info, "L.AesEncrypt.Status.Swapped"); }
 
     [RelayCommand]
     private void CopyOutput()
     {
-        if (!string.IsNullOrWhiteSpace(OutputText))
-        {
-            Clipboard.SetText(OutputText);
-            StatusText = "Copied to clipboard!";
-        }
+        if (string.IsNullOrWhiteSpace(OutputText)) { SetStatus(NotificationType.Warning, "L.AesEncrypt.Validation.NothingToCopy"); return; }
+        try { _fileExportService.CopyToClipboard(OutputText); SetStatus(NotificationType.Success, "L.AesEncrypt.Status.Copied"); }
+        catch (Exception ex) { _logger.LogError(ex, "Copy failed."); SetStatus(NotificationType.Error, "L.Common.Error.Clipboard"); }
     }
 
     [RelayCommand]
-    private void Swap()
-    {
-        (InputText, OutputText) = (OutputText, InputText);
-        StatusText = "Swapped";
-    }
+    private void Clear() { InputText = string.Empty; OutputText = string.Empty; Password = string.Empty; SetStatus(NotificationType.Info, "L.AesEncrypt.Status.Cleared"); }
 
-    private byte[] EncryptString(string plainText, string password)
-    {
-        using var aes = Aes.Create();
-
-        // Production-grade settings
-        aes.Mode = CipherMode.CBC;
-        aes.Padding = PaddingMode.PKCS7;
-
-        // Generate random salt
-        var salt = RandomNumberGenerator.GetBytes(16);
-
-        // Generate random IV (independent from password)
-        aes.GenerateIV();
-
-        // Derive key from password and salt
-        var key = Rfc2898DeriveBytes.Pbkdf2(password, salt, 10000, HashAlgorithmName.SHA256, 32);
-
-        aes.Key = key;
-        aes.IV = aes.IV; // Use generated IV
-
-        using var encryptor = aes.CreateEncryptor();
-        var plainBytes = Encoding.UTF8.GetBytes(plainText);
-
-        using var ms = new MemoryStream();
-        // Write salt + IV + ciphertext
-        ms.Write(salt, 0, salt.Length);
-        ms.Write(aes.IV, 0, aes.IV.Length);
-
-        using var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write);
-        cs.Write(plainBytes, 0, plainBytes.Length);
-        cs.FlushFinalBlock();
-
-        return ms.ToArray();
-    }
-
-    private string DecryptString(byte[] cipherText, string password)
-    {
-        using var aes = Aes.Create();
-
-        // Production-grade settings
-        aes.Mode = CipherMode.CBC;
-        aes.Padding = PaddingMode.PKCS7;
-
-        // Extract salt (first 16 bytes)
-        var salt = new byte[16];
-        Array.Copy(cipherText, 0, salt, 0, 16);
-
-        // Extract IV (next 16 bytes)
-        var iv = new byte[16];
-        Array.Copy(cipherText, 16, iv, 0, 16);
-
-        // Extract encrypted data (remaining bytes)
-        var encryptedData = new byte[cipherText.Length - 32];
-        Array.Copy(cipherText, 32, encryptedData, 0, encryptedData.Length);
-
-        // Derive key from password and salt
-        var key = Rfc2898DeriveBytes.Pbkdf2(password, salt, 10000, HashAlgorithmName.SHA256, 32);
-
-        aes.Key = key;
-        aes.IV = iv;
-
-        using var decryptor = aes.CreateDecryptor();
-        using var ms = new MemoryStream(encryptedData);
-        using var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read);
-        using var sr = new StreamReader(cs);
-
-        return sr.ReadToEnd();
-    }
-
-    private string GenerateRandomPassword(int length)
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
-
-        // Cryptographic random - not predictable!
-        var result = new char[length];
-        for (int i = 0; i < length; i++)
-        {
-            result[i] = chars[RandomNumberGenerator.GetInt32(chars.Length)];
-        }
-        return new string(result);
-    }
+    private void SetStatus(NotificationType t, string k, params object?[] a) { StatusType = t; StatusText = _localizer.Format(k, a); }
+    private void ReportFailure<T>(ToolResult<T> r, string op) { _logger.LogWarning("AesEncrypt {Op} failed: {Kind} {Code}", op, r.ErrorKind, r.ErrorCode); SetStatus(NotificationType.Error, r.ErrorCode ?? "L.Common.Error.Unexpected"); }
 }

@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              Background="{StaticResource BorderDefaultBrush}">
-
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -12,50 +11,26 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="AES ENCRYPT / DECRYPT" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource L.AesEncrypt.Title}" Style="{StaticResource LabelPrimary}" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <Border Grid.Row="1" 
-                Style="{StaticResource OptionsPanel}" 
-                Padding="15" 
-                Margin="0,0,0,15">
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="15" Margin="0,0,0,12">
             <StackPanel>
-                <Grid Margin="0,0,0,10">
+                <Grid Margin="0,0,0,8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Password:" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <TextBox Grid.Column="1" Text="{Binding Password}" FontFamily="Consolas" Height="35"/>
-                    <Button Grid.Column="2" Command="{Binding GeneratePasswordCommand}" 
-                            Content="RANDOM" Height="35" Width="90" Margin="10,0,0,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
+                    <TextBlock Grid.Column="0" Text="{DynamicResource L.AesEncrypt.Password}" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox Grid.Column="1" Text="{Binding ViewModel.Password}" FontFamily="{StaticResource MonoFont}" Height="30" Padding="6" Background="{StaticResource OptionsBgBrush}" Foreground="{StaticResource TextPrimaryBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" TabIndex="0"/>
+                    <Button Grid.Column="2" Command="{Binding ViewModel.GeneratePasswordCommand}" Content="{DynamicResource L.AesEncrypt.Random}" Height="30" Width="100" Margin="8,0,0,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="1"/>
                 </Grid>
-
-                <UniformGrid Columns="4" Margin="0,0,0,0">
-                    <Button Command="{Binding EncryptCommand}" 
-                            Content="ENCRYPT →" Height="35" Margin="0,0,5,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
-                    <Button Command="{Binding DecryptCommand}" 
-                            Content="← DECRYPT" Height="35" Margin="5,0,5,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
-                    <Button Command="{Binding SwapCommand}" 
-                            Content="⇄ SWAP" Height="35" Margin="5,0,5,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
-                    <Button Command="{Binding ClearCommand}" 
-                            Content="CLEAR" Height="35" Margin="5,0,0,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource RedBrush}"/>
+                <UniformGrid Columns="5">
+                    <Button Command="{Binding ViewModel.EncryptCommand}" Content="{DynamicResource L.AesEncrypt.Encrypt}" Height="35" Margin="0,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource GreenBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="2"/>
+                    <Button Command="{Binding ViewModel.DecryptCommand}" Content="{DynamicResource L.AesEncrypt.Decrypt}" Height="35" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource GreenBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="3"/>
+                    <Button Command="{Binding ViewModel.SwapCommand}" Content="{DynamicResource L.AesEncrypt.Swap}" Height="35" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="4"/>
+                    <Button Command="{Binding ViewModel.CopyOutputCommand}" Content="{DynamicResource L.AesEncrypt.Copy}" Height="35" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="5"/>
+                    <Button Command="{Binding ViewModel.ClearCommand}" Content="{DynamicResource L.AesEncrypt.Clear}" Height="35" Margin="4,0,0,0" Style="{StaticResource ModernButton}" Background="{StaticResource RedBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="6"/>
                 </UniformGrid>
             </StackPanel>
         </Border>
@@ -63,57 +38,46 @@
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
-            <Border Grid.Column="0" 
-                    Padding="15" 
-                    Margin="0,0,10,0">
-                <StackPanel>
-                    <TextBlock Text="INPUT" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
-
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" 
-                                  HorizontalScrollBarVisibility="Disabled"
-                                  Height="280">
-                        <TextBox Text="{Binding InputText}" 
-                                 TextWrapping="Wrap" 
-                                 AcceptsReturn="True" 
-                                 BorderThickness="0"
-                                 FontFamily="Consolas"/>
-                    </ScrollViewer>
-                </StackPanel>
+            <Border Grid.Column="0" Style="{StaticResource OptionsPanel}" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource L.AesEncrypt.Label.Input}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                    <TextBox Grid.Row="1" Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" FontFamily="{StaticResource MonoFont}" Background="{StaticResource OptionsBgBrush}" Foreground="{StaticResource TextPrimaryBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" Padding="8" TabIndex="7"/>
+                </Grid>
             </Border>
-
-            <Border Grid.Column="1" 
-                    Padding="15" 
-                    Margin="10,0,0,0">
-                <StackPanel>
-                    <TextBlock Text="OUTPUT" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
-
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" 
-                                  HorizontalScrollBarVisibility="Disabled"
-                                  Height="280">
-                        <TextBox Text="{Binding OutputText}" 
-                                 IsReadOnly="True" 
-                                 TextWrapping="Wrap" 
-                                 BorderThickness="0"
-                                 FontFamily="Consolas"/>
-                    </ScrollViewer>
-
-                    <Button Command="{Binding CopyOutputCommand}" 
-                            Content="COPY" Height="30" Width="80" Margin="0,10,0,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"
-                            HorizontalAlignment="Right"/>
-                </StackPanel>
+            <Border Grid.Column="2" Style="{StaticResource OptionsPanel}" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource L.AesEncrypt.Label.Output}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                    <Border Grid.Row="1" Background="{StaticResource OptionsBgBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" BorderThickness="1" CornerRadius="4" Padding="8">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,0">
+                            <TextBlock Text="{Binding ViewModel.OutputText}" FontFamily="{StaticResource MonoFont}" Foreground="{StaticResource TextPrimaryBrush}" TextWrapping="Wrap"/>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
             </Border>
         </Grid>
 
-        <TextBlock Grid.Row="3" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,10,0,0"/>
+        <Border Grid.Row="3" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0" Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Grid.Column="1" Text="{Binding ViewModel.StatusText}" Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}" FontSize="11" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="2" Text="{Binding ViewModel.LimitsText}" Foreground="{StaticResource TextPrimaryBrush}" Opacity="0.6" FontSize="10"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
