@@ -1,14 +1,8 @@
-﻿// Views/TraceroutePage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class TraceroutePage : UserControl
+public partial class TraceroutePage : System.Windows.Controls.UserControl, INavigableView<ViewModels.TracerouteViewModel>
 {
-    public TraceroutePage(TracerouteViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.TracerouteViewModel ViewModel { get; }
+    public TraceroutePage(ViewModels.TracerouteViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }

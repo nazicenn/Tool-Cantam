@@ -1,127 +1,91 @@
-﻿// ViewModels/TracerouteViewModel.cs
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Net.NetworkInformation;
+using System.IO;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
+using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
 public partial class TracerouteViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private string _host = "google.com";
+    private readonly ITracerouteService _service;
+    private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<TracerouteViewModel> _logger;
 
-    [ObservableProperty]
-    private int _maxHops = 30;
+    [ObservableProperty] private string _host = "google.com";
+    [ObservableProperty] private int _maxHops = 30;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
 
-    [ObservableProperty]
-    private bool _isRunning = false;
+    public ObservableCollection<TraceHopRow> Hops { get; } = new();
 
-    [ObservableProperty]
-    private string _statusText = "Ready";
-
-    public ObservableCollection<TraceHop> Hops { get; } = new();
-
-    public class TraceHop
+    public TracerouteViewModel(ITracerouteService service, IFileExportService fe, ILocalizerService loc, ILogger<TracerouteViewModel> log)
     {
-        public int Hop { get; set; }
-        public string Ip { get; set; } = string.Empty;
-        public string Hostname { get; set; } = string.Empty;
-        public long Time1 { get; set; }
-        public long Time2 { get; set; }
-        public long Time3 { get; set; }
-        public string Status { get; set; } = string.Empty;
+        _service = service; _fileExportService = fe; _localizer = loc; _logger = log;
+        StatusText = _localizer.Get("L.Traceroute.Status.Ready");
     }
 
-    [RelayCommand]
-    private async Task StartTraceAsync()
+    public string LimitsText => _localizer.Format("L.Traceroute.Limits", _service.MinHops, _service.MaxHopsLimit);
+
+    [RelayCommand(IncludeCancelCommand = true)]
+    private async Task StartTraceAsync(CancellationToken ct)
     {
-        if (string.IsNullOrWhiteSpace(Host))
-        {
-            StatusText = "Please enter a host";
-            return;
-        }
-
-        IsRunning = true;
-        StatusText = $"Tracing route to {Host}...";
+        IsBusy = true;
         Hops.Clear();
-
-        await Task.Run(() =>
+        try
         {
-            for (int ttl = 1; ttl <= MaxHops; ttl++)
+            var progress = new Progress<TraceHop>(h =>
             {
-                var hop = new TraceHop { Hop = ttl };
+                Hops.Add(new TraceHopRow(h.Ttl, h.Address ?? "*", h.RoundtripMs, h.Status));
+                SetStatus(NotificationType.Info, "L.Traceroute.Status.Running", h.Ttl);
+            });
 
-                try
-                {
-                    var ping = new Ping();
-                    var options = new PingOptions(ttl, true);
-                    var reply = ping.Send(Host, 5000, new byte[32], options);
-
-                    if (reply.Status == IPStatus.Success)
-                    {
-                        hop.Ip = reply.Address?.ToString() ?? "???";
-                        hop.Time1 = reply.RoundtripTime;
-                        hop.Time2 = reply.RoundtripTime;
-                        hop.Time3 = reply.RoundtripTime;
-                        hop.Status = "Success";
-
-                        Application.Current.Dispatcher.Invoke(() => Hops.Add(hop));
-
-                        if (reply.Address?.ToString() == Host || reply.Address?.ToString() == "???")
-                        {
-                            StatusText = $"Trace complete to {Host}";
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        hop.Ip = "*";
-                        hop.Status = "Timeout";
-                        Application.Current.Dispatcher.Invoke(() => Hops.Add(hop));
-                    }
-                }
-                catch
-                {
-                    hop.Ip = "*";
-                    hop.Status = "Error";
-                    Application.Current.Dispatcher.Invoke(() => Hops.Add(hop));
-                }
-
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    StatusText = $"Tracing... {ttl}/{MaxHops} hops";
-                });
-            }
-        });
-
-        IsRunning = false;
-        StatusText = $"✓ Traceroute completed for {Host}";
-    }
-
-    [RelayCommand]
-    private void Clear()
-    {
-        Host = "google.com";
-        Hops.Clear();
-        StatusText = "Cleared";
+            var r = await _service.TraceAsync(Host, MaxHops, progress, ct);
+            if (!r.IsSuccess) { ReportFailure(r, "trace"); return; }
+            SetStatus(r.Value!.ReachedTarget ? NotificationType.Success : NotificationType.Warning,
+                r.Value.ReachedTarget ? "L.Traceroute.Status.Reached" : "L.Traceroute.Status.Incomplete",
+                r.Value.Hops.Count, r.Value.Elapsed.TotalSeconds);
+        }
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "Traceroute failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
     }
 
     [RelayCommand]
     private void CopyResults()
     {
-        if (Hops.Count == 0) return;
-
-        var results = $"Traceroute to {Host}\n\n";
-        foreach (var hop in Hops)
-        {
-            results += $"{hop.Hop}\t{hop.Ip}\t{hop.Time1}ms\t{hop.Time2}ms\t{hop.Time3}ms\n";
-        }
-        Clipboard.SetText(results);
-        StatusText = "Results copied!";
+        if (Hops.Count == 0) { SetStatus(NotificationType.Warning, "L.Traceroute.Validation.NothingToCopy"); return; }
+        var sb = new StringBuilder($"traceroute to {Host}\n\n");
+        foreach (var h in Hops) sb.AppendLine($"{h.Ttl,3}  {h.Address,-40}  {h.RoundtripMs,5} ms  {h.Status}");
+        try { _fileExportService.CopyToClipboard(sb.ToString()); SetStatus(NotificationType.Success, "L.Traceroute.Status.Copied"); }
+        catch (Exception ex) { _logger.LogError(ex, "Copy failed."); SetStatus(NotificationType.Error, "L.Common.Error.Clipboard"); }
     }
+
+    [RelayCommand]
+    private void SaveResults()
+    {
+        if (Hops.Count == 0) { SetStatus(NotificationType.Warning, "L.Traceroute.Validation.NothingToSave"); return; }
+        var path = _fileExportService.RequestSavePath(_localizer.Get("L.Traceroute.Filter.Text"), ".txt", "traceroute");
+        if (string.IsNullOrEmpty(path)) return;
+        var sb = new StringBuilder($"traceroute to {Host}\n\n");
+        foreach (var h in Hops) sb.AppendLine($"{h.Ttl,3}  {h.Address,-40}  {h.RoundtripMs,5} ms  {h.Status}");
+        try { File.WriteAllText(path, sb.ToString()); SetStatus(NotificationType.Success, "L.Traceroute.Status.Saved", Path.GetFileName(path)); }
+        catch (Exception ex) { _logger.LogError(ex, "Save failed."); SetStatus(NotificationType.Error, "L.Common.Error.FileSave"); }
+    }
+
+    [RelayCommand] private void Clear() { Host = string.Empty; Hops.Clear(); SetStatus(NotificationType.Info, "L.Traceroute.Status.Cleared"); }
+
+    private void SetStatus(NotificationType t, string k, params object?[] a) { StatusType = t; StatusText = _localizer.Format(k, a); }
+    private void ReportFailure<T>(ToolResult<T> r, string op) { _logger.LogWarning("Traceroute {Op} failed: {Kind} {Code}", op, r.ErrorKind, r.ErrorCode); SetStatus(NotificationType.Error, r.ErrorCode ?? "L.Common.Error.Unexpected"); }
 }
+
+public sealed record TraceHopRow(int Ttl, string Address, long RoundtripMs, string Status);
