@@ -1280,6 +1280,38 @@
     <sys:String x:Key="L.RandomStringGenerator.Error.InvalidLength">Uzunluk 4 ile 256 arasında olmalı.</sys:String>
     <sys:String x:Key="L.RandomStringGenerator.Error.InvalidCount">Adet 1 ile 100 arasında olmalı.</sys:String>
     <sys:String x:Key="L.RandomStringGenerator.Error.NoCharacterSet">En az bir karakter seti seçin.</sys:String>
+    <!-- ============ Slug Generator ============ -->
+    <sys:String x:Key="L.SlugGenerator.Title">SLUG ÜRETİCİ</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Label.Separator">Ayırıcı:</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Label.MaxLength">Maks uzunluk:</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Label.Input">GİRİŞ</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Label.Output">ÇIKIŞ (SLUG)</sys:String>
+    <sys:String x:Key="L.SlugGenerator.ToLowercase">Küçük harfe çevir</sys:String>
+    <sys:String x:Key="L.SlugGenerator.AllowUnicode">Unicode'a izin ver</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Generate">ÜRET</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Limits">Maks giriş: {0} MB · Maks slug: {1} karakter.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Filter.Text">Metin Dosyaları (*.txt)|*.txt|Tüm Dosyalar (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Automation.Separator">Slug ayırıcısı</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Automation.MaxLength">Maks slug uzunluğu</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Automation.Input">Giriş metni</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Automation.Output">Üretilen slug</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Automation.Generate">Slug üret</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Status.Generated">✓ Slug üretildi · {0} karakter.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Status.Copied">Panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Status.Saved">Kaydedildi: {0}</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Error.EmptyInput">Lütfen metin girin.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Error.InvalidSeparator">Ayırıcı noktalama olmalı (ör. -, _, .).</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Error.InvalidMaxLength">Maks uzunluk 0 ile 200 arasında olmalı.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Error.EmptyResult">Normalizasyon sonrası slug boş.</sys:String>
+
 
 
 </ResourceDictionary>

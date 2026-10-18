@@ -1279,6 +1279,37 @@
     <sys:String x:Key="L.RandomStringGenerator.Error.InvalidLength">Length must be between 4 and 256.</sys:String>
     <sys:String x:Key="L.RandomStringGenerator.Error.InvalidCount">Count must be between 1 and 100.</sys:String>
     <sys:String x:Key="L.RandomStringGenerator.Error.NoCharacterSet">Select at least one character set.</sys:String>
+    <!-- ============ Slug Generator ============ -->
+    <sys:String x:Key="L.SlugGenerator.Title">SLUG GENERATOR</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Label.Separator">Separator:</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Label.MaxLength">Max length:</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Label.Input">INPUT</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Label.Output">OUTPUT (SLUG)</sys:String>
+    <sys:String x:Key="L.SlugGenerator.ToLowercase">To lowercase</sys:String>
+    <sys:String x:Key="L.SlugGenerator.AllowUnicode">Allow Unicode</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Generate">GENERATE</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Copy">COPY</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Save">SAVE</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Limits">Max input: {0} MB · Max slug: {1} chars.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Filter.Text">Text Files (*.txt)|*.txt|All Files (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Automation.Separator">Slug separator</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Automation.MaxLength">Max slug length</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Automation.Input">Input text</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Automation.Output">Generated slug</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Automation.Generate">Generate slug</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Status.Generated">✓ Slug generated · {0} chars.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Status.Copied">Copied to clipboard.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Status.Saved">Saved: {0}</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Validation.NothingToSave">Nothing to save.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Error.EmptyInput">Please enter text.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Error.InputTooLarge">Input is too large. Limit is 10 MB.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Error.InvalidSeparator">Separator must be punctuation (e.g. -, _, .).</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Error.InvalidMaxLength">Max length must be between 0 and 200.</sys:String>
+    <sys:String x:Key="L.SlugGenerator.Error.EmptyResult">Slug is empty after normalization.</sys:String>
 
 
 

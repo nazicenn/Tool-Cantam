@@ -1,14 +1,15 @@
-﻿// Views/SlugGeneratorPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace tool_cantam.Views;
 
-public partial class SlugGeneratorPage : UserControl
+public partial class SlugGeneratorPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.SlugGeneratorViewModel>
 {
-    public SlugGeneratorPage(SlugGeneratorViewModel viewModel)
+    public ViewModels.SlugGeneratorViewModel ViewModel { get; }
+
+    public SlugGeneratorPage(ViewModels.SlugGeneratorViewModel viewModel)
     {
+        ViewModel = viewModel;
+        DataContext = this;
         InitializeComponent();
-        DataContext = viewModel;
     }
 }

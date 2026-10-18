@@ -1,5 +1,4 @@
-﻿<!-- Views/SlugGeneratorPage.xaml -->
-<UserControl x:Class="tool_cantam.Views.SlugGeneratorPage"
+﻿<UserControl x:Class="tool_cantam.Views.SlugGeneratorPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -13,89 +12,177 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="SLUG GENERATOR" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.SlugGenerator.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <!-- Options -->
-        <Border Grid.Row="1" 
-                Style="{StaticResource OptionsPanel}" 
-                Padding="15" 
-                Margin="0,0,0,15">
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="15" Margin="0,0,0,12">
             <StackPanel>
-                <WrapPanel>
-                    <CheckBox Content="To Lowercase" IsChecked="{Binding ToLowercase}" Margin="0,0,20,5"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Separator:" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center"/>
-                        <TextBox Grid.Column="1" Text="{Binding Separator}" Width="40" Height="30" Margin="10,0,0,0"/>
-                    </Grid>
-                </WrapPanel>
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <UniformGrid Columns="3" Margin="0,10,0,0">
-                    <Button Command="{Binding GenerateCommand}" 
-                            Content="GENERATE" Height="35" Margin="0,0,5,0"
+                    <TextBlock Grid.Column="0"
+                               Text="{DynamicResource L.SlugGenerator.Label.Separator}"
+                               Style="{StaticResource LabelSecondary}"
+                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <ComboBox Grid.Column="1"
+                              ItemsSource="{Binding ViewModel.Separators}"
+                              SelectedItem="{Binding ViewModel.Separator}"
+                              Width="60" Height="30" TabIndex="0"
+                              AutomationProperties.Name="{DynamicResource L.SlugGenerator.Automation.Separator}"/>
+
+                    <TextBlock Grid.Column="2"
+                               Text="{DynamicResource L.SlugGenerator.Label.MaxLength}"
+                               Style="{StaticResource LabelSecondary}"
+                               VerticalAlignment="Center" Margin="20,0,8,0"/>
+                    <ui:NumberBox Grid.Column="3"
+                                  Value="{Binding ViewModel.MaxLength}"
+                                  Minimum="0" Maximum="200"
+                                  ClearButtonEnabled="False"
+                                  Width="100" Height="30" TabIndex="1"
+                                  AutomationProperties.Name="{DynamicResource L.SlugGenerator.Automation.MaxLength}"/>
+
+                    <CheckBox Grid.Column="4"
+                              Content="{DynamicResource L.SlugGenerator.ToLowercase}"
+                              IsChecked="{Binding ViewModel.ToLowercase}"
+                              Margin="20,0,20,0" VerticalAlignment="Center"
+                              Foreground="{StaticResource TextPrimaryBrush}" TabIndex="2"/>
+
+                    <CheckBox Grid.Column="5"
+                              Content="{DynamicResource L.SlugGenerator.AllowUnicode}"
+                              IsChecked="{Binding ViewModel.AllowUnicode}"
+                              VerticalAlignment="Center"
+                              Foreground="{StaticResource TextPrimaryBrush}" TabIndex="3"/>
+                </Grid>
+
+                <UniformGrid Columns="5" Margin="0,6,0,0">
+                    <Button Command="{Binding ViewModel.GenerateCommand}"
+                            Content="{DynamicResource L.SlugGenerator.Generate}"
+                            Height="35" Margin="0,0,4,0"
                             Style="{StaticResource ModernButton}"
-                            Background="{StaticResource GreenBrush}"/>
-                    <Button Command="{Binding ClearCommand}" 
-                            Content="CLEAR" Height="35" Margin="5,0,5,0"
+                            Background="{StaticResource GreenBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="4"
+                            AutomationProperties.Name="{DynamicResource L.SlugGenerator.Automation.Generate}"/>
+                    <Button Command="{Binding ViewModel.GenerateCancelCommand}"
+                            Content="{DynamicResource L.Common.Cancel}"
+                            Height="35" Margin="4,0,4,0"
                             Style="{StaticResource ModernButton}"
-                            Background="{StaticResource RedBrush}"/>
-                    <Button Command="{Binding CopyOutputCommand}" 
-                            Content="COPY" Height="35" Margin="5,0,0,0"
+                            Background="{StaticResource StatusWarningBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="5"
+                            Visibility="{Binding ViewModel.GenerateCancelCommand.CanExecute, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <Button Command="{Binding ViewModel.CopyOutputCommand}"
+                            Content="{DynamicResource L.SlugGenerator.Copy}"
+                            Height="35" Margin="4,0,4,0"
                             Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
+                            Background="{StaticResource StatusWarningBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="6"/>
+                    <Button Command="{Binding ViewModel.SaveOutputCommand}"
+                            Content="{DynamicResource L.SlugGenerator.Save}"
+                            Height="35" Margin="4,0,4,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource AccentPrimaryBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="7"/>
+                    <Button Command="{Binding ViewModel.ClearCommand}"
+                            Content="{DynamicResource L.SlugGenerator.Clear}"
+                            Height="35" Margin="4,0,0,0"
+                            Style="{StaticResource ModernButton}"
+                            Background="{StaticResource RedBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            TabIndex="8"/>
                 </UniformGrid>
             </StackPanel>
         </Border>
 
-        <!-- Input/Output -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" 
-                    Padding="15" 
-                    Margin="0,0,10,0">
-                <StackPanel>
-                    <TextBlock Text="INPUT" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
-                    <TextBox Text="{Binding InputText}" 
-                             TextWrapping="Wrap" 
-                             AcceptsReturn="True" 
-                             MinHeight="250" 
+            <Border Grid.Column="0" Style="{StaticResource OptionsPanel}" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"
+                               Text="{DynamicResource L.SlugGenerator.Label.Input}"
+                               Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                    <TextBox Grid.Row="1"
+                             Text="{Binding ViewModel.InputText, UpdateSourceTrigger=PropertyChanged}"
+                             TextWrapping="Wrap" AcceptsReturn="True"
                              VerticalScrollBarVisibility="Auto"
-                             FontFamily="Consolas"/>
-                </StackPanel>
+                             HorizontalScrollBarVisibility="Disabled"
+                             FontFamily="{StaticResource MonoFont}"
+                             Background="{StaticResource OptionsBgBrush}"
+                             Foreground="{StaticResource TextPrimaryBrush}"
+                             BorderBrush="{StaticResource BorderDefaultBrush}"
+                             Padding="8" TabIndex="9"
+                             AutomationProperties.Name="{DynamicResource L.SlugGenerator.Automation.Input}"/>
+                </Grid>
             </Border>
 
-            <Border Grid.Column="1"                     Padding="15" 
-                    Margin="10,0,0,0">
-                <StackPanel>
-                    <TextBlock Text="OUTPUT (SLUG)" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
-                    <TextBox Text="{Binding OutputText}" 
-                             IsReadOnly="True" 
-                             TextWrapping="Wrap" 
-                             MinHeight="250" 
-                             VerticalScrollBarVisibility="Auto"
-                             FontFamily="Consolas"/>
-                </StackPanel>
+            <Border Grid.Column="2" Style="{StaticResource OptionsPanel}" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"
+                               Text="{DynamicResource L.SlugGenerator.Label.Output}"
+                               Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                    <Border Grid.Row="1"
+                            Background="{StaticResource OptionsBgBrush}"
+                            BorderBrush="{StaticResource BorderDefaultBrush}"
+                            BorderThickness="1" CornerRadius="4" Padding="8">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      Padding="0,0,8,0">
+                            <TextBlock Text="{Binding ViewModel.OutputText}"
+                                       FontFamily="{StaticResource MonoFont}"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       TextWrapping="Wrap"
+                                       AutomationProperties.Name="{DynamicResource L.SlugGenerator.Automation.Output}"/>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
             </Border>
         </Grid>
 
-        <TextBlock Grid.Row="3" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,10,0,0"/>
+        <Border Grid.Row="3" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0"
+                                 Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ViewModel.StatusText}"
+                           Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                           FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center"
+                           AutomationProperties.LiveSetting="Polite"/>
+                <TextBlock Grid.Column="2"
+                           Text="{Binding ViewModel.LimitsText}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Opacity="0.6" FontSize="10" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

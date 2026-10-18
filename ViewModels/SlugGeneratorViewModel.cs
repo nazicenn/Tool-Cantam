@@ -1,78 +1,132 @@
-﻿// ViewModels/SlugGeneratorViewModel.cs
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Text.RegularExpressions;
-using System.Windows;
-using System.Windows.Controls;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
+using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
+/// <summary>Slug Generator sunum katmanı.</summary>
 public partial class SlugGeneratorViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private string _inputText = string.Empty;
+    private readonly ISlugGeneratorService _service;
+    private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<SlugGeneratorViewModel> _logger;
 
-    [ObservableProperty]
-    private string _outputText = string.Empty;
+    [ObservableProperty] private string _inputText = string.Empty;
+    [ObservableProperty] private string _outputText = string.Empty;
+    [ObservableProperty] private bool _toLowercase = true;
+    [ObservableProperty] private char _separator = '-';
+    [ObservableProperty] private int _maxLength = 80;
+    [ObservableProperty] private bool _allowUnicode;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
 
-    [ObservableProperty]
-    private bool _toLowercase = true;
-
-    [ObservableProperty]
-    private string _separator = "-";
-
-    [ObservableProperty]
-    private string _statusText = "Ready";
-
-    [RelayCommand]
-    private void Generate()
+    public SlugGeneratorViewModel(
+        ISlugGeneratorService service,
+        IFileExportService fileExportService,
+        ILocalizerService localizer,
+        ILogger<SlugGeneratorViewModel> logger)
     {
-        if (string.IsNullOrWhiteSpace(InputText))
-        {
-            StatusText = "Please enter text to convert";
-            return;
-        }
+        _service = service;
+        _fileExportService = fileExportService;
+        _localizer = localizer;
+        _logger = logger;
+        StatusText = _localizer.Get("L.SlugGenerator.Status.Ready");
+    }
 
+    public string LimitsText => _localizer.Format("L.SlugGenerator.Limits",
+        _service.MaxInputLength / (1024 * 1024), _service.MaxSlugLength);
+
+    public char[] Separators => new[] { '-', '_', '.' };
+
+    partial void OnInputTextChanged(string value) => GenerateCommand.NotifyCanExecuteChanged();
+
+    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanGenerate))]
+    private async Task GenerateAsync(CancellationToken cancellationToken)
+    {
+        IsBusy = true;
         try
         {
-            var slug = InputText.Trim();
-
-            // Türkçe karakter dönüşümü
-            var replacements = new (string from, string to)[]
+            var opts = new SlugOptions(ToLowercase, Separator, MaxLength, AllowUnicode);
+            var result = await _service.GenerateAsync(InputText, opts, cancellationToken);
+            if (!result.IsSuccess)
             {
-                ("ğ", "g"), ("Ğ", "g"),
-                ("ü", "u"), ("Ü", "u"),
-                ("ş", "s"), ("Ş", "s"),
-                ("ı", "i"), ("I", "i"),
-                ("ö", "o"), ("Ö", "o"),
-                ("ç", "c"), ("Ç", "c"),
-                (" ", Separator),
-            };
-
-            foreach (var rep in replacements)
-            {
-                slug = slug.Replace(rep.from, rep.to);
+                ReportFailure(result, "generate");
+                OutputText = string.Empty;
+                return;
             }
 
-            // Özel karakterleri temizle
-            slug = Regex.Replace(slug, @"[^a-zA-Z0-9\-]", "");
+            var r = result.Value!;
+            OutputText = r.Slug;
 
-            // Birden fazla separator'ı tek yap
-            slug = Regex.Replace(slug, $@"{Regex.Escape(Separator)}+", Separator);
+            _logger.LogInformation("Slug generated: in={In} out={Out} elapsed={Ms:0}ms",
+                r.OriginalLength, r.SlugLength, r.Elapsed.TotalMilliseconds);
 
-            // Baştaki ve sondaki separator'ları temizle
-            slug = slug.Trim(Separator[0]);
-
-            if (ToLowercase)
-                slug = slug.ToLower();
-
-            OutputText = slug;
-            StatusText = "Slug generated successfully!";
+            SetStatus(NotificationType.Success, "L.SlugGenerator.Status.Generated", r.SlugLength);
+        }
+        catch (OperationCanceledException)
+        {
+            SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled");
         }
         catch (Exception ex)
         {
-            StatusText = $"Error: {ex.Message}";
+            _logger.LogError(ex, "Slug generate failed unexpectedly.");
+            SetStatus(NotificationType.Error, "L.Common.Error.Unexpected");
+        }
+        finally { IsBusy = false; }
+    }
+
+    private bool CanGenerate() => !string.IsNullOrWhiteSpace(InputText);
+
+    [RelayCommand]
+    private void CopyOutput()
+    {
+        if (string.IsNullOrWhiteSpace(OutputText))
+        {
+            SetStatus(NotificationType.Warning, "L.SlugGenerator.Validation.NothingToCopy");
+            return;
+        }
+        try
+        {
+            _fileExportService.CopyToClipboard(OutputText);
+            SetStatus(NotificationType.Success, "L.SlugGenerator.Status.Copied");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Copy failed.");
+            SetStatus(NotificationType.Error, "L.Common.Error.Clipboard");
+        }
+    }
+
+    [RelayCommand]
+    private void SaveOutput()
+    {
+        if (string.IsNullOrWhiteSpace(OutputText))
+        {
+            SetStatus(NotificationType.Warning, "L.SlugGenerator.Validation.NothingToSave");
+            return;
+        }
+        var path = _fileExportService.RequestSavePath(
+            _localizer.Get("L.SlugGenerator.Filter.Text"), ".txt", "slug");
+        if (string.IsNullOrEmpty(path)) return;
+
+        try
+        {
+            File.WriteAllText(path, OutputText);
+            SetStatus(NotificationType.Success, "L.SlugGenerator.Status.Saved", Path.GetFileName(path));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Save failed.");
+            SetStatus(NotificationType.Error, "L.Common.Error.FileSave");
         }
     }
 
@@ -81,16 +135,19 @@ public partial class SlugGeneratorViewModel : ObservableObject
     {
         InputText = string.Empty;
         OutputText = string.Empty;
-        StatusText = "Cleared";
+        SetStatus(NotificationType.Info, "L.SlugGenerator.Status.Cleared");
     }
 
-    [RelayCommand]
-    private void CopyOutput()
+    private void SetStatus(NotificationType type, string key, params object?[] args)
     {
-        if (!string.IsNullOrWhiteSpace(OutputText))
-        {
-            Clipboard.SetText(OutputText);
-            StatusText = "Copied to clipboard!";
-        }
+        StatusType = type;
+        StatusText = _localizer.Format(key, args);
+    }
+
+    private void ReportFailure<T>(ToolResult<T> result, string op)
+    {
+        _logger.LogWarning("SlugGenerator {Op} failed: kind={Kind} code={Code}",
+            op, result.ErrorKind, result.ErrorCode);
+        SetStatus(NotificationType.Error, result.ErrorCode ?? "L.Common.Error.Unexpected");
     }
 }
