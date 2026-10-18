@@ -1310,6 +1310,38 @@
     <sys:String x:Key="L.SlugGenerator.Error.InvalidSeparator">Separator must be punctuation (e.g. -, _, .).</sys:String>
     <sys:String x:Key="L.SlugGenerator.Error.InvalidMaxLength">Max length must be between 0 and 200.</sys:String>
     <sys:String x:Key="L.SlugGenerator.Error.EmptyResult">Slug is empty after normalization.</sys:String>
+    <!-- ============ Find and Replace ============ -->
+    <sys:String x:Key="L.FindReplace.Title">FIND AND REPLACE</sys:String>
+    <sys:String x:Key="L.FindReplace.Label.Find">Find:</sys:String>
+    <sys:String x:Key="L.FindReplace.Label.Replace">Replace:</sys:String>
+    <sys:String x:Key="L.FindReplace.Label.Input">INPUT</sys:String>
+    <sys:String x:Key="L.FindReplace.Label.Output">OUTPUT</sys:String>
+    <sys:String x:Key="L.FindReplace.MatchCase">Match case</sys:String>
+    <sys:String x:Key="L.FindReplace.MatchWholeWord">Whole word</sys:String>
+    <sys:String x:Key="L.FindReplace.UseRegex">Use regex</sys:String>
+    <sys:String x:Key="L.FindReplace.Replace">REPLACE</sys:String>
+    <sys:String x:Key="L.FindReplace.Copy">COPY</sys:String>
+    <sys:String x:Key="L.FindReplace.Save">SAVE</sys:String>
+    <sys:String x:Key="L.FindReplace.Swap">SWAP</sys:String>
+    <sys:String x:Key="L.FindReplace.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.FindReplace.Limits">Max input: {0} MB.</sys:String>
+    <sys:String x:Key="L.FindReplace.Filter.Text">Text Files (*.txt)|*.txt|All Files (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.FindReplace.Automation.Find">Find text</sys:String>
+    <sys:String x:Key="L.FindReplace.Automation.Replace">Replace text</sys:String>
+    <sys:String x:Key="L.FindReplace.Automation.Input">Input text</sys:String>
+    <sys:String x:Key="L.FindReplace.Automation.Output">Replace result</sys:String>
+    <sys:String x:Key="L.FindReplace.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.FindReplace.Status.Replaced">✓ Replaced {0} occurrence(s).</sys:String>
+    <sys:String x:Key="L.FindReplace.Status.Copied">Copied to clipboard.</sys:String>
+    <sys:String x:Key="L.FindReplace.Status.Saved">Saved: {0}</sys:String>
+    <sys:String x:Key="L.FindReplace.Status.Swapped">Swapped.</sys:String>
+    <sys:String x:Key="L.FindReplace.Status.Cleared">Cleared. Ready.</sys:String>
+    <sys:String x:Key="L.FindReplace.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.FindReplace.Validation.NothingToSave">Nothing to save.</sys:String>
+    <sys:String x:Key="L.FindReplace.Error.EmptyInput">Please enter text.</sys:String>
+    <sys:String x:Key="L.FindReplace.Error.EmptyFind">Please enter text to find.</sys:String>
+    <sys:String x:Key="L.FindReplace.Error.InputTooLarge">Input is too large. Limit is 10 MB.</sys:String>
+    <sys:String x:Key="L.FindReplace.Error.InvalidRegex">Invalid regular expression.</sys:String>
 
 
 

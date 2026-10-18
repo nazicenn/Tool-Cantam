@@ -1311,6 +1311,39 @@
     <sys:String x:Key="L.SlugGenerator.Error.InvalidSeparator">Ayırıcı noktalama olmalı (ör. -, _, .).</sys:String>
     <sys:String x:Key="L.SlugGenerator.Error.InvalidMaxLength">Maks uzunluk 0 ile 200 arasında olmalı.</sys:String>
     <sys:String x:Key="L.SlugGenerator.Error.EmptyResult">Normalizasyon sonrası slug boş.</sys:String>
+    <!-- ============ Find and Replace ============ -->
+    <sys:String x:Key="L.FindReplace.Title">BUL VE DEĞİŞTİR</sys:String>
+    <sys:String x:Key="L.FindReplace.Label.Find">Bul:</sys:String>
+    <sys:String x:Key="L.FindReplace.Label.Replace">Değiştir:</sys:String>
+    <sys:String x:Key="L.FindReplace.Label.Input">GİRİŞ</sys:String>
+    <sys:String x:Key="L.FindReplace.Label.Output">ÇIKIŞ</sys:String>
+    <sys:String x:Key="L.FindReplace.MatchCase">Büyük/küçük harf eşleş</sys:String>
+    <sys:String x:Key="L.FindReplace.MatchWholeWord">Tam kelime</sys:String>
+    <sys:String x:Key="L.FindReplace.UseRegex">Regex kullan</sys:String>
+    <sys:String x:Key="L.FindReplace.Replace">DEĞİŞTİR</sys:String>
+    <sys:String x:Key="L.FindReplace.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.FindReplace.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.FindReplace.Swap">TAKAS</sys:String>
+    <sys:String x:Key="L.FindReplace.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.FindReplace.Limits">Maks giriş: {0} MB.</sys:String>
+    <sys:String x:Key="L.FindReplace.Filter.Text">Metin Dosyaları (*.txt)|*.txt|Tüm Dosyalar (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.FindReplace.Automation.Find">Aranacak metin</sys:String>
+    <sys:String x:Key="L.FindReplace.Automation.Replace">Yeni metin</sys:String>
+    <sys:String x:Key="L.FindReplace.Automation.Input">Giriş metni</sys:String>
+    <sys:String x:Key="L.FindReplace.Automation.Output">Değiştirme sonucu</sys:String>
+    <sys:String x:Key="L.FindReplace.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.FindReplace.Status.Replaced">✓ {0} eşleşme değiştirildi.</sys:String>
+    <sys:String x:Key="L.FindReplace.Status.Copied">Panoya kopyalandı.</sys:String>
+    <sys:String x:Key="L.FindReplace.Status.Saved">Kaydedildi: {0}</sys:String>
+    <sys:String x:Key="L.FindReplace.Status.Swapped">Takas edildi.</sys:String>
+    <sys:String x:Key="L.FindReplace.Status.Cleared">Temizlendi. Hazır.</sys:String>
+    <sys:String x:Key="L.FindReplace.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.FindReplace.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
+    <sys:String x:Key="L.FindReplace.Error.EmptyInput">Lütfen metin girin.</sys:String>
+    <sys:String x:Key="L.FindReplace.Error.EmptyFind">Lütfen aranacak metni girin.</sys:String>
+    <sys:String x:Key="L.FindReplace.Error.InputTooLarge">Girdi çok büyük. Sınır 10 MB'tır.</sys:String>
+    <sys:String x:Key="L.FindReplace.Error.InvalidRegex">Geçersiz düzenli ifade.</sys:String>
+
 
 
 
