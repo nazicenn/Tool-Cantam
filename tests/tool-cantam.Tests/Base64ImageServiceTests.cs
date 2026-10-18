@@ -33,7 +33,7 @@ public sealed class Base64ImageServiceTests
         var p = CreateTestPng();
         try
         {
-            var r = await _service.ImageToBase64Async(p, CancellationToken.None);
+            var r = await _service.ImageToBase64Async(p, TestContext.Current.CancellationToken);
             Assert.True(r.IsSuccess);
             Assert.Equal("PNG", r.Value!.Format);
             Assert.NotEmpty(r.Value.Base64);
@@ -44,7 +44,7 @@ public sealed class Base64ImageServiceTests
     [Fact]
     public async Task ImageToBase64Async_Empty_ReturnsValidation()
     {
-        var r = await _service.ImageToBase64Async("", CancellationToken.None);
+        var r = await _service.ImageToBase64Async("", TestContext.Current.CancellationToken);
         Assert.False(r.IsSuccess);
         Assert.Equal(ToolErrorKind.Validation, r.ErrorKind);
     }
@@ -52,7 +52,7 @@ public sealed class Base64ImageServiceTests
     [Fact]
     public async Task ImageToBase64Async_Missing_ReturnsNotFound()
     {
-        var r = await _service.ImageToBase64Async(@"C:\nonexistent_xyz.png", CancellationToken.None);
+        var r = await _service.ImageToBase64Async(@"C:\nonexistent_xyz.png", TestContext.Current.CancellationToken);
         Assert.False(r.IsSuccess);
         Assert.Equal(ToolErrorKind.NotFound, r.ErrorKind);
     }
@@ -63,8 +63,8 @@ public sealed class Base64ImageServiceTests
         var p = CreateTestPng();
         try
         {
-            var img = await _service.ImageToBase64Async(p, CancellationToken.None);
-            var back = await _service.Base64ToImageAsync(img.Value!.Base64, CancellationToken.None);
+            var img = await _service.ImageToBase64Async(p, TestContext.Current.CancellationToken);
+            var back = await _service.Base64ToImageAsync(img.Value!.Base64, TestContext.Current.CancellationToken);
             Assert.True(back.IsSuccess);
             Assert.Equal("PNG", back.Value!.DetectedFormat);
         }
@@ -74,7 +74,7 @@ public sealed class Base64ImageServiceTests
     [Fact]
     public async Task Base64ToImageAsync_InvalidBase64_ReturnsInvalidFormat()
     {
-        var r = await _service.Base64ToImageAsync("not-base64!!!", CancellationToken.None);
+        var r = await _service.Base64ToImageAsync("not-base64!!!", TestContext.Current.CancellationToken);
         Assert.False(r.IsSuccess);
         Assert.Equal(ToolErrorKind.InvalidFormat, r.ErrorKind);
     }
@@ -83,7 +83,7 @@ public sealed class Base64ImageServiceTests
     public async Task Base64ToImageAsync_NonImage_ReturnsNotAnImage()
     {
         var text = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("hello world hello"));
-        var r = await _service.Base64ToImageAsync(text, CancellationToken.None);
+        var r = await _service.Base64ToImageAsync(text, TestContext.Current.CancellationToken);
         Assert.False(r.IsSuccess);
         Assert.Equal(ToolErrorKind.InvalidFormat, r.ErrorKind);
     }
