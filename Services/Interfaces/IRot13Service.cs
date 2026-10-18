@@ -1,4 +1,5 @@
 using tool_cantam.Core.Models;
+using tool_cantam.Services.ErrorCodes;
 
 namespace tool_cantam.Services.Interfaces;
 
@@ -25,9 +26,3 @@ public interface IRot13Service
 }
 
 /// <summary>ROT aracının hata kodları; her kod aynı zamanda yerelleştirme anahtarıdır.</summary>
-public static class Rot13ErrorCodes
-{
-    public const string InvalidUnicode = "L.Rot13.Error.InvalidUnicode";
-    public const string InputTooLarge = "L.Rot13.Error.InputTooLarge";
-    public const string Unexpected = "L.Common.Error.Unexpected";
-}

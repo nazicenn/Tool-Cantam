@@ -1,4 +1,5 @@
-ï»¿using System.Net;
+using tool_cantam.Services.ErrorCodes;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,13 +11,13 @@ using Xunit;
 namespace ToolCantam.Tests;
 
 /// <summary>
-/// IP Info servisinin sÃ¶zleÅŸmesini kilitler: IP doÄŸrulama, HTTP hata eÅŸlemesi,
-/// iptal davranÄ±ÅŸÄ± ve sonuÃ§ modeli.
+/// IP Info servisinin sözleþmesini kilitler: IP doðrulama, HTTP hata eþlemesi,
+/// iptal davranýþý ve sonuç modeli.
 /// </summary>
 public class IpInfoServiceTests
 {
     // ---------------------------------------------------------------------
-    // IP doÄŸrulama
+    // IP doðrulama
     // ---------------------------------------------------------------------
 
     [Theory]
@@ -60,7 +61,7 @@ public class IpInfoServiceTests
     }
 
     // ---------------------------------------------------------------------
-    // HTTP hata eÅŸlemesi (fake handler)
+    // HTTP hata eþlemesi (fake handler)
     // ---------------------------------------------------------------------
 
     [Fact]
@@ -141,7 +142,7 @@ public class IpInfoServiceTests
         Assert.Equal("8.8.8.8", report.IpAddress);
         Assert.Equal("IPv4", report.AddressFamily);
         Assert.Equal("United States", report.Country);
-        Assert.Equal("California", report.Region);
+        Assert.Equal("California", report.RegionName);
         Assert.Equal("Mountain View", report.City);
         Assert.Equal("Google LLC", report.Isp);
         Assert.Equal("AS15169", report.Asn);

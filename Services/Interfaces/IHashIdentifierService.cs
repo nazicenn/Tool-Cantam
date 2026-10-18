@@ -1,4 +1,5 @@
 using tool_cantam.Core.Models;
+using tool_cantam.Services.ErrorCodes;
 
 namespace tool_cantam.Services.Interfaces;
 
@@ -20,9 +21,3 @@ public interface IHashIdentifierService
 }
 
 /// <summary>Tanımlayıcı aracının hata kodları; her kod aynı zamanda yerelleştirme anahtarıdır.</summary>
-public static class HashIdentifierErrorCodes
-{
-    public const string EmptyInput = "L.HashIdentifier.Error.EmptyInput";
-    public const string InputTooLong = "L.HashIdentifier.Error.InputTooLong";
-    public const string Unexpected = "L.Common.Error.Unexpected";
-}

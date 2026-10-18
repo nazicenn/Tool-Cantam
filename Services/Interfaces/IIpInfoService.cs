@@ -29,20 +29,22 @@ public sealed record IpInfoReport(
     string AddressFamily,
     string Country,
     string CountryCode,
+    string RegionName,
     string Region,
-    string RegionCode,
     string City,
-    string Zip,
+    string ZipCode,
     double Latitude,
     double Longitude,
-    string Timezone,
+    string TimeZone,
     string Isp,
-    string Org,
+    string Organization,
     string Asn,
     TimeSpan Elapsed)
 {
+    // ViewModel uyumu için computed property'ler
+    public string Zip => ZipCode;
+    public string Timezone => TimeZone;
+    public string Org => Organization;
     public string Coordinates => $"{Latitude:F4}, {Longitude:F4}";
-    public string Location => string.IsNullOrEmpty(City)
-        ? Country
-        : $"{City}, {Region}, {Country}";
+    public string Location => string.IsNullOrEmpty(City) ? Country : $"{City}, {Country}";
 }

@@ -1,6 +1,5 @@
-﻿namespace tool_cantam.Services.Interfaces;
+﻿namespace tool_cantam.Services.ErrorCodes;
 
-/// <summary>IP bilgi hata kodları; her kod yerelleştirme anahtarıdır.</summary>
 public static class IpInfoErrorCodes
 {
     public const string InvalidIp = "L.IpInfo.Error.InvalidIp";

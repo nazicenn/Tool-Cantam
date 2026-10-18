@@ -1,4 +1,5 @@
-ï»¿using System;
+using tool_cantam.Services.ErrorCodes;
+using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
@@ -13,7 +14,7 @@ using tool_cantam.Services.Interfaces;
 namespace tool_cantam.Services;
 
 /// <summary>
-/// IP bilgi sorgusunun tek uygulamasÄ±. HTTP istekleri ip-api.com Ã¼zerinden yapÄ±lÄ±r.
+/// IP bilgi sorgusunun tek uygulamasý. HTTP istekleri ip-api.com üzerinden yapýlýr.
 /// </summary>
 public sealed class IpInfoService : IIpInfoService, IDisposable
 {

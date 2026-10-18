@@ -1,6 +1,6 @@
 using tool_cantam.Core.Enums;
 using tool_cantam.Core.Models;
-
+using tool_cantam.Services.ErrorCodes;
 namespace tool_cantam.Services.Interfaces;
 
 /// <summary>
@@ -32,13 +32,3 @@ public interface IHashService
 }
 
 /// <summary>Hash aracının hata kodları; her kod aynı zamanda yerelleştirme anahtarıdır.</summary>
-public static class HashErrorCodes
-{
-    public const string UnsupportedAlgorithm = "L.Hash.Error.UnsupportedAlgorithm";
-    public const string AlgorithmUnavailable = "L.Hash.Error.AlgorithmUnavailable";
-    public const string InputTooLarge = "L.Hash.Error.InputTooLarge";
-    public const string PathRequired = "L.Hash.Error.PathRequired";
-    public const string FileNotFound = "L.Hash.Error.FileNotFound";
-    public const string IoError = "L.Hash.Error.IoError";
-    public const string Unexpected = "L.Common.Error.Unexpected";
-}
