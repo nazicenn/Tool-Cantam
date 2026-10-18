@@ -1,160 +1,77 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Text;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
 using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
 public partial class LoremIpsumViewModel : ObservableObject
 {
-    private readonly IClipboardService _clipboardService;
+    private readonly ILoremIpsumService _service;
+    private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<LoremIpsumViewModel> _logger;
 
-    /// <summary>Başarı mesajının ekranda kalma süresi (ms).</summary>
-    private const int StatusResetDelayMs = 3000;
+    [ObservableProperty] private int _paragraphCount = 3;
+    [ObservableProperty] private int _sentenceCount = 5;
+    [ObservableProperty] private bool _startWithLorem = true;
+    [ObservableProperty] private string _outputText = string.Empty;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
 
-    private static readonly string[] LatinWords =
+    public LoremIpsumViewModel(ILoremIpsumService service, IFileExportService fe, ILocalizerService loc, ILogger<LoremIpsumViewModel> log)
     {
-        "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
-        "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore",
-        "magna", "aliqua", "enim", "ad", "minim", "veniam", "quis", "nostrud",
-        "exercitation", "ullamco", "laboris", "nisi", "aliquip", "ex", "ea", "commodo",
-        "consequat", "duis", "aute", "irure", "in", "reprehenderit", "voluptate",
-        "velit", "esse", "cillum", "fugiat", "nulla", "pariatur", "excepteur", "sint",
-        "occaecat", "cupidatat", "non", "proident", "sunt", "culpa", "qui", "officia",
-        "deserunt", "mollit", "anim", "id", "est", "laborum", "curabitur", "pretium",
-        "tincidunt", "lacus", "nulla", "gravida", "orci", "a", "odio", "nullam",
-        "varius", "turpis", "commodo", "condimentum", "lobortis", "feugiat", "vivamus",
-        "elementum", "semper", "nisi", "aenean", "vulputate", "eleifend", "tellus"
-    };
-
-    [ObservableProperty]
-    private int _paragraphCount = 3;
-
-    [ObservableProperty]
-    private int _sentenceCount = 5;
-
-    [ObservableProperty]
-    private bool _startWithLorem = true;
-
-    [ObservableProperty]
-    private string _outputText = string.Empty;
-
-    [ObservableProperty]
-    private string _statusText = "Ready.";
-
-    [ObservableProperty]
-    private NotificationType _statusType = NotificationType.Info;
-
-    public LoremIpsumViewModel(IClipboardService clipboardService)
-    {
-        _clipboardService = clipboardService;
+        _service = service; _fileExportService = fe; _localizer = loc; _logger = log;
+        StatusText = _localizer.Get("L.LoremIpsum.Status.Ready");
     }
 
-    [RelayCommand]
-    private void Generate()
+    public string LimitsText => _localizer.Format("L.LoremIpsum.Limits",
+        _service.MinParagraphs, _service.MaxParagraphs, _service.MinSentences, _service.MaxSentences);
+
+    [RelayCommand(IncludeCancelCommand = true)]
+    private async Task GenerateAsync(CancellationToken ct)
     {
+        IsBusy = true;
         try
         {
-            ParagraphCount = Math.Clamp(ParagraphCount, 1, 50);
-            SentenceCount = Math.Clamp(SentenceCount, 1, 20);
-
-            var result = new StringBuilder();
-
-            for (int p = 0; p < ParagraphCount; p++)
-            {
-                for (int s = 0; s < SentenceCount; s++)
-                {
-                    string sentence = GenerateSentence();
-
-                    // İlk paragrafın ilk cümlesi "Lorem ipsum dolor sit amet" ile başlasın
-                    if (p == 0 && s == 0 && StartWithLorem)
-                    {
-                        sentence = "Lorem ipsum dolor sit amet, " + char.ToLowerInvariant(sentence[0]) + sentence.Substring(1);
-                    }
-
-                    result.Append(sentence);
-                    result.Append(' ');
-                }
-
-                result.AppendLine();
-                result.AppendLine();
-            }
-
-            OutputText = result.ToString().Trim();
-            UpdateStatus($"✓ {ParagraphCount} paragraph(s) generated", NotificationType.Success);
+            var r = await _service.GenerateAsync(new LoremOptions(ParagraphCount, SentenceCount, StartWithLorem), ct);
+            if (!r.IsSuccess) { ReportFailure(r, "gen"); OutputText = string.Empty; return; }
+            OutputText = r.Value!.Text;
+            _logger.LogInformation("Lorem generated: {P} paragraphs, {W} words", r.Value.ParagraphCount, r.Value.WordCount);
+            SetStatus(NotificationType.Success, "L.LoremIpsum.Status.Generated", r.Value.ParagraphCount, r.Value.WordCount);
         }
-        catch (Exception ex)
-        {
-            UpdateStatus($"✗ Generation failed: {ex.Message}", NotificationType.Error);
-        }
-    }
-
-    private string GenerateSentence()
-    {
-        int wordCount = Random.Shared.Next(8, 18);
-        var words = new string[wordCount];
-
-        for (int i = 0; i < wordCount; i++)
-        {
-            words[i] = LatinWords[Random.Shared.Next(LatinWords.Length)];
-        }
-
-        string sentence = string.Join(" ", words);
-        sentence = char.ToUpperInvariant(sentence[0]) + sentence.Substring(1);
-        return sentence + ".";
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "Lorem gen failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
     }
 
     [RelayCommand]
     private void CopyOutput()
     {
-        if (string.IsNullOrWhiteSpace(OutputText))
-        {
-            UpdateStatus("Nothing to copy. Generate text first.", NotificationType.Warning);
-            return;
-        }
-
-        _clipboardService.CopyToClipboard(OutputText);
-        UpdateStatus("✓ Copied to clipboard", NotificationType.Success);
+        if (string.IsNullOrWhiteSpace(OutputText)) { SetStatus(NotificationType.Warning, "L.LoremIpsum.Validation.NothingToCopy"); return; }
+        try { _fileExportService.CopyToClipboard(OutputText); SetStatus(NotificationType.Success, "L.LoremIpsum.Status.Copied"); }
+        catch (Exception ex) { _logger.LogError(ex, "Copy failed."); SetStatus(NotificationType.Error, "L.Common.Error.Clipboard"); }
     }
 
     [RelayCommand]
-    private void Clear()
+    private void SaveOutput()
     {
-        OutputText = string.Empty;
-        UpdateStatus("✓ Cleared", NotificationType.Success);
+        if (string.IsNullOrWhiteSpace(OutputText)) { SetStatus(NotificationType.Warning, "L.LoremIpsum.Validation.NothingToSave"); return; }
+        var path = _fileExportService.RequestSavePath(_localizer.Get("L.LoremIpsum.Filter.Text"), ".txt", "lorem");
+        if (string.IsNullOrEmpty(path)) return;
+        try { File.WriteAllText(path, OutputText); SetStatus(NotificationType.Success, "L.LoremIpsum.Status.Saved", Path.GetFileName(path)); }
+        catch (Exception ex) { _logger.LogError(ex, "Save failed."); SetStatus(NotificationType.Error, "L.Common.Error.FileSave"); }
     }
 
-    private void UpdateStatus(string message, NotificationType type)
-    {
-        StatusText = message;
-        StatusType = type;
+    [RelayCommand] private void Clear() { OutputText = string.Empty; SetStatus(NotificationType.Info, "L.LoremIpsum.Status.Cleared"); }
 
-        if (type == NotificationType.Success)
-        {
-            ResetStatusLaterAsync(message);
-        }
-    }
-
-    /// <summary>
-    /// Başarı mesajını bir süre sonra temizler. Bekleme sonrası devam işi UI iş parçacığına döner;
-    /// böylece arayüz bağlı özellikler arka plan iş parçacığından yazılmaz.
-    /// </summary>
-    private async void ResetStatusLaterAsync(string message)
-    {
-        try
-        {
-            await Task.Delay(StatusResetDelayMs);
-
-            if (StatusText == message)
-            {
-                StatusText = "Ready.";
-                StatusType = NotificationType.Info;
-            }
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Status reset failed: {ex.Message}");
-        }
-    }
+    private void SetStatus(NotificationType t, string k, params object?[] a) { StatusType = t; StatusText = _localizer.Format(k, a); }
+    private void ReportFailure<T>(ToolResult<T> r, string op) { _logger.LogWarning("LoremIpsum {Op} failed: {Kind} {Code}", op, r.ErrorKind, r.ErrorCode); SetStatus(NotificationType.Error, r.ErrorCode ?? "L.Common.Error.Unexpected"); }
 }
