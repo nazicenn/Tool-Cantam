@@ -1,128 +1,99 @@
-﻿// ViewModels/RsaKeyGeneratorViewModel.cs
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Security.Cryptography;
-using System.Text;
-using System.Windows;
+using System.DirectoryServices.ActiveDirectory;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
+using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
 public partial class RsaKeyGeneratorViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private string _publicKey = string.Empty;
+    private readonly IRsaKeyGeneratorService _service;
+    private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<RsaKeyGeneratorViewModel> _logger;
 
-    [ObservableProperty]
-    private string _privateKey = string.Empty;
+    [ObservableProperty] private int _keySize = 2048;
+    [ObservableProperty] private RsaFormat _format = RsaFormat.Pem;
+    [ObservableProperty] private string _publicKey = string.Empty;
+    [ObservableProperty] private string _privateKey = string.Empty;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
 
-    private int _keySize = 2048;
-    public int KeySize
+    public RsaKeyGeneratorViewModel(IRsaKeyGeneratorService service, IFileExportService fe, ILocalizerService loc, ILogger<RsaKeyGeneratorViewModel> log)
     {
-        get => _keySize;
-        set
-        {
-            _keySize = value;
-            OnPropertyChanged();
-        }
+        _service = service; _fileExportService = fe; _localizer = loc; _logger = log;
+        StatusText = _localizer.Get("L.RsaKeyGenerator.Status.Ready");
     }
 
-    [ObservableProperty]
-    private bool _includeXmlFormat = true;
+    public string LimitsText => _localizer.Format("L.RsaKeyGenerator.Limits", string.Join(", ", _service.AllowedKeySizes));
+    public int[] KeySizes => _service.AllowedKeySizes;
+    public RsaFormat[] Formats => new[] { RsaFormat.Pem, RsaFormat.Xml, RsaFormat.Base64 };
 
-    [ObservableProperty]
-    private string _statusText = "Ready";
-
-    private RSA? _rsa;
-
-    [RelayCommand]
-    private void Generate()
+    [RelayCommand(IncludeCancelCommand = true)]
+    private async Task GenerateAsync(CancellationToken ct)
     {
+        IsBusy = true;
         try
         {
-            _rsa?.Dispose();
-            _rsa = RSA.Create(KeySize);
-
-            if (IncludeXmlFormat)
-            {
-                PublicKey = ExportToXml(_rsa, false) ?? string.Empty;
-                PrivateKey = ExportToXml(_rsa, true) ?? string.Empty;
-            }
-            else
-            {
-                var publicKeyBytes = _rsa.ExportSubjectPublicKeyInfo();
-                var privateKeyBytes = _rsa.ExportPkcs8PrivateKey();
-
-                PublicKey = publicKeyBytes != null ? Convert.ToBase64String(publicKeyBytes) : string.Empty;
-                PrivateKey = privateKeyBytes != null ? Convert.ToBase64String(privateKeyBytes) : string.Empty;
-            }
-
-            StatusText = $"✓ RSA key pair generated ({KeySize} bit)";
+            var r = await _service.GenerateAsync(new RsaOptions(KeySize, Format), ct);
+            if (!r.IsSuccess) { ReportFailure(r, "generate"); PublicKey = string.Empty; PrivateKey = string.Empty; return; }
+            PublicKey = r.Value!.PublicKey;
+            PrivateKey = r.Value.PrivateKey;
+            _logger.LogInformation("RSA generated: {Size} bit, {Format}, {Ms:0}ms", r.Value.KeySize, r.Value.Format, r.Value.Elapsed.TotalMilliseconds);
+            SetStatus(NotificationType.Success, "L.RsaKeyGenerator.Status.Generated", r.Value.KeySize);
         }
-        catch (Exception ex)
-        {
-            StatusText = $"✗ Error: {ex.Message}";
-        }
-    }
-
-    private string ExportToXml(RSA rsa, bool includePrivate)
-    {
-        var params_ = rsa.ExportParameters(includePrivate);
-        var sb = new StringBuilder();
-        sb.Append("<RSAKeyValue>");
-
-        if (params_.Modulus != null)
-            sb.Append($"<Modulus>{Convert.ToBase64String(params_.Modulus)}</Modulus>");
-        if (params_.Exponent != null)
-            sb.Append($"<Exponent>{Convert.ToBase64String(params_.Exponent)}</Exponent>");
-
-        if (includePrivate)
-        {
-            if (params_.P != null)
-                sb.Append($"<P>{Convert.ToBase64String(params_.P)}</P>");
-            if (params_.Q != null)
-                sb.Append($"<Q>{Convert.ToBase64String(params_.Q)}</Q>");
-            if (params_.DP != null)
-                sb.Append($"<DP>{Convert.ToBase64String(params_.DP)}</DP>");
-            if (params_.DQ != null)
-                sb.Append($"<DQ>{Convert.ToBase64String(params_.DQ)}</DQ>");
-            if (params_.InverseQ != null)
-                sb.Append($"<InverseQ>{Convert.ToBase64String(params_.InverseQ)}</InverseQ>");
-            if (params_.D != null)
-                sb.Append($"<D>{Convert.ToBase64String(params_.D)}</D>");
-        }
-
-        sb.Append("</RSAKeyValue>");
-        return sb.ToString();
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "RSA generate failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
     }
 
     [RelayCommand]
-    private void CopyPublicKey()
+    private void CopyPublic()
     {
-        if (!string.IsNullOrWhiteSpace(PublicKey))
-        {
-            Clipboard.SetText(PublicKey);
-            StatusText = "Public key copied to clipboard!";
-        }
+        if (string.IsNullOrWhiteSpace(PublicKey)) { SetStatus(NotificationType.Warning, "L.RsaKeyGenerator.Validation.NothingToCopy"); return; }
+        try { _fileExportService.CopyToClipboard(PublicKey); SetStatus(NotificationType.Success, "L.RsaKeyGenerator.Status.CopiedPublic"); }
+        catch (Exception ex) { _logger.LogError(ex, "Copy failed."); SetStatus(NotificationType.Error, "L.Common.Error.Clipboard"); }
     }
 
     [RelayCommand]
-    private void CopyPrivateKey()
+    private void CopyPrivate()
     {
-        if (!string.IsNullOrWhiteSpace(PrivateKey))
-        {
-            Clipboard.SetText(PrivateKey);
-            StatusText = "Private key copied to clipboard!";
-        }
+        if (string.IsNullOrWhiteSpace(PrivateKey)) { SetStatus(NotificationType.Warning, "L.RsaKeyGenerator.Validation.NothingToCopy"); return; }
+        try { _fileExportService.CopyToClipboard(PrivateKey); SetStatus(NotificationType.Success, "L.RsaKeyGenerator.Status.CopiedPrivate"); }
+        catch (Exception ex) { _logger.LogError(ex, "Copy failed."); SetStatus(NotificationType.Error, "L.Common.Error.Clipboard"); }
     }
 
     [RelayCommand]
-    private void Clear()
+    private void SavePublic()
     {
-        PublicKey = string.Empty;
-        PrivateKey = string.Empty;
-        _rsa?.Dispose();
-        _rsa = null;
-        StatusText = "Cleared";
+        if (string.IsNullOrWhiteSpace(PublicKey)) { SetStatus(NotificationType.Warning, "L.RsaKeyGenerator.Validation.NothingToSave"); return; }
+        var path = _fileExportService.RequestSavePath(_localizer.Get("L.RsaKeyGenerator.Filter.Key"), ".pub", "public");
+        if (string.IsNullOrEmpty(path)) return;
+        try { File.WriteAllText(path, PublicKey); SetStatus(NotificationType.Success, "L.RsaKeyGenerator.Status.Saved", Path.GetFileName(path)); }
+        catch (Exception ex) { _logger.LogError(ex, "Save failed."); SetStatus(NotificationType.Error, "L.Common.Error.FileSave"); }
     }
+
+    [RelayCommand]
+    private void SavePrivate()
+    {
+        if (string.IsNullOrWhiteSpace(PrivateKey)) { SetStatus(NotificationType.Warning, "L.RsaKeyGenerator.Validation.NothingToSave"); return; }
+        var path = _fileExportService.RequestSavePath(_localizer.Get("L.RsaKeyGenerator.Filter.Key"), ".key", "private");
+        if (string.IsNullOrEmpty(path)) return;
+        try { File.WriteAllText(path, PrivateKey); SetStatus(NotificationType.Success, "L.RsaKeyGenerator.Status.Saved", Path.GetFileName(path)); }
+        catch (Exception ex) { _logger.LogError(ex, "Save failed."); SetStatus(NotificationType.Error, "L.Common.Error.FileSave"); }
+    }
+
+    [RelayCommand]
+    private void Clear() { PublicKey = string.Empty; PrivateKey = string.Empty; SetStatus(NotificationType.Info, "L.RsaKeyGenerator.Status.Cleared"); }
+
+    private void SetStatus(NotificationType t, string k, params object?[] a) { StatusType = t; StatusText = _localizer.Format(k, a); }
+    private void ReportFailure<T>(ToolResult<T> r, string op) { _logger.LogWarning("RsaKeyGenerator {Op} failed: {Kind} {Code}", op, r.ErrorKind, r.ErrorCode); SetStatus(NotificationType.Error, r.ErrorCode ?? "L.Common.Error.Unexpected"); }
 }

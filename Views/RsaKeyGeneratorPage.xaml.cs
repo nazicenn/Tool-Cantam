@@ -1,14 +1,8 @@
-﻿// Views/RsaKeyGeneratorPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class RsaKeyGeneratorPage : UserControl
+public partial class RsaKeyGeneratorPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.RsaKeyGeneratorViewModel>
 {
-    public RsaKeyGeneratorPage(RsaKeyGeneratorViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.RsaKeyGeneratorViewModel ViewModel { get; }
+    public RsaKeyGeneratorPage(ViewModels.RsaKeyGeneratorViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
