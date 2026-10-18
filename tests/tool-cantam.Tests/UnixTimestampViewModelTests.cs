@@ -20,6 +20,7 @@ public sealed class UnixTimestampViewModelTests
 
         public ToolResult<UnixTimestampReport>? FromResult { get; set; }
         public ToolResult<UnixTimestampReport>? ToResult { get; set; }
+
         public UnixTimestampReport NowValue { get; set; } =
             new(1733673600L, 1733673600000L,
                 new DateTime(2024, 12, 8, 20, 0, 0, DateTimeKind.Utc),
@@ -27,10 +28,12 @@ public sealed class UnixTimestampViewModelTests
                 "2024-12-08T20:00:00Z", "Sun, 08 Dec 2024 20:00:00 GMT",
                 "2024-12-08 20:00:00 UTC", TimeDisplayMode.Utc);
 
-        public Task<ToolResult<UnixTimestampReport>> FromUnixAsync(string? input, TimestampUnit u, TimeDisplayMode m, CancellationToken ct)
+        public Task<ToolResult<UnixTimestampReport>> FromUnixAsync(
+            string? input, TimestampUnit u, TimeDisplayMode m, CancellationToken ct)
             => Task.FromResult(FromResult ?? ToolResult<UnixTimestampReport>.Ok(NowValue));
 
-        public Task<ToolResult<UnixTimestampReport>> ToUnixAsync(string? input, TimeDisplayMode m, CancellationToken ct)
+        public Task<ToolResult<UnixTimestampReport>> ToUnixAsync(
+            string? input, TimeDisplayMode m, CancellationToken ct)
             => Task.FromResult(ToResult ?? ToolResult<UnixTimestampReport>.Ok(NowValue));
 
         public UnixTimestampReport Now() => NowValue;
@@ -42,10 +45,13 @@ public sealed class UnixTimestampViewModelTests
         public string? SavePathResult { get; set; }
         public string? LastCopied { get; private set; }
 
-        public string? RequestOpenPath(string filter, string title) => OpenPathResult;
-        public string? RequestSavePath(string filter, string defaultExt, string fileName) => SavePathResult;
-        public Task<bool> ExportTextAsync(string text, string path, string filter, string title) => Task.FromResult(true);
-        public void CopyToClipboard(string text) => LastCopied = text;
+        public string? RequestOpenPath(string filter, string title = "Select File") => OpenPathResult;
+        public string? RequestSavePath(string filter, string defaultExt, string defaultFileName = "") => SavePathResult;
+
+        public Task<bool> ExportTextAsync(string content, string filter, string defaultExt, string defaultFileName = "Export")
+            => Task.FromResult(true);
+
+        public void CopyToClipboard(string content) => LastCopied = content;
     }
 
     private sealed class FakeLocalizer : ILocalizerService
@@ -56,7 +62,7 @@ public sealed class UnixTimestampViewModelTests
         public string Get(string key) => key;
         public string Format(string key, params object?[] args)
             => args is { Length: > 0 } ? $"{key} [{string.Join(", ", args)}]" : key;
-        public bool SetCulture(string c) { _culture = c; return true; }
+        public bool SetCulture(string culture) { _culture = culture; return true; }
     }
 
     private static UnixTimestampViewModel Create(
@@ -64,7 +70,8 @@ public sealed class UnixTimestampViewModelTests
     {
         svc = new FakeUnixService();
         fe = new FakeFileExportService();
-        return new UnixTimestampViewModel(svc, fe, new FakeLocalizer(), NullLogger<UnixTimestampViewModel>.Instance);
+        return new UnixTimestampViewModel(svc, fe, new FakeLocalizer(),
+            NullLogger<UnixTimestampViewModel>.Instance);
     }
 
     [Fact]
@@ -96,7 +103,8 @@ public sealed class UnixTimestampViewModelTests
     public async Task TimestampToDate_WithFailure_ClearsOutputs()
     {
         var vm = Create(out var svc, out _);
-        svc.FromResult = ToolResult<UnixTimestampReport>.Fail(ToolErrorKind.Validation, "L.UnixTimestamp.Error.InvalidNumber", "x");
+        svc.FromResult = ToolResult<UnixTimestampReport>.Fail(
+            ToolErrorKind.Validation, "L.UnixTimestamp.Error.InvalidNumber", "x");
         vm.TimestampInput = "abc";
         await vm.TimestampToDateCommand.ExecuteAsync(null);
         Assert.Empty(vm.ReadableOutput);
