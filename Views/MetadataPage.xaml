@@ -5,58 +5,201 @@
              xmlns:helpers="clr-namespace:tool_cantam.Helpers"
              Background="{StaticResource BorderDefaultBrush}">
 
-    <Grid Margin="30,20">
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock Text="METADATA CLEANER" Style="{StaticResource LabelPrimary}" 
-                       FontSize="14" FontWeight="Bold" Margin="0,0,0,4"/>
-            <TextBlock Text="Protect your privacy by stripping EXIF and hidden metadata from files." 
-                       Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" TextWrapping="Wrap"/>
-        </StackPanel>
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource L.Metadata.Title}"
+                   Style="{StaticResource LabelPrimary}"
+                   FontSize="16" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <Border Grid.Row="1" Style="{StaticResource DropZone}" Margin="0,0,0,20"
-                helpers:FileDragDropBehavior.IsEnabled="True"
-                helpers:FileDragDropBehavior.FilePath="{Binding ViewModel.FilePath, Mode=TwoWay}">
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
-                <ui:SymbolIcon Symbol="ShieldLock24" FontSize="48" 
-                               Foreground="{StaticResource TextPrimaryBrush}" 
-                               HorizontalAlignment="Center"/>
-                <TextBlock Text="Drop file here or click to browse" 
-                           Style="{StaticResource DropZoneHint}" Margin="0,15,0,0" FontSize="14" TextAlignment="Center"/>
-                <Border Background="{StaticResource DropZoneBgBrush}" CornerRadius="4" Padding="10,5" Margin="0,10,0,0">
-                    <TextBlock Text="{Binding ViewModel.FilePath, TargetNullValue='No file selected'}" 
-                               Style="{StaticResource LabelSecondary}" 
-                               TextTrimming="CharacterEllipsis" MaxWidth="350"/>
-                </Border>
-            </StackPanel>
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- SOL KOLON -->
+                <ScrollViewer Grid.Column="0"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Padding="0,0,12,0">
+                    <StackPanel Margin="0,0,4,0">
+                        <Border Style="{StaticResource DropZone}" Height="120" Margin="0,0,0,12"
+                                helpers:FileDragDropBehavior.IsEnabled="True"
+                                helpers:FileDragDropBehavior.FilePath="{Binding ViewModel.FilePath, Mode=TwoWay}">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <ui:SymbolIcon Symbol="ArrowUpload24" FontSize="32"
+                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                               HorizontalAlignment="Center"/>
+                                <TextBlock Text="{DynamicResource L.Metadata.DropHint}"
+                                           Style="{StaticResource DropZoneHint}"
+                                           Margin="0,8,0,0" FontSize="12" TextAlignment="Center"/>
+                                <TextBlock Text="{Binding ViewModel.FilePathDisplay}"
+                                           Style="{StaticResource LabelSecondary}"
+                                           TextTrimming="CharacterEllipsis" MaxWidth="350"
+                                           HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Button Command="{Binding ViewModel.SelectFileCommand}"
+                                Content="{DynamicResource L.Metadata.SelectFile}"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource AccentPrimaryBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                Height="35" Margin="0,0,0,10" TabIndex="1"/>
+
+                        <Button Command="{Binding ViewModel.AnalyzeCommand}"
+                                Content="{DynamicResource L.Metadata.Analyze}"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource GreenBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                Height="35" Margin="0,0,0,8" TabIndex="2"
+                                AutomationProperties.Name="{DynamicResource L.Metadata.AnalyzeAutomationName}"/>
+
+                        <Button Command="{Binding ViewModel.AnalyzeCancelCommand}"
+                                Content="{DynamicResource L.Common.Cancel}"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource StatusWarningBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                Height="30" Margin="0,0,0,12" TabIndex="3"
+                                Visibility="{Binding ViewModel.AnalyzeCancelCommand.CanExecute, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                        <TextBlock Text="{Binding ViewModel.FileInfoText}"
+                                   Style="{StaticResource LabelSecondary}"
+                                   FontFamily="{StaticResource MonoFont}"
+                                   FontSize="11" Margin="0,0,0,6"/>
+
+                        <TextBlock Text="{DynamicResource L.Metadata.Entries}"
+                                   Style="{StaticResource LabelPrimary}"
+                                   FontWeight="SemiBold" FontSize="12" Margin="0,0,0,6"/>
+
+                        <DataGrid ItemsSource="{Binding ViewModel.MetadataRows}"
+                                  AutoGenerateColumns="False" IsReadOnly="True"
+                                  MaxHeight="260" HeadersVisibility="Column"
+                                  Background="{StaticResource OptionsBgBrush}"
+                                  Foreground="{StaticResource TextPrimaryBrush}"
+                                  GridLinesVisibility="Horizontal"
+                                  TabIndex="4"
+                                  AutomationProperties.Name="{DynamicResource L.Metadata.EntriesAutomationName}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{DynamicResource L.Metadata.Column.Directory}"
+                                                    Binding="{Binding Directory}" Width="120"/>
+                                <DataGridTextColumn Header="{DynamicResource L.Metadata.Column.Tag}"
+                                                    Binding="{Binding TagName}" Width="120"/>
+                                <DataGridTextColumn Header="{DynamicResource L.Metadata.Column.Value}"
+                                                    Binding="{Binding Value}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- SAĞ KOLON -->
+                <ScrollViewer Grid.Column="2"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Padding="0,0,12,0">
+                    <StackPanel Margin="0,0,4,0">
+                        <TextBlock Text="{DynamicResource L.Metadata.Options}"
+                                   Style="{StaticResource LabelPrimary}"
+                                   FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"/>
+
+                        <CheckBox Content="{DynamicResource L.Metadata.Option.Exif}"
+                                  IsChecked="{Binding ViewModel.CleanExif}" Margin="0,4"
+                                  Foreground="{StaticResource TextPrimaryBrush}" TabIndex="5"/>
+                        <CheckBox Content="{DynamicResource L.Metadata.Option.Gps}"
+                                  IsChecked="{Binding ViewModel.CleanGps}" Margin="0,4"
+                                  Foreground="{StaticResource TextPrimaryBrush}" TabIndex="6"/>
+                        <CheckBox Content="{DynamicResource L.Metadata.Option.Xmp}"
+                                  IsChecked="{Binding ViewModel.CleanXmp}" Margin="0,4"
+                                  Foreground="{StaticResource TextPrimaryBrush}" TabIndex="7"/>
+                        <CheckBox Content="{DynamicResource L.Metadata.Option.Iptc}"
+                                  IsChecked="{Binding ViewModel.CleanIptc}" Margin="0,4"
+                                  Foreground="{StaticResource TextPrimaryBrush}" TabIndex="8"/>
+                        <CheckBox Content="{DynamicResource L.Metadata.Option.Comments}"
+                                  IsChecked="{Binding ViewModel.CleanComments}" Margin="0,4"
+                                  Foreground="{StaticResource TextPrimaryBrush}" TabIndex="9"/>
+                        <CheckBox Content="{DynamicResource L.Metadata.Option.Thumbnail}"
+                                  IsChecked="{Binding ViewModel.CleanThumbnail}" Margin="0,4,0,12"
+                                  Foreground="{StaticResource TextPrimaryBrush}" TabIndex="10"/>
+
+                        <UniformGrid Columns="2" Margin="0,0,0,10">
+                            <Button Command="{Binding ViewModel.SelectAllCommand}"
+                                    Content="{DynamicResource L.Metadata.SelectAll}"
+                                    Style="{StaticResource ModernButton}"
+                                    Background="{StaticResource AccentPrimaryBrush}"
+                                    Foreground="{StaticResource TextPrimaryBrush}"
+                                    Height="30" Margin="0,0,4,0" TabIndex="11"/>
+                            <Button Command="{Binding ViewModel.ClearAllCommand}"
+                                    Content="{DynamicResource L.Metadata.ClearAll}"
+                                    Style="{StaticResource ModernButton}"
+                                    Background="{StaticResource StatusWarningBrush}"
+                                    Foreground="{StaticResource TextPrimaryBrush}"
+                                    Height="30" Margin="4,0,0,0" TabIndex="12"/>
+                        </UniformGrid>
+
+                        <Button Command="{Binding ViewModel.CleanCommand}"
+                                Content="{DynamicResource L.Metadata.Clean}"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource RedBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                Height="38" Margin="0,0,0,8" TabIndex="13"
+                                AutomationProperties.Name="{DynamicResource L.Metadata.CleanAutomationName}"/>
+
+                        <Button Command="{Binding ViewModel.CleanCancelCommand}"
+                                Content="{DynamicResource L.Common.Cancel}"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource StatusWarningBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                Height="30" Margin="0,0,0,10" TabIndex="14"
+                                Visibility="{Binding ViewModel.CleanCancelCommand.CanExecute, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                        <Button Command="{Binding ViewModel.ClearCommand}"
+                                Content="{DynamicResource L.Metadata.Clear}"
+                                Style="{StaticResource ModernButton}"
+                                Background="{StaticResource OptionsBgBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                Height="30" Margin="0,0,0,10" TabIndex="15"/>
+
+                        <Border Style="{StaticResource OptionsPanel}" Padding="10">
+                            <TextBlock Text="{DynamicResource L.Metadata.Hint}"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       FontSize="11" TextWrapping="Wrap"/>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
         </Border>
 
-        <StackPanel Grid.Row="2" Margin="0,0,0,20">
-            <TextBlock Text="{Binding ViewModel.StatusMessage}" Style="{StaticResource SuccessText}" 
-                       HorizontalAlignment="Center" Margin="0,0,0,10" FontWeight="SemiBold"/>
-            <Border Background="#15FF3333" Padding="12,8" CornerRadius="4" HorizontalAlignment="Center">
-                <StackPanel Orientation="Horizontal">
-                    <ui:SymbolIcon Symbol="Warning24" Foreground="{StaticResource RedBrush}" Margin="0,0,8,0" FontSize="16"/>
-                    <TextBlock Text="Warning: This action will permanently strip EXIF and hidden metadata." 
-                               Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" FontSize="11"/>
-                </StackPanel>
-            </Border>
-        </StackPanel>
+        <Border Grid.Row="2" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-        <UniformGrid Grid.Row="3" Columns="2">
-            <Button Content="SELECT FILE" Command="{Binding ViewModel.SelectFileCommand}" 
-                    Style="{StaticResource ModernButton}" Background="{StaticResource AccentPrimaryBrush}" 
-                    Height="42" Margin="0,0,10,0"/>
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0"
+                                 Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-            <Button Content="PURGE METADATA" Command="{Binding ViewModel.RemoveMetadataCommand}" 
-                    Style="{StaticResource ModernButton}" Background="{StaticResource RedBrush}" 
-                    Height="42"/>
-        </UniformGrid>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ViewModel.StatusText}"
+                           Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}"
+                           FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center"
+                           AutomationProperties.LiveSetting="Polite"/>
+
+                <TextBlock Grid.Column="2"
+                           Text="{Binding ViewModel.LimitsText}"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Opacity="0.6" FontSize="10" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

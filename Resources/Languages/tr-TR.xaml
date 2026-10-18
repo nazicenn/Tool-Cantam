@@ -1028,5 +1028,50 @@
     <sys:String x:Key="L.Password.Error.InvalidLength">Uzunluk aralık dışında.</sys:String>
     <sys:String x:Key="L.Password.Error.NoCharacterSet">En az bir karakter seti seçin.</sys:String>
     <sys:String x:Key="L.Password.Error.PasswordTooLong">Parola analiz için çok uzun.</sys:String>
+    <!-- ============ Metadata Cleaner ============ -->
+    <sys:String x:Key="L.Metadata.Title">METADATA TEMİZLEYİCİ</sys:String>
+    <sys:String x:Key="L.Metadata.DropHint">Resmi buraya bırakın veya seçmek için tıklayın</sys:String>
+    <sys:String x:Key="L.Metadata.NoFile">Dosya seçilmedi</sys:String>
+    <sys:String x:Key="L.Metadata.SelectFile">DOSYA SEÇ</sys:String>
+    <sys:String x:Key="L.Metadata.Analyze">ANALİZ ET</sys:String>
+    <sys:String x:Key="L.Metadata.Clean">TEMİZLE VE KAYDET</sys:String>
+    <sys:String x:Key="L.Metadata.Entries">Metadata Alanları</sys:String>
+    <sys:String x:Key="L.Metadata.Options">Temizleme Seçenekleri</sys:String>
+    <sys:String x:Key="L.Metadata.SelectAll">TÜMÜNÜ SEÇ</sys:String>
+    <sys:String x:Key="L.Metadata.ClearAll">TÜMÜNÜ KALDIR</sys:String>
+    <sys:String x:Key="L.Metadata.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.Metadata.Option.Exif">EXIF (kamera bilgileri)</sys:String>
+    <sys:String x:Key="L.Metadata.Option.Gps">GPS (konum)</sys:String>
+    <sys:String x:Key="L.Metadata.Option.Xmp">XMP (Adobe)</sys:String>
+    <sys:String x:Key="L.Metadata.Option.Iptc">IPTC (basın)</sys:String>
+    <sys:String x:Key="L.Metadata.Option.Comments">Yorumlar</sys:String>
+    <sys:String x:Key="L.Metadata.Option.Thumbnail">Gömülü küçük resim</sys:String>
+    <sys:String x:Key="L.Metadata.Column.Directory">DİZİN</sys:String>
+    <sys:String x:Key="L.Metadata.Column.Tag">ETİKET</sys:String>
+    <sys:String x:Key="L.Metadata.Column.Value">DEĞER</sys:String>
+    <sys:String x:Key="L.Metadata.Hint">Temizleme, görüntüyü metadata segment'leri olmadan yeniden kodlar. Orijinal dosya asla değiştirilmez.</sys:String>
+    <sys:String x:Key="L.Metadata.Limits">Maks boyut: {0} MB · Formatlar: {1}</sys:String>
+    <sys:String x:Key="L.Metadata.Filter.ImageFiles">Resim Dosyaları (*.jpg;*.jpeg;*.png;*.bmp;*.tiff;*.tif)|*.jpg;*.jpeg;*.png;*.bmp;*.tiff;*.tif|Tüm Dosyalar (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.Metadata.Dialog.SelectFile">Temizlenecek resim dosyasını seçin</sys:String>
+    <sys:String x:Key="L.Metadata.AnalyzeAutomationName">Seçilen resmin metadata'sını analiz et</sys:String>
+    <sys:String x:Key="L.Metadata.CleanAutomationName">Seçilen metadata'yı temizle ve resmi kaydet</sys:String>
+    <sys:String x:Key="L.Metadata.EntriesAutomationName">Metadata alanları tablosu</sys:String>
 
+    <sys:String x:Key="L.Metadata.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.Metadata.Status.FileSelected">Dosya seçildi: {0}</sys:String>
+    <sys:String x:Key="L.Metadata.Status.Analyzed">✓ Analiz tamamlandı · {0} metadata alanı.</sys:String>
+    <sys:String x:Key="L.Metadata.Status.Cleaned">✓ Temizlendi · {0} alan silindi · {1} B → {2} B.</sys:String>
+    <sys:String x:Key="L.Metadata.Status.Cleared">Temizlendi. Hazır.</sys:String>
+
+    <sys:String x:Key="L.Metadata.Validation.EmptyInput">Lütfen bir resim dosyası seçin.</sys:String>
+
+    <sys:String x:Key="L.Metadata.Error.PathRequired">Dosya yolu gerekli.</sys:String>
+    <sys:String x:Key="L.Metadata.Error.FileNotFound">Seçilen dosya bulunamadı.</sys:String>
+    <sys:String x:Key="L.Metadata.Error.UnsupportedFormat">Desteklenmeyen resim formatı.</sys:String>
+    <sys:String x:Key="L.Metadata.Error.FileTooLarge">Dosya çok büyük. Sınır 100 MB'tır.</sys:String>
+    <sys:String x:Key="L.Metadata.Error.CorruptImage">Resim dosyası bozuk görünüyor.</sys:String>
+    <sys:String x:Key="L.Metadata.Error.IoError">Dosya okunamadı veya yazılamadı. İzinleri ve boş disk alanını kontrol edin.</sys:String>
+    <sys:String x:Key="L.Metadata.Error.NoOptionsSelected">En az bir metadata türü seçin.</sys:String>
+    
+    
 </ResourceDictionary>

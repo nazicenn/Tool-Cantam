@@ -1027,6 +1027,51 @@
     <sys:String x:Key="L.Password.Error.InvalidLength">Length is out of range.</sys:String>
     <sys:String x:Key="L.Password.Error.NoCharacterSet">Select at least one character set.</sys:String>
     <sys:String x:Key="L.Password.Error.PasswordTooLong">Password is too long to analyze.</sys:String>
+    <!-- ============ Metadata Cleaner ============ -->
+    <sys:String x:Key="L.Metadata.Title">METADATA CLEANER</sys:String>
+    <sys:String x:Key="L.Metadata.DropHint">Drop image here or click to browse</sys:String>
+    <sys:String x:Key="L.Metadata.NoFile">No file selected</sys:String>
+    <sys:String x:Key="L.Metadata.SelectFile">SELECT FILE</sys:String>
+    <sys:String x:Key="L.Metadata.Analyze">ANALYZE</sys:String>
+    <sys:String x:Key="L.Metadata.Clean">CLEAN &amp; SAVE</sys:String>
+    <sys:String x:Key="L.Metadata.Entries">Metadata Entries</sys:String>
+    <sys:String x:Key="L.Metadata.Options">Removal Options</sys:String>
+    <sys:String x:Key="L.Metadata.SelectAll">SELECT ALL</sys:String>
+    <sys:String x:Key="L.Metadata.ClearAll">CLEAR ALL</sys:String>
+    <sys:String x:Key="L.Metadata.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.Metadata.Option.Exif">EXIF (camera info)</sys:String>
+    <sys:String x:Key="L.Metadata.Option.Gps">GPS (location)</sys:String>
+    <sys:String x:Key="L.Metadata.Option.Xmp">XMP (Adobe)</sys:String>
+    <sys:String x:Key="L.Metadata.Option.Iptc">IPTC (press)</sys:String>
+    <sys:String x:Key="L.Metadata.Option.Comments">Comments</sys:String>
+    <sys:String x:Key="L.Metadata.Option.Thumbnail">Embedded thumbnail</sys:String>
+    <sys:String x:Key="L.Metadata.Column.Directory">DIRECTORY</sys:String>
+    <sys:String x:Key="L.Metadata.Column.Tag">TAG</sys:String>
+    <sys:String x:Key="L.Metadata.Column.Value">VALUE</sys:String>
+    <sys:String x:Key="L.Metadata.Hint">Cleaning re-encodes the image without metadata segments. The original file is never modified.</sys:String>
+    <sys:String x:Key="L.Metadata.Limits">Max size: {0} MB · Formats: {1}</sys:String>
+    <sys:String x:Key="L.Metadata.Filter.ImageFiles">Image Files (*.jpg;*.jpeg;*.png;*.bmp;*.tiff;*.tif)|*.jpg;*.jpeg;*.png;*.bmp;*.tiff;*.tif|All Files (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.Metadata.Dialog.SelectFile">Select image file</sys:String>
+    <sys:String x:Key="L.Metadata.AnalyzeAutomationName">Analyze metadata of the selected image</sys:String>
+    <sys:String x:Key="L.Metadata.CleanAutomationName">Clean selected metadata and save the image</sys:String>
+    <sys:String x:Key="L.Metadata.EntriesAutomationName">Metadata entries table</sys:String>
 
+    <sys:String x:Key="L.Metadata.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.Metadata.Status.FileSelected">File selected: {0}</sys:String>
+    <sys:String x:Key="L.Metadata.Status.Analyzed">✓ Analysis complete · {0} metadata entries.</sys:String>
+    <sys:String x:Key="L.Metadata.Status.Cleaned">✓ Cleaned · {0} fields removed · {1} B → {2} B.</sys:String>
+    <sys:String x:Key="L.Metadata.Status.Cleared">Cleared. Ready.</sys:String>
+
+    <sys:String x:Key="L.Metadata.Validation.EmptyInput">Please select an image file.</sys:String>
+
+    <sys:String x:Key="L.Metadata.Error.PathRequired">File path is required.</sys:String>
+    <sys:String x:Key="L.Metadata.Error.FileNotFound">Selected file was not found.</sys:String>
+    <sys:String x:Key="L.Metadata.Error.UnsupportedFormat">Unsupported image format.</sys:String>
+    <sys:String x:Key="L.Metadata.Error.FileTooLarge">File is too large. Limit is 100 MB.</sys:String>
+    <sys:String x:Key="L.Metadata.Error.CorruptImage">The image file appears to be corrupted.</sys:String>
+    <sys:String x:Key="L.Metadata.Error.IoError">Could not read or write the file. Check permissions and free space.</sys:String>
+    <sys:String x:Key="L.Metadata.Error.NoOptionsSelected">Select at least one metadata type to remove.</sys:String>
+    
+    
 
 </ResourceDictionary>
