@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MetadataExtractor.Util;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
