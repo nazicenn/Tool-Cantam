@@ -13,6 +13,7 @@ Built with **C#, WPF, and .NET 10**, the project focuses on modular tool registr
 ![Language](https://img.shields.io/badge/language-C%23-239120)
 ![UI](https://img.shields.io/badge/UI-WPF-0078D4)
 ![License](https://img.shields.io/badge/license-MIT-green)
+[![Tool Cantam CI](https://github.com/nazicenn/Tool-Cantam/actions/workflows/ci.yml/badge.svg)](https://github.com/nazicenn/Tool-Cantam/actions/workflows/ci.yml)
 
 ---
 
