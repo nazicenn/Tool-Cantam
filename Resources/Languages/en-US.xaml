@@ -2274,6 +2274,45 @@
     <sys:String x:Key="L.MimeType.Error.EmptyInput">Please enter an extension or MIME type.</sys:String>
     <sys:String x:Key="L.MimeType.Error.InvalidExtension">Invalid extension/MIME.</sys:String>
     <sys:String x:Key="L.MimeType.Error.NotFound">Not found.</sys:String>
+    <!-- ============ CORS Analyzer ============ -->
+    <sys:String x:Key="L.CorsAnalyzer.Title">CORS HEADER ANALYZER</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Label.Url">URL:</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Label.Headers">HEADERS:</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Label.HeadersResult">PARSED HEADERS</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Label.Issues">ISSUES</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Mode.Headers">Manual Headers</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Mode.Url">Fetch from URL</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.TreatMissingAsError">Treat missing origin as error</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Analyze">ANALYZE</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Copy">COPY</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Save">SAVE</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Limits">Max input: {0} KB.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Filter.Text">Text Files (*.txt)|*.txt|All Files (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Column.Name">Name</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Column.Value">Value</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Column.Kind">Kind</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Column.Code">Code</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Column.Message">Message</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Column.Severity">Severity</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Summary">{0} · {1} issues · {2:0.0}ms</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.Valid">✓ Valid · {0} issues.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.Invalid">✗ {0} error(s).</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.Copied">Copied.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.Saved">Saved: {0}</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.Cleared">Cleared.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.ModeUrl">Switched to URL mode.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.ModeHeaders">Switched to manual headers mode.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Validation.NothingToSave">Nothing to save.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Error.EmptyInput">Please enter headers.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Error.EmptyUrl">URL is empty.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Error.InputTooLarge">Input too large.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Error.InvalidUrl">Invalid URL.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Error.HttpError">HTTP error.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Error.Timeout">Timeout.</sys:String>
+    
 
 
 

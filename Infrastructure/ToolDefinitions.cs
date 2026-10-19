@@ -747,6 +747,17 @@ public static class ToolDefinitions
             Execute = async (input) => input?.ToString() ?? string.Empty
         });
 
+        ToolRegistry.Register(new ToolDefinition
+        {
+            Name = "CORS Header Analyzer",
+            Description = "Analyze CORS headers for security issues and misconfigurations",
+            Category = ToolCategory.NetworkScanner,
+            ViewModelType = typeof(CorsAnalyzerViewModel),
+            ViewType = typeof(CorsAnalyzerPage),
+            Execute = async (input) => input?.ToString() ?? string.Empty
+        });
+
+
     }
 
 }

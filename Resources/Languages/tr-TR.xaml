@@ -2274,6 +2274,45 @@
     <sys:String x:Key="L.MimeType.Error.EmptyInput">Lütfen uzantı veya MIME türü girin.</sys:String>
     <sys:String x:Key="L.MimeType.Error.InvalidExtension">Geçersiz uzantı/MIME.</sys:String>
     <sys:String x:Key="L.MimeType.Error.NotFound">Bulunamadı.</sys:String>
+    <!-- ============ CORS Analyzer ============ -->
+    <sys:String x:Key="L.CorsAnalyzer.Title">CORS BAŞLIK ANALİZİ</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Label.Url">URL:</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Label.Headers">BAŞLIKLAR:</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Label.HeadersResult">AYRIŞTIRILMIŞ BAŞLIKLAR</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Label.Issues">SORUNLAR</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Mode.Headers">Manuel Başlıklar</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Mode.Url">URL'den Getir</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.TreatMissingAsError">Eksik origin'i hata say</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Analyze">ANALİZ ET</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Save">KAYDET</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Limits">Maks giriş: {0} KB.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Filter.Text">Metin Dosyaları (*.txt)|*.txt|Tüm Dosyalar (*.*)|*.*</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Column.Name">Ad</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Column.Value">Değer</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Column.Kind">Tür</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Column.Code">Kod</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Column.Message">Mesaj</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Column.Severity">Önem</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Summary">{0} · {1} sorun · {2:0.0}ms</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.Valid">✓ Geçerli · {0} sorun.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.Invalid">✗ {0} hata.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.Copied">Kopyalandı.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.Saved">Kaydedildi: {0}</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.Cleared">Temizlendi.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.ModeUrl">URL moduna geçildi.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Status.ModeHeaders">Manuel başlık moduna geçildi.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Validation.NothingToSave">Kaydedilecek bir şey yok.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Error.EmptyInput">Lütfen başlıkları girin.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Error.EmptyUrl">URL boş.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Error.InputTooLarge">Girdi çok büyük.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Error.InvalidUrl">Geçersiz URL.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Error.HttpError">HTTP hatası.</sys:String>
+    <sys:String x:Key="L.CorsAnalyzer.Error.Timeout">Zaman aşımı.</sys:String>
+    
 
 
 
