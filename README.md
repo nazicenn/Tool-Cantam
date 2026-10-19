@@ -127,7 +127,7 @@ The following catalog is based on the tool registrations in `ToolDefinitions.cs`
 | Secret Generator | Generate secret values |
 | Pwned Password Checker | Check password exposure |
 
-### 📅 Date & Time
+### Date & Time
 
 | Tool | Purpose |
 |---|---|
