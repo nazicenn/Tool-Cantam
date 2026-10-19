@@ -1,104 +1,88 @@
-﻿// ViewModels/MarkdownViewModel.cs
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Markdig;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Windows;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
+using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
 public partial class MarkdownViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private string _inputMarkdown = "# Hello World!\n\nThis is **bold** and *italic* text.\n\n- List item 1\n- List item 2\n\n```csharp\nConsole.WriteLine(\"Hello\");\n```";
+    private readonly IMarkdownService _service;
+    private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<MarkdownViewModel> _logger;
 
-    [ObservableProperty]
-    private string _outputHtml = string.Empty;
+    [ObservableProperty] private string _inputMarkdown = string.Empty;
+    [ObservableProperty] private string _outputHtml = string.Empty;
+    [ObservableProperty] private bool _wrapInHtml = true;
+    [ObservableProperty] private bool _useAdvancedExtensions = true;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
 
-    [ObservableProperty]
-    private string _statusText = "Ready";
-
-    [RelayCommand]
-    private void Convert()
+    public MarkdownViewModel(IMarkdownService service, IFileExportService fe, ILocalizerService loc, ILogger<MarkdownViewModel> log)
     {
-        if (string.IsNullOrWhiteSpace(InputMarkdown))
-        {
-            StatusText = "Please enter Markdown to convert";
-            OutputHtml = string.Empty;
-            return;
-        }
+        _service = service; _fileExportService = fe; _localizer = loc; _logger = log;
+        StatusText = _localizer.Get("L.Markdown.Status.Ready");
+    }
 
+    public string LimitsText => _localizer.Format("L.Markdown.Limits", _service.MaxInputLength / (1024 * 1024));
+
+    partial void OnInputMarkdownChanged(string value) => ConvertCommand.NotifyCanExecuteChanged();
+
+    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanConvert))]
+    private async Task ConvertAsync(CancellationToken ct)
+    {
+        IsBusy = true;
         try
         {
-            var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
-            var html = Markdown.ToHtml(InputMarkdown, pipeline);
-
-            OutputHtml = $@"<html><head><style>
-                body {{ font-family: 'Segoe UI', sans-serif; padding: 20px; line-height: 1.6; }}
-                h1, h2, h3 {{ color: #2ecc71; }}
-                code {{ background: #2d2d2d; padding: 2px 6px; border-radius: 4px; font-family: 'Consolas', monospace; }}
-                pre {{ background: #2d2d2d; padding: 15px; border-radius: 8px; overflow-x: auto; }}
-                blockquote {{ border-left: 3px solid #2ecc71; margin: 10px 0; padding-left: 15px; color: #888; }}
-                table {{ border-collapse: collapse; width: 100%; }}
-                th, td {{ border: 1px solid #444; padding: 8px; text-align: left; }}
-                th {{ background: #2d2d2d; }}
-                a {{ color: #2ecc71; }}
-                </style></head><body>{html}</body></html>";
-
-            StatusText = "✓ Converted Markdown to HTML";
+            var r = await _service.ToHtmlAsync(InputMarkdown, new MarkdownOptions(WrapInHtml, UseAdvancedExtensions), ct);
+            if (!r.IsSuccess) { ReportFailure(r, "convert"); OutputHtml = string.Empty; return; }
+            OutputHtml = r.Value!.Html;
+            _logger.LogInformation("Markdown: {In}->{Out}, {Words} words", r.Value.InputLength, r.Value.OutputLength, r.Value.WordCount);
+            SetStatus(NotificationType.Success, "L.Markdown.Status.Converted", r.Value.WordCount);
         }
-        catch (Exception ex)
-        {
-            OutputHtml = string.Empty;
-            StatusText = $"✗ Error: {ex.Message}";
-        }
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "Markdown failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
+    }
+
+    private bool CanConvert() => !string.IsNullOrWhiteSpace(InputMarkdown);
+
+    [RelayCommand]
+    private void CopyHtml()
+    {
+        if (string.IsNullOrWhiteSpace(OutputHtml)) { SetStatus(NotificationType.Warning, "L.Markdown.Validation.NothingToCopy"); return; }
+        try { _fileExportService.CopyToClipboard(OutputHtml); SetStatus(NotificationType.Success, "L.Markdown.Status.Copied"); }
+        catch (Exception ex) { _logger.LogError(ex, "Copy failed."); SetStatus(NotificationType.Error, "L.Common.Error.Clipboard"); }
+    }
+
+    [RelayCommand]
+    private void SaveHtml()
+    {
+        if (string.IsNullOrWhiteSpace(OutputHtml)) { SetStatus(NotificationType.Warning, "L.Markdown.Validation.NothingToSave"); return; }
+        var path = _fileExportService.RequestSavePath(_localizer.Get("L.Markdown.Filter.Html"), ".html", "output");
+        if (string.IsNullOrEmpty(path)) return;
+        try { File.WriteAllText(path, OutputHtml); SetStatus(NotificationType.Success, "L.Markdown.Status.Saved", Path.GetFileName(path)); }
+        catch (Exception ex) { _logger.LogError(ex, "Save failed."); SetStatus(NotificationType.Error, "L.Common.Error.FileSave"); }
     }
 
     [RelayCommand]
     private void LoadSample()
     {
-        InputMarkdown = @"# Markdown Örneği
-
-## Başlık 2
-
-Bu bir **kalın** ve *italik* metindir.
-
-### Liste:
-
-- Madde 1
-- Madde 2
-- Madde 3
-
-### Kod:
-
-```csharp
-Console.WriteLine(""Hello World!"");Tablo:
-İsim	Yaş
-Ahmet	25
-Mehmet	30
-Alıntı: Bu bir alıntıdır.
-
-Google Link";
-
-        Convert();
-        StatusText = "Sample loaded";
+        InputMarkdown = "# Merhaba\n\nBu **kalın** ve *italik*.\n\n- Madde 1\n- Madde 2\n\n```csharp\nConsole.WriteLine(\"Hello\");\n```\n\n> Alıntı";
+        ConvertCommand.Execute(null);
     }
 
     [RelayCommand]
-    private void Clear()
-    {
-        InputMarkdown = string.Empty;
-        OutputHtml = string.Empty;
-        StatusText = "Cleared";
-    }
+    private void Clear() { InputMarkdown = string.Empty; OutputHtml = string.Empty; SetStatus(NotificationType.Info, "L.Markdown.Status.Cleared"); }
 
-    [RelayCommand]
-    private void CopyHtml()
-    {
-        if (!string.IsNullOrWhiteSpace(OutputHtml))
-        {
-            Clipboard.SetText(OutputHtml);
-            StatusText = "HTML copied to clipboard!";
-        }
-    }
+    private void SetStatus(NotificationType t, string k, params object?[] a) { StatusType = t; StatusText = _localizer.Format(k, a); }
+    private void ReportFailure<T>(ToolResult<T> r, string op) { _logger.LogWarning("Markdown {Op} failed: {Kind} {Code}", op, r.ErrorKind, r.ErrorCode); SetStatus(NotificationType.Error, r.ErrorCode ?? "L.Common.Error.Unexpected"); }
 }

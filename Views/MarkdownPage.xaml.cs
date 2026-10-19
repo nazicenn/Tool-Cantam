@@ -1,25 +1,8 @@
-﻿// Views/MarkdownPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class MarkdownPage : UserControl
+public partial class MarkdownPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.MarkdownViewModel>
 {
-    private MarkdownViewModel _viewModel;
-
-    public MarkdownPage(MarkdownViewModel viewModel)
-    {
-        InitializeComponent();
-        _viewModel = viewModel;
-        DataContext = _viewModel;
-
-        _viewModel.PropertyChanged += (s, e) =>
-        {
-            if (e.PropertyName == nameof(_viewModel.OutputHtml))
-            {
-                PreviewBrowser.NavigateToString(_viewModel.OutputHtml);
-            }
-        };
-    }
+    public ViewModels.MarkdownViewModel ViewModel { get; }
+    public MarkdownPage(ViewModels.MarkdownViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }

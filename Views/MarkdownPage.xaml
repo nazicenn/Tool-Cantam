@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              Background="{StaticResource BorderDefaultBrush}">
-
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -12,79 +11,67 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="MARKDOWN VIEWER" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource L.Markdown.Title}" Style="{StaticResource LabelPrimary}" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
-        <!-- Buttons -->
-        <Border Grid.Row="1" 
-                Style="{StaticResource OptionsPanel}" 
-                Padding="15" 
-                Margin="0,0,0,15">
-            <UniformGrid Columns="4">
-                <Button Command="{Binding ConvertCommand}" 
-                        Content="CONVERT" Height="35" Margin="0,0,5,0"
-                        Style="{StaticResource ModernButton}"
-                        Background="{StaticResource GreenBrush}"/>
-                <Button Command="{Binding LoadSampleCommand}" 
-                        Content="SAMPLE" Height="35" Margin="5,0,5,0"
-                        Style="{StaticResource ModernButton}"
-                        Background="{StaticResource StatusWarningBrush}"/>
-                <Button Command="{Binding ClearCommand}" 
-                        Content="CLEAR" Height="35" Margin="5,0,5,0"
-                        Style="{StaticResource ModernButton}"
-                        Background="{StaticResource RedBrush}"/>
-                <Button Command="{Binding CopyHtmlCommand}" 
-                        Content="COPY HTML" Height="35" Margin="5,0,0,0"
-                        Style="{StaticResource ModernButton}"
-                        Background="{StaticResource StatusWarningBrush}"/>
-            </UniformGrid>
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="15" Margin="0,0,0,12">
+            <StackPanel>
+                <WrapPanel Margin="0,0,0,8">
+                    <CheckBox Content="{DynamicResource L.Markdown.WrapInHtml}" IsChecked="{Binding ViewModel.WrapInHtml}" Margin="0,0,16,4" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="0"/>
+                    <CheckBox Content="{DynamicResource L.Markdown.AdvancedExtensions}" IsChecked="{Binding ViewModel.UseAdvancedExtensions}" Margin="0,0,0,4" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="1"/>
+                </WrapPanel>
+                <UniformGrid Columns="5">
+                    <Button Command="{Binding ViewModel.ConvertCommand}" Content="{DynamicResource L.Markdown.Convert}" Height="34" Margin="0,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource GreenBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="2"/>
+                    <Button Command="{Binding ViewModel.LoadSampleCommand}" Content="{DynamicResource L.Markdown.Sample}" Height="34" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="3"/>
+                    <Button Command="{Binding ViewModel.CopyHtmlCommand}" Content="{DynamicResource L.Markdown.Copy}" Height="34" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="4"/>
+                    <Button Command="{Binding ViewModel.SaveHtmlCommand}" Content="{DynamicResource L.Markdown.Save}" Height="34" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource AccentPrimaryBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="5"/>
+                    <Button Command="{Binding ViewModel.ClearCommand}" Content="{DynamicResource L.Markdown.Clear}" Height="34" Margin="4,0,0,0" Style="{StaticResource ModernButton}" Background="{StaticResource RedBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="6"/>
+                </UniformGrid>
+            </StackPanel>
         </Border>
 
-        <!-- Input/Preview -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
-            <!-- Input Markdown -->
-            <Border Grid.Column="0" 
-                    Style="{StaticResource OptionsPanel}" 
-                    Padding="15" 
-                    Margin="0,0,10,0">
-                <StackPanel>
-                    <TextBlock Text="MARKDOWN INPUT" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
-                    <TextBox Text="{Binding InputMarkdown, UpdateSourceTrigger=PropertyChanged}"
-                             TextWrapping="Wrap"
-                             AcceptsReturn="True"
-                             MinHeight="350"
-                             VerticalScrollBarVisibility="Auto"
-                             FontFamily="Consolas"/>
-                </StackPanel>
+            <Border Grid.Column="0" Style="{StaticResource OptionsPanel}" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource L.Markdown.Label.Input}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                    <TextBox Grid.Row="1" Text="{Binding ViewModel.InputMarkdown, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" FontFamily="{StaticResource MonoFont}" Background="{StaticResource OptionsBgBrush}" Foreground="{StaticResource TextPrimaryBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" Padding="8" TabIndex="7"/>
+                </Grid>
             </Border>
-
-            <!-- Preview -->
-            <Border Grid.Column="1" 
-                    Style="{StaticResource OptionsPanel}" 
-                    Padding="15" 
-                    Margin="10,0,0,0">
-                <StackPanel>
-                    <TextBlock Text="PREVIEW" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
-                    <WebBrowser x:Name="PreviewBrowser" MinHeight="350"/>
-                </StackPanel>
+            <Border Grid.Column="2" Style="{StaticResource OptionsPanel}" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource L.Markdown.Label.Output}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                    <Border Grid.Row="1" Background="{StaticResource OptionsBgBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" BorderThickness="1" CornerRadius="4" Padding="8">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,0">
+                            <TextBlock Text="{Binding ViewModel.OutputHtml}" FontFamily="{StaticResource MonoFont}" Foreground="{StaticResource TextPrimaryBrush}" TextWrapping="Wrap"/>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
             </Border>
         </Grid>
 
-        <TextBlock Grid.Row="3" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,10,0,0"/>
+        <Border Grid.Row="3" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0" Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Grid.Column="1" Text="{Binding ViewModel.StatusText}" Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}" FontSize="11" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="2" Text="{Binding ViewModel.LimitsText}" Foreground="{StaticResource TextPrimaryBrush}" Opacity="0.6" FontSize="10"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
