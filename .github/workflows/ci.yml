@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   build:
-    name: Build on Windows
+    name: Build and Test on Windows
     runs-on: windows-latest
 
     steps:
@@ -30,3 +30,6 @@ jobs:
 
       - name: Build Release
         run: dotnet build .\tool-cantam.sln --configuration Release --no-restore
+
+      - name: Run Tests
+        run: dotnet test .\tool-cantam.sln --configuration Release --no-build
