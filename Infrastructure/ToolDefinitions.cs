@@ -687,6 +687,67 @@ public static class ToolDefinitions
             Execute = async (input) => input?.ToString() ?? string.Empty
         });
 
+        ToolRegistry.Register(new ToolDefinition
+        {
+            Name = "Color Picker",
+            Description = "Pick and convert colors between HEX, RGB, and HSL",
+            Category = ToolCategory.DeveloperTools,
+            ViewModelType = typeof(ColorPickerViewModel),
+            ViewType = typeof(ColorPickerPage),
+            Execute = async (input) => input?.ToString() ?? string.Empty
+        });
+
+        ToolRegistry.Register(new ToolDefinition
+        {
+            Name = "Markdown to HTML",
+            Description = "Convert Markdown to HTML using Markdig",
+            Category = ToolCategory.DeveloperTools,
+            ViewModelType = typeof(MarkdownViewModel),
+            ViewType = typeof(MarkdownPage),
+            Execute = async (input) => input?.ToString() ?? string.Empty
+        });
+
+        ToolRegistry.Register(new ToolDefinition
+        {
+            Name = "REST API Client",
+            Description = "Send HTTP requests (GET/POST/PUT/DELETE/PATCH/HEAD)",
+            Category = ToolCategory.ApiWeb,
+            ViewModelType = typeof(RestApiClientViewModel),
+            ViewType = typeof(RestApiClientPage),
+            Execute = async (input) => input?.ToString() ?? string.Empty
+        });
+
+        ToolRegistry.Register(new ToolDefinition
+        {
+            Name = "User Agent Parser",
+            Description = "Parse User-Agent strings to detect browser, OS and device",
+            Category = ToolCategory.NetworkScanner,
+            ViewModelType = typeof(UserAgentParserViewModel),
+            ViewType = typeof(UserAgentParserPage),
+            Execute = async (input) => input?.ToString() ?? string.Empty
+        });
+
+        ToolRegistry.Register(new ToolDefinition
+        {
+            Name = "YAML to JSON",
+            Description = "Convert YAML documents to JSON",
+            Category = ToolCategory.DeveloperTools,
+            ViewModelType = typeof(YamlToJsonViewModel),
+            ViewType = typeof(YamlToJsonPage),
+            Execute = async (input) => input?.ToString() ?? string.Empty
+        });
+
+        ToolRegistry.Register(new ToolDefinition
+        {
+            Name = "Pwned Password Checker",
+            Description = "Check if a password appears in known data breaches (HIBP)",
+            Category = ToolCategory.PasswordCredential,
+            ViewModelType = typeof(PwnedViewModel),
+            ViewType = typeof(PwnedPage),
+            Execute = async (input) => input?.ToString() ?? string.Empty
+        });
+
+
     }
 
 }

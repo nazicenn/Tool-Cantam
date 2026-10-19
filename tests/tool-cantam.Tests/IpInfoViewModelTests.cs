@@ -1,4 +1,5 @@
-ï»¿using System.Collections.Generic;
+using tool_cantam.Services.ErrorCodes;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -11,8 +12,8 @@ using Xunit;
 namespace ToolCantam.Tests;
 
 /// <summary>
-/// IP Info aracÄ±nÄ±n sunum katmanÄ± sÃ¶zleÅŸmesi: doÄŸrulama, baÅŸarÄ± yolu, hata eÅŸlemesi,
-/// kopyalama/kaydetme ve temizleme davranÄ±ÅŸÄ±.
+/// IP Info aracının sunum katmanı sözleşmesi: doğrulama, başarı yolu, hata eşlemesi,
+/// kopyalama/kaydetme ve temizleme davranışı.
 /// </summary>
 public class IpInfoViewModelTests
 {
