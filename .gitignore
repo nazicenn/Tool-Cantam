@@ -1,24 +1,26 @@
-# Visual Studio
-.vs/
+# Build results
 [Bb]in/
 [Oo]bj/
-[Rr]elease/
-[Dd]ebug/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio
+.vs/
 *.user
 *.suo
-*.userosscache
-*.sln.docstates
 
-# WPF geçici proje dosyaları (derleme sırasında oluşturulur)
-*_wpftmp.csproj
+# Test results
+[Tt]est[Rr]esult*/
+*.trx
 
-# Logs
-logs/
-*.log
+# NuGet
+*.nupkg
+packages/
 
-# OS generated files
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
+# OS
 .DS_Store
+Thumbs.db
+
+# Temp
+*.tmp
+*.log
