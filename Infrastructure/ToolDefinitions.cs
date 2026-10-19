@@ -689,16 +689,6 @@ public static class ToolDefinitions
 
         ToolRegistry.Register(new ToolDefinition
         {
-            Name = "Color Picker",
-            Description = "Pick and convert colors between HEX, RGB, and HSL",
-            Category = ToolCategory.DeveloperTools,
-            ViewModelType = typeof(ColorPickerViewModel),
-            ViewType = typeof(ColorPickerPage),
-            Execute = async (input) => input?.ToString() ?? string.Empty
-        });
-
-        ToolRegistry.Register(new ToolDefinition
-        {
             Name = "Markdown to HTML",
             Description = "Convert Markdown to HTML using Markdig",
             Category = ToolCategory.DeveloperTools,
@@ -747,6 +737,15 @@ public static class ToolDefinitions
             Execute = async (input) => input?.ToString() ?? string.Empty
         });
 
+        ToolRegistry.Register(new ToolDefinition
+        {
+            Name = "MIME Type Lookup",
+            Description = "Look up MIME types by extension or vice versa",
+            Category = ToolCategory.DeveloperTools,
+            ViewModelType = typeof(MimeTypeViewModel),
+            ViewType = typeof(MimeTypePage),
+            Execute = async (input) => input?.ToString() ?? string.Empty
+        });
 
     }
 

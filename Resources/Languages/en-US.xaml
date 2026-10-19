@@ -2250,6 +2250,30 @@
     <sys:String x:Key="L.Pwned.Error.EmptyPassword">Password is empty.</sys:String>
     <sys:String x:Key="L.Pwned.Error.NetworkError">Network error.</sys:String>
     <sys:String x:Key="L.Pwned.Error.Timeout">Request timed out.</sys:String>
+    <!-- ============ MIME Type Lookup ============ -->
+    <sys:String x:Key="L.MimeType.Title">MIME TYPE LOOKUP</sys:String>
+    <sys:String x:Key="L.MimeType.Label.Input">Extension or MIME</sys:String>
+    <sys:String x:Key="L.MimeType.Label.Result">RESULT</sys:String>
+    <sys:String x:Key="L.MimeType.Label.Browse">BROWSE</sys:String>
+    <sys:String x:Key="L.MimeType.Field.Mime">MIME:</sys:String>
+    <sys:String x:Key="L.MimeType.Field.Description">Description:</sys:String>
+    <sys:String x:Key="L.MimeType.Field.Category">Category:</sys:String>
+    <sys:String x:Key="L.MimeType.Field.Flags">Flags:</sys:String>
+    <sys:String x:Key="L.MimeType.Lookup">LOOKUP</sys:String>
+    <sys:String x:Key="L.MimeType.CopyMime">COPY MIME</sys:String>
+    <sys:String x:Key="L.MimeType.CopyInput">COPY INPUT</sys:String>
+    <sys:String x:Key="L.MimeType.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.MimeType.Limits">Max input: {0} chars.</sys:String>
+    <sys:String x:Key="L.MimeType.Automation.Input">Extension or MIME type</sys:String>
+    <sys:String x:Key="L.MimeType.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.MimeType.Status.Found">✓ {0}</sys:String>
+    <sys:String x:Key="L.MimeType.Status.CopiedMime">MIME copied.</sys:String>
+    <sys:String x:Key="L.MimeType.Status.CopiedInput">Input copied.</sys:String>
+    <sys:String x:Key="L.MimeType.Status.Cleared">Cleared.</sys:String>
+    <sys:String x:Key="L.MimeType.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.MimeType.Error.EmptyInput">Please enter an extension or MIME type.</sys:String>
+    <sys:String x:Key="L.MimeType.Error.InvalidExtension">Invalid extension/MIME.</sys:String>
+    <sys:String x:Key="L.MimeType.Error.NotFound">Not found.</sys:String>
 
 
 

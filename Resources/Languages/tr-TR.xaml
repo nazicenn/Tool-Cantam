@@ -2250,6 +2250,30 @@
     <sys:String x:Key="L.Pwned.Error.EmptyPassword">Parola boş.</sys:String>
     <sys:String x:Key="L.Pwned.Error.NetworkError">Ağ hatası.</sys:String>
     <sys:String x:Key="L.Pwned.Error.Timeout">İstek zaman aşımına uğradı.</sys:String>
+    <!-- ============ MIME Type Lookup ============ -->
+    <sys:String x:Key="L.MimeType.Title">MIME TÜRÜ ARAMA</sys:String>
+    <sys:String x:Key="L.MimeType.Label.Input">Uzantı veya MIME</sys:String>
+    <sys:String x:Key="L.MimeType.Label.Result">SONUÇ</sys:String>
+    <sys:String x:Key="L.MimeType.Label.Browse">GÖZAT</sys:String>
+    <sys:String x:Key="L.MimeType.Field.Mime">MIME:</sys:String>
+    <sys:String x:Key="L.MimeType.Field.Description">Açıklama:</sys:String>
+    <sys:String x:Key="L.MimeType.Field.Category">Kategori:</sys:String>
+    <sys:String x:Key="L.MimeType.Field.Flags">İşaretler:</sys:String>
+    <sys:String x:Key="L.MimeType.Lookup">ARA</sys:String>
+    <sys:String x:Key="L.MimeType.CopyMime">MIME KOPYALA</sys:String>
+    <sys:String x:Key="L.MimeType.CopyInput">GİRİŞ KOPYALA</sys:String>
+    <sys:String x:Key="L.MimeType.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.MimeType.Limits">Maks giriş: {0} karakter.</sys:String>
+    <sys:String x:Key="L.MimeType.Automation.Input">Uzantı veya MIME türü</sys:String>
+    <sys:String x:Key="L.MimeType.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.MimeType.Status.Found">✓ {0}</sys:String>
+    <sys:String x:Key="L.MimeType.Status.CopiedMime">MIME kopyalandı.</sys:String>
+    <sys:String x:Key="L.MimeType.Status.CopiedInput">Giriş kopyalandı.</sys:String>
+    <sys:String x:Key="L.MimeType.Status.Cleared">Temizlendi.</sys:String>
+    <sys:String x:Key="L.MimeType.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.MimeType.Error.EmptyInput">Lütfen uzantı veya MIME türü girin.</sys:String>
+    <sys:String x:Key="L.MimeType.Error.InvalidExtension">Geçersiz uzantı/MIME.</sys:String>
+    <sys:String x:Key="L.MimeType.Error.NotFound">Bulunamadı.</sys:String>
 
 
 

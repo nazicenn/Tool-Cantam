@@ -1,0 +1,112 @@
+﻿<UserControl x:Class="tool_cantam.Views.MimeTypePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Background="{StaticResource BorderDefaultBrush}">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{DynamicResource L.MimeType.Title}" Style="{StaticResource LabelPrimary}" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+        <Border Grid.Row="1" Style="{StaticResource OptionsPanel}" Padding="15" Margin="0,0,0,12">
+            <StackPanel>
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{DynamicResource L.MimeType.Label.Input}" Style="{StaticResource LabelSecondary}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox Grid.Column="1" Text="{Binding ViewModel.Input, UpdateSourceTrigger=PropertyChanged}" FontFamily="{StaticResource MonoFont}" Height="34" Padding="8,6" Background="{StaticResource OptionsBgBrush}" Foreground="{StaticResource TextPrimaryBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" TabIndex="0" AutomationProperties.Name="{DynamicResource L.MimeType.Automation.Input}"/>
+                    <Button Grid.Column="2" Command="{Binding ViewModel.LookupCommand}" Content="{DynamicResource L.MimeType.Lookup}" Height="34" Width="100" Margin="8,0,0,0" Style="{StaticResource ModernButton}" Background="{StaticResource GreenBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="1"/>
+                </Grid>
+                <UniformGrid Columns="3">
+                    <Button Command="{Binding ViewModel.CopyMimeCommand}" Content="{DynamicResource L.MimeType.CopyMime}" Height="32" Margin="0,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="2"/>
+                    <Button Command="{Binding ViewModel.CopyInputCommand}" Content="{DynamicResource L.MimeType.CopyInput}" Height="32" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="3"/>
+                    <Button Command="{Binding ViewModel.ClearCommand}" Content="{DynamicResource L.MimeType.Clear}" Height="32" Margin="4,0,0,0" Style="{StaticResource ModernButton}" Background="{StaticResource RedBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="4"/>
+                </UniformGrid>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Style="{StaticResource OptionsPanel}" Padding="15">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource L.MimeType.Label.Result}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                    <Grid Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{DynamicResource L.MimeType.Field.Mime}" Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.MimeType}" FontFamily="{StaticResource MonoFont}" FontWeight="Bold" Foreground="{StaticResource AccentPrimaryBrush}" TextWrapping="Wrap"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{DynamicResource L.MimeType.Field.Description}" Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.Description}" Foreground="{StaticResource TextPrimaryBrush}" TextWrapping="Wrap"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{DynamicResource L.MimeType.Field.Category}" Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.Category}" Foreground="{StaticResource TextPrimaryBrush}"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{DynamicResource L.MimeType.Field.Flags}" Style="{StaticResource LabelSecondary}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ViewModel.Flags}" Foreground="{StaticResource TextPrimaryBrush}"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Style="{StaticResource OptionsPanel}" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource L.MimeType.Label.Browse}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ListBox Grid.Column="0" ItemsSource="{Binding ViewModel.AllExtensions}" Background="{StaticResource OptionsBgBrush}" Foreground="{StaticResource TextPrimaryBrush}" FontFamily="{StaticResource MonoFont}" FontSize="11"/>
+                        <ListBox Grid.Column="2" ItemsSource="{Binding ViewModel.AllMimeTypes}" Background="{StaticResource OptionsBgBrush}" Foreground="{StaticResource TextPrimaryBrush}" FontFamily="{StaticResource MonoFont}" FontSize="11"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="3" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0" Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Grid.Column="1" Text="{Binding ViewModel.StatusText}" Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}" FontSize="11" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="2" Text="{Binding ViewModel.LimitsText}" Foreground="{StaticResource TextPrimaryBrush}" Opacity="0.6" FontSize="10"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
