@@ -1,18 +1,8 @@
-﻿<!-- Views/UserAgentParserPage.xaml -->
-<UserControl x:Class="tool_cantam.Views.UserAgentParserPage"
+﻿<UserControl x:Class="tool_cantam.Views.UserAgentParserPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              Background="{StaticResource BorderDefaultBrush}">
-
-    <UserControl.Resources>
-        <Style x:Key="SampleCombo" TargetType="ComboBox">
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="Width" Value="120"/>
-            <Setter Property="Margin" Value="10,0,0,0"/>
-        </Style>
-    </UserControl.Resources>
-
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -20,116 +10,114 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" 
-                   Text="USER AGENT PARSER" 
-                   Style="{StaticResource LabelPrimary}" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="0" Text="{DynamicResource L.UserAgentParser.Title}" Style="{StaticResource LabelPrimary}" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
-            <!-- Input -->
-            <Border Grid.Column="0" 
-                    Style="{StaticResource OptionsPanel}" 
-                    Padding="15" 
-                    Margin="0,0,10,0">
-                <StackPanel>
-                    <TextBlock Text="USER AGENT STRING" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
-                    <TextBox Text="{Binding UserAgent, UpdateSourceTrigger=PropertyChanged}"
-                             TextWrapping="Wrap"
-                             AcceptsReturn="True"
-                             MinHeight="100"
-                             FontFamily="Consolas"
-                             Margin="0,0,0,10"/>
-
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Button Grid.Column="0" Command="{Binding ParseCommand}" 
-                                Content="🔍 PARSE" Height="35"
-                                Style="{StaticResource ModernButton}"
-                                Background="{StaticResource GreenBrush}"/>
-
-                        <ComboBox Grid.Column="1" 
-                                  Style="{StaticResource SampleCombo}"
-                                  SelectionChanged="SampleCombo_SelectionChanged">
-                            <ComboBoxItem Content="Chrome" Tag="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"/>
-                            <ComboBoxItem Content="Firefox" Tag="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0"/>
-                            <ComboBoxItem Content="Safari" Tag="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15"/>
-                            <ComboBoxItem Content="iPhone" Tag="Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"/>
-                            <ComboBoxItem Content="Android" Tag="Mozilla/5.0 (Linux; Android 13; SM-G998B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"/>
-                            <ComboBoxItem Content="Edge" Tag="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0"/>
-                        </ComboBox>
-                    </Grid>
-
-                    <Button Command="{Binding CopyUserAgentCommand}" 
-                            Content="📋 COPY USER AGENT" Height="35" Margin="0,10,0,0"
-                            Style="{StaticResource ModernButton}"
-                            Background="{StaticResource StatusWarningBrush}"/>
-                </StackPanel>
+            <Border Grid.Column="0" Style="{StaticResource OptionsPanel}" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource L.UserAgentParser.Label.Input}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,8"/>
+                    <TextBox Grid.Row="1" Text="{Binding ViewModel.UserAgent, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" FontFamily="{StaticResource MonoFont}" Background="{StaticResource OptionsBgBrush}" Foreground="{StaticResource TextPrimaryBrush}" BorderBrush="{StaticResource BorderDefaultBrush}" Padding="8" TabIndex="0"/>
+                    <UniformGrid Grid.Row="2" Columns="3" Margin="0,8,0,0">
+                        <Button Command="{Binding ViewModel.ParseCommand}" Content="{DynamicResource L.UserAgentParser.Parse}" Height="32" Margin="0,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource GreenBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="1"/>
+                        <Button Command="{Binding ViewModel.CopyUserAgentCommand}" Content="{DynamicResource L.UserAgentParser.Copy}" Height="32" Margin="4,0,4,0" Style="{StaticResource ModernButton}" Background="{StaticResource StatusWarningBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="2"/>
+                        <Button Command="{Binding ViewModel.ClearCommand}" Content="{DynamicResource L.UserAgentParser.Clear}" Height="32" Margin="4,0,0,0" Style="{StaticResource ModernButton}" Background="{StaticResource RedBrush}" Foreground="{StaticResource TextPrimaryBrush}" TabIndex="3"/>
+                    </UniformGrid>
+                </Grid>
             </Border>
-
-            <!-- Center Buttons -->
-            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10">
-                <Button Command="{Binding ClearCommand}" 
-                        Content="🗑️ CLEAR" Height="40" Width="80" Margin="0,5"
-                        Style="{StaticResource ModernButton}"
-                        Background="{StaticResource RedBrush}"/>
-            </StackPanel>
-
-            <!-- Results -->
-            <Border Grid.Column="2" 
-                    Style="{StaticResource OptionsPanel}" 
-                    Padding="15" 
-                    Margin="10,0,0,0">
-                <StackPanel>
-                    <TextBlock Text="PARSED RESULTS" Style="{StaticResource LabelPrimary}" Margin="0,0,0,15"/>
-
-                    <Grid Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Browser:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
-                        <TextBlock Grid.Column="1" Text="{Binding Browser}" Style="{StaticResource LabelPrimary}"/>
-                    </Grid>
-
-                    <Grid Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="OS:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
-                        <TextBlock Grid.Column="1" Text="{Binding OperatingSystem}" Style="{StaticResource LabelPrimary}"/>
-                    </Grid>
-
-                    <Grid Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Device:" Style="{StaticResource LabelSecondary}" FontWeight="Bold"/>
-                        <TextBlock Grid.Column="1" Text="{Binding Device}" Style="{StaticResource LabelPrimary}"/>
-                    </Grid>
-                </StackPanel>
+            <Border Grid.Column="2" Style="{StaticResource OptionsPanel}" Padding="15">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,0">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource L.UserAgentParser.Label.Results}" Style="{StaticResource LabelPrimary}" Margin="0,0,0,10"/>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.UserAgentParser.Browser}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.Browser}" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.UserAgentParser.BrowserVersion}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.BrowserVersion}" FontFamily="{StaticResource MonoFont}" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.UserAgentParser.Os}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.OperatingSystem}" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.UserAgentParser.OsVersion}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.OsVersion}" FontFamily="{StaticResource MonoFont}" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.UserAgentParser.Device}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.DeviceType}" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.UserAgentParser.Vendor}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.DeviceVendor}" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.UserAgentParser.Mobile}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.IsMobile}" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource L.UserAgentParser.Bot}" Style="{StaticResource LabelSecondary}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.IsBot}" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
             </Border>
         </Grid>
 
-        <TextBlock Grid.Row="2" 
-                   Text="{Binding StatusText}" 
-                   Foreground="{StaticResource TextSecondaryBrush}"
-                   FontSize="11"
-                   HorizontalAlignment="Center"
-                   Margin="0,15,0,0"/>
+        <Border Grid.Row="2" Style="{StaticResource OptionsPanel}" Padding="12" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:ProgressRing Grid.Column="0" IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0" Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Grid.Column="1" Text="{Binding ViewModel.StatusText}" Foreground="{Binding ViewModel.StatusType, Converter={StaticResource NotificationTypeToBrushConverter}}" FontSize="11" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="2" Text="{Binding ViewModel.LimitsText}" Foreground="{StaticResource TextPrimaryBrush}" Opacity="0.6" FontSize="10"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

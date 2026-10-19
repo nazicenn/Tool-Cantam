@@ -1,134 +1,78 @@
-﻿// ViewModels/UserAgentParserViewModel.cs
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Text.RegularExpressions;
-using System.Windows;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
+using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
 public partial class UserAgentParserViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private string _userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36";
+    private readonly IUserAgentParserService _service;
+    private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<UserAgentParserViewModel> _logger;
 
-    [ObservableProperty]
-    private string _browser = string.Empty;
+    [ObservableProperty] private string _userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+    [ObservableProperty] private string _browser = string.Empty;
+    [ObservableProperty] private string _browserVersion = string.Empty;
+    [ObservableProperty] private string _operatingSystem = string.Empty;
+    [ObservableProperty] private string _osVersion = string.Empty;
+    [ObservableProperty] private string _deviceType = string.Empty;
+    [ObservableProperty] private string _deviceVendor = string.Empty;
+    [ObservableProperty] private bool _isMobile;
+    [ObservableProperty] private bool _isBot;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
 
-    [ObservableProperty]
-    private string _operatingSystem = string.Empty;
-
-    [ObservableProperty]
-    private string _device = string.Empty;
-
-    [ObservableProperty]
-    private string _statusText = "Ready";
-
-    // PUBLIC yapıldı - Code-behind'den erişmek için
-    public void Parse()
+    public UserAgentParserViewModel(IUserAgentParserService service, IFileExportService fe, ILocalizerService loc, ILogger<UserAgentParserViewModel> log)
     {
-        if (string.IsNullOrWhiteSpace(UserAgent))
-        {
-            StatusText = "Please enter a User Agent string";
-            return;
-        }
-
-        try
-        {
-            var ua = UserAgent;
-
-            // Browser detection
-            if (ua.Contains("Edg/"))
-            {
-                var match = Regex.Match(ua, @"Edg/(\d+\.?\d*)");
-                Browser = $"Microsoft Edge {match.Groups[1].Value}";
-            }
-            else if (ua.Contains("Firefox/"))
-            {
-                var match = Regex.Match(ua, @"Firefox/(\d+\.?\d*)");
-                Browser = $"Firefox {match.Groups[1].Value}";
-            }
-            else if (ua.Contains("Chrome/") && !ua.Contains("Edg/"))
-            {
-                var match = Regex.Match(ua, @"Chrome/(\d+\.?\d*)");
-                Browser = $"Chrome {match.Groups[1].Value}";
-            }
-            else if (ua.Contains("Safari/") && !ua.Contains("Chrome/"))
-            {
-                var match = Regex.Match(ua, @"Version/(\d+\.?\d*)");
-                Browser = $"Safari {match.Groups[1].Value}";
-            }
-            else if (ua.Contains("OPR/") || ua.Contains("Opera/"))
-            {
-                var match = Regex.Match(ua, @"(?:OPR|Opera)/(\d+\.?\d*)");
-                Browser = $"Opera {match.Groups[1].Value}";
-            }
-            else
-            {
-                Browser = "Unknown Browser";
-            }
-
-            // OS detection
-            if (ua.Contains("Windows NT 10.0"))
-                OperatingSystem = "Windows 10/11";
-            else if (ua.Contains("Windows NT 6.1"))
-                OperatingSystem = "Windows 7";
-            else if (ua.Contains("Windows NT 6.2"))
-                OperatingSystem = "Windows 8";
-            else if (ua.Contains("Windows NT 6.3"))
-                OperatingSystem = "Windows 8.1";
-            else if (ua.Contains("Mac OS X"))
-            {
-                var match = Regex.Match(ua, @"Mac OS X (\d+)[_\.](\d+)");
-                if (match.Success)
-                    OperatingSystem = $"macOS {match.Groups[1]}.{match.Groups[2]}";
-                else
-                    OperatingSystem = "macOS";
-            }
-            else if (ua.Contains("iPhone"))
-                OperatingSystem = "iOS";
-            else if (ua.Contains("iPad"))
-                OperatingSystem = "iPadOS";
-            else if (ua.Contains("Android"))
-                OperatingSystem = "Android";
-            else if (ua.Contains("Linux"))
-                OperatingSystem = "Linux";
-            else
-                OperatingSystem = "Unknown OS";
-
-            // Device detection
-            if (ua.Contains("iPhone"))
-                Device = "iPhone";
-            else if (ua.Contains("iPad"))
-                Device = "iPad";
-            else if (ua.Contains("Android") && ua.Contains("Mobile"))
-                Device = "Android Phone";
-            else if (ua.Contains("Android"))
-                Device = "Android Tablet";
-            else if (ua.Contains("Windows NT") && (ua.Contains("Phone") || ua.Contains("Mobile")))
-                Device = "Windows Phone";
-            else if (ua.Contains("Windows NT"))
-                Device = "Desktop PC";
-            else if (ua.Contains("Mac OS X"))
-                Device = "Mac";
-            else if (ua.Contains("Linux"))
-                Device = "Linux PC";
-            else
-                Device = "Unknown Device";
-
-            StatusText = "✓ User Agent parsed successfully";
-        }
-        catch (Exception ex)
-        {
-            StatusText = $"✗ Error: {ex.Message}";
-            ClearResults();
-        }
+        _service = service; _fileExportService = fe; _localizer = loc; _logger = log;
+        StatusText = _localizer.Get("L.UserAgentParser.Status.Ready");
     }
 
-    [RelayCommand]
-    private void ParseCommand()
+    public string LimitsText => _localizer.Format("L.UserAgentParser.Limits", _service.MaxInputLength);
+
+    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanParse))]
+    private async Task ParseAsync(CancellationToken ct)
     {
-        Parse();
+        IsBusy = true;
+        try
+        {
+            var r = await _service.ParseAsync(UserAgent, ct);
+            if (!r.IsSuccess) { ReportFailure(r, "parse"); ClearResults(); return; }
+            var v = r.Value!;
+            Browser = v.Browser;
+            BrowserVersion = v.BrowserVersion;
+            OperatingSystem = v.OperatingSystem;
+            OsVersion = v.OsVersion;
+            DeviceType = v.DeviceType;
+            DeviceVendor = v.DeviceVendor;
+            IsMobile = v.IsMobile;
+            IsBot = v.IsBot;
+            _logger.LogInformation("UA parsed: {Browser} {Ver}, {Os}", v.Browser, v.BrowserVersion, v.OperatingSystem);
+            SetStatus(NotificationType.Success, "L.UserAgentParser.Status.Parsed", v.Browser, v.OperatingSystem);
+        }
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "UA parse failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
+    }
+
+    private bool CanParse() => !string.IsNullOrWhiteSpace(UserAgent);
+
+    [RelayCommand]
+    private void CopyUserAgent()
+    {
+        if (string.IsNullOrWhiteSpace(UserAgent)) { SetStatus(NotificationType.Warning, "L.UserAgentParser.Validation.NothingToCopy"); return; }
+        try { _fileExportService.CopyToClipboard(UserAgent); SetStatus(NotificationType.Success, "L.UserAgentParser.Status.Copied"); }
+        catch (Exception ex) { _logger.LogError(ex, "Copy failed."); SetStatus(NotificationType.Error, "L.Common.Error.Clipboard"); }
     }
 
     [RelayCommand]
@@ -136,23 +80,15 @@ public partial class UserAgentParserViewModel : ObservableObject
     {
         UserAgent = string.Empty;
         ClearResults();
-        StatusText = "Cleared";
-    }
-
-    [RelayCommand]
-    private void CopyUserAgent()
-    {
-        if (!string.IsNullOrWhiteSpace(UserAgent))
-        {
-            Clipboard.SetText(UserAgent);
-            StatusText = "User Agent copied to clipboard!";
-        }
+        SetStatus(NotificationType.Info, "L.UserAgentParser.Status.Cleared");
     }
 
     private void ClearResults()
     {
-        Browser = string.Empty;
-        OperatingSystem = string.Empty;
-        Device = string.Empty;
+        Browser = BrowserVersion = OperatingSystem = OsVersion = DeviceType = DeviceVendor = string.Empty;
+        IsMobile = IsBot = false;
     }
+
+    private void SetStatus(NotificationType t, string k, params object?[] a) { StatusType = t; StatusText = _localizer.Format(k, a); }
+    private void ReportFailure<T>(ToolResult<T> r, string op) { _logger.LogWarning("UserAgent {Op} failed: {Kind} {Code}", op, r.ErrorKind, r.ErrorCode); SetStatus(NotificationType.Error, r.ErrorCode ?? "L.Common.Error.Unexpected"); }
 }

@@ -1,31 +1,8 @@
-﻿// Views/UserAgentParserPage.xaml.cs
-using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class UserAgentParserPage : UserControl
+public partial class UserAgentParserPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.UserAgentParserViewModel>
 {
-    public UserAgentParserPage(UserAgentParserViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
-
-    private void SampleCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (sender is ComboBox combo && combo.SelectedItem is ComboBoxItem item)
-        {
-            var userAgent = item.Tag?.ToString();
-            if (!string.IsNullOrWhiteSpace(userAgent))
-            {
-                var viewModel = DataContext as UserAgentParserViewModel;
-                if (viewModel != null)
-                {
-                    viewModel.UserAgent = userAgent;
-                    viewModel.Parse();
-                }
-            }
-        }
-    }
+    public ViewModels.UserAgentParserViewModel ViewModel { get; }
+    public UserAgentParserPage(ViewModels.UserAgentParserViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
