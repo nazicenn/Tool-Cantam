@@ -757,6 +757,17 @@ public static class ToolDefinitions
             Execute = async (input) => input?.ToString() ?? string.Empty
         });
 
+        ToolRegistry.Register(new ToolDefinition
+        {
+            Name = "Git Command Generator",
+            Description = "Generate Git commands with descriptions and examples",
+            Category = ToolCategory.DeveloperTools,
+            ViewModelType = typeof(GitCommandGeneratorViewModel),
+            ViewType = typeof(GitCommandGeneratorPage),
+            Execute = async (input) => input?.ToString() ?? string.Empty
+        });
+
+
 
     }
 

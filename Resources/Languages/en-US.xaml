@@ -2312,7 +2312,28 @@
     <sys:String x:Key="L.CorsAnalyzer.Error.InvalidUrl">Invalid URL.</sys:String>
     <sys:String x:Key="L.CorsAnalyzer.Error.HttpError">HTTP error.</sys:String>
     <sys:String x:Key="L.CorsAnalyzer.Error.Timeout">Timeout.</sys:String>
+    <!-- ============ Git Command Generator ============ -->
+    <sys:String x:Key="L.GitCommand.Title">GIT COMMAND GENERATOR</sys:String>
+    <sys:String x:Key="L.GitCommand.Label.Category">Category:</sys:String>
+    <sys:String x:Key="L.GitCommand.Label.Argument1">Argument 1:</sys:String>
+    <sys:String x:Key="L.GitCommand.Label.Argument2">Argument 2:</sys:String>
+    <sys:String x:Key="L.GitCommand.Label.Command">COMMAND</sys:String>
+    <sys:String x:Key="L.GitCommand.Flag1">Option 1</sys:String>
+    <sys:String x:Key="L.GitCommand.Flag2">Option 2</sys:String>
+    <sys:String x:Key="L.GitCommand.Generate">GENERATE</sys:String>
+    <sys:String x:Key="L.GitCommand.Sample">SAMPLE</sys:String>
+    <sys:String x:Key="L.GitCommand.Copy">COPY</sys:String>
+    <sys:String x:Key="L.GitCommand.Clear">CLEAR</sys:String>
+    <sys:String x:Key="L.GitCommand.Limits">Max input: {0} chars.</sys:String>
+    <sys:String x:Key="L.GitCommand.Status.Ready">Ready.</sys:String>
+    <sys:String x:Key="L.GitCommand.Status.Generated">✓ {0} command generated.</sys:String>
+    <sys:String x:Key="L.GitCommand.Status.Copied">Copied.</sys:String>
+    <sys:String x:Key="L.GitCommand.Status.Cleared">Cleared.</sys:String>
+    <sys:String x:Key="L.GitCommand.Validation.NothingToCopy">Nothing to copy.</sys:String>
+    <sys:String x:Key="L.GitCommand.Error.EmptyArgument">Please enter an argument.</sys:String>
+    <sys:String x:Key="L.GitCommand.Error.InputTooLarge">Input too large.</sys:String>
     
+
 
 
 

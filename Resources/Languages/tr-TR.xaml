@@ -2312,7 +2312,27 @@
     <sys:String x:Key="L.CorsAnalyzer.Error.InvalidUrl">Geçersiz URL.</sys:String>
     <sys:String x:Key="L.CorsAnalyzer.Error.HttpError">HTTP hatası.</sys:String>
     <sys:String x:Key="L.CorsAnalyzer.Error.Timeout">Zaman aşımı.</sys:String>
-    
+    <!-- ============ Git Command Generator ============ -->
+    <sys:String x:Key="L.GitCommand.Title">GIT KOMUT ÜRETİCİ</sys:String>
+    <sys:String x:Key="L.GitCommand.Label.Category">Kategori:</sys:String>
+    <sys:String x:Key="L.GitCommand.Label.Argument1">Argüman 1:</sys:String>
+    <sys:String x:Key="L.GitCommand.Label.Argument2">Argüman 2:</sys:String>
+    <sys:String x:Key="L.GitCommand.Label.Command">KOMUT</sys:String>
+    <sys:String x:Key="L.GitCommand.Flag1">Seçenek 1</sys:String>
+    <sys:String x:Key="L.GitCommand.Flag2">Seçenek 2</sys:String>
+    <sys:String x:Key="L.GitCommand.Generate">ÜRET</sys:String>
+    <sys:String x:Key="L.GitCommand.Sample">ÖRNEK</sys:String>
+    <sys:String x:Key="L.GitCommand.Copy">KOPYALA</sys:String>
+    <sys:String x:Key="L.GitCommand.Clear">TEMİZLE</sys:String>
+    <sys:String x:Key="L.GitCommand.Limits">Maks giriş: {0} karakter.</sys:String>
+    <sys:String x:Key="L.GitCommand.Status.Ready">Hazır.</sys:String>
+    <sys:String x:Key="L.GitCommand.Status.Generated">✓ {0} komutu üretildi.</sys:String>
+    <sys:String x:Key="L.GitCommand.Status.Copied">Kopyalandı.</sys:String>
+    <sys:String x:Key="L.GitCommand.Status.Cleared">Temizlendi.</sys:String>
+    <sys:String x:Key="L.GitCommand.Validation.NothingToCopy">Kopyalanacak bir şey yok.</sys:String>
+    <sys:String x:Key="L.GitCommand.Error.EmptyArgument">Lütfen bir argüman girin.</sys:String>
+    <sys:String x:Key="L.GitCommand.Error.InputTooLarge">Girdi çok büyük.</sys:String>
+
 
 
 
