@@ -1,8 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using tool_cantam.Core.Models;
 
 namespace tool_cantam.Services.Interfaces;
 
 public interface IPwnedService
 {
-    Task<int> CheckPasswordAsync(string password);
+    Task<ToolResult<PwnedReport>> CheckPasswordAsync(string? password, CancellationToken ct);
 }
+
+public sealed record PwnedReport(int BreachCount, bool IsPwned, TimeSpan Elapsed);

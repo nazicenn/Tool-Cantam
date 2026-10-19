@@ -1,117 +1,80 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
+using tool_cantam.Core.Contracts;
+using tool_cantam.Core.Models;
 using tool_cantam.Services.Interfaces;
 
 namespace tool_cantam.ViewModels;
 
 public partial class PwnedViewModel : ObservableObject
 {
-    private readonly IPwnedService _pwnedService;
+    private readonly IPwnedService _service;
+    private readonly IFileExportService _fileExportService;
+    private readonly ILocalizerService _localizer;
+    private readonly ILogger<PwnedViewModel> _logger;
 
-    [ObservableProperty]
-    private string _password = string.Empty;
+    [ObservableProperty] private string _password = string.Empty;
+    [ObservableProperty] private string _resultText = string.Empty;
+    [ObservableProperty] private string _suggestedPassword = string.Empty;
+    [ObservableProperty] private bool _showSuggestion;
+    [ObservableProperty] private bool _isPwned;
+    [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private NotificationType _statusType = NotificationType.Info;
+    [ObservableProperty] private bool _isBusy;
 
-    [ObservableProperty]
-    private bool _isChecking;
-
-    [ObservableProperty]
-    private string _statusText = "Ready.";
-
-    [ObservableProperty]
-    private string _resultText = string.Empty;
-
-    [ObservableProperty]
-    private string _resultColor = "#888888";
-
-    [ObservableProperty]
-    private string _suggestedPassword = string.Empty;
-
-    [ObservableProperty]
-    private bool _showSuggestion;
-
-    public PwnedViewModel(IPwnedService pwnedService)
+    public PwnedViewModel(IPwnedService service, IFileExportService fe, ILocalizerService loc, ILogger<PwnedViewModel> log)
     {
-        _pwnedService = pwnedService;
+        _service = service; _fileExportService = fe; _localizer = loc; _logger = log;
+        StatusText = _localizer.Get("L.Pwned.Status.Ready");
     }
 
-    private string GenerateSuggestion(string originalPassword)
+    public string LimitsText => _localizer.Get("L.Pwned.Limits");
+
+    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanCheck))]
+    private async Task CheckAsync(CancellationToken ct)
     {
-        if (string.IsNullOrWhiteSpace(originalPassword))
-            return "MySecurePass_123";
-
-        var random = new Random();
-        var numbers = random.Next(10, 999).ToString();
-        var specials = new[] { "_", "@", "#" };
-        var special = specials[random.Next(specials.Length)];
-
-        var suggestion = originalPassword.Trim();
-
-        if (suggestion.Length < 8)
-            suggestion = suggestion + "Secure";
-
-        if (!System.Text.RegularExpressions.Regex.IsMatch(suggestion, @"[0-9]"))
-            suggestion = suggestion + numbers;
-
-        if (!System.Text.RegularExpressions.Regex.IsMatch(suggestion, @"[\W_]"))
-            suggestion = suggestion + special;
-
-        return suggestion;
-    }
-
-    [RelayCommand]
-    private async Task CheckAsync()
-    {
-        if (string.IsNullOrWhiteSpace(Password))
-        {
-            StatusText = "Please enter a password";
-            return;
-        }
-
-        IsChecking = true;
+        IsBusy = true;
         ShowSuggestion = false;
         SuggestedPassword = string.Empty;
-        ResultText = string.Empty;
-        ResultColor = "#888888";
-        StatusText = "Checking with HIBP API...";
-
         try
         {
-            // Servis mevcut k-anonim yaklaşımını kullanır: parola değil, SHA-1 öneki gönderilir.
-            int count = await _pwnedService.CheckPasswordAsync(Password);
-
-            if (count < 0)
+            var r = await _service.CheckPasswordAsync(Password, ct);
+            if (!r.IsSuccess) { ReportFailure(r, "check"); ResultText = string.Empty; IsPwned = false; return; }
+            var v = r.Value!;
+            IsPwned = v.IsPwned;
+            ResultText = v.IsPwned
+                ? _localizer.Format("L.Pwned.Result.Pwned", v.BreachCount)
+                : _localizer.Get("L.Pwned.Result.Safe");
+            if (v.IsPwned)
             {
-                StatusText = "✗ Error: Could not reach HIBP API";
-                ResultText = string.Empty;
-                ResultColor = "#FF4444";
-            }
-            else if (count == 0)
-            {
-                StatusText = "✓ Password not found in any known breach";
-                ResultText = "SAFE - not found in any known breach";
-                ResultColor = "#00FF41";
-            }
-            else
-            {
-                StatusText = $"✗ Password found {count:N0} time(s) in known breaches";
-                ResultText = $"PWNED - seen {count:N0} time(s) in known breaches";
-                ResultColor = "#FF4444";
                 SuggestedPassword = GenerateSuggestion(Password);
                 ShowSuggestion = true;
             }
+            _logger.LogInformation("HIBP check: {Status}", v.IsPwned ? "PWNED" : "SAFE");
+            SetStatus(v.IsPwned ? NotificationType.Warning : NotificationType.Success,
+                v.IsPwned ? "L.Pwned.Status.Pwned" : "L.Pwned.Status.Safe", v.BreachCount);
         }
-        catch (Exception ex)
-        {
-            StatusText = $"✗ Error: {ex.Message}";
-            ResultText = string.Empty;
-            ResultColor = "#FF4444";
-        }
-        finally
-        {
-            IsChecking = false;
-        }
+        catch (OperationCanceledException) { SetStatus(NotificationType.Warning, "L.Common.Status.Cancelled"); }
+        catch (Exception ex) { _logger.LogError(ex, "HIBP check failed."); SetStatus(NotificationType.Error, "L.Common.Error.Unexpected"); }
+        finally { IsBusy = false; }
+    }
+
+    private bool CanCheck() => !string.IsNullOrEmpty(Password);
+
+    private static string GenerateSuggestion(string pwd)
+    {
+        if (string.IsNullOrWhiteSpace(pwd)) return "MySecurePass_123";
+        var sb = new System.Text.StringBuilder(pwd.Trim());
+        if (sb.Length < 8) sb.Append("Secure");
+        if (!System.Text.RegularExpressions.Regex.IsMatch(sb.ToString(), @"[0-9]"))
+            sb.Append(System.Security.Cryptography.RandomNumberGenerator.GetInt32(10, 999));
+        if (!System.Text.RegularExpressions.Regex.IsMatch(sb.ToString(), @"[\W_]"))
+            sb.Append('_');
+        return sb.ToString();
     }
 
     [RelayCommand]
@@ -123,33 +86,26 @@ public partial class PwnedViewModel : ObservableObject
             SuggestedPassword = string.Empty;
             ShowSuggestion = false;
             ResultText = string.Empty;
-            StatusText = "Suggestion applied. Click CHECK to test it.";
-            ResultColor = "#888888";
+            SetStatus(NotificationType.Info, "L.Pwned.Status.SuggestionApplied");
         }
     }
 
     [RelayCommand]
     private void CopyResult()
     {
-        if (!string.IsNullOrWhiteSpace(ResultText))
-        {
-            System.Windows.Clipboard.SetText(ResultText);
-            StatusText = "Copied to clipboard!";
-        }
-        else
-        {
-            StatusText = "Nothing to copy";
-        }
+        if (string.IsNullOrWhiteSpace(ResultText)) { SetStatus(NotificationType.Warning, "L.Pwned.Validation.NothingToCopy"); return; }
+        try { _fileExportService.CopyToClipboard(ResultText); SetStatus(NotificationType.Success, "L.Pwned.Status.Copied"); }
+        catch (Exception ex) { _logger.LogError(ex, "Copy failed."); SetStatus(NotificationType.Error, "L.Common.Error.Clipboard"); }
     }
 
     [RelayCommand]
     private void Clear()
     {
-        Password = string.Empty;
-        ResultText = string.Empty;
-        SuggestedPassword = string.Empty;
-        ShowSuggestion = false;
-        StatusText = "Ready.";
-        ResultColor = "#888888";
+        Password = string.Empty; ResultText = string.Empty;
+        SuggestedPassword = string.Empty; ShowSuggestion = false; IsPwned = false;
+        SetStatus(NotificationType.Info, "L.Pwned.Status.Cleared");
     }
+
+    private void SetStatus(NotificationType t, string k, params object?[] a) { StatusType = t; StatusText = _localizer.Format(k, a); }
+    private void ReportFailure<T>(ToolResult<T> r, string op) { _logger.LogWarning("Pwned {Op} failed: {Kind} {Code}", op, r.ErrorKind, r.ErrorCode); SetStatus(NotificationType.Error, r.ErrorCode ?? "L.Common.Error.Unexpected"); }
 }

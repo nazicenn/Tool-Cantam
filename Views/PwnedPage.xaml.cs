@@ -1,13 +1,8 @@
-﻿using System.Windows.Controls;
-using tool_cantam.ViewModels;
-
+﻿using Wpf.Ui.Abstractions.Controls;
 namespace tool_cantam.Views;
 
-public partial class PwnedPage : UserControl
+public partial class PwnedPage : System.Windows.Controls.UserControl, INavigableView<ViewModels.PwnedViewModel>
 {
-    public PwnedPage(PwnedViewModel viewModel)
-    {
-        InitializeComponent();
-        DataContext = viewModel;
-    }
+    public ViewModels.PwnedViewModel ViewModel { get; }
+    public PwnedPage(ViewModels.PwnedViewModel vm) { ViewModel = vm; DataContext = this; InitializeComponent(); }
 }
