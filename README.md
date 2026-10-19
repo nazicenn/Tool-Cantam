@@ -1,36 +1,53 @@
-# Tool-Cantam
+# Tool Çantam
 
 **A modular developer toolkit for Windows.**
 
-Tool-Cantam is a Windows desktop application that brings developer utilities, text processing tools, network diagnostics, cryptographic operations, and API helpers into one place.
+Tool Çantam is a Windows desktop application that brings developer utilities, text processing tools, network diagnostics, cryptographic operations, and API helpers into one place.
 
 Built with **C#, WPF, and .NET 10**, the project focuses on modular tool registration, maintainable application architecture, and practical utilities for everyday development workflows.
 
-[![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
-[![C#](https://img.shields.io/badge/Language-C%23-239120?logo=csharp&logoColor=white)](https://learn.microsoft.com/dotnet/csharp/)
-[![WPF](https://img.shields.io/badge/UI-WPF-0078D4?logo=windows&logoColor=white)](https://learn.microsoft.com/dotnet/desktop/wpf/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[Download Latest Release](https://github.com/nazicenn/Tool-Cantam/releases/latest) · [Report a Bug](https://github.com/nazicenn/Tool-Cantam/issues) · [View Source Code](https://github.com/nazicenn/Tool-Cantam)
+
+![Platform](https://img.shields.io/badge/platform-Windows%20x64-blue)
+![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)
+![Language](https://img.shields.io/badge/language-C%23-239120)
+![UI](https://img.shields.io/badge/UI-WPF-0078D4)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
+
+## Download & Installation
+
+**Latest release: v1.0.0**
+
+Download the ready-to-run Windows x64 build:
+
+**[Download Tool Çantam v1.0.0](https://github.com/nazicenn/Tool-Cantam/releases/download/v1.0.0/Tool-Cantam-v1.0.0-win-x64.zip)**
+
+1. Download the ZIP archive.
+2. Extract it to a folder.
+3. Run `tool-cantam.exe`.
+
+The release uses a self-contained .NET deployment, so a separate .NET runtime installation should not be necessary. Windows compatibility and runtime behavior may vary by environment.
+
+For installation details and release notes, visit the [Releases page](https://github.com/nazicenn/Tool-Cantam/releases).
 
 ## Features
 
-- **Developer productivity:** encoding, formatting, conversion, and text-processing utilities.
-- **Network diagnostics:** DNS lookups, IP utilities, port scanning, HTTP headers, and SSL checks.
-- **Cryptography:** hashing, HMAC, AES, RSA, JWT, and certificate-related tools.
-- **API and web utilities:** HTTP request testing, REST API requests, cURL generation, and QR codes.
-- **File and metadata utilities:** image metadata inspection and cleaning.
-- **Modular registration:** centralized tool definitions with names, descriptions, categories, ViewModels, and views.
-- **Desktop experience:** a native Windows application built with WPF.
-- **Testability:** an xUnit test project for automated verification.
+- **Developer Productivity:** Encoding, formatting, conversion, and text-processing utilities.
+- **Network Diagnostics:** DNS lookups, IP utilities, port scanning, HTTP headers, and SSL checks.
+- **Cryptography:** Hashing, HMAC, AES, RSA, JWT, and certificate-related tools.
+- **API & Web Utilities:** HTTP request testing, REST API requests, cURL generation, and QR codes.
+- **File & Metadata Utilities:** Image metadata inspection and cleaning.
+- **Modular Registration:** Centralized tool definitions with names, descriptions, categories, ViewModels, and views.
+- **Native Desktop Experience:** A Windows desktop application built with WPF.
+- **Testability:** An xUnit test project for automated verification.
 
-Tool availability and feature behavior depend on each tool's implementation and its external service requirements.
-
----
+Tool availability and behavior depend on each tool's implementation and external service requirements.
 
 ## Tool Catalog
 
-The following catalog is based on the tool registrations in `ToolDefinitions.cs`. It describes the registered tool definitions, not a guarantee that every feature has identical implementation depth.
+The following catalog is based on the tool registrations in `ToolDefinitions.cs`. It describes registered tool definitions, not a guarantee that every feature has identical implementation depth.
 
 ### Encoders & Decoders
 
@@ -154,13 +171,11 @@ The following catalog is based on the tool registrations in `ToolDefinitions.cs`
 | Certificate Decoder | Inspect certificates |
 | PEM Viewer | View PEM-formatted data |
 
-**Catalog summary:** 73 registered tool definitions across 10 categories, based on the supplied `ToolDefinitions.cs` source.
-
----
+**Catalog summary:** 73 registered tool definitions across 10 categories, based on `ToolDefinitions.cs`.
 
 ## Architecture
 
-Tool-Cantam uses a centralized registration system to organize tools and associate their metadata with corresponding ViewModels and WPF views.
+Tool Çantam uses a centralized registration system to organize tools and associate their metadata with corresponding ViewModels and WPF views.
 
 ### Technology Stack
 
@@ -209,18 +224,16 @@ This is the target structure for complete tool implementations. Individual tools
 
 ### Design Principles
 
-- **Separation of concerns:** separate presentation from reusable service logic where appropriate.
-- **MVVM:** use ViewModels to manage UI state and commands.
-- **Centralized registration:** keep tool metadata and registration in a consistent location.
-- **Consistent error handling:** use shared result and error abstractions where implemented.
-- **Asynchronous operations:** support cancellation for operations that may take significant time.
-- **Structured logging:** capture useful diagnostic information without exposing sensitive content.
-- **Localization:** keep user-facing strings in language resources.
-- **Testability:** design services and ViewModels so their behavior can be tested independently.
+- **Separation of Concerns:** Separate presentation from reusable service logic where appropriate.
+- **MVVM:** Use ViewModels to manage UI state and commands.
+- **Centralized Registration:** Keep tool metadata and registration in a consistent location.
+- **Consistent Error Handling:** Use shared result and error abstractions where implemented.
+- **Asynchronous Operations:** Support cancellation for operations that may take significant time.
+- **Structured Logging:** Capture useful diagnostic information without exposing sensitive content.
+- **Localization:** Keep user-facing strings in language resources.
+- **Testability:** Design services and ViewModels so their behavior can be tested independently.
 
-These principles guide ongoing development; they should not be interpreted as a guarantee that every registered tool already implements every principle.
-
----
+These principles guide ongoing development and should not be interpreted as a guarantee that every registered tool already implements every principle.
 
 ## Build & Test
 
@@ -252,9 +265,7 @@ dotnet test
 
 To run the WPF application, open the solution in Visual Studio and set the WPF application project as the startup project.
 
-Test totals and results can change as the project evolves. Use the latest test output when reporting the number of passing tests.
-
----
+Test totals and results may change as the project evolves. Use the latest test output when reporting passing tests.
 
 ## Localization
 
@@ -269,27 +280,22 @@ Localization guidelines:
 - Keep corresponding translations synchronized across language files.
 - Avoid hard-coded user-facing text where localization is required.
 - Verify missing resources and language-switching behavior.
-
-New translations should be tested to ensure that resource keys and values are correctly resolved by the application.
-
----
+- Test new translations to ensure resource keys and values are resolved correctly.
 
 ## Privacy & Security
 
-Tool-Cantam includes tools related to network diagnostics, credentials, cryptography, and data processing.
+Tool Çantam includes tools related to network diagnostics, credentials, cryptography, and data processing.
 
 Security considerations:
 
-- **External services:** network and lookup utilities may require internet access. Review individual tools to determine which services they contact.
-- **Password exposure checks:** verify the implementation and data transmitted to the configured breach-checking service.
-- **Cryptographic operations:** review algorithms, key derivation, IV handling, and key storage before using encryption features for sensitive data.
-- **Logging:** avoid recording passwords, access tokens, cryptographic keys, or other sensitive payloads.
-- **Network scanning:** only scan systems and networks for which you have authorization.
-- **Offline behavior:** locally processed tools may work without internet access, while external lookup tools may not.
+- **External Services:** Network and lookup utilities may require internet access. Review individual tools to determine which services they contact.
+- **Password Exposure Checks:** Verify the implementation and data transmitted to the configured breach-checking service.
+- **Cryptographic Operations:** Review algorithms, key derivation, IV handling, and key storage before using encryption features for sensitive data.
+- **Logging:** Avoid recording passwords, access tokens, cryptographic keys, or other sensitive payloads.
+- **Network Scanning:** Only scan systems and networks for which you have authorization.
+- **Offline Behavior:** Locally processed tools may work without internet access, while external lookup tools may not.
 
-Tool-Cantam is a developer utility toolkit, not a replacement for a security audit or a dedicated secrets-management system.
-
----
+Tool Çantam is a developer utility toolkit, not a replacement for a security audit or a dedicated secrets-management system.
 
 ## Roadmap
 
@@ -305,9 +311,7 @@ Potential areas for continued development include:
 
 The roadmap describes development opportunities rather than completed features.
 
----
-
-## 🤝 Contributing
+## Contributing
 
 Contributions, bug reports, and suggestions are welcome.
 
@@ -338,12 +342,10 @@ Contributions, bug reports, and suggestions are welcome.
 - [ ] Run `dotnet build`.
 - [ ] Run `dotnet test` and review the results.
 
----
-
-## 📄 License
+## License
 
 This project is distributed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
-**Tool-Cantam — practical developer utilities in a modular Windows desktop application.**
+**Tool Çantam** — practical developer utilities in a modular Windows desktop application.
